@@ -7,23 +7,23 @@ namespace TreeDisplay
 
 	struct Invalid : X11Grid::InvalidGrid { };
 
-	struct XRbTreeGrid;
-	struct XRbTreeRow;
-	struct XRbTreeColumn;
-	struct XRbTreeCell;
+	struct TreeGrid;
+	struct TreeRow;
+	struct TreeColumn;
+	struct TreeCell;
 
 	struct TestStructure : X11Grid::DefaultStructure
 	{
-		typedef XRbTreeGrid GridType;
-		typedef XRbTreeRow RowType;
-		typedef XRbTreeColumn ColumnType;
-		typedef XRbTreeCell CellType;
+		typedef TreeGrid GridType;
+		typedef TreeRow RowType;
+		typedef TreeColumn ColumnType;
+		typedef TreeCell CellType;
 	};
 
 
-	struct XRbTreeCell : X11Grid::Cell
+	struct TreeCell : X11Grid::Cell
 	{
-			XRbTreeCell(X11Grid::GridBase& _grid,const int _x,const int _y,bool _dead=true)
+			TreeCell(X11Grid::GridBase& _grid,const int _x,const int _y,bool _dead=true)
 				: X11Grid::Cell(_grid,_x,_y,0X333333),X(_x), Y(_y), 
 					remove(false),lastcolor(0),age(0) { }
 			virtual bool update(const unsigned long updateloop,const unsigned long updaterate);
@@ -35,9 +35,9 @@ namespace TreeDisplay
 			int age;
 	};
 
-	struct XRbTreeColumn : X11Grid::Column<TestStructure>
+	struct TreeColumn : X11Grid::Column<TestStructure>
 	{
-			XRbTreeColumn(X11Grid::GridBase& _grid,const int _position) : X11Grid::Column<TestStructure>(_grid,_position) {}
+			TreeColumn(X11Grid::GridBase& _grid,const int _position) : X11Grid::Column<TestStructure>(_grid,_position) {}
 			void Birth(const int x,const int y);
 			virtual bool update(const unsigned long updateloop,const unsigned long updaterate)
 			{
@@ -52,47 +52,45 @@ namespace TreeDisplay
 				{ for (iterator it=begin();it!=end();it++) it->second(bitmap); }
 	};
 
-	struct XRbTreeRow : X11Grid::Row<TestStructure>
+	struct TreeRow : X11Grid::Row<TestStructure>
 	{
-			XRbTreeRow(X11Grid::GridBase& _grid) : X11Grid::Row<TestStructure>(_grid) {}
+			TreeRow(X11Grid::GridBase& _grid) : X11Grid::Row<TestStructure>(_grid) {}
 			virtual void update(const unsigned long updateloop,const unsigned long updaterate) ;
 			virtual void operator()(Pixmap& bitmap)
 			{ 
-				for (XRbTreeRow::iterator it=this->begin();it!=this->end();it++) it->second(bitmap);
+				for (TreeRow::iterator it=this->begin();it!=this->end();it++) it->second(bitmap);
 			}
 	};
 
 
 	struct PlotterBase
 	{
-		static PlotterBase* generate(X11Grid::GridBase& _grid,const int _w,const int _h);	
-		//virtual operator Point& () = 0;
+		static PlotterBase* generate(X11Grid::GridBase& _grid,const int _w,const int _h,const int _cw,const int _ch);	
 		virtual operator const bool () = 0;
 		protected: 
-		PlotterBase(const int _w,const int _h) : w(_w),h(_h) {}
-		int w,h;
+		PlotterBase(const int _w,const int _h,const int _cw,const int _ch) : w(_w),h(_h),cw(_cw),ch(_ch) {}
+		const int w,h,cw,ch;
 		private: static int what;
 	};
 
 	struct Plot
 	{
-		Plot(X11Grid::GridBase& _grid,const int _w,const int _h) : grid(_grid), plotter(NULL) , w(_w),h(_h) {reset();}
+		Plot(X11Grid::GridBase& _grid,const int _w,const int _h,const int _cw,const int _ch) : grid(_grid), plotter(NULL) , w(_w),h(_h),cw(_cw),ch(_ch) {reset();}
 		virtual ~Plot(){if (plotter) delete plotter;}
 		operator const bool (){return *plotter;} 
-		void reset() { if (plotter) delete plotter; plotter=PlotterBase::generate(grid,w,h); }
-		//operator Point& () { return (*plotter); } 
+		void reset() { if (plotter) delete plotter; plotter=PlotterBase::generate(grid,w,h,cw,ch); }
 		private:
 		X11Grid::GridBase& grid;
 		PlotterBase* plotter;
-		const int w,h;
+		const int w,h,cw,ch;
 	};
 
 
-	struct XRbTreeGrid : X11Grid::Grid<TestStructure>
+	struct TreeGrid : X11Grid::Grid<TestStructure>
 	{
-		XRbTreeGrid(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight,const unsigned long _bkcolor)
+		TreeGrid(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight,const unsigned long _bkcolor)
 			: X11Grid::Grid<TestStructure>(_display,_gc,_ScreenWidth,_ScreenHeight,_bkcolor),
-					CW(8),CH(8), updaterate(1),updateloop(0),plot(*this,_ScreenWidth/8,_ScreenHeight/8)  {}
+					CW(8),CH(8), updaterate(1),updateloop(0),plot(*this,_ScreenWidth,_ScreenHeight,8,8)  {}
 		virtual operator InvalidBase& () {return invalid;}
 		private:
 		Plot plot;
@@ -115,11 +113,11 @@ namespace TreeDisplay
 		}
 		virtual void update()
 		{
-			XRbTreeGrid& grid(*this);
+			TreeGrid& grid(*this);
 			++updateloop;	
 			//if (updateloop%updaterate) return;
 			if (!plot) plot.reset();
-			XRbTreeRow::update(updateloop,updaterate);
+			TreeRow::update(updateloop,updaterate);
 			//grid[plot]=0;
 		}
 		private:
@@ -130,7 +128,7 @@ namespace TreeDisplay
 			const int x(_x*CW);
 			const int y(_y*CW);
 			const int border(2);
-			X11Grid::ProximityRectangle r(_x,_y,(x-(CW/2))+border,(y-(CH/2))+border,(x+(CW/2))-border,(y+(CH/2))-border);	
+			X11Grid::ProximityRectangle r(x,y,(x-(CW/2))+border,(y-(CH/2))+border,(x+(CW/2))-border,(y+(CH/2))-border);	
 			XPoint& points(r);
 			XSetForeground(display,gc,color);
 			XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
@@ -139,23 +137,23 @@ namespace TreeDisplay
 	};
 
 
-		bool XRbTreeCell::update(const unsigned long updateloop,const unsigned long updaterate)
+		bool TreeCell::update(const unsigned long updateloop,const unsigned long updaterate)
 		{
 			if (updateloop%updaterate) return false;
 			map<string,int>& metrics(static_cast<map<string,int>&>(grid));	
 			X11Grid::GridBase& gridbase(static_cast<X11Grid::GridBase&>(grid));	
-			XRbTreeGrid& lifegrid(static_cast<XRbTreeGrid&>(grid));	
+			TreeGrid& lifegrid(static_cast<TreeGrid&>(grid));	
 			if (color==0X333333) remove=true;
 			return remove;
 		}
 
-		void XRbTreeCell::operator()(Pixmap& bitmap)
+		void TreeCell::operator()(Pixmap& bitmap)
 		{ 
 				if (cards.empty()) color=0X333333;
 				X11Grid::Cell::operator()(bitmap); 
 		}
 
-		void XRbTreeRow::update(const unsigned long updateloop,const unsigned long updaterate) 
+		void TreeRow::update(const unsigned long updateloop,const unsigned long updaterate) 
 		{
 			cerr<<size()<<" rows"<<endl;
 			for (iterator it=begin();it!=end();it++) 

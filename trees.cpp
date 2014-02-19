@@ -40,9 +40,9 @@ namespace TreeDisplay
 		virtual ~Bubble() {}
 		const bool operator<(const Bubble& _a) const 
 			{ return const_cast<TreeBase&>(val)<const_cast<TreeBase&>(_a.val); }
-		virtual void cover(Display* display,GC& gc,Pixmap& bitmap,unsigned long color,X11Methods::InvalidBase& _invalid,const int X,const int Y) 
+		virtual void cover(Display* display,GC& gc,Pixmap& bitmap,unsigned long color,X11Methods::InvalidBase& _invalid,const int x,const int y) 
 		{
-			TestRect r(X-50,Y-10,X+70,Y+10);	
+			TestRect r(x-50,y-10,x+70,y+10);	
 			XPoint& points(r);
 			XSetForeground(display,gc,color);
 			XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
@@ -52,13 +52,13 @@ namespace TreeDisplay
 
 		virtual void operator()(Pixmap& bitmap,const int x,const int y,Display* display,GC& gc,X11Methods::InvalidBase& _invalid)
 		{
-			TestRect r(X-50,Y-10,X+70,Y+10);	
+			TestRect r(x-50,y-10,x+70,y+10);	
 			XPoint& points(r);
 			XSetForeground(display,gc,0X0080FF);
 			XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 			XSetForeground(display,gc,0X8800FF);
 			//stringstream ss; ss<<id<<") "<<setprecision(3)<<fixed<<const_cast<TreeBase&>(val);
-			stringstream ss; ss<<id<<") "<<text;
+			stringstream ss; ss<<text;
 			XDrawString(display,bitmap,gc,X-40,Y,ss.str().c_str(),ss.str().size());
 			InvalidArea<TestRect>& invalid(static_cast<InvalidArea<TestRect>&>(_invalid));
 			invalid.insert(r);
@@ -134,25 +134,47 @@ namespace TreeDisplay
 	template <typename KT,typename VT>
 		struct Trees : PlotterBase
 	{
-		Trees(X11Grid::GridBase& _grid,const int _w,const int _h) 
-				: grid(_grid), PlotterBase(_w,_h), tick(0),node(0),bubbles(_grid),root(NULL),flip(true) {cout<<"T:"<<typeid(*this).name()<<" ";}
+		Trees(X11Grid::GridBase& _grid,const int _w,const int _h,const int _cw,const int _ch) 
+				: grid(_grid), PlotterBase(_w,_h,_cw,_ch), tick(0),node(0),bubbles(_grid),root(NULL),flip(true) 
+			{
+				//cout<<"T:"<<typeid(*this).name()<<" ";
+				ns.push_back(6);
+				ns.push_back(4);
+				ns.push_back(5);
+				ns.push_back(7);
+				ns.push_back(1);
+				ns.push_back(2);
+				ns.push_back(8);
+				ns.push_back(8);
+			}
 		operator const bool ()
 		{
 			if (!((tick++)%50)) 
 			{
-				srand(time(0));
-				KT v(rand()%100);
-				flip=!flip;
-				if (flip) v*=-1;
-				TreeBase* n(new Bst<KT,VT>(v));
-				if (!root) root=n; else root=root->insert(n);
-				bubbles(*n,100,100);
+				if (!ns.empty())
+				{
+					double v(ns.front()); ns.pop_front();
+					TreeBase* n(new Bst<KT,VT>(v));
+					if (!root) 
+					{
+						root=n;  
+						bubbles(*n,100,100);
+					} else {
+						TreeBase* tb(root->insert(root,n,root));
+						if (tb) 
+						{
+							root=tb;	
+							bubbles(*n,100,100);
+						}
+					}
+				}
 			}
 			if (root) traverse(*root);
 			if (!bubbles) throw string("Cannot run bubbles");
 			return true;
 		} 
 		private:
+		deque<double> ns;
 		void traverse(TreeBase& n)
 		{
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
@@ -164,7 +186,7 @@ namespace TreeDisplay
 			if (!n.parent) 
 			{
 				ss<<"root->"<<setprecision(2)<<fixed<<k;
-				b((w*8)/2,30); 
+				b(w/2,30); 
 			} else {
 				Bst<KT,VT>& pnk(static_cast<Bst<KT,VT>&>(*n.parent));
 				const KT pk(pnk);
@@ -172,12 +194,16 @@ namespace TreeDisplay
 				Bubbles::iterator pbit(bubbles.find(pbu));
 				const Bubble& pb(*pbit);
 				const pair<int,int> pos(pb);
-				ss<<setprecision(2)<<fixed<<k<<"("<<setprecision(2)<<fixed<<pk<<")";
+				ss<<dec<<pnk.depth<<", "<<setprecision(2)<<fixed<<k<<"("<<setprecision(2)<<fixed<<pk<<")";
+				int d(nk.depth+1); d*=2;
+				int m((w/cw)/d); m*=cw; m/=2;
+				int Y(d*ch);
+				//cout<<"d:"<<d<<", w/cw:"<<(w/cw)<<", m:"<<m<<" Y:"<<Y<<endl;
 				if (k<pk)
 				{
-					b(pos.first-60,pos.second+50);
+					b(pos.first-m,pos.second+Y);
 				} else {
-					b(pos.first+60,pos.second+50);
+					b(pos.first+m,pos.second+Y);
 				}
 			}
 			b(ss.str());
@@ -193,11 +219,11 @@ namespace TreeDisplay
 	};
 
 	int PlotterBase::what(0);
-	PlotterBase* PlotterBase::generate(X11Grid::GridBase& _grid,const int w,const int h)
+	PlotterBase* PlotterBase::generate(X11Grid::GridBase& _grid,const int w,const int h,const int cw,const int ch)
 	{ 
 		switch (++what) 
 		{ 
-			default: what=0; return new Trees<double,string>(_grid,w,h); 
+			default: what=0; return new Trees<double,string>(_grid,w,h,cw,ch); 
 		} 
 	}
 } // namespace TreeDisplay
