@@ -1,8 +1,8 @@
 
-#ifndef XRBTREE_H
-#define XRBTREE_H
+#ifndef TREE_DISPLAY_H
+#define TREE_DISPLAY_H
 #include <math.h>
-namespace XRbTree
+namespace TreeDisplay
 {
 
 	struct Invalid : X11Grid::InvalidGrid { };
@@ -161,7 +161,7 @@ namespace XRbTree
 			for (iterator it=begin();it!=end();it++) 
 				if (it->second.update(updateloop,updaterate)) erase(it);
 		}
-} // XRbTree
-#endif  //XRBTREE_H
+} // TreeDisplay
+#endif  //TREE_DISPLAY_H
 
 

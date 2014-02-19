@@ -5,9 +5,9 @@ using namespace X11Methods;
 #include <tree.h>
 #include <math.h>
 
-namespace XRbTree
+namespace TreeDisplay
 {
-	using namespace KrunchRbTree;
+	using namespace TreeeObjects;
 	struct TestRect : X11Methods::Rect
 	{
 		TestRect() {}
@@ -33,13 +33,13 @@ namespace XRbTree
 
 	struct Bubble : X11Grid::Card
 	{
-		Bubble(X11Grid::GridBase& _grid,RbTreeBase& _val,int _x,int _y,int _rx,int _ry) 
+		Bubble(X11Grid::GridBase& _grid,TreeBase& _val,int _x,int _y,int _rx,int _ry) 
 			: grid(_grid), Card(_grid), val(_val),X(_x),Y(_y),tx(_rx),ty(_ry),init(true) {}
-		Bubble(X11Grid::GridBase& _grid,RbTreeBase& _val)
+		Bubble(X11Grid::GridBase& _grid,TreeBase& _val)
 			: grid(_grid), Card(0), val(_val) {}
 		virtual ~Bubble() {}
 		const bool operator<(const Bubble& _a) const 
-			{ return const_cast<RbTreeBase&>(val)<const_cast<RbTreeBase&>(_a.val); }
+			{ return const_cast<TreeBase&>(val)<const_cast<TreeBase&>(_a.val); }
 		virtual void cover(Display* display,GC& gc,Pixmap& bitmap,unsigned long color,X11Methods::InvalidBase& _invalid,const int X,const int Y) 
 		{
 			TestRect r(X-50,Y-10,X+70,Y+10);	
@@ -57,7 +57,7 @@ namespace XRbTree
 			XSetForeground(display,gc,0X0080FF);
 			XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 			XSetForeground(display,gc,0X8800FF);
-			//stringstream ss; ss<<id<<") "<<setprecision(3)<<fixed<<const_cast<RbTreeBase&>(val);
+			//stringstream ss; ss<<id<<") "<<setprecision(3)<<fixed<<const_cast<TreeBase&>(val);
 			stringstream ss; ss<<id<<") "<<text;
 			XDrawString(display,bitmap,gc,X-40,Y,ss.str().c_str(),ss.str().size());
 			InvalidArea<TestRect>& invalid(static_cast<InvalidArea<TestRect>&>(_invalid));
@@ -88,7 +88,7 @@ namespace XRbTree
 		}
 		private:
 		X11Grid::GridBase& grid;
-		const RbTreeBase& val;
+		const TreeBase& val;
 		mutable int X,Y,tx,ty;
 		mutable bool init;
 		mutable string text;
@@ -121,7 +121,7 @@ namespace XRbTree
 			}
 			return true;
 		}
-		void operator()(RbTreeBase& node,int x,int y)
+		void operator()(TreeBase& node,int x,int y)
 		{
 			Bubble b(grid,node,x,y,0,0);
 			iterator it(find(b));
@@ -144,7 +144,7 @@ namespace XRbTree
 				KT v(rand()%100);
 				flip=!flip;
 				if (flip) v*=-1;
-				RbTreeBase* n(new RbTree<KT,VT>(v));
+				TreeBase* n(new Bst<KT,VT>(v));
 				if (!root) root=n; else root=root->insert(n);
 				bubbles(*n,100,100);
 			}
@@ -153,9 +153,9 @@ namespace XRbTree
 			return true;
 		} 
 		private:
-		void traverse(RbTreeBase& n)
+		void traverse(TreeBase& n)
 		{
-			RbTree<KT,VT>& nk(static_cast<RbTree<KT,VT>&>(n));
+			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT k(nk);
 			Bubble bu(grid,n);
 			Bubbles::iterator bit(bubbles.find(bu));
@@ -166,7 +166,7 @@ namespace XRbTree
 				ss<<"root->"<<setprecision(2)<<fixed<<k;
 				b((w*8)/2,30); 
 			} else {
-				RbTree<KT,VT>& pnk(static_cast<RbTree<KT,VT>&>(*n.parent));
+				Bst<KT,VT>& pnk(static_cast<Bst<KT,VT>&>(*n.parent));
 				const KT pk(pnk);
 				Bubble pbu(grid,pnk);
 				Bubbles::iterator pbit(bubbles.find(pbu));
@@ -189,7 +189,7 @@ namespace XRbTree
 		KT node;
 		X11Grid::GridBase& grid;
 		Bubbles bubbles;
-		RbTreeBase* root;
+		TreeBase* root;
 	};
 
 	int PlotterBase::what(0);
@@ -200,7 +200,7 @@ namespace XRbTree
 			default: what=0; return new Trees<double,string>(_grid,w,h); 
 		} 
 	}
-} // namespace XRbTree
+} // namespace TreeDisplay
 
 
 
@@ -208,6 +208,6 @@ namespace XRbTree
 int main(int argc,char** argv)
 {
 	KeyMap keys;
-	return X11Grid::x11main<XRbTree::TestStructure>(argc,argv,keys,0X333333);
+	return X11Grid::x11main<TreeDisplay::TestStructure>(argc,argv,keys,0X333333);
 }
 

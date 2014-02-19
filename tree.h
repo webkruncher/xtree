@@ -1,28 +1,28 @@
 #ifndef KRUNCH_RB_TREE_H
 #define KRUNCH_RB_TREE_H
 
-namespace KrunchRbTree
+namespace TreeeObjects
 {
 
-	struct RbTreeBase
+	struct TreeBase
 	{
-		virtual bool operator<(const RbTreeBase&) = 0;
-		virtual ~RbTreeBase(); 
-		virtual RbTreeBase* insert(RbTreeBase*) = 0;
-		RbTreeBase() : parent(NULL), left(NULL), right(NULL) {}
+		virtual bool operator<(const TreeBase&) = 0;
+		virtual ~TreeBase(); 
+		virtual TreeBase* insert(TreeBase*) = 0;
+		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 		public:
-		RbTreeBase *parent,*left,*right;
+		TreeBase *parent,*left,*right;
 		virtual ostream& operator<<(ostream&) const =0;
 	};
-	inline ostream& operator<<(ostream& o,const RbTreeBase& b) {return b.operator<<(o);}
+	inline ostream& operator<<(ostream& o,const TreeBase& b) {return b.operator<<(o);}
 
 	template <typename KT,typename VT>
-		struct RbTree : public RbTreeBase
+		struct Bst : public TreeBase
 	{
-		RbTree(const KT _key) : key(_key) {}
-		RbTree(const KT _key,const VT _data) : key(_key),data(_data) {}
-		virtual ~RbTree() {cout<<"~"<<key<<" ";}
-		virtual RbTreeBase* insert(RbTreeBase* n)
+		Bst(const KT _key) : key(_key) {}
+		Bst(const KT _key,const VT _data) : key(_key),data(_data) {}
+		virtual ~Bst() {cout<<"~"<<key<<" ";}
+		virtual TreeBase* insert(TreeBase* n)
 		{
 			if ((*n)<(*this))
 			{
@@ -34,11 +34,11 @@ namespace KrunchRbTree
 			}
 			return this;
 		}
-		virtual bool operator<(const RbTreeBase& _b) 
+		virtual bool operator<(const TreeBase& _b) 
 		{ 
-			const RbTree<KT,VT>& a(static_cast<RbTree<KT,VT>&>(*this));
-			RbTreeBase& __b(const_cast<RbTreeBase&>(_b));
-			const RbTree<KT,VT>& b(static_cast<RbTree<KT,VT>&>(__b));
+			const Bst<KT,VT>& a(static_cast<Bst<KT,VT>&>(*this));
+			TreeBase& __b(const_cast<TreeBase&>(_b));
+			const Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(__b));
 			return a.key<b.key; 
 		}
 		operator const KT (){return key;}
@@ -49,8 +49,8 @@ namespace KrunchRbTree
 		VT data;	
 	};
 
-	RbTreeBase::~RbTreeBase() { }
-} //namespace KrunchRbTree
+	TreeBase::~TreeBase() { }
+} //namespace TreeeObjects
 #endif // KRUNCH_RB_TREE_H
 
 
