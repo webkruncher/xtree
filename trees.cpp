@@ -63,12 +63,13 @@ namespace TreeDisplay
 			InvalidArea<TestRect>& invalid(static_cast<InvalidArea<TestRect>&>(_invalid));
 			invalid.insert(r);
 		}
-		void operator()(int x,int y) const { tx=x; ty=y; }
+		void operator()(int x,int y) const {next.push_front(make_pair<int,int>(x,y)); } //{ tx=x; ty=y; }
 		void operator()(string _text) const { text=_text;}
 		operator const pair<int,int> () const {return make_pair<int,int>(tx,ty);}
 		const bool update() const
 		{
 			X11Grid::GridBase& gb(const_cast<X11Grid::GridBase&>(grid));
+#if 0
 			if (init) 
 			{
 				Point p(X,Y);
@@ -76,7 +77,15 @@ namespace TreeDisplay
 				init=false;
 				return true;
 			}
-			if ( (tx==X) && (ty==Y) ) return true; 
+#endif
+			if ( (tx==X) && (ty==Y) ) 
+			{
+				if (!next.empty())
+				{
+					pair<int,int> p(next.back()); next.pop_back();
+					tx=p.first; ty=p.second;
+				} else return true; 
+			}
 			Point b(X,Y);
 			gb[b]-=const_cast<Bubble*>(this);
 			const pair<int,int> motion(move());
@@ -92,6 +101,7 @@ namespace TreeDisplay
 		mutable int X,Y,tx,ty;
 		mutable bool init;
 		mutable string text;
+		mutable deque<pair<int,int> > next;
 
 		const pair<int,int> move() const
 		{
@@ -123,7 +133,7 @@ namespace TreeDisplay
 		}
 		void operator()(TreeBase& node,int x,int y)
 		{
-			Bubble b(grid,node,x,y,0,0);
+			Bubble b(grid,node,x,y,x,y);
 			iterator it(find(b));
 			if (it!=end()) return;
 			insert(b);
@@ -158,13 +168,13 @@ namespace TreeDisplay
 					if (!root) 
 					{
 						root=n;  
-						bubbles(*n,100,100);
+						bubbles(*n,w/2,30);
 					} else {
-						TreeBase* tb(root->insert(root,n,root));
+						TreeBase* tb(root->insert(root,n));
 						if (tb) 
 						{
 							root=tb;	
-							bubbles(*n,100,100);
+							bubbles(*n,w/2,30);
 						}
 					}
 				}
@@ -196,13 +206,14 @@ namespace TreeDisplay
 				const pair<int,int> pos(pb);
 				ss<<dec<<pnk.depth<<", "<<setprecision(2)<<fixed<<k<<"("<<setprecision(2)<<fixed<<pk<<")";
 				int d(nk.depth+1); d*=2;
-				int m((w/cw)/d); m*=cw; m/=2;
-				int Y(d*ch);
+				int m((w/cw)/d); m*=cw; m/=4;
+				int Y(d*ch*4);
 				//cout<<"d:"<<d<<", w/cw:"<<(w/cw)<<", m:"<<m<<" Y:"<<Y<<endl;
 				if (k<pk)
 				{
 					b(pos.first-m,pos.second+Y);
 				} else {
+					m/=2;
 					b(pos.first+m,pos.second+Y);
 				}
 			}
