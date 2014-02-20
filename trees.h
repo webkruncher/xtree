@@ -9,7 +9,7 @@ namespace TreeDisplay
 		struct TreeNode
 	{
 		TreeNode() : SW(0),SH(0) {}
-		TreeNode(const int _SW,const int _SH) : text(_text),SW(_SW),SH(_SH)
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH)
 			{ BoxSize(); }
 		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH) {}
 		void operator()(KT _k,TreeBase* parent)
