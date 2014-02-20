@@ -40,7 +40,7 @@ namespace TreeDisplay
 		}
 		private: double x,y;
 	};
-
+#if 0
 	struct DisplayNodeBase { };
 
 	template<typename DBN,typename KT>
@@ -52,13 +52,13 @@ namespace TreeDisplay
 		Motion& motion;
 		DBN& dbn;
 	};
-
+#endif
 	template<typename KT>
-		struct TreeNode : DisplayNodeBase
+		struct TreeNode //: DisplayNodeBase
 	{
 		TreeNode() : SW(0),SH(0),x(0),y(0) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(100),y(100),touch(*this,motion) { BoxSize(); }
-		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y), touch(*this,motion) {}
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(100),y(100) { BoxSize(); }
+		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
@@ -140,7 +140,7 @@ namespace TreeDisplay
 		KT k;
 		double x,y;
 		Motion motion;
-		Touch<DisplayNodeBase,TreeNode<KT> > touch;
+		//Touch<DisplayNodeBase,TreeNode<KT> > touch;
 		void Text(int depth,KT k,KT pk) {stringstream ss; ss<<depth<<")"<<k<<","<<pk; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=12;}
 	};
@@ -155,13 +155,13 @@ namespace TreeDisplay
 
 	template <> void TreeNode<int>::BoxSize() { CW=20; CH=12; }
 
-
+#if 0
 	template <> void TreeNode<int>::operator()(TreeBase& node,TreeBase* parent) 
 		{
 			if (!parent) return;
 			Bst<int,TreeNode<int> >& p(static_cast<Bst<int,TreeNode<int> >&>(*parent));
 			Bst<int,TreeNode<int> >& n(static_cast<Bst<int,TreeNode<int> >&>(node));
-			touch(p.data.x,p.data.y);
+			//touch(p.data.x,p.data.y);
 			//touch.operator()<int>(node,parent);
 		}
 
@@ -173,7 +173,7 @@ namespace TreeDisplay
 			touch(p.data.x,p.data.y);
 			//touch.operator()<double>(node,parent);
 		}
-
+#endif
 
 	template <> void TreeNode<double>::Text(int depth,double k,double pk)
 	{
