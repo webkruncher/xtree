@@ -120,10 +120,9 @@ namespace TreeDisplay
 						if (tb) root=tb; // for in case the root was rotated
 					}
 				}
-			}
 #else
 			pair<bool,KT> next(Next());
-			if (next.first())
+			if (next.first)
 			{
 					TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 					TreeBase* n(new Bst<KT,VT>(next.second,tn));
@@ -136,6 +135,7 @@ namespace TreeDisplay
 					}
 			}
 #endif
+			}
 			if (root) traverse(*root);
 		}
 		virtual operator InvalidBase& () {return invalid;}
