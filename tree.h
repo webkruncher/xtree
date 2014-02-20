@@ -8,7 +8,7 @@ namespace TreeObjects
 	{
 		virtual bool operator<(const TreeBase&) = 0;
 		virtual bool operator==(const TreeBase&) = 0;
-		virtual ~TreeBase(); 
+		virtual ~TreeBase() {}
 		virtual TreeBase* insert(TreeBase*,TreeBase*,int depth=0) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL),depth(0) {}
 		public:
@@ -23,7 +23,7 @@ namespace TreeObjects
 	{
 		Bst(const KT _key) : key(_key) {}
 		Bst(const KT _key,const VT _data) : key(_key),data(_data) {}
-		virtual ~Bst() {cout<<"~"<<key<<" ";}
+		virtual ~Bst() {if (left) delete left; if (right) delete right; cout<<"~"<<key<<" ";}
 		virtual TreeBase* insert(TreeBase* root,TreeBase* n,int _depth=0)
 		{
 			depth=_depth+1;
@@ -37,6 +37,7 @@ namespace TreeObjects
 			} else {
 				if (right) return right->insert(root,n,depth); else right=n;
 			}
+			if (((int)floor(key))%2) nd.data(0XFF0000); else nd.data(0);
 			return root; // Return this if this needs to become the new root
 		}
 		virtual bool operator<(const TreeBase& _b) 
@@ -61,7 +62,6 @@ namespace TreeObjects
 		VT data;	
 	};
 
-	TreeBase::~TreeBase() { }
 } //namespace TreeObjects
 #endif // KRUNCH_RB_TREE_H
 

@@ -47,10 +47,9 @@ namespace TreeDisplay
 		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333) { BoxSize(); }
 		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),motion(a.x,a.y),color(a.color)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
-		void operator()(KT _k,TreeBase& node,TreeBase* parent,unsigned long long _color)
+		void operator()(unsigned long long _color)
 		{
 			color=_color;
-			TreeNode<KT>::operator()(_k,node,parent);
 		}
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
@@ -152,9 +151,11 @@ namespace TreeDisplay
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL) {}
+		virtual ~TreeCanvas() {if (root) delete root;}
 		virtual void operator()(Pixmap& bitmap) { if (root) draw(invalid,*root,bitmap); }
 		virtual void update() 
 		{
+			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
 			string tyid(typeid(KT).name());
 			if (!((updateloop)%100)) 
 			{
