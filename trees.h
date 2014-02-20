@@ -124,11 +124,12 @@ cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 	template <> void TreeNode<int>::Text(int depth,int k,int pk)
 	{
 		stringstream ss;
-		ss<<depth<<"["<<k<<","<<pk; 
+		//ss<<depth<<"["<<k<<","<<pk; 
+		ss<<k;
 		text=ss.str();
 	}
 
-	template <> void TreeNode<int>::BoxSize() { CW=60; CH=12; }
+	template <> void TreeNode<int>::BoxSize() { CW=30; CH=12; }
 
 
 	template <> void TreeNode<int>::operator()(TreeBase& node,TreeBase* parent) 
