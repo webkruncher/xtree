@@ -31,13 +31,13 @@ namespace TreeObjects
 			n->parent=this;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*n));
 			nd.data(key,*this,parent);
+			if (((int)floor(nd.key))%2) nd.data(0XFF0000); else nd.data(0);
 			if ((*n)<(*this))
 			{
 				if (left) return left->insert(root,n,depth); else left=n;
 			} else {
 				if (right) return right->insert(root,n,depth); else right=n;
 			}
-			if (((int)floor(key))%2) nd.data(0XFF0000); else nd.data(0);
 			return root; // Return this if this needs to become the new root
 		}
 		virtual bool operator<(const TreeBase& _b) 
