@@ -4,6 +4,7 @@ using namespace X11Methods;
 #include <tree.h>
 using namespace TreeeObjects;
 #include <trees.h>
+using namespace TreeDisplay;
 #include <math.h>
 
 #if 0
