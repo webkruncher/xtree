@@ -38,7 +38,7 @@ namespace TreeDisplay
 		private: double x,y;
 	};
 
-	template<typename TrT,typename KT>
+	template<typename KT>
 		struct TreeNode 
 	{
 		TreeNode() : SW(0),SH(0),x(0),y(0) {}
@@ -55,7 +55,6 @@ namespace TreeDisplay
 				Text(0,k,k);
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
-				TrT& parentnode(static_cast<TrT>&>(*parent));
 				TreeNode<KT>& pn(parentnode);
 				KT pk(parentnode);
 				double px(pn.x);
@@ -67,7 +66,7 @@ namespace TreeDisplay
 				double x;
 				if (parent->parent)
 				{
-					TrT& grandparentnode(static_cast<TrT&>(*parent->parent));
+					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->parent));
 					TreeNode<KT>& gpn(grandparentnode);
 					double gpx(gpn.x);
 					double dx(gpn.x-pn.x);
@@ -155,7 +154,7 @@ namespace TreeDisplay
 				pair<bool,KT> next(Next());
 				if (next.first)
 				{
-						TreeNode<Bst<KT,VT>,KT> tn(ScreenWidth,ScreenHeight);
+						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						TreeBase* n(new Bst<KT,VT>(next.second,tn));
 						if (!root) 
 						{
