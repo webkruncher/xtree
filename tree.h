@@ -9,7 +9,6 @@ namespace TreeeObjects
 		virtual bool operator<(const TreeBase&) = 0;
 		virtual bool operator==(const TreeBase&) = 0;
 		virtual ~TreeBase(); 
-		//virtual TreeBase* insert(TreeBase*,TreeBase*,TreeBase* p=NULL,int depth=0) = 0;
 		virtual TreeBase* insert(TreeBase*,TreeBase*,int depth=0) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL),depth(0) {}
 		public:
@@ -25,7 +24,6 @@ namespace TreeeObjects
 		Bst(const KT _key) : key(_key) {}
 		Bst(const KT _key,const VT _data) : key(_key),data(_data) {}
 		virtual ~Bst() {cout<<"~"<<key<<" ";}
-		//virtual TreeBase* insert(TreeBase* root,TreeBase* n,TreeBase* p=NULL,int _depth=0)
 		virtual TreeBase* insert(TreeBase* root,TreeBase* n,int _depth=0)
 		{
 			depth=_depth+1;
@@ -53,7 +51,8 @@ namespace TreeeObjects
 			const Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(__b));
 			return a.key==b.key; 
 		}
-		operator const KT (){return key;}
+		operator const KT& (){return key;}
+		operator VT& (){return data;}
 		virtual ostream& operator<<(ostream& o) const {o<<key;return o;}
 		private:
 		const KT key;

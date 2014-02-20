@@ -1,6 +1,7 @@
 
 #ifndef TREE_DISPLAY_H
 #define TREE_DISPLAY_H
+#if 0
 #include <math.h>
 namespace TreeDisplay
 {
@@ -150,8 +151,30 @@ namespace TreeDisplay
 		void TreeCell::operator()(Pixmap& bitmap)
 		{ 
 				if (cards.empty()) color=0X333333;
-				X11Grid::Cell::operator()(bitmap); 
+				if (deactivate) {color=background; active=false;}
+				if (!cards.empty()) 
+				{
+					int offset(0);
+					for (map<unsigned long,X11Grid::Card*>::iterator cit=cards.begin();cit!=cards.end();cit++) 
+					{
+						offset+=10;
+						grid(*cit->second,bitmap,X+offset,Y+offset);
+					}
+				} else grid(color,bitmap,X,Y);
+				//X11Grid::Cell::operator()(bitmap); 
 		}
+#if 0
+		void TreeCell::operator-=(Card* c)
+		{
+			if (!c) return;
+			const unsigned long id(*c);
+			map<unsigned long,Card*>::iterator it(cards.find(id));
+			if (it==cards.end()) return;
+			cards.erase(it);
+			if (cards.empty()) active=false;
+			grid.cover(c,background,X,Y);
+		}
+#endif
 
 		void TreeRow::update(const unsigned long updateloop,const unsigned long updaterate) 
 		{
@@ -160,6 +183,8 @@ namespace TreeDisplay
 				if (it->second.update(updateloop,updaterate)) erase(it);
 		}
 } // TreeDisplay
+#else
+#endif
 #endif  //TREE_DISPLAY_H
 
 

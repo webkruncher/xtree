@@ -1,10 +1,12 @@
 
 #include "x11grid.h"
 using namespace X11Methods;
-#include <trees.h>
 #include <tree.h>
+using namespace TreeeObjects;
+#include <trees.h>
 #include <math.h>
 
+#if 0
 namespace TreeDisplay
 {
 	using namespace TreeeObjects;
@@ -42,7 +44,7 @@ namespace TreeDisplay
 			{ return const_cast<TreeBase&>(val)<const_cast<TreeBase&>(_a.val); }
 		virtual void cover(Display* display,GC& gc,Pixmap& bitmap,unsigned long color,X11Methods::InvalidBase& _invalid,const int x,const int y) 
 		{
-			TestRect r(x-50,y-10,x+70,y+10);	
+			TestRect r(x-22,y-12,x+28,y+12);	
 			XPoint& points(r);
 			XSetForeground(display,gc,color);
 			XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
@@ -52,36 +54,30 @@ namespace TreeDisplay
 
 		virtual void operator()(Pixmap& bitmap,const int x,const int y,Display* display,GC& gc,X11Methods::InvalidBase& _invalid)
 		{
-			TestRect r(x-50,y-10,x+70,y+10);	
+			TestRect r(x-22,y-12,x+28,y+12);	
 			XPoint& points(r);
-			XSetForeground(display,gc,0X0080FF);
-			XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
-			XSetForeground(display,gc,0X8800FF);
-			//stringstream ss; ss<<id<<") "<<setprecision(3)<<fixed<<const_cast<TreeBase&>(val);
+			XSetForeground(display,gc,0XFFFFFF);
 			stringstream ss; ss<<text;
-			XDrawString(display,bitmap,gc,X-40,Y,ss.str().c_str(),ss.str().size());
+			XDrawString(display,bitmap,gc,x-24,y,ss.str().c_str(),ss.str().size());
 			InvalidArea<TestRect>& invalid(static_cast<InvalidArea<TestRect>&>(_invalid));
 			invalid.insert(r);
 		}
-		void operator()(int x,int y) const {next.push_front(make_pair<int,int>(x,y)); } //{ tx=x; ty=y; }
+		void operator()(int x,int y) const 
+		{
+			cout<<"push:"<<text<<", "<<x<<","<<y<<endl;
+			next.push_front(make_pair<int,int>(x,y)); 
+		} //{ tx=x; ty=y; }
 		void operator()(string _text) const { text=_text;}
 		operator const pair<int,int> () const {return make_pair<int,int>(tx,ty);}
 		const bool update() const
 		{
 			X11Grid::GridBase& gb(const_cast<X11Grid::GridBase&>(grid));
-#if 0
-			if (init) 
-			{
-				Point p(X,Y);
-				gb[p]+=const_cast<Bubble*>(this);
-				init=false;
-				return true;
-			}
-#endif
+if (next.size()) cout<<text<<" points:"<<next.size()<<", "<<tx<<"?="<<X<<", "<<ty<<"?="<<Y<<endl;
 			if ( (tx==X) && (ty==Y) ) 
 			{
 				if (!next.empty())
 				{
+cout<<"!"<<text<<" points:"<<next.size()<<", "<<tx<<"?="<<X<<", "<<ty<<"?="<<Y<<endl;
 					pair<int,int> p(next.back()); next.pop_back();
 					tx=p.first; ty=p.second;
 				} else return true; 
@@ -148,14 +144,12 @@ namespace TreeDisplay
 				: grid(_grid), PlotterBase(_w,_h,_cw,_ch), tick(0),node(0),bubbles(_grid),root(NULL),flip(true) 
 			{
 				//cout<<"T:"<<typeid(*this).name()<<" ";
-				ns.push_back(6);
-				ns.push_back(4);
-				ns.push_back(5);
-				ns.push_back(7);
-				ns.push_back(1);
-				ns.push_back(2);
-				ns.push_back(8);
-				ns.push_back(8);
+				srand(time(0));
+				while (ns.size()<6)
+				{
+					int v((rand()%40)-20);
+					if (find(ns.begin(),ns.end(),v)==ns.end()) ns.push_back(v);
+				}
 			}
 		operator const bool ()
 		{
@@ -175,6 +169,12 @@ namespace TreeDisplay
 						{
 							root=tb;	
 							bubbles(*n,w/2,30);
+							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*n));
+							const KT k(nk);
+							Bubble bu(grid,*n);
+							Bubbles::iterator bit(bubbles.find(bu));
+							const Bubble& b(*bit);
+							touchparents(b,n->parent);
 						}
 					}
 				}
@@ -184,9 +184,26 @@ namespace TreeDisplay
 			return true;
 		} 
 		private:
+		void touchparents(const Bubble& b,TreeBase* p)
+		{
+			if (p)
+			{
+				Bst<KT,VT>& pnk(static_cast<Bst<KT,VT>&>(*p));
+				const KT pk(pnk);
+				Bubble pbu(grid,pnk);
+				Bubbles::iterator pbit(bubbles.find(pbu));
+				const Bubble& pb(*pbit);
+				const pair<int,int> pos(pb);
+				cout<<" touch "<<pk<<endl;
+				if (p->parent) touchparents(b,p->parent);
+				b(pos.first,pos.second);
+			}
+		}
 		deque<double> ns;
 		void traverse(TreeBase& n)
 		{
+			Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*root));
+			const KT rv(rk);
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT k(nk);
 			Bubble bu(grid,n);
@@ -195,29 +212,38 @@ namespace TreeDisplay
 			stringstream ss;
 			if (!n.parent) 
 			{
-				ss<<"root->"<<setprecision(2)<<fixed<<k;
-				b(w/2,30); 
-			} else {
-				Bst<KT,VT>& pnk(static_cast<Bst<KT,VT>&>(*n.parent));
-				const KT pk(pnk);
-				Bubble pbu(grid,pnk);
-				Bubbles::iterator pbit(bubbles.find(pbu));
-				const Bubble& pb(*pbit);
-				const pair<int,int> pos(pb);
-				ss<<dec<<pnk.depth<<", "<<setprecision(2)<<fixed<<k<<"("<<setprecision(2)<<fixed<<pk<<")";
-				int d(nk.depth+1); d*=2;
-				int m((w/cw)/d); m*=cw; m/=4;
-				int Y(d*ch*4);
-				//cout<<"d:"<<d<<", w/cw:"<<(w/cw)<<", m:"<<m<<" Y:"<<Y<<endl;
-				if (k<pk)
+				ss<<setprecision(0)<<fixed<<k;
+				if (oldparents.find(k)==oldparents.end())
 				{
-					b(pos.first-m,pos.second+Y);
-				} else {
-					m/=2;
-					b(pos.first+m,pos.second+Y);
+					oldparents[k]=n.parent;
+					b(w/2,30); 
+				}
+			} else {
+				if (oldparents[k]!=n.parent)
+				{
+					oldparents[k]=n.parent;
+					Bst<KT,VT>& pnk(static_cast<Bst<KT,VT>&>(*n.parent));
+					const KT pk(pnk);
+					Bubble pbu(grid,pnk);
+					Bubbles::iterator pbit(bubbles.find(pbu));
+					const Bubble& pb(*pbit);
+					const pair<int,int> pos(pb);
+					ss<<setprecision(0)<<fixed<<k<<","<<setprecision(0)<<fixed<<pk;
+					int d(nk.depth+1); d*=10;
+					int m((w/cw)/d); m*=(cw); 
+					int Y(d*(ch/2));
+					//cout<<"d:"<<d<<", w/cw:"<<(w/cw)<<", m:"<<m<<" Y:"<<Y<<endl;
+					if (k<pk)
+					{
+						if (rv<k) {m/=4;Y-=ch;}
+						b(pos.first-m,pos.second+Y);
+					} else {
+						if (k<rv) m/=4;
+						b(pos.first+m,pos.second+Y);
+					}
 				}
 			}
-			b(ss.str());
+			if (!ss.str().empty()) b(ss.str());
 			if (n.left) traverse(*n.left);
 			if (n.right) traverse(*n.right);
 		}
@@ -227,6 +253,7 @@ namespace TreeDisplay
 		X11Grid::GridBase& grid;
 		Bubbles bubbles;
 		TreeBase* root;
+		map<double,TreeBase*> oldparents;
 	};
 
 	int PlotterBase::what(0);
@@ -240,11 +267,294 @@ namespace TreeDisplay
 } // namespace TreeDisplay
 
 
+#endif
+
+	inline void GetScreenSize(Display* display,int& width, int& height)
+	{
+		 Screen* pscr(DefaultScreenOfDisplay(display));
+		 if (!pscr) return;
+		 width=pscr->width;
+		 height=pscr->height;
+	}
+
+	struct stringmap : public map<string,string> { };
+	class CmdLine : public stringmap
+	{
+	public:
+		int Argc()
+		{
+			if (!argc) Build();
+			return argc;
+		}
+	
+		char** Argv()
+		{
+			if (!argv) Build();
+			return argv;
+		}
+
+		CmdLine() : programname("utility"),argv(NULL),argc(0),ownerofargs(false) {}
+		CmdLine(int _argc,char** _argv,string _progname="utility") 
+			: programname(_progname), argv(_argv),argc(_argc),ownerofargs(false)
+		{
+			for (int i=1;i<argc;i++)
+			{
+				string arg=argv[i];
+				bool trip=false;
+				int nexti = i+1;
+				if (arg.find("-")==0)
+				{
+					if (nexti<argc)
+					{
+						string next = argv[nexti];
+						if (next.find("-")!=0)
+						{
+							(*this)[arg]=next;
+							trip=true;
+						}
+					}
+				}
+				if (trip) i=nexti;
+				else (*this)[arg]="";
+			}
+		}
+
+		virtual ~CmdLine() { if (ownerofargs) if (argv) free(argv); }
+		ostream& operator<<(ostream& o)
+		{
+			for(iterator it=begin();it!=end();it++)
+				o<<it->first<<":"<<it->second<<endl;
+			return o;
+		}
+
+		bool exists(string name)
+		{
+			for(iterator it=begin();it!=end();it++) if (it->first==name) return true;
+			return false;
+		}
+
+		string programname; // user settable
+		private: int argc; char **argv; string argbuffer; bool ownerofargs;
+		void Build()
+		{
+			if (argc) return; if (argv) return;
+			ownerofargs=true;
+			size_t bytes(0);
+			int items(0);
+			for (iterator it=begin();it!=end();it++) 
+			{
+				bytes+=it->first.size(); 
+				items++; 
+				if (it->second.size()) {bytes+=it->second.size()+1; items++;} 
+			}
+			argbuffer.resize(bytes);
+			argv=(char**)malloc(sizeof(char*)*items);
+			if (!argv) throw string("Cannot allocate argv double pointer");
+			int i(0);
+			for (iterator it=begin();it!=end();it++)
+			{
+				argv[i++]=&argbuffer[argbuffer.size()];
+				if (it->first.size()) argbuffer+=it->first;
+				if (it->second.size()) 
+				{
+					argbuffer+="\0"; 
+					argv[i++]=&argbuffer[argbuffer.size()];
+					argbuffer+=it->second;
+				}
+			}
+			argc=i;
+		}
+	};
+
+	inline ostream& operator<<(ostream& o,CmdLine& l){return l.operator<<(o);}
+
+	inline Window ScreenRoot(Screen* screen,Screen* tmp=0,Window root=0)
+	{
+		if (screen!=tmp) 
+		{
+			Display *display(DisplayOfScreen(screen));
+			int i;
+			Window ret,parent,*children(NULL);
+			unsigned int nchildren;
+			root = RootWindowOfScreen(screen);
+			Atom swm(XInternAtom(display,"__SWM_VROOT",False));
+			if (XQueryTree(display, root, &ret, &parent, &children, &nchildren)) 
+			{
+				for (i = 0;i<nchildren;i++) 
+				{
+					Atom type; int format; unsigned long num, after; Window *subroot(NULL);
+					if (XGetWindowProperty(display,children[i],swm,0,1,False,XA_WINDOW,&type,&format,&num,&after,(unsigned char **)&subroot)==Success&&subroot) 
+						{root=*subroot; break;}
+				}
+				if (children) XFree((char *)children);
+			}
+			tmp=screen;
+		}
+		return root;
+	}
+
+template<typename KT>
+	struct TreeNode
+{
+	void operator()(KT _k,TreeBase* parent)
+	{
+		k=_k;
+		if (!parent) {x=1024/2; y=100;}
+			else
+		{
+			Bst<KT,TreeNode<KT> >& p(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
+			TreeNode<KT>& pn(p);
+			double px(pn.x);
+			double py(pn.y);
+			double pk(p);
+			if (k<pk) x=px-50; else x=px+50;
+			y=py+20;
+		}
+	}
+	void operator()(Display* display,GC& gc,Pixmap& bitmap)
+	{
+		XSetForeground(display,gc,0XFF);
+		XFillRectangle(display,bitmap,gc, x-30,y-20,60,40);
+		XSetForeground(display,gc,0XFFFFFF);
+		stringstream ss;ss<<setprecision(2)<<fixed<<k;
+		XDrawString(display,bitmap,gc,x-20,y+14,ss.str().c_str(),ss.str().size());
+	}
+	private:
+	KT k;
+	double x,y;
+};
+
+
+
+template<typename KT>
+	struct TreeCanvas : Canvas
+{
+	typedef TreeNode<KT> VT ;
+	TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+		: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL) {}
+	virtual void operator()(Pixmap& bitmap) 
+	{
+		XSetForeground(display,gc,0X777777);
+		InvalidBase& _invalidbase(*this);
+		InvalidArea<Rect>& _invalid(static_cast<InvalidArea<Rect>&>(_invalidbase));
+		X11Grid::Rect r(0,0,1024,768);
+		if (root) render(*root,bitmap);
+		_invalid.insert(r);
+	}
+	virtual void update() 
+	{
+		if (!((updateloop++)%100)) 
+		{
+			{
+				srand(time(0));
+				KT k(rand()%10000); k/=((KT)(rand()%100));
+				TreeBase* n(new Bst<KT,VT>(k));
+				if (!root) 
+				{
+					root=n;  
+				} else {
+					TreeBase* tb(root->insert(root,n));
+					if (tb) root=tb; // for in case the root was rotated
+				}
+			}
+		}
+		if (root) traverse(*root);
+	}
+	virtual operator InvalidBase& () {return invalid;}
+	private:
+	unsigned long updateloop;
+	TreeBase* root;
+	InvalidArea<Rect> invalid;
+	void traverse(TreeBase& n)
+	{
+		Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
+		const KT& key(nk);
+		VT& data(nk);
+		data(key,nk.parent);
+		if (n.left) traverse(*n.left);
+		if (n.right) traverse(*n.right);
+	}
+	void render(TreeBase& n,Pixmap& bitmap)
+	{
+		Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
+		const KT& key(nk);
+		VT& data(nk);
+		data(display,gc,bitmap);
+		if (n.left) render(*n.left,bitmap);
+		if (n.right) render(*n.right,bitmap);
+	}
+};
 
 
 int main(int argc,char** argv)
 {
-	KeyMap keys;
-	return X11Grid::x11main<TreeDisplay::TestStructure>(argc,argv,keys,0X333333);
-}
+		KeyMap keys;
+		XSizeHints displayarea;
+		Display *display;//(XOpenDisplay(""));
+		display = XOpenDisplay (getenv ("DISPLAY"));
+		int screen(DefaultScreen(display));
+		const unsigned long background(0X0);
+		const unsigned long foreground(0X0);
+
+		displayarea.x = 000;
+		displayarea.y = 000;
+		GetScreenSize(display,displayarea.width,displayarea.height);
+		displayarea.flags = PPosition | PSize;
+
+		CmdLine cmdline(argc,argv,"trees");
+
+		XSetWindowAttributes attributes;
+		Window window,parent(0);
+		GC gc;
+		unsigned int Class(CopyFromParent);
+		int depth(CopyFromParent);
+		unsigned int border(0);
+		unsigned long valuemask(CopyFromParent);
+		if (!cmdline.exists("-root"))
+		{
+			window=XCreateSimpleWindow(display,DefaultRootWindow(display), 
+				displayarea.x,displayarea.y,displayarea.width,displayarea.height,5,foreground,background);
+			gc=(XCreateGC(display,window,0,0));
+			XSetBackground(display,gc,background);
+			XSetForeground(display,gc,foreground);
+			XSelectInput(display,window,ButtonPressMask|KeyPressMask|ExposureMask);
+			XMapRaised(display,window);
+		} else {
+
+			long long int wid(0);
+			if (cmdline.exists("-window-id"))
+			{
+				string sswid(cmdline["-window-id"]); sswid.erase(0,2);
+				char* pEnd; wid = strtoll ((char*)sswid.c_str(), &pEnd, 16);
+			}
+				parent=wid; 
+				if (parent)
+					window=XCreateWindow(display, parent,
+						displayarea.x,displayarea.y, displayarea.width,displayarea.height, 
+						border, depth, Class, CopyFromParent, valuemask, &attributes);
+				else window=ScreenRoot(DefaultScreenOfDisplay(display));
+				gc=XCreateGC(display,window,0,0);
+				if (wid) XMapRaised(display,window);
+		}
+
+
+		XSetForeground(display,gc,foreground);
+		XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
+
+		stringstream except;
+		try
+		{
+			TreeCanvas<double> canvas(display,gc,displayarea.width, displayarea.height);
+			Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
+			program(argc,argv);
+		}
+		catch(runtime_error& e){except<<"runtime error:"<<e.what();}
+		catch(...){except<<"unknown error";}
+		if (!except.str().empty()) cout<<except.str()<<endl;
+
+		XFreeGC(display,gc);
+		XDestroyWindow(display,window);
+		XCloseDisplay(display);
+		return 0;
+	}
 
