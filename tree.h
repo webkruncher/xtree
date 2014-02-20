@@ -31,7 +31,7 @@ namespace TreeObjects
 			n->parent=this;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*n));
 			nd.data(key,*this,parent);
-			if (((int)floor(nd.key))%2) nd.data(0XFF0000); else nd.data(0);
+			if (((int)floor(nd.key))%2) nd.data(0XFF00); else nd.data(0XFF);
 			if ((*n)<(*this))
 			{
 				if (left) return left->insert(root,n,depth); else left=n;
