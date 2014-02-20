@@ -197,9 +197,14 @@ int main(int argc,char** argv)
 		stringstream except;
 		try
 		{
-			TreeCanvas<KEYTYPE> canvas(display,gc,displayarea.width, displayarea.height);
+			TreeCanvas<KEYTYPE>* pcanvas(NULL);
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<KEYTYPE>(display,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<KEYTYPE>(display,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack");
+			TreeCanvas<KEYTYPE>& canvas(*pcanvas);
 			Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
 			program(argc,argv);
+			delete pcanvas;
 		}
 		catch(runtime_error& e){except<<"runtime error:"<<e.what();}
 		catch(...){except<<"unknown error";}

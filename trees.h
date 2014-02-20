@@ -153,6 +153,7 @@ namespace TreeDisplay
 			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
 		virtual void operator()(Pixmap& bitmap) { if (root) draw(invalid,*root,bitmap); }
+		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
 		virtual void update() 
 		{
 			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
@@ -163,7 +164,8 @@ namespace TreeDisplay
 				if (next.first)
 				{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-						TreeBase* n(new Bst<KT,VT>(next.second,tn));
+						//TreeBase* n(new Bst<KT,VT>(next.second,tn));
+						TreeBase* n(generate(next.second,tn));
 						if (!root) 
 						{
 							root=n;  
@@ -231,6 +233,14 @@ namespace TreeDisplay
 		return make_pair<bool,double>(true,k);
 	}
 
+	template<typename KT>
+		struct RbTreeCanvas : TreeCanvas<KT>
+	{
+		typedef TreeNode<KT> VT ;
+		RbTreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: TreeCanvas<KT>(_display,_gc,_ScreenWidth,_ScreenHeight) {}
+		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbTree<KT,VT>(key,treenode); }
+	};
 } // TreeDisplay
 
 #endif  //TREE_DISPLAY_H

@@ -3,7 +3,6 @@
 
 namespace TreeObjects
 {
-
 	struct TreeBase
 	{
 		virtual bool operator<(const TreeBase&) = 0;
@@ -58,10 +57,31 @@ namespace TreeObjects
 		operator VT& (){return data;}
 		virtual ostream& operator<<(ostream& o) const {o<<key;return o;}
 		const KT key;
-		char color;
 		VT data;	
 	};
 
+	template <typename KT,typename VT>
+		struct RbTree : public Bst<KT,VT>
+	{
+		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
+		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+		virtual TreeBase* insert(TreeBase* root,TreeBase* n,int _depth=0)
+		{
+			this->depth=_depth+1;
+			if ((*n)==(*this)) {delete n; return NULL;}
+			n->parent=this;
+			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n));
+			nd.data(this->key,*this,this->parent);
+			if (((int)floor(nd.key))%2) nd.data(0XFF0000); else nd.data(0X0);
+			if ((*n)<(*this))
+			{
+				if (this->left) return this->left->insert(root,n,this->depth); else this->left=n;
+			} else {
+				if (this->right) return this->right->insert(root,n,this->depth); else this->right=n;
+			}
+			return root; // Return this if this needs to become the new root
+		}
+	};
 } //namespace TreeObjects
 #endif // KRUNCH_RB_TREE_H
 
