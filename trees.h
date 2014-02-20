@@ -134,7 +134,7 @@ namespace TreeDisplay
 						TreeBase* tb(root->insert(root,n));
 						if (tb) root=tb; // for in case the root was rotated
 					}
-			}
+			} else cout<<"done."; cout.flush();
 #endif
 			}
 			if (root) traverse(*root);
@@ -169,7 +169,16 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		return make_pair<bool,int>(true,rand()%100); 
+		if (used.size()==100) return make_pair<bool,int>(false,0);
+		srand(time(0));
+		int k;
+		do 
+		{
+			k=(rand()%100); 
+			k+=50; //k/=(((KT)(rand()%100)+1));
+		} while (used.find(k)!=used.end());
+		used.insert(k);
+		return make_pair<bool,int>(true,k);
 	}
 
 	template <> pair<bool,double> TreeCanvas<double>::Next()
