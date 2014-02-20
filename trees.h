@@ -2,15 +2,13 @@
 #ifndef TREE_DISPLAY_H
 #define TREE_DISPLAY_H
 
-
 namespace TreeDisplay
 {
 	template<typename KT>
 		struct TreeNode
 	{
 		TreeNode() : SW(0),SH(0) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH)
-			{ BoxSize(); }
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH) { BoxSize(); }
 		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH) {}
 		void operator()(KT _k,TreeBase* parent)
 		{
@@ -47,10 +45,9 @@ namespace TreeDisplay
 		int CW,CH;
 		KT k;
 		double x,y;
-		void Text(int depth,KT k,KT pk) {}
-		void BoxSize() {}
+		void Text(int depth,KT k,KT pk) {stringstream ss; ss<<depth<<")"<<k<<","<<pk; text=ss.str().c_str();}
+		void BoxSize() {CW=50; CH=10;}
 	};
-
 
 	template <> void TreeNode<int>::Text(int depth,int k,int pk)
 	{
@@ -59,11 +56,7 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> void TreeNode<int>::BoxSize()
-	{
-		CW=60; CH=10;
-	}
-
+	template <> void TreeNode<int>::BoxSize() { CW=60; CH=10; }
 
 	template <> void TreeNode<double>::Text(int depth,double k,double pk)
 	{
@@ -72,11 +65,7 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> void TreeNode<double>::BoxSize()
-	{
-		CW=60; CH=10;
-	}
-
+	template <> void TreeNode<double>::BoxSize() { CW=60; CH=10; }
 
 	template<typename KT>
 		struct TreeCanvas : Canvas
@@ -98,44 +87,19 @@ namespace TreeDisplay
 			string tyid(typeid(KT).name());
 			if (!((updateloop++)%10)) 
 			{
-#if 0
-				bool go=true;
-				if (tyid=="i") if (used.size()==100) go=false; else if (used.size()==1000) go=false;
-				if (go) 
+				pair<bool,KT> next(Next());
+				if (next.first)
 				{
-					srand(time(0));
-					KT k;
-					do 
-					{
-						k=(rand()%100); 
-						if (tyid=="i") k+=50; else k/=(((KT)(rand()%100)+1));
-					} while (used.find(k)!=used.end());
-					used.insert(k);
-					TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-					TreeBase* n(new Bst<KT,VT>(k,tn));
-					if (!root) 
-					{
-						root=n;  
-					} else {
-						TreeBase* tb(root->insert(root,n));
-						if (tb) root=tb; // for in case the root was rotated
-					}
-				}
-#else
-			pair<bool,KT> next(Next());
-			if (next.first)
-			{
-					TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-					TreeBase* n(new Bst<KT,VT>(next.second,tn));
-					if (!root) 
-					{
-						root=n;  
-					} else {
-						TreeBase* tb(root->insert(root,n));
-						if (tb) root=tb; // for in case the root was rotated
-					}
-			} else cout<<"done."; cout.flush();
-#endif
+						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+						TreeBase* n(new Bst<KT,VT>(next.second,tn));
+						if (!root) 
+						{
+							root=n;  
+						} else {
+							TreeBase* tb(root->insert(root,n));
+							if (tb) root=tb; // for in case the root was rotated
+						}
+				} 
 			}
 			if (root) traverse(*root);
 		}
@@ -146,7 +110,7 @@ namespace TreeDisplay
 		unsigned long updateloop;
 		TreeBase* root;
 		InvalidArea<Rect> invalid;
-		pair<bool,KT> Next() { return make_pair<bool,KT>(false,0); }
+		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }
 		void traverse(TreeBase& n)
 		{
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
@@ -183,7 +147,16 @@ namespace TreeDisplay
 
 	template <> pair<bool,double> TreeCanvas<double>::Next()
 	{ 
-		return make_pair<bool,int>(true,rand()%100); 
+		if (used.size()==1000) return make_pair<bool,double>(false,0);
+		srand(time(0));
+		double k;
+		do 
+		{
+			k=(rand()%100); 
+			k/=(((double)(rand()%100)+1));
+		} while (used.find(k)!=used.end());
+		used.insert(k);
+		return make_pair<bool,double>(true,k);
 	}
 
 } // TreeDisplay
