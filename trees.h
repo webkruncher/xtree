@@ -8,8 +8,8 @@ namespace TreeDisplay
 	template<typename KT>
 		struct TreeNode
 	{
-		TreeNode() : text("error"),SW(0),SH(0) {}
-		TreeNode(const string _text,const int _SW,const int _SH) : text(_text),SW(_SW),SH(_SH)
+		TreeNode() : SW(0),SH(0) {}
+		TreeNode(const int _SW,const int _SH) : text(_text),SW(_SW),SH(_SH)
 			{ BoxSize(); }
 		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH) {}
 		void operator()(KT _k,TreeBase* parent)
@@ -109,8 +109,7 @@ namespace TreeDisplay
 						if (tyid=="i") k+=50; else k/=(((KT)(rand()%100)+1));
 					} while (used.find(k)!=used.end());
 					used.insert(k);
-					stringstream ss; ss<<(tick++)<<") "<<setprecision(2)<<k;
-					TreeNode<KT> tn(ss.str().c_str(),ScreenWidth,ScreenHeight);
+					TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 					TreeBase* n(new Bst<KT,VT>(k,tn));
 					if (!root) 
 					{
