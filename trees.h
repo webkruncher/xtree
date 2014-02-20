@@ -8,10 +8,7 @@ namespace TreeDisplay
 		{ void insert(Rect r) {set<Rect>::insert(r); } };
 	struct Motion : private deque<pair<double,double> >
 	{
-		Motion() : x(100),y(100)
-		{
-			push_back(make_pair<double,double>(x,y));
-		}
+		Motion(const double _x,const double _y) : x(_x),y(_y) { }
 		void operator()(double x,double y)
 		{
 			pair<double,double> now(x,y);;
@@ -40,25 +37,13 @@ namespace TreeDisplay
 		}
 		private: double x,y;
 	};
-#if 0
-	struct DisplayNodeBase { };
 
-	template<typename DBN,typename KT>
-		struct Touch
-	{
-		Touch(DBN& _dbn,Motion& _motion) : dbn(_dbn), motion(_motion) {}
-		void operator()(double x,double y) { motion(x,y); }
-		private: 
-		Motion& motion;
-		DBN& dbn;
-	};
-#endif
 	template<typename KT>
-		struct TreeNode //: DisplayNodeBase
+		struct TreeNode 
 	{
 		TreeNode() : SW(0),SH(0),x(0),y(0) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(100),y(100) { BoxSize(); }
-		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y)  {}
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333) { BoxSize(); }
+		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),motion(a.x,a.y),color(a.color)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
@@ -85,8 +70,8 @@ namespace TreeDisplay
 					TreeNode<KT>& gpn(grandparentnode);
 					double gpx(gpn.x);
 					double dx(gpn.x-pn.x);
+					dx/=16; dx*=7; // 7/16s of the difference between parent and grand-parent
 					if (dx<0) dx*=-1;
-					dx/=2;
 					if (k<pk)
 					{
 						x=px-dx;
@@ -126,9 +111,9 @@ namespace TreeDisplay
 				Rect iv(ul.first,ul.second,lr.first,lr.second);
 				invalid.insert(iv);
 				XPoint& points(iv);
-				XSetForeground(display,gc,0XFF);
+				XSetForeground(display,gc,color);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
-				XSetForeground(display,gc,0XFF00FF);
+				XSetForeground(display,gc,0XFFFFFF);
 				XDrawString(display,bitmap,gc,ul.first,ul.second+(CH),text.c_str(),text.size());
 			}
 		}
@@ -140,7 +125,7 @@ namespace TreeDisplay
 		KT k;
 		double x,y;
 		Motion motion;
-		//Touch<DisplayNodeBase,TreeNode<KT> > touch;
+		const unsigned long color;
 		void Text(int depth,KT k,KT pk) {stringstream ss; ss<<depth<<")"<<k<<","<<pk; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=12;}
 	};
@@ -154,26 +139,6 @@ namespace TreeDisplay
 	}
 
 	template <> void TreeNode<int>::BoxSize() { CW=20; CH=12; }
-
-#if 0
-	template <> void TreeNode<int>::operator()(TreeBase& node,TreeBase* parent) 
-		{
-			if (!parent) return;
-			Bst<int,TreeNode<int> >& p(static_cast<Bst<int,TreeNode<int> >&>(*parent));
-			Bst<int,TreeNode<int> >& n(static_cast<Bst<int,TreeNode<int> >&>(node));
-			//touch(p.data.x,p.data.y);
-			//touch.operator()<int>(node,parent);
-		}
-
-	template <> void TreeNode<double>::operator()(TreeBase& node,TreeBase* parent) 
-		{
-			if (!parent) return;
-			Bst<double,TreeNode<double> >& p(static_cast<Bst<double,TreeNode<double> >&>(*parent));
-			Bst<double,TreeNode<double> >& n(static_cast<Bst<double,TreeNode<double> >&>(node));
-			touch(p.data.x,p.data.y);
-			//touch.operator()<double>(node,parent);
-		}
-#endif
 
 	template <> void TreeNode<double>::Text(int depth,double k,double pk)
 	{
@@ -190,15 +155,7 @@ namespace TreeDisplay
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL) {}
-		virtual void operator()(Pixmap& bitmap) 
-		{
-			//XSetForeground(display,gc,0X777777);
-			//InvalidBase& _invalidbase(*this);
-			//Invalid& _invalid(static_cast<Invalid&>(_invalidbase));
-			//X11Grid::Rect r(0,0,1024,768);
-			if (root) draw(invalid,*root,bitmap);
-			//_invalid.insert(r);
-		}
+		virtual void operator()(Pixmap& bitmap) { if (root) draw(invalid,*root,bitmap); }
 		virtual void update() 
 		{
 			string tyid(typeid(KT).name());
