@@ -70,23 +70,13 @@ namespace TreeDisplay
 					TreeNode<KT>& gpn(grandparentnode);
 					double gpx(gpn.x);
 					double dx(gpn.x-pn.x);
-					dx/=16; dx*=7; // 7/16s of the difference between parent and grand-parent
+					dx/=16; dx*=9; // 9/16s of the difference between parent and grand-parent
 					if (dx<0) dx*=-1;
-					if (k<pk)
-					{
-						x=px-dx;
-					} else {
-						x=px+dx;
-					}
+					if (k<pk) x=px-dx; else x=px+dx; 
 					motion(x,y);
 					Text(node.depth,k,pk);
 				} else {
-					if (k<pk)
-					{
-						x=px/2;
-					} else {
-						x=(sw+px)/2;
-					}
+					if (k<pk) x=px/2; else x=(sw+px)/2; // half the difference between root and left or right edge
 					motion(x,y);
 					Text(node.depth,k,pk);
 				}
