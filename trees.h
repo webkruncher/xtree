@@ -1,37 +1,71 @@
 
 #ifndef TREE_DISPLAY_H
 #define TREE_DISPLAY_H
-
+#include <math.h>
 namespace TreeDisplay
 {
+	struct Invalid : X11Methods::InvalidArea<Rect> 
+		{ void insert(Rect r) {set<Rect>::insert(r); } };
 	struct Motion : private deque<pair<double,double> >
 	{
+		Motion() : x(100),y(100)
+		{
+			push_back(make_pair<double,double>(x,y));
+		}
 		void operator()(double x,double y)
 		{
 			pair<double,double> now(x,y);;
-			if (now!=current) push_back(now);
+			if (now!=front()) push_front(now);
 		}
-		operator pair<double,double>& ()	
+		pair<double,double> next(double tx,double ty)
 		{
-			if (size()) { cout<<"!"; cout.flush(); current=back(); pop_back(); }
-			return current;
+			const double distx(x-tx);
+			const double disty(y-ty);
+			const double direction(atan2(disty, distx));
+			const double distance(sqrt( (distx * distx) + (disty * disty) ) );
+			if (distance<10)
+			{
+				if (empty()) return make_pair<double,double>(0,0);
+cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
+				{
+					x=back().first; 
+					y=back().second; 
+					pop_back();
+				}
+			}
+			const double force(distance/10);
+			const double dx(force*cos(direction));
+			const double dy(force*sin(direction));
+			return make_pair<double,double>(dx,dy);
 		}
-		private:
-		pair<double,double> current;
+		private: double x,y;
+	};
+
+	struct DisplayNodeBase { };
+
+	template<typename DBN,typename KT>
+		struct Touch
+	{
+		Touch(DBN& _dbn,Motion& _motion) : dbn(_dbn), motion(_motion) {}
+		void operator()(double x,double y) { motion(x,y); }
+		private: 
+		Motion& motion;
+		DBN& dbn;
 	};
 
 	template<typename KT>
-		struct TreeNode
+		struct TreeNode : DisplayNodeBase
 	{
-		TreeNode() : SW(0),SH(0) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH) { BoxSize(); }
-		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH) {}
+		TreeNode() : SW(0),SH(0),x(0),y(0) {}
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(0),y(0),touch(*this,motion) { BoxSize(); }
+		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y), touch(*this,motion) {}
+		void operator()(TreeBase& node,TreeBase* parent) {}
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
 			k=_k;
 			if (!parent) 
 			{
-				x=(SW/2)-(CW/2); y=(CH*3);
+				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
 				Text(0,k,k);
 			} else {
@@ -43,20 +77,36 @@ namespace TreeDisplay
 				double D(SW/(parentnode.depth*7));
 				if (k<pk) D*=-1;
 				double mx(px+D);
-				x=mx;
-				y=py+(CH*2);
+				double x=mx;
+				double y=py+(CH*3);
 				motion(x,y);
 				Text(node.depth,k,pk);
 			}
 		}
-		void operator()(Display* display,GC& gc,Pixmap& bitmap)
+		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
 		{
-			pair<double,double> p(motion);
-			x=(p.first); y=(p.second);
-			XSetForeground(display,gc,0XFF);
-			XFillRectangle(display,bitmap,gc, x-(CW/2),y-(CH/2),CW,CH);
-			XSetForeground(display,gc,0XFFFFFF);
-			XDrawString(display,bitmap,gc,x-((CW/2)-2),y+2,text.c_str(),text.size());
+			{
+				pair<double,double> ul(x-(CW/2),y-(CH/2));
+				pair<double,double> lr(ul.first+CW,ul.second+CH);
+				Rect iv(ul.first-1,ul.second-1,lr.first+2,lr.second+2);
+				invalid.insert(iv);
+				XSetForeground(display,gc,0X0);
+				XPoint& points(iv);
+				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
+			}
+			pair<double,double> p(motion.next(x,y));
+			x+=p.first; y+=p.second;
+			{
+				pair<double,double> ul(x-(CW/2),y-(CH/2));
+				pair<double,double> lr(ul.first+CW,ul.second+CH);
+				Rect iv(ul.first,ul.second,lr.first,lr.second);
+				invalid.insert(iv);
+				XPoint& points(iv);
+				XSetForeground(display,gc,0XFF);
+				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
+				XSetForeground(display,gc,0XFF00FF);
+				XDrawString(display,bitmap,gc,ul.first,ul.second+(CH),text.c_str(),text.size());
+			}
 		}
 		private:
 		string text;
@@ -66,18 +116,39 @@ namespace TreeDisplay
 		KT k;
 		double x,y;
 		Motion motion;
+		Touch<DisplayNodeBase,TreeNode<KT> > touch;
 		void Text(int depth,KT k,KT pk) {stringstream ss; ss<<depth<<")"<<k<<","<<pk; text=ss.str().c_str();}
-		void BoxSize() {CW=50; CH=10;}
+		void BoxSize() {CW=50; CH=12;}
 	};
 
 	template <> void TreeNode<int>::Text(int depth,int k,int pk)
 	{
 		stringstream ss;
-		ss<<depth<<">"<<k<<","<<pk; 
+		ss<<depth<<"["<<k<<","<<pk; 
 		text=ss.str();
 	}
 
-	template <> void TreeNode<int>::BoxSize() { CW=60; CH=10; }
+	template <> void TreeNode<int>::BoxSize() { CW=60; CH=12; }
+
+
+	template <> void TreeNode<int>::operator()(TreeBase& node,TreeBase* parent) 
+		{
+			if (!parent) return;
+			Bst<int,TreeNode<int> >& p(static_cast<Bst<int,TreeNode<int> >&>(*parent));
+			Bst<int,TreeNode<int> >& n(static_cast<Bst<int,TreeNode<int> >&>(node));
+			touch(p.data.x,p.data.y);
+			//touch.operator()<int>(node,parent);
+		}
+
+	template <> void TreeNode<double>::operator()(TreeBase& node,TreeBase* parent) 
+		{
+			if (!parent) return;
+			Bst<double,TreeNode<double> >& p(static_cast<Bst<double,TreeNode<double> >&>(*parent));
+			Bst<double,TreeNode<double> >& n(static_cast<Bst<double,TreeNode<double> >&>(node));
+			touch(p.data.x,p.data.y);
+			//touch.operator()<double>(node,parent);
+		}
+
 
 	template <> void TreeNode<double>::Text(int depth,double k,double pk)
 	{
@@ -86,7 +157,7 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> void TreeNode<double>::BoxSize() { CW=60; CH=10; }
+	template <> void TreeNode<double>::BoxSize() { CW=60; CH=12; }
 
 	template<typename KT>
 		struct TreeCanvas : Canvas
@@ -98,15 +169,15 @@ namespace TreeDisplay
 		{
 			XSetForeground(display,gc,0X777777);
 			InvalidBase& _invalidbase(*this);
-			InvalidArea<Rect>& _invalid(static_cast<InvalidArea<Rect>&>(_invalidbase));
+			Invalid& _invalid(static_cast<Invalid&>(_invalidbase));
 			X11Grid::Rect r(0,0,1024,768);
-			if (root) draw(*root,bitmap);
+			if (root) draw(invalid,*root,bitmap);
 			_invalid.insert(r);
 		}
 		virtual void update() 
 		{
 			string tyid(typeid(KT).name());
-			if (!((updateloop++)%10)) 
+			if (!((updateloop)%100)) 
 			{
 				pair<bool,KT> next(Next());
 				if (next.first)
@@ -122,14 +193,15 @@ namespace TreeDisplay
 						}
 				} 
 			}
-			if (root) traverse(*root);
+			if (!((updateloop)%10)) if (root) traverse(*root);
+			updateloop++;
 		}
 		virtual operator InvalidBase& () {return invalid;}
 		private:
 		set<KT> used;
 		unsigned long updateloop;
 		TreeBase* root;
-		InvalidArea<Rect> invalid;
+		Invalid invalid;
 		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }
 		void traverse(TreeBase& n)
 		{
@@ -140,20 +212,20 @@ namespace TreeDisplay
 			if (n.left) traverse(*n.left);
 			if (n.right) traverse(*n.right);
 		}
-		void draw(TreeBase& n,Pixmap& bitmap)
+		void draw(Invalid& invalid,TreeBase& n,Pixmap& bitmap)
 		{
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk);
-			data(display,gc,bitmap);
-			if (n.left) draw(*n.left,bitmap);
-			if (n.right) draw(*n.right,bitmap);
+			data(invalid,display,gc,bitmap);
+			if (n.left) draw(invalid,*n.left,bitmap);
+			if (n.right) draw(invalid,*n.right,bitmap);
 		}
 	};
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		if (used.size()==10) return make_pair<bool,int>(false,0);
+		if (used.size()==100) return make_pair<bool,int>(false,0);
 		srand(time(0));
 		int k;
 		do 

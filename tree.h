@@ -29,6 +29,8 @@ namespace TreeeObjects
 			depth=_depth+1;
 			if ((*n)==(*this)) {delete n; return NULL;}
 			n->parent=this;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*n));
+			nd.data(key,*this,parent);
 			if ((*n)<(*this))
 			{
 				if (left) return left->insert(root,n,depth); else left=n;
@@ -54,7 +56,6 @@ namespace TreeeObjects
 		operator const KT& (){return key;}
 		operator VT& (){return data;}
 		virtual ostream& operator<<(ostream& o) const {o<<key;return o;}
-		private:
 		const KT key;
 		char color;
 		VT data;	
