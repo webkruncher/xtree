@@ -74,7 +74,7 @@ cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 				double px(pn.x);
 				double py(pn.y);
 				KT pk(parentnode);
-				double D(SW/(parentnode.depth*7));
+				double D(SW/(parentnode.depth*4));
 				if (k<pk) D*=-1;
 				double mx(px+D);
 				double x=mx;
@@ -129,7 +129,7 @@ cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 		text=ss.str();
 	}
 
-	template <> void TreeNode<int>::BoxSize() { CW=30; CH=12; }
+	template <> void TreeNode<int>::BoxSize() { CW=20; CH=12; }
 
 
 	template <> void TreeNode<int>::operator()(TreeBase& node,TreeBase* parent) 
