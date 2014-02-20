@@ -100,7 +100,7 @@ namespace TreeDisplay
 			InvalidBase& _invalidbase(*this);
 			InvalidArea<Rect>& _invalid(static_cast<InvalidArea<Rect>&>(_invalidbase));
 			X11Grid::Rect r(0,0,1024,768);
-			if (root) render(*root,bitmap);
+			if (root) draw(*root,bitmap);
 			_invalid.insert(r);
 		}
 		virtual void update() 
@@ -140,14 +140,14 @@ namespace TreeDisplay
 			if (n.left) traverse(*n.left);
 			if (n.right) traverse(*n.right);
 		}
-		void render(TreeBase& n,Pixmap& bitmap)
+		void draw(TreeBase& n,Pixmap& bitmap)
 		{
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk);
 			data(display,gc,bitmap);
-			if (n.left) render(*n.left,bitmap);
-			if (n.right) render(*n.right,bitmap);
+			if (n.left) draw(*n.left,bitmap);
+			if (n.right) draw(*n.right,bitmap);
 		}
 	};
 
