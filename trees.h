@@ -26,7 +26,7 @@ namespace TreeDisplay
 			if (distance<10)
 			{
 				if (empty()) return make_pair<double,double>(0,0);
-cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
+				//cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 				{
 					x=back().first; 
 					y=back().second; 
@@ -57,7 +57,7 @@ cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 		struct TreeNode : DisplayNodeBase
 	{
 		TreeNode() : SW(0),SH(0),x(0),y(0) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(0),y(0),touch(*this,motion) { BoxSize(); }
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(100),y(100),touch(*this,motion) { BoxSize(); }
 		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y), touch(*this,motion) {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
@@ -71,16 +71,40 @@ cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode);
+				KT pk(parentnode);
 				double px(pn.x);
 				double py(pn.y);
-				KT pk(parentnode);
-				double D(SW/(parentnode.depth*4));
-				if (k<pk) D*=-1;
-				double mx(px+D);
-				double x=mx;
-				double y=py+(CH*3);
-				motion(x,y);
-				Text(node.depth,k,pk);
+				const double sw(SW); double sh(SH);
+				double y;
+				if (k<pk) y=py+(CH*3);
+				else y=py+(CH*3)-CH;
+				double x;
+				if (parent->parent)
+				{
+					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->parent));
+					TreeNode<KT>& gpn(grandparentnode);
+					double gpx(gpn.x);
+					double dx(gpn.x-pn.x);
+					if (dx<0) dx*=-1;
+					dx/=2;
+					if (k<pk)
+					{
+						x=px-dx;
+					} else {
+						x=px+dx;
+					}
+					motion(x,y);
+					Text(node.depth,k,pk);
+				} else {
+					if (k<pk)
+					{
+						x=px/2;
+					} else {
+						x=(sw+px)/2;
+					}
+					motion(x,y);
+					Text(node.depth,k,pk);
+				}
 			}
 		}
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
@@ -90,7 +114,7 @@ cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
 				Rect iv(ul.first-1,ul.second-1,lr.first+2,lr.second+2);
 				invalid.insert(iv);
-				XSetForeground(display,gc,0X0);
+				XSetForeground(display,gc,0X777777);
 				XPoint& points(iv);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 			}
@@ -168,12 +192,12 @@ cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
 			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL) {}
 		virtual void operator()(Pixmap& bitmap) 
 		{
-			XSetForeground(display,gc,0X777777);
-			InvalidBase& _invalidbase(*this);
-			Invalid& _invalid(static_cast<Invalid&>(_invalidbase));
-			X11Grid::Rect r(0,0,1024,768);
+			//XSetForeground(display,gc,0X777777);
+			//InvalidBase& _invalidbase(*this);
+			//Invalid& _invalid(static_cast<Invalid&>(_invalidbase));
+			//X11Grid::Rect r(0,0,1024,768);
 			if (root) draw(invalid,*root,bitmap);
-			_invalid.insert(r);
+			//_invalid.insert(r);
 		}
 		virtual void update() 
 		{

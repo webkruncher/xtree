@@ -139,13 +139,15 @@ namespace Utilities
 
 int main(int argc,char** argv)
 {
+		//for (double j=1;j<100;j++)
+		//	cout<<setprecision(2)<<setw(5)<<"log("<<j<<")="<<setprecision(2)<<setw(5)<<log(j)<<endl;
 		KeyMap keys;
 		XSizeHints displayarea;
 		Display *display;//(XOpenDisplay(""));
 		display = XOpenDisplay (getenv ("DISPLAY"));
 		int screen(DefaultScreen(display));
-		const unsigned long background(0X0);
-		const unsigned long foreground(0X0);
+		const unsigned long background(0X777777);
+		const unsigned long foreground(0X777777);
 
 		displayarea.x = 000;
 		displayarea.y = 000;
