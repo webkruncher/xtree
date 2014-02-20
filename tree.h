@@ -1,7 +1,7 @@
 #ifndef KRUNCH_RB_TREE_H
 #define KRUNCH_RB_TREE_H
 
-namespace TreeeObjects
+namespace TreeObjects
 {
 
 	struct TreeBase
@@ -62,7 +62,7 @@ namespace TreeeObjects
 	};
 
 	TreeBase::~TreeBase() { }
-} //namespace TreeeObjects
+} //namespace TreeObjects
 #endif // KRUNCH_RB_TREE_H
 
 

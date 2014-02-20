@@ -4,6 +4,8 @@
 #include <math.h>
 namespace TreeDisplay
 {
+
+
 	struct Invalid : X11Methods::InvalidArea<Rect> 
 		{ void insert(Rect r) {set<Rect>::insert(r); } };
 	struct Motion : private deque<pair<double,double> >
@@ -45,6 +47,11 @@ namespace TreeDisplay
 		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333) { BoxSize(); }
 		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),motion(a.x,a.y),color(a.color)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
+		void operator()(KT _k,TreeBase& node,TreeBase* parent,unsigned long long _color)
+		{
+			color=_color;
+			TreeNode<KT>::operator()(_k,node,parent);
+		}
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
 			k=_k;
@@ -115,7 +122,7 @@ namespace TreeDisplay
 		KT k;
 		double x,y;
 		Motion motion;
-		const unsigned long color;
+		unsigned long color;
 		void Text(int depth,KT k,KT pk) {stringstream ss; ss<<depth<<")"<<k<<","<<pk; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=12;}
 	};
@@ -203,7 +210,7 @@ namespace TreeDisplay
 		do 
 		{
 			k=(rand()%100); 
-			k+=50; //k/=(((KT)(rand()%100)+1));
+			k+=50; 
 		} while (used.find(k)!=used.end());
 		used.insert(k);
 		return make_pair<bool,int>(true,k);
