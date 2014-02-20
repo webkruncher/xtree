@@ -97,6 +97,7 @@ namespace TreeDisplay
 			string tyid(typeid(KT).name());
 			if (!((updateloop++)%10)) 
 			{
+#if 0
 				bool go=true;
 				if (tyid=="i") if (used.size()==100) go=false; else if (used.size()==1000) go=false;
 				if (go) 
@@ -120,6 +121,21 @@ namespace TreeDisplay
 					}
 				}
 			}
+#else
+			pair<bool,KT> next(Next());
+			if (next.first())
+			{
+					TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+					TreeBase* n(new Bst<KT,VT>(next.second,tn));
+					if (!root) 
+					{
+						root=n;  
+					} else {
+						TreeBase* tb(root->insert(root,n));
+						if (tb) root=tb; // for in case the root was rotated
+					}
+			}
+#endif
 			if (root) traverse(*root);
 		}
 		virtual operator InvalidBase& () {return invalid;}
@@ -129,6 +145,7 @@ namespace TreeDisplay
 		unsigned long updateloop;
 		TreeBase* root;
 		InvalidArea<Rect> invalid;
+		pair<bool,KT> Next() { return make_pair<bool,KT>(false,0); }
 		void traverse(TreeBase& n)
 		{
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
