@@ -77,6 +77,11 @@ namespace TreeDisplay
 		CW=60; CH=10;
 	}
 
+	template <> pair<bool,int> TreeCanvas<int>::Next()
+	{ 
+		return make_pair<bool,int>(true,rand()%100); 
+	}
+
 	template<typename KT>
 		struct TreeCanvas : Canvas
 	{
