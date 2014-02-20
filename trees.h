@@ -4,35 +4,55 @@
 
 namespace TreeDisplay
 {
+	struct Motion : private deque<pair<double,double> >
+	{
+		void operator()(double x,double y)
+		{
+			pair<double,double> now(x,y);;
+			if (now!=current) push_back(now);
+		}
+		operator pair<double,double>& ()	
+		{
+			if (size()) { cout<<"!"; cout.flush(); current=back(); pop_back(); }
+			return current;
+		}
+		private:
+		pair<double,double> current;
+	};
+
 	template<typename KT>
 		struct TreeNode
 	{
 		TreeNode() : SW(0),SH(0) {}
 		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH) { BoxSize(); }
 		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH) {}
-		void operator()(KT _k,TreeBase* parent)
+		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
 			k=_k;
 			if (!parent) 
 			{
 				x=(SW/2)-(CW/2); y=(CH*3);
+				motion(x,y);
 				Text(0,k,k);
 			} else {
-				Bst<KT,TreeNode<KT> >& node(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
-				TreeNode<KT>& pn(node);
+				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
+				TreeNode<KT>& pn(parentnode);
 				double px(pn.x);
 				double py(pn.y);
-				KT pk(node);
-				double D(SW/(node.depth*7));
+				KT pk(parentnode);
+				double D(SW/(parentnode.depth*7));
 				if (k<pk) D*=-1;
 				double mx(px+D);
 				x=mx;
 				y=py+(CH*2);
+				motion(x,y);
 				Text(node.depth,k,pk);
 			}
 		}
 		void operator()(Display* display,GC& gc,Pixmap& bitmap)
 		{
+			pair<double,double> p(motion);
+			x=(p.first); y=(p.second);
 			XSetForeground(display,gc,0XFF);
 			XFillRectangle(display,bitmap,gc, x-(CW/2),y-(CH/2),CW,CH);
 			XSetForeground(display,gc,0XFFFFFF);
@@ -45,6 +65,7 @@ namespace TreeDisplay
 		int CW,CH;
 		KT k;
 		double x,y;
+		Motion motion;
 		void Text(int depth,KT k,KT pk) {stringstream ss; ss<<depth<<")"<<k<<","<<pk; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=10;}
 	};
@@ -72,7 +93,7 @@ namespace TreeDisplay
 	{
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),tick(0), updateloop(0),root(NULL) {}
+			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL) {}
 		virtual void operator()(Pixmap& bitmap) 
 		{
 			XSetForeground(display,gc,0X777777);
@@ -106,7 +127,6 @@ namespace TreeDisplay
 		virtual operator InvalidBase& () {return invalid;}
 		private:
 		set<KT> used;
-		int tick;
 		unsigned long updateloop;
 		TreeBase* root;
 		InvalidArea<Rect> invalid;
@@ -116,7 +136,7 @@ namespace TreeDisplay
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk);
-			data(key,nk.parent);
+			data(key,nk,nk.parent);
 			if (n.left) traverse(*n.left);
 			if (n.right) traverse(*n.right);
 		}
@@ -133,7 +153,7 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		if (used.size()==100) return make_pair<bool,int>(false,0);
+		if (used.size()==10) return make_pair<bool,int>(false,0);
 		srand(time(0));
 		int k;
 		do 
