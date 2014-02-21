@@ -113,14 +113,16 @@ namespace TreeObjects
 		{ 
 			if (!n) return; 
 			if ( (!n->left) or (!n->right) ) {black(n); return;}	
-			n->clr=RED;
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0XFF0000); 
+			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
+			nd.clr=RED;
+			nd.data(0XFF0000); 
 		}
 		void black(TreeBase* n) 
 		{ 
 			if (!n) return; 
-			n->clr=BLACK;
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0); 
+			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
+			nd.clr=BLACK;
+			nd.data(0); 
 		}
 	};
 } //namespace TreeObjects
