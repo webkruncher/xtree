@@ -94,8 +94,7 @@ namespace TreeObjects
 					color(node);
 				}
 			}
-			if ( ((!this->left) and (!this->right)) or (!this->parent)) black(this); else red(this);
-			if (this->right) return rotateleft(root);
+			color(this);
 			return root; // Return this if this needs to become the new root
 		}
 		TreeBase* rotateleft(TreeBase* rnode)
