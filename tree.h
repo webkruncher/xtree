@@ -55,7 +55,7 @@ namespace TreeObjects
 		}
 		operator const KT& (){return key;}
 		operator VT& (){return data;}
-		virtual ostream& operator<<(ostream& o) const {o<<key;return o;}
+		virtual ostream& operator<<(ostream& o) const {return o;}
 		const KT key;
 		VT data;	
 	};
@@ -65,8 +65,8 @@ namespace TreeObjects
 	{
 		#define RED 1
 		#define BLACK 2 
-		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
-		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+		RbTree(const KT _key) : Bst<KT,VT>(_key),ldepth(0),rdepth(0) {}
+		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data),ldepth(0),rdepth(0) {}
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
 		{
 			this->depth=_depth+1;
@@ -79,24 +79,33 @@ namespace TreeObjects
 				if (this->left) 
 				{
 					TreeBase* insrt(this->left->insert(root,node,this->depth)); 
+					RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*insrt)); 
+					this->ldepth=0; DepthCounter(this->left,this->ldepth);
 					return color(insrt);
 				} else { 
 					this->left=node;
+					this->ldepth=1;
 					color(node);
 				}
 			} else {
 				if (this->right) 
 				{
 					TreeBase* insrt(this->right->insert(root,node,this->depth)); 
+					RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*insrt)); 
+					this->rdepth=0; DepthCounter(this->right,this->rdepth);
 					return color(insrt);
 				} else { 
 					this->right=node;
+					this->rdepth=1;
 					color(node);
 				}
 			}
 			color(this);
 			RbTree<KT,VT>& rd(static_cast<RbTree<KT,VT>&>(*root)); 
-			rd.data(0XFF00); 
+			rd.data(0X8000); 
+			//rd.ldepth=rd.rdepth=0;
+			//DepthCounter(root->left,rd.ldepth);
+			//DepthCounter(root->right,rd.rdepth);
 			return root; // Return this if this needs to become the new root
 		}
 		TreeBase* rotateleft(TreeBase* rnode)
@@ -105,6 +114,17 @@ namespace TreeObjects
 		}
 		private:
 		char clr;
+		int ldepth,rdepth;
+
+		void DepthCounter(TreeBase* n,int& d)
+		{
+			if (!n) return;
+			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
+			if (nd.clr==BLACK) d++;
+			if (n->right) DepthCounter(n->right,d);
+			if (n->left) DepthCounter(n->left,d);
+		}
+
 		TreeBase* color(TreeBase* n)
 		{
 			if ( ((!n->left) and (!n->right)) or (!n->parent)) 
@@ -134,6 +154,11 @@ namespace TreeObjects
 			nd.clr=BLACK;
 			nd.data(0); 
 			return n;
+		}
+		virtual ostream& operator<<(ostream& o) const 
+		{
+			o<<ldepth<<","<<rdepth;
+			return o;
 		}
 	};
 } //namespace TreeObjects

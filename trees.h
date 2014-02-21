@@ -4,10 +4,8 @@
 #include <math.h>
 namespace TreeDisplay
 {
+	struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
 
-
-	struct Invalid : X11Methods::InvalidArea<Rect> 
-		{ void insert(Rect r) {set<Rect>::insert(r); } };
 	struct Motion : private deque<pair<double,double> >
 	{
 		Motion(const double _x,const double _y) : x(_x),y(_y) { }
@@ -58,7 +56,8 @@ namespace TreeDisplay
 			{
 				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
-				Text(0,k,k);
+				stringstream sstxt; sstxt<<node;
+				Text(0,k,k,sstxt.str());
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode);
@@ -80,11 +79,13 @@ namespace TreeDisplay
 					if (dx<0) dx*=-1;
 					if (k<pk) x=px-dx; else x=px+dx; 
 					motion(x,y);
-					Text(node.depth,k,pk);
+					stringstream sstxt; sstxt<<node;
+					Text(node.depth,k,pk,sstxt.str());
 				} else {
 					if (k<pk) x=px/2; else x=(sw+px)/2; // half the difference between root and left or right edge
 					motion(x,y);
-					Text(node.depth,k,pk);
+					stringstream sstxt; sstxt<<node;
+					Text(node.depth,k,pk,sstxt.str());
 				}
 			}
 		}
@@ -122,24 +123,25 @@ namespace TreeDisplay
 		double x,y;
 		Motion motion;
 		unsigned long color;
-		void Text(int depth,KT k,KT pk) {stringstream ss; ss<<depth<<")"<<k<<","<<pk; text=ss.str().c_str();}
+		void Text(int depth,KT k,KT pk,string txt) {stringstream ss; ss<<depth<<")"<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=12;}
 	};
 
-	template <> void TreeNode<int>::Text(int depth,int k,int pk)
+	template <> void TreeNode<int>::Text(int depth,int k,int pk,string txt)
 	{
 		stringstream ss;
 		//ss<<depth<<"["<<k<<","<<pk; 
-		ss<<k;
+		ss<<k<<" "<<txt;
 		text=ss.str();
 	}
 
-	template <> void TreeNode<int>::BoxSize() { CW=20; CH=12; }
+	template <> void TreeNode<int>::BoxSize() { CW=50; CH=12; }
 
-	template <> void TreeNode<double>::Text(int depth,double k,double pk)
+	template <> void TreeNode<double>::Text(int depth,double k,double pk,string txt)
 	{
 		stringstream ss;
 		ss<<depth<<">"<<setprecision(2)<<k;
+		ss<<k<<" "<<txt;
 		text=ss.str();
 	}
 
@@ -207,7 +209,7 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		if (used.size()==100) return make_pair<bool,int>(false,0);
+		if (used.size()==20) return make_pair<bool,int>(false,0);
 		srand(time(0));
 		int k;
 		do 
