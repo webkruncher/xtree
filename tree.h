@@ -95,6 +95,8 @@ namespace TreeObjects
 				}
 			}
 			color(this);
+			RbTree<KT,VT>& rd(static_cast<RbTree<KT,VT>&>(*root)); 
+			rd.data(0XFF00); 
 			return root; // Return this if this needs to become the new root
 		}
 		TreeBase* rotateleft(TreeBase* rnode)
@@ -105,23 +107,33 @@ namespace TreeObjects
 		char clr;
 		TreeBase* color(TreeBase* n)
 		{
-			if ( ((!n->left) and (!n->right)) or (!n->parent)) black(n); else red(n);
-			return n;
+			if ( ((!n->left) and (!n->right)) or (!n->parent)) 
+			{
+				return black(n); 
+			} else {
+				if ( (!n->left) or (!n->right) ) 
+				{
+					return black(n); 
+				} else {
+					return red(n);
+				}
+			}
 		}
-		void red(TreeBase* n) 
+		TreeBase* red(TreeBase* n) 
 		{ 
-			if (!n) return; 
-			if ( (!n->left) or (!n->right) ) {black(n); return;}	
+			if (!n) return n; 
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
 			nd.clr=RED;
 			nd.data(0XFF0000); 
+			return n;
 		}
-		void black(TreeBase* n) 
+		TreeBase* black(TreeBase* n) 
 		{ 
-			if (!n) return; 
+			if (!n) return n; 
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
 			nd.clr=BLACK;
 			nd.data(0); 
+			return n;
 		}
 	};
 } //namespace TreeObjects
