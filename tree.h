@@ -65,45 +65,50 @@ namespace TreeObjects
 	{
 		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
 		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
-		virtual TreeBase* insert(TreeBase* root,TreeBase* n,int _depth=0)
+		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
 		{
 			this->depth=_depth+1;
-			if ((*n)==(*this)) {delete n; return NULL;}
-			n->parent=this;
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n));
+			if ((*node)==(*this)) {delete node; return NULL;}
+			node->parent=this;
+			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*node));
 			nd.data(this->key,*this,this->parent);
-			if ((*n)<(*this))
+			if ((*node)<(*this))
 			{
 				if (this->left) 
 				{
-					TreeBase* ret(this->left->insert(root,n,this->depth)); 
-					if ( ((!ret->left) and (!ret->right)) or (!ret->parent)) black(ret); else red(ret);
-					return ret;
+					TreeBase* insrt(this->left->insert(root,node,this->depth)); 
+					if ( ((!insrt->left) and (!insrt->right)) or (!insrt->parent)) black(insrt); else red(insrt);
+					return insrt;
 				} else { 
-					this->left=n;
-					if ( ((!n->left) and (!n->right)) or (!n->parent)) black(n); else red(n);
+					this->left=node;
+					if ( ((!node->left) and (!node->right)) or (!node->parent)) black(node); else red(node);
 				}
 			} else {
 				if (this->right) 
 				{
-					TreeBase* ret(this->right->insert(root,n,this->depth)); 
-					if ( ((!ret->left) and (!ret->right)) or (!ret->parent)) black(ret); else red(ret);
-					return ret;
+					TreeBase* insrt(this->right->insert(root,node,this->depth)); 
+					if ( ((!insrt->left) and (!insrt->right)) or (!insrt->parent)) black(insrt); else red(insrt);
+					return insrt;
 				} else { 
-					this->right=n;
-					if ( ((!n->left) and (!n->right)) or (!n->parent)) black(n); else red(n);
+					this->right=node;
+					if ( ((!node->left) and (!node->right)) or (!node->parent)) black(node); else red(node);
 				}
 			}
 			if ( ((!this->left) and (!this->right)) or (!this->parent)) black(this); else red(this);
 			if (this->right) return rotateleft(root);
 			return root; // Return this if this needs to become the new root
 		}
-		TreeBase* rotateleft(TreeBase* node)
+		TreeBase* rotateleft(TreeBase* rnode)
 		{
-			return node;
+			return rnode;
 		}
 		private:
-		void red(TreeBase* n) { if (!n) return; RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0XFF0000); }
+		void red(TreeBase* n) 
+		{ 
+			if (!n) return; 
+			if ( (!n->left) or (!n->right) ) {black(n); return;}
+			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0XFF0000); 
+		}
 		void black(TreeBase* n) { if (!n) return; RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0); }
 	};
 } //namespace TreeObjects
