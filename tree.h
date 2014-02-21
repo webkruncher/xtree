@@ -72,15 +72,39 @@ namespace TreeObjects
 			n->parent=this;
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n));
 			nd.data(this->key,*this,this->parent);
-			if (((int)floor(nd.key))%2) nd.data(0XFF0000); else nd.data(0X0);
 			if ((*n)<(*this))
 			{
-				if (this->left) return this->left->insert(root,n,this->depth); else this->left=n;
+				if (this->left) 
+				{
+					TreeBase* ret(this->left->insert(root,n,this->depth)); 
+					if ( ((!ret->left) and (!ret->right)) or (!ret->parent)) black(ret); else red(ret);
+					return ret;
+				} else { 
+					this->left=n;
+					if ( ((!n->left) and (!n->right)) or (!n->parent)) black(n); else red(n);
+				}
 			} else {
-				if (this->right) return this->right->insert(root,n,this->depth); else this->right=n;
+				if (this->right) 
+				{
+					TreeBase* ret(this->right->insert(root,n,this->depth)); 
+					if ( ((!ret->left) and (!ret->right)) or (!ret->parent)) black(ret); else red(ret);
+					return ret;
+				} else { 
+					this->right=n;
+					if ( ((!n->left) and (!n->right)) or (!n->parent)) black(n); else red(n);
+				}
 			}
+			if ( ((!this->left) and (!this->right)) or (!this->parent)) black(this); else red(this);
+			if (this->right) return rotateleft(root);
 			return root; // Return this if this needs to become the new root
 		}
+		TreeBase* rotateleft(TreeBase* node)
+		{
+			return node;
+		}
+		private:
+		void red(TreeBase* n) { if (!n) return; RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0XFF0000); }
+		void black(TreeBase* n) { if (!n) return; RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0); }
 	};
 } //namespace TreeObjects
 #endif // KRUNCH_RB_TREE_H
