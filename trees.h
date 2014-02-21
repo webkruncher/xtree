@@ -155,30 +155,23 @@ namespace TreeDisplay
 	{
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(true) {}
+			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
-		virtual void operator()(Pixmap& bitmap) { movement=false; if (root) draw(invalid,*root,bitmap); }
+		virtual void operator()(Pixmap& bitmap) {  if (root) draw(invalid,*root,bitmap); }
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
 		virtual void update() 
 		{
 			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
 			string tyid(typeid(KT).name());
-			if (!movement)
+			if (!movement) 
 			{
+				movement=true;
 				pair<bool,KT> next(Next());
 				if (next.first)
 				{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-						//TreeBase* n(new Bst<KT,VT>(next.second,tn));
 						TreeBase* n(generate(next.second,tn));
-						if (!root) 
-						{
-							root=n;  
-							movement=true;
-						} else {
-							TreeBase* tb(root->insert(root,n));
-							if (tb) root=tb; // for in case the root was rotated
-						}
+						if (!root) root=n;  else root->insert(n);
 						KT maxvalue(root->maxValue(root));
 						KT minvalue(root->minValue(root));
 						bool isbst(root->isBST(root));
@@ -210,6 +203,7 @@ namespace TreeDisplay
 		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }
 		void traverse(TreeBase& n)
 		{
+			movement=false;
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk);
