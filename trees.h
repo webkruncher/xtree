@@ -171,7 +171,7 @@ namespace TreeDisplay
 				{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						TreeBase* n(generate(next.second,tn));
-						if (!root) root=n;  else root->insert(n);
+						if (!root) root=n;  else root=root->insert(root,n);
 						KT maxvalue(root->maxValue(root));
 						KT minvalue(root->minValue(root));
 						bool isbst(root->isBST(root));
