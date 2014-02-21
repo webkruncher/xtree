@@ -41,9 +41,9 @@ namespace TreeDisplay
 	template<typename KT>
 		struct TreeNode 
 	{
-		TreeNode() : SW(0),SH(0),x(0),y(0) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333) { BoxSize(); }
-		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),motion(a.x,a.y),color(a.color)  {}
+		TreeNode() : SW(0),SH(0),x(0),y(0),moved(true) {}
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333), moved(true){ BoxSize(); }
+		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),moved(true),motion(a.x,a.y),color(a.color)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
 		void operator()(unsigned long long _color)
 		{
@@ -91,6 +91,9 @@ namespace TreeDisplay
 		}
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
 		{
+			moved=false;
+			pair<double,double> p(motion.next(x,y));
+			if ((p.first) or (p.second)) moved=true;
 			{
 				pair<double,double> ul(x-(CW/2),y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
@@ -100,7 +103,6 @@ namespace TreeDisplay
 				XPoint& points(iv);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 			}
-			pair<double,double> p(motion.next(x,y));
 			x+=p.first; y+=p.second;
 			{
 				pair<double,double> ul(x-(CW/2),y-(CH/2));
@@ -114,6 +116,7 @@ namespace TreeDisplay
 				XDrawString(display,bitmap,gc,ul.first,ul.second+(CH),text.c_str(),text.size());
 			}
 		}
+		bool moved;
 		private:
 		string text;
 		const int SW,SH;
@@ -152,15 +155,15 @@ namespace TreeDisplay
 	{
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL) {}
+			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(true) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
-		virtual void operator()(Pixmap& bitmap) { if (root) draw(invalid,*root,bitmap); }
+		virtual void operator()(Pixmap& bitmap) { movement=false; if (root) draw(invalid,*root,bitmap); }
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
 		virtual void update() 
 		{
 			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
 			string tyid(typeid(KT).name());
-			if (!((updateloop)%10)) 
+			if (!movement)
 			{
 				pair<bool,KT> next(Next());
 				if (next.first)
@@ -171,6 +174,7 @@ namespace TreeDisplay
 						if (!root) 
 						{
 							root=n;  
+							movement=true;
 						} else {
 							TreeBase* tb(root->insert(root,n));
 							if (tb) root=tb; // for in case the root was rotated
@@ -198,6 +202,7 @@ namespace TreeDisplay
 		}
 		virtual operator InvalidBase& () {return invalid;}
 		private:
+		bool movement;
 		set<KT> used;
 		unsigned long updateloop;
 		TreeBase* root;
@@ -218,6 +223,7 @@ namespace TreeDisplay
 			const KT& key(nk);
 			VT& data(nk);
 			data(invalid,display,gc,bitmap);
+			if (data.moved) movement=true;
 			if (n.left) draw(invalid,*n.left,bitmap);
 			if (n.right) draw(invalid,*n.right,bitmap);
 		}
@@ -225,8 +231,8 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		if (used.size()==11) return make_pair<bool,int>(false,0);
-		if (true)
+		if (used.size()==30) return make_pair<bool,int>(false,0);
+		if (false)
 		{	
 			static int j(-11);
 			j++;
@@ -238,8 +244,8 @@ namespace TreeDisplay
 		int k;
 		do 
 		{
-			k=(rand()%1000); 
-			k+=500; 
+			k=(rand()%100); 
+			k+=50; 
 		} while (used.find(k)!=used.end());
 		used.insert(k);
 		return make_pair<bool,int>(true,k);
