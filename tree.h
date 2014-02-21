@@ -77,21 +77,19 @@ namespace TreeObjects
 				if (this->left) 
 				{
 					TreeBase* insrt(this->left->insert(root,node,this->depth)); 
-					if ( ((!insrt->left) and (!insrt->right)) or (!insrt->parent)) black(insrt); else red(insrt);
-					return insrt;
+					return color(insrt);
 				} else { 
 					this->left=node;
-					if ( ((!node->left) and (!node->right)) or (!node->parent)) black(node); else red(node);
+					color(node);
 				}
 			} else {
 				if (this->right) 
 				{
 					TreeBase* insrt(this->right->insert(root,node,this->depth)); 
-					if ( ((!insrt->left) and (!insrt->right)) or (!insrt->parent)) black(insrt); else red(insrt);
-					return insrt;
+					return color(insrt);
 				} else { 
 					this->right=node;
-					if ( ((!node->left) and (!node->right)) or (!node->parent)) black(node); else red(node);
+					color(node);
 				}
 			}
 			if ( ((!this->left) and (!this->right)) or (!this->parent)) black(this); else red(this);
@@ -103,6 +101,11 @@ namespace TreeObjects
 			return rnode;
 		}
 		private:
+		TreeBase* color(TreeBase* n)
+		{
+			if ( ((!n->left) and (!n->right)) or (!n->parent)) black(n); else red(n);
+			return n;
+		}
 		void red(TreeBase* n) 
 		{ 
 			if (!n) return; 
