@@ -10,7 +10,12 @@ namespace TreeObjects
 		virtual ~TreeBase() {}
 		virtual TreeBase* insert(TreeBase*,TreeBase*,int depth=0) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL),depth(0) {}
-		public:
+
+		virtual int minValue(TreeBase* node)  = 0;
+		virtual int maxValue(TreeBase* node)  = 0;
+		virtual int isBST(TreeBase* node) = 0;
+		virtual long countnodes()  = 0;
+
 		TreeBase *parent,*left,*right;
 		int depth;
 		virtual ostream& operator<<(ostream&) const =0;
@@ -23,6 +28,40 @@ namespace TreeObjects
 		Bst(const KT _key) : key(_key) {}
 		Bst(const KT _key,const VT _data) : key(_key),data(_data) {}
 		virtual ~Bst() {if (left) delete left; if (right) delete right; cout<<"~"<<key<<" ";}
+		virtual long countnodes()  
+		{
+			long leftnodes(0); if (left) leftnodes=left->countnodes();
+			long rightnodes(0); if (right) rightnodes=right->countnodes();
+			return (leftnodes+rightnodes+1);
+		}
+		virtual int minValue(TreeBase* node) 
+		{
+			TreeBase* current = node;
+			while (current->left != NULL) current = current->left;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
+			return(nd.key);
+		}
+		virtual int maxValue(TreeBase* node) 
+		{
+			TreeBase* current = node;
+			while (current->right != NULL) current = current->right;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
+			return(nd.key);
+		}
+
+		virtual int isBST(TreeBase* node) 
+		{
+			if (!node) return(true);
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			// false if the max of the left is > than us
+			if (node->left!=NULL && maxValue(node->left) > nd.key) return(false);
+			// false if the min of the right is <= than us
+			if (node->right!=NULL && minValue(node->right) <= nd.key) return(false);
+			// false if, recursively, the left or right is not a BST
+			if (!isBST(node->left) || !isBST(node->right)) return(false);
+			// passing all that, it's a BST
+			return(true);
+		}
 		virtual TreeBase* insert(TreeBase* root,TreeBase* n,int _depth=0)
 		{
 			depth=_depth+1;
@@ -81,6 +120,12 @@ namespace TreeObjects
 					TreeBase* insrt(this->left->insert(root,node,this->depth)); 
 					RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*insrt)); 
 					this->ldepth=0; DepthCounter(this->left,this->ldepth);
+					int diff(id.ldepth-id.rdepth);
+					if (abs(diff)>1)
+					{
+						if (diff<0) return rotateleft(color(insrt));
+						else return rotateright(color(insrt));
+					}
 					return color(insrt);
 				} else { 
 					this->left=node;
@@ -93,6 +138,12 @@ namespace TreeObjects
 					TreeBase* insrt(this->right->insert(root,node,this->depth)); 
 					RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*insrt)); 
 					this->rdepth=0; DepthCounter(this->right,this->rdepth);
+					int diff(id.ldepth-id.rdepth);
+					if (abs(diff)>1)
+					{
+						if (diff<0) return rotateleft(color(insrt));
+						else return rotateright(color(insrt));
+					}
 					return color(insrt);
 				} else { 
 					this->right=node;
@@ -103,12 +154,18 @@ namespace TreeObjects
 			color(this);
 			RbTree<KT,VT>& rd(static_cast<RbTree<KT,VT>&>(*root)); 
 			rd.data(0X8000); 
-			//rd.ldepth=rd.rdepth=0;
-			//DepthCounter(root->left,rd.ldepth);
-			//DepthCounter(root->right,rd.rdepth);
+			int diff(rd.ldepth-rd.rdepth);
+			//cout<<"Diff:"<<diff<<endl;
 			return root; // Return this if this needs to become the new root
 		}
 		TreeBase* rotateleft(TreeBase* rnode)
+		{
+			//TreeBase* ret(rnode->right);
+			//if (rnode->left)  ret=rnode->left;
+			//ret->parent=rnode->right=NULL;
+			return rnode;
+		}
+		TreeBase* rotateright(TreeBase* rnode)
 		{
 			return rnode;
 		}

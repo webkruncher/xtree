@@ -160,7 +160,7 @@ namespace TreeDisplay
 		{
 			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
 			string tyid(typeid(KT).name());
-			if (!((updateloop)%100)) 
+			if (!((updateloop)%10)) 
 			{
 				pair<bool,KT> next(Next());
 				if (next.first)
@@ -175,8 +175,24 @@ namespace TreeDisplay
 							TreeBase* tb(root->insert(root,n));
 							if (tb) root=tb; // for in case the root was rotated
 						}
+						KT maxvalue(root->maxValue(root));
+						KT minvalue(root->minValue(root));
+						bool isbst(root->isBST(root));
+						cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
+						cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
+						cout<<"isBST:"<<boolalpha<<isbst;
+						cout.flush();
+						//cout<<"Min:"<<*used.begin();
+						//cout<<"Max:"<<*used.rbegin();
+						if (minvalue!=(*used.begin())) throw string("Min check failed");
+						if (maxvalue!=(*used.rbegin())) throw string("Max check failed");
+						if (!isbst) throw string("isBST failed");
+						long ttl(root->countnodes());
+						if (ttl!=used.size()) throw string("Wrong number of nodes counted");
+						cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
 				} 
 			}
+		
 			if (!((updateloop)%10)) if (root) traverse(*root);
 			updateloop++;
 		}
@@ -209,13 +225,21 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		if (used.size()==20) return make_pair<bool,int>(false,0);
+		if (used.size()==11) return make_pair<bool,int>(false,0);
+		if (true)
+		{	
+			static int j(-11);
+			j++;
+			used.insert(j);
+			return make_pair<bool,int>(true,j);
+		}
+
 		srand(time(0));
 		int k;
 		do 
 		{
-			k=(rand()%100); 
-			k+=50; 
+			k=(rand()%1000); 
+			k+=500; 
 		} while (used.find(k)!=used.end());
 		used.insert(k);
 		return make_pair<bool,int>(true,k);
