@@ -63,6 +63,8 @@ namespace TreeObjects
 	template <typename KT,typename VT>
 		struct RbTree : public Bst<KT,VT>
 	{
+		#define RED 1
+		#define BLACK 2 
 		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
 		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
@@ -101,6 +103,7 @@ namespace TreeObjects
 			return rnode;
 		}
 		private:
+		char clr;
 		TreeBase* color(TreeBase* n)
 		{
 			if ( ((!n->left) and (!n->right)) or (!n->parent)) black(n); else red(n);
@@ -109,10 +112,16 @@ namespace TreeObjects
 		void red(TreeBase* n) 
 		{ 
 			if (!n) return; 
-			if ( (!n->left) or (!n->right) ) {black(n); return;}
+			if ( (!n->left) or (!n->right) ) {black(n); return;}	
+			n->clr=RED;
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0XFF0000); 
 		}
-		void black(TreeBase* n) { if (!n) return; RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0); }
+		void black(TreeBase* n) 
+		{ 
+			if (!n) return; 
+			n->clr=BLACK;
+			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); nd.data(0); 
+		}
 	};
 } //namespace TreeObjects
 #endif // KRUNCH_RB_TREE_H
