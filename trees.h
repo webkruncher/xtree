@@ -37,7 +37,7 @@ namespace TreeDisplay
 			double direction(atan2(disty, distx));
 			double distance(sqrt( (distx * distx) + (disty * disty) ) );
 
-			if (distance<10)
+			if (distance<4)
 			{
 				if (empty()) return make_pair<double,double>(0,0);
 				//cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
@@ -53,19 +53,12 @@ namespace TreeDisplay
 			direction=(atan2(disty, distx));
 			distance=(sqrt( (distx * distx) + (disty * disty) ) );
 
-			if (distance<10) return make_pair<double,double>(0,0);
+			if (distance<4) return make_pair<double,double>(0,0);
 
-#if 1
-			double force(distance/3);
+			double force(distance/4);
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);
-#else
-			double dx(0),dy(0);
-			dx=(distx/10); 
-			dy=(disty/10);
-			return make_pair<double,double>(dx,dy);
-#endif
 		}
 		private: double x,y;
 	};
@@ -109,18 +102,7 @@ namespace TreeDisplay
 					if (dx<0) dx*=-1;
 					if (k<pk) x=px-dx; else x=px+dx; 
 
-
-					#if 0
-
-					double gpy(gpn.Y);
-					double dy(pn.Y-gpn.Y);
-					dy/=16; dy*=17; // 17/16 of the difference between parent and grand-parent
-
-					y=py+dy;
-					#else
 					y=30*(DepthFinder(node)+2);
-					//y=py+20;
-					#endif
 
 
 					motion(x,y);
