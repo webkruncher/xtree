@@ -56,8 +56,7 @@ namespace TreeDisplay
 			{
 				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
-				stringstream sstxt; sstxt<<node;
-				Text(0,k,k);//,sstxt.str());
+				Text(k,k);
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode);
@@ -87,13 +86,11 @@ namespace TreeDisplay
 					if (k<pk) x=px-dx; else x=px+dx; 
 					y=py+dy;
 					motion(x,y);
-					//stringstream sstxt; sstxt<<node;
-					Text(node.depth,k,pk);//,sstxt.str());
+					Text(k,pk);
 				} else {
 					if (k<pk) x=px/2; else x=(sw+px)/2; // half the difference between root and left or right edge
 					motion(x,y);
-					//stringstream sstxt; sstxt<<node;
-					Text(node.depth,k,pk);//,sstxt.str());
+					Text(k,pk);
 				}
 			}
 		}
@@ -134,24 +131,22 @@ namespace TreeDisplay
 		double x,y;
 		Motion motion;
 		unsigned long color;
-		void Text(int depth,KT k,KT pk,string txt="") {stringstream ss; ss<<depth<<")"<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
+		void Text(KT k,KT pk,string txt="") {stringstream ss; ss<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=12;}
 	};
 
-	template <> void TreeNode<int>::Text(int depth,int k,int pk,string txt)
+	template <> void TreeNode<int>::Text(int k,int pk,string txt)
 	{
 		stringstream ss;
-		//ss<<depth<<"["<<k<<","<<pk; 
 		ss<<k; if (!txt.empty()) ss<<" "<<txt;
 		text=ss.str();
 	}
 
 	template <> void TreeNode<int>::BoxSize() { CW=30; CH=12; }
 
-	template <> void TreeNode<double>::Text(int depth,double k,double pk,string txt)
+	template <> void TreeNode<double>::Text(double k,double pk,string txt)
 	{
 		stringstream ss;
-		ss<<depth<<">"<<setprecision(2)<<k;
 		ss<<k; if (!txt.empty()) ss<<" "<<txt;
 		text=ss.str();
 	}

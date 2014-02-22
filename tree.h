@@ -9,7 +9,7 @@ namespace TreeObjects
 		virtual bool operator==(const TreeBase&) = 0;
 		virtual ~TreeBase() {}
 		virtual TreeBase* insert(TreeBase* root,TreeBase*,int depth=0) = 0;
-		TreeBase() : parent(NULL), left(NULL), right(NULL),depth(0) {}
+		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 
 		virtual int minValue(TreeBase* node)  = 0;
 		virtual int maxValue(TreeBase* node)  = 0;
@@ -65,7 +65,6 @@ namespace TreeObjects
 		}
 
 		TreeBase *parent,*left,*right;
-		int depth;
 		virtual ostream& operator<<(ostream&) const =0;
 	};
 	inline ostream& operator<<(ostream& o,const TreeBase& b) {return b.operator<<(o);}
@@ -73,8 +72,9 @@ namespace TreeObjects
 	template <typename KT,typename VT>
 		struct Bst : public TreeBase
 	{
-		Bst(const KT _key) : key(_key) {}
-		Bst(const KT _key,const VT _data) : key(_key),data(_data) {}
+		int depth;
+		Bst(const KT _key) : key(_key),depth(0) {}
+		Bst(const KT _key,const VT _data) : key(_key),depth(0), data(_data) {}
 		virtual ~Bst() {if (left) delete left; if (right) delete right; }
 		virtual long countnodes()  
 		{
@@ -108,21 +108,6 @@ namespace TreeObjects
 		}
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
 		{
-#if 0
-			depth=_depth+1;
-			if ((*n)==(*this)) {delete n; return root;}
-			n->parent=this;
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*n));
-			nd.data(key,*this,parent);
-			if (((int)floor(nd.key))%2) nd.data(0XFF00); else nd.data(0XFF);
-			if ((*n)<(*this))
-			{
-				if (left) {left->insert(root,n,depth); return root;}else left=n;
-			} else {
-				if (right) {right->insert(root,n,depth); return root; } else right=n;
-			}
-			return root;
-#else
 			this->depth=_depth+1;
 			if ((*node)==(*this)) {delete node; return root;}
 			node->parent=this;
@@ -145,7 +130,6 @@ namespace TreeObjects
 				}
 			}
 			return root;
-#endif
 		}
 		virtual bool operator<(const TreeBase& _b) 
 		{ 
@@ -217,10 +201,7 @@ namespace TreeObjects
 		}
 
 
-		virtual ostream& operator<<(ostream& o) const 
-		{
-			return o;
-		}
+		virtual ostream& operator<<(ostream& o) const { return o; }
 
 
 		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
