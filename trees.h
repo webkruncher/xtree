@@ -7,7 +7,7 @@ namespace TreeDisplay
 	struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
 
 	template <typename KT,typename VT>
-		void BlackNodeCounter(RbTree<KT,VT>* n,int& d)
+		inline void BlackNodeCounter(RbTree<KT,VT>* n,int& d)
 		{
 			if (!n) return;
 			RbTree<KT,VT>& nd(*n); 
@@ -16,11 +16,8 @@ namespace TreeDisplay
 			if (n->left) BlackNodeCounter<KT,VT>(n->left,d);
 		}
 
-	int DepthFinder(TreeBase& tb,int d=0)
-	{
-		if (tb.parent) d=DepthFinder(*tb.parent,d+1);
-		return d;
-	}
+	inline int DepthFinder(TreeBase& tb,int d=0)
+		{ if (tb.parent) d=DepthFinder(*tb.parent,d+1); return d; }
 
 	struct Motion : private deque<pair<double,double> >
 	{
@@ -95,7 +92,6 @@ namespace TreeDisplay
 					int depth(DepthFinder(node)+3);
 					y=CH*((depth*depth)/2);
 					if (k<pk) y+=CH;
-
 
 					motion(x,y);
 					Text(k,pk);

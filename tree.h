@@ -32,7 +32,7 @@ namespace TreeObjects
 			else return g->left;
 		}
 
-		TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* other(node->right);
 			node->right = other->left;
@@ -48,7 +48,7 @@ namespace TreeObjects
 			return root;
 		}
 
-		TreeBase* RotateRight(TreeBase* root, TreeBase* node)
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* other(node->left);
 			node->left = other->right;
@@ -238,6 +238,24 @@ namespace TreeObjects
 				}
 			}
 			return black(root);
+		}
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
+		{
+			TreeBase* newroot(Bst<KT,VT>::RotateLeft(root,node));
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.data(this->key,*this,this->parent);
+			Bst<KT,VT>& nr(static_cast<Bst<KT,VT>&>(*newroot));
+			nr.data(nr.key,*newroot,NULL);
+			return newroot;
+		}
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
+		{
+			TreeBase* newroot(Bst<KT,VT>::RotateRight(root,node));
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.data(this->key,*this,this->parent);
+			Bst<KT,VT>& nr(static_cast<Bst<KT,VT>&>(*newroot));
+			nr.data(nr.key,*newroot,NULL);
+			return newroot;
 		}
 	};
 } //namespace TreeObjects
