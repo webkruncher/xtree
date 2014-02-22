@@ -1,6 +1,7 @@
 
-#ifndef RED_BLACK_INTEGRITY
-#define RED_BLACK_INTEGRITY
+#ifndef TREE_INTEGRITY
+#define TREE_INTEGRITY
+
 	template<typename KT,typename VT> 
 		inline bool RedBlackIntegrity(TreeBase* root)
 	{
@@ -65,5 +66,6 @@
 		if (!visitor) {cout<<"Red Black check failed"<<endl; return false;}
 		return true;
 	}
-#endif // RED_BLACK_INTEGRITY
+
+#endif // TREE_INTEGRITY
 

@@ -5,7 +5,7 @@
 struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
 #include "Motivation.h"
 #include "NodeDisplay.h"
-#include "RedBlackIntegrity.h"
+#include "TreeIntegrity.h"
 namespace TreeDisplay
 {
 	template<typename KT>
