@@ -40,22 +40,12 @@ namespace TreeDisplay
 			if (distance<4)
 			{
 				if (empty()) return make_pair<double,double>(0,0);
-				//cout<<tx<<"-"<<x<<", "<<ty<<"-"<<ty<<", d:"<<distance<<endl; cout.flush();
-				{
-					x=back().first; 
-					y=back().second; 
-					pop_back();
-				}
+				{ x=back().first; y=back().second; pop_back(); }
 			}
-
-			//distx=(x-tx);
-			//disty=(y-ty);
-			//direction=(atan2(disty, distx));
-			//distance=(sqrt( (distx * distx) + (disty * disty) ) );
 
 			if (distance<4) return make_pair<double,double>(0,0);
 
-			double force(distance/4);
+			double force(distance/6);
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);
@@ -102,7 +92,9 @@ namespace TreeDisplay
 					if (dx<0) dx*=-1;
 					if (k<pk) x=px-dx; else x=px+dx; 
 
-					y=30*(DepthFinder(node)+2);
+					int depth(DepthFinder(node)+3);
+					y=CH*((depth*depth)/2);
+					if (k<pk) y+=CH;
 
 
 					motion(x,y);
