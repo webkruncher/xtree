@@ -27,7 +27,7 @@ namespace TreeObjects
 		TreeBase* uncle(TreeBase* node)
 		{
 			TreeBase* g(grandparent(node));
-			if (g == NULL) return NULL; // No grandparent means no uncle
+			if (g == NULL) return NULL; 
 			if (node->parent == g->left) return g->right;
 			else return g->left;
 		}
@@ -40,10 +40,8 @@ namespace TreeObjects
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
 			else
-        if ( node == (node->parent)->left )
-            node->parent->left = other;
-        else
-            node->parent->right = other;
+        if ( node == (node->parent)->left ) node->parent->left = other;
+        else node->parent->right = other;
 			other->left = node;
 			node->parent = other;
 			root->parent=NULL;
@@ -58,10 +56,8 @@ namespace TreeObjects
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
 			else
-        if ( node == (node->parent)->right )
-            node->parent->right = other;
-        else
-            node->parent->left = other;
+        if ( node == (node->parent)->right ) node->parent->right = other;
+        else node->parent->left = other;
 			other->right = node;
 			node->parent = other;
 			root->parent=NULL;
@@ -110,8 +106,9 @@ namespace TreeObjects
 			if (!isBST(node->left) || !isBST(node->right)) return(false);
 			return(true);
 		}
-		virtual TreeBase* insert(TreeBase* root,TreeBase* n,int _depth=0)
+		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
 		{
+#if 0
 			depth=_depth+1;
 			if ((*n)==(*this)) {delete n; return root;}
 			n->parent=this;
@@ -125,6 +122,30 @@ namespace TreeObjects
 				if (right) {right->insert(root,n,depth); return root; } else right=n;
 			}
 			return root;
+#else
+			this->depth=_depth+1;
+			if ((*node)==(*this)) {delete node; return root;}
+			node->parent=this;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.data(this->key,*this,this->parent);
+			if ((*node)<(*this))
+			{
+				if (this->left) 
+				{
+					return this->left->insert(root,node,this->depth); 
+				} else { 
+					this->left=node;
+				}
+			} else {
+				if (this->right) 
+				{
+					return this->right->insert(root,node,this->depth); 
+				} else { 
+					this->right=node;
+				}
+			}
+			return root;
+#endif
 		}
 		virtual bool operator<(const TreeBase& _b) 
 		{ 
@@ -152,39 +173,16 @@ namespace TreeObjects
 	{
 		#define RED 1
 		#define BLACK 2 
-		RbTree(const KT _key) : Bst<KT,VT>(_key),ldepth(0),rdepth(0) {}
-		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data),ldepth(0),rdepth(0) {}
+		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
+		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
 		{
-			this->depth=_depth+1;
-			if ((*node)==(*this)) {delete node; return root;}
-			node->parent=this;
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*node));
-			nd.data(this->key,*this,this->parent);
-			if ((*node)<(*this))
-			{
-				if (this->left) 
-				{
-					return this->left->insert(root,node,this->depth); 
-				} else { 
-					this->left=node;
-					this->ldepth=1;
-				}
-			} else {
-				if (this->right) 
-				{
-					return this->right->insert(root,node,this->depth); 
-				} else { 
-					this->right=node;
-					this->rdepth=1;
-				}
-			}
-			return rbfixup(root,node);
+			root=Bst<KT,VT>::insert(root,node,_depth);
+			return RedAndBlack(root,node);
 		}
 		private:
 		char clr;
-		int ldepth,rdepth;
 
 		void DepthCounter(TreeBase* n,int& d)
 		{
@@ -221,12 +219,11 @@ namespace TreeObjects
 
 		virtual ostream& operator<<(ostream& o) const 
 		{
-			o<<ldepth<<","<<rdepth;
 			return o;
 		}
 
 
-		TreeBase* rbfixup(TreeBase* root, TreeBase* node)
+		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
 		{
 			/* restore the red-black property */
 			if (!node->parent) return root;
