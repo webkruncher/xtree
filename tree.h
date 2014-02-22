@@ -34,24 +34,16 @@ namespace TreeObjects
 
 		TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
-			//cout<<"RotateLeft"<<endl; cout.flush();
 			TreeBase* other(node->right);
-			/* Turn other's left sub-tree into node's right sub-tree */
 			node->right = other->left;
 			if ( other->left != NULL ) other->left->parent = node;
-			/* other's new parent was node's parent */
 			other->parent = node->parent;
-			/* Set the parent to point to other instead of node */
-			/* First see whether we're at the root */
 			if ( node->parent == NULL ) root = other;
 			else
         if ( node == (node->parent)->left )
-            /* node was on the left of its parent */
             node->parent->left = other;
         else
-            /* node must have been on the right */
             node->parent->right = other;
-				/* Finally, put node on other's left */
 			other->left = node;
 			node->parent = other;
 			root->parent=NULL;
@@ -60,24 +52,16 @@ namespace TreeObjects
 
 		TreeBase* RotateRight(TreeBase* root, TreeBase* node)
 		{
-			//cout<<"RotateRight"<<endl; cout.flush();
 			TreeBase* other(node->left);
-			/* Turn other's right sub-tree into node's left sub-tree */
 			node->left = other->right;
 			if ( other->right != NULL ) other->right->parent = node;
-			/* other's new parent was node's parent */
 			other->parent = node->parent;
-			/* Set the parent to point to other instead of node */
-			/* First see whether we're at the root */
 			if ( node->parent == NULL ) root = other;
 			else
         if ( node == (node->parent)->right )
-            /* node was on the right of its parent */
             node->parent->right = other;
         else
-            /* node must have been on the right */
             node->parent->left = other;
-			/* Finally, put node on other's right */
 			other->right = node;
 			node->parent = other;
 			root->parent=NULL;
