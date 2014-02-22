@@ -7,7 +7,7 @@ using namespace TreeObjects;
 using namespace TreeDisplay;
 #include <math.h>
 
-#define KEYTYPE int
+//#define KEYTYPE int
 
 namespace Utilities
 {

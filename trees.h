@@ -104,7 +104,7 @@ namespace TreeDisplay
 
 	};
 
-	template <> pair<bool,int> TreeCanvas<int>::Next()
+	template <> inline pair<bool,int> TreeCanvas<int>::Next()
 	{ 
 		static int dbler(0);
 		dbler++;
@@ -137,7 +137,7 @@ namespace TreeDisplay
 		return make_pair<bool,int>(true,k);
 	}
 
-	template <> pair<bool,double> TreeCanvas<double>::Next()
+	template <> inline pair<bool,double> TreeCanvas<double>::Next()
 	{ 
 		if (used.size()==1000) return make_pair<bool,double>(false,0);
 		srand(time(0));
