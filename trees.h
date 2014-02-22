@@ -54,27 +54,7 @@ namespace TreeDisplay
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
 		bool stop;
-		virtual bool CheckIntegrity(TreeBase* root)
-		{
-			if (!root) return true;
-			Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*root));
-			KT maxvalue(rk.maxValue(root));
-			KT minvalue(rk.minValue(root));
-			bool isbst(root->isBST(root));
-			//cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
-			//cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
-			//cout<<"isBST:"<<boolalpha<<isbst;
-			//cout.flush();
-			//cout<<"Min:"<<*used.begin();
-			//cout<<"Max:"<<*used.rbegin();
-			if (minvalue!=(*used.begin())) {cout<<("Min check failed")<<endl; return false;}
-			if (maxvalue!=(*used.rbegin())) {stop=true; cout<<("Max check failed")<<endl; return false;}
-			if (!isbst) {cout<<("isBST failed")<<endl; return false;}
-			long ttl(root->countnodes());
-			if (ttl!=used.size()) {cout<<("Wrong number of nodes counted")<<endl; return false;}
-			//cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
-			return true;
-		}
+		virtual bool CheckIntegrity(TreeBase* root) { return BstIntegrity<KT,VT>(root,used); }
 		private:
 		bool movement;
 		set<KT> used;
