@@ -6,7 +6,7 @@ namespace TreeDisplay
 	inline int DepthFinder(TreeBase& tb,int d=0)
 		{ if (tb.parent) d=DepthFinder(*tb.parent,d+1); return d; }
 
-	struct NodeBase
+	struct NodeBase : map<string,string>
 	{
 		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100) {}
 		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),moved(true), motion(X,Y), color(0X003333) { }
@@ -21,6 +21,7 @@ namespace TreeDisplay
 		double X,Y;
 		unsigned long color;
 		int CW,CH;
+		int DCW,DCH;
 	};
 
 	template<typename KT>
@@ -77,7 +78,6 @@ namespace TreeDisplay
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
 			{ NodeBase::operator()(invalid,display,gc,bitmap); }
 		private:
-		//const string tyid;
 		KT k;
 		void Text(KT k,KT pk,string txt="") {stringstream ss; ss<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=12;}

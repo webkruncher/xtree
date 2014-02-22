@@ -5,6 +5,7 @@
 struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
 #include "Motivation.h"
 #include "NodeDisplay.h"
+#include "RedBlackIntegrity.h"
 namespace TreeDisplay
 {
 	template<typename KT>
@@ -151,6 +152,7 @@ namespace TreeDisplay
 		return make_pair<bool,double>(true,k);
 	}
 
+
 	template<typename KT>
 		struct RbTreeCanvas : TreeCanvas<KT>
 	{
@@ -160,64 +162,8 @@ namespace TreeDisplay
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbTree<KT,VT>(key,treenode); }
 		virtual bool CheckIntegrity(TreeBase* root)
 		{
-			if (!root) return true;
-			//cout<<"Checking Red Black"<<endl;
-			RbTree<KT,VT>& rk(static_cast<RbTree<KT,VT>&>(*root));
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;
-			TreeBase* leftmost(root->LeftMost());
-			TreeBase* rightmost(root->RightMost());
-			RbTree<KT,VT>& lm(static_cast<RbTree<KT,VT>&>(*leftmost));
-			RbTree<KT,VT>& rm(static_cast<RbTree<KT,VT>&>(*rightmost));
-			const KT& L(lm);
-			const KT& R(rm);
-			//cout<<"Leftmost:"<<L<<", Rightmost:"<<R<<endl;
-
-			struct Visitor
-			{
-				Visitor(RbTree<KT,VT>& _rk) : rk(_rk),ok(true) {}
-				operator bool () { InOrder(rk); return ok; }
-				private:
-				RbTree<KT,VT>& rk;
-				bool ok;
-				void InOrder(TreeBase& node)
-				{
-					if (node.left) InOrder(*node.left);
-					Visit(node);
-					if (node.right) InOrder(*node.right);
-				}
-				void Visit(TreeBase& node)
-				{
-					RbTree<KT,VT>& rb(static_cast<RbTree<KT,VT>&>(node));
-					const KT& key(rb);
-					int ld(0),rd(0);
-					if (node.left) BlackNodeCounter(node.left,ld);
-					if (node.right) BlackNodeCounter(node.right,rd);
-					int diff(abs(ld-rd));
-					if (diff>2) 
-					{
-						cout<<"Imbalanced:"<<key<<" l:"<<ld<<" r:"<<rd<<endl; cout.flush();
-						ok=false;
-					}
-					if (rb.color(&node)==RbTree<KT,VT>::RED) 
-					{
-						if (rb.left) if (rb.color(rb.left)==RbTree<KT,VT>::RED)   {cout<<key<<" is a red node with a red child"<<endl; ok=false;}
-						if (rb.right) if (rb.color(rb.right)==RbTree<KT,VT>::RED) {cout<<key<<" is a red node with a red child"<<endl; ok=false;}
-					}
-				}
-				void BlackNodeCounter(TreeBase* n,int& d)
-				{
-					if (!n) return;
-					RbTree<KT,VT>& rb(static_cast<RbTree<KT,VT>&>(*n));
-					if (rb.color(n)==RbTree<KT,VT>::BLACK) d++;
-					if (n->right) BlackNodeCounter(n->right,d);
-					if (n->left) BlackNodeCounter(n->left,d);
-					if (!n->left) d++; if (!n->right) d++;
-				}
-			} visitor(rk);
-
-			if (!visitor) {cout<<"Red Black check failed"<<endl; return false;}
-			return true;
-			
+			return RedBlackIntegrity<KT,VT>(root);
 		}
 	};
 } // TreeDisplay
