@@ -48,10 +48,10 @@ namespace TreeDisplay
 				}
 			}
 
-			distx=(x-tx);
-			disty=(y-ty);
-			direction=(atan2(disty, distx));
-			distance=(sqrt( (distx * distx) + (disty * disty) ) );
+			//distx=(x-tx);
+			//disty=(y-ty);
+			//direction=(atan2(disty, distx));
+			//distance=(sqrt( (distx * distx) + (disty * disty) ) );
 
 			if (distance<4) return make_pair<double,double>(0,0);
 
