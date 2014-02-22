@@ -160,6 +160,7 @@ namespace TreeObjects
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
 			root=Bst<KT,VT>::insert(root,node);
+			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			return RedAndBlack(root,node);
 		}
 		private:

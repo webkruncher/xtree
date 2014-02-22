@@ -190,18 +190,20 @@ namespace TreeDisplay
 				pair<bool,KT> next(Next());
 				if (next.first)
 				{
-						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-						TreeBase* n(generate(next.second,tn));
-						if (!root) waitfor=updateloop+10;
-						if (!root) root=n;  
-							else 
 						{
-							TreeBase* nr(root->insert(root,n));
-							if (nr) 
+							TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+							TreeBase* n(generate(next.second,tn));
+							if (!root) waitfor=updateloop+10;
+							if (!root) root=n;  
+								else 
 							{
-								if (root!=nr) cout<<"The root node rotated"<<endl;
-								root=nr;
-							} else cout<<next.first<<" is a duplicate and was deleted"<<endl;
+								TreeBase* nr(root->insert(root,n));
+								if (nr) 
+								{
+									if (root!=nr) cout<<"The root node rotated"<<endl;
+									root=nr;
+								} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
+							}
 						}
 						KT maxvalue(root->maxValue(root));
 						KT minvalue(root->minValue(root));
@@ -257,6 +259,16 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
+		static int dbler(0);
+		dbler++;
+		if (!(dbler%10))  // return a random value that was already inserted
+		{
+			int w(rand()%used.size());
+			set<int>::iterator it=used.begin();
+			for (int j=0;j<w;j++) it++;
+			return make_pair<bool,int>(true,*it);
+		}
+
 		int Max(999);
 		if (used.size()==(Max-1)) return make_pair<bool,int>(false,0);
 		if (false)
