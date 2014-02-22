@@ -30,7 +30,7 @@ namespace TreeDisplay
 					pop_back();
 				}
 			}
-			const double force(distance/10);
+			const double force(distance/3);
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);
@@ -57,7 +57,7 @@ namespace TreeDisplay
 				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
 				stringstream sstxt; sstxt<<node;
-				Text(0,k,k,sstxt.str());
+				Text(0,k,k);//,sstxt.str());
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode);
@@ -79,13 +79,13 @@ namespace TreeDisplay
 					if (dx<0) dx*=-1;
 					if (k<pk) x=px-dx; else x=px+dx; 
 					motion(x,y);
-					stringstream sstxt; sstxt<<node;
-					Text(node.depth,k,pk,sstxt.str());
+					//stringstream sstxt; sstxt<<node;
+					Text(node.depth,k,pk);//,sstxt.str());
 				} else {
 					if (k<pk) x=px/2; else x=(sw+px)/2; // half the difference between root and left or right edge
 					motion(x,y);
-					stringstream sstxt; sstxt<<node;
-					Text(node.depth,k,pk,sstxt.str());
+					//stringstream sstxt; sstxt<<node;
+					Text(node.depth,k,pk);//,sstxt.str());
 				}
 			}
 		}
@@ -126,7 +126,7 @@ namespace TreeDisplay
 		double x,y;
 		Motion motion;
 		unsigned long color;
-		void Text(int depth,KT k,KT pk,string txt) {stringstream ss; ss<<depth<<")"<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
+		void Text(int depth,KT k,KT pk,string txt="") {stringstream ss; ss<<depth<<")"<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
 		void BoxSize() {CW=50; CH=12;}
 	};
 
@@ -134,17 +134,17 @@ namespace TreeDisplay
 	{
 		stringstream ss;
 		//ss<<depth<<"["<<k<<","<<pk; 
-		ss<<k<<" "<<txt;
+		ss<<k; if (!txt.empty()) ss<<" "<<txt;
 		text=ss.str();
 	}
 
-	template <> void TreeNode<int>::BoxSize() { CW=50; CH=12; }
+	template <> void TreeNode<int>::BoxSize() { CW=30; CH=12; }
 
 	template <> void TreeNode<double>::Text(int depth,double k,double pk,string txt)
 	{
 		stringstream ss;
 		ss<<depth<<">"<<setprecision(2)<<k;
-		ss<<k<<" "<<txt;
+		ss<<k; if (!txt.empty()) ss<<" "<<txt;
 		text=ss.str();
 	}
 
@@ -228,8 +228,8 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		if (used.size()==30) return make_pair<bool,int>(false,0);
-		if (false)
+		if (used.size()==100) return make_pair<bool,int>(false,0);
+		if (true)
 		{	
 			static int j(-11);
 			j++;
