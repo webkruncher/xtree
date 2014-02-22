@@ -8,7 +8,7 @@ namespace TreeObjects
 		virtual bool operator<(const TreeBase&) = 0;
 		virtual bool operator==(const TreeBase&) = 0;
 		virtual ~TreeBase() {}
-		virtual TreeBase* insert(TreeBase* root,TreeBase*,int depth=0) = 0;
+		virtual TreeBase* insert(TreeBase* root,TreeBase*) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 
 		virtual int minValue(TreeBase* node)  = 0;
@@ -72,9 +72,8 @@ namespace TreeObjects
 	template <typename KT,typename VT>
 		struct Bst : public TreeBase
 	{
-		int depth;
-		Bst(const KT _key) : key(_key),depth(0) {}
-		Bst(const KT _key,const VT _data) : key(_key),depth(0), data(_data) {}
+		Bst(const KT _key) : key(_key) {}
+		Bst(const KT _key,const VT _data) : key(_key), data(_data) {}
 		virtual ~Bst() {if (left) delete left; if (right) delete right; }
 		virtual long countnodes()  
 		{
@@ -108,7 +107,6 @@ namespace TreeObjects
 		}
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
 		{
-			this->depth=_depth+1;
 			if ((*node)==(*this)) {delete node; return root;}
 			node->parent=this;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
@@ -117,14 +115,14 @@ namespace TreeObjects
 			{
 				if (this->left) 
 				{
-					return this->left->insert(root,node,this->depth); 
+					return this->left->insert(root,node);
 				} else { 
 					this->left=node;
 				}
 			} else {
 				if (this->right) 
 				{
-					return this->right->insert(root,node,this->depth); 
+					return this->right->insert(root,node);
 				} else { 
 					this->right=node;
 				}
