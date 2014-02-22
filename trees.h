@@ -113,7 +113,7 @@ namespace TreeDisplay
 				pair<double,double> ul(x-(CW/2),y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
 				Rect iv(ul.first-1,ul.second-1,lr.first+2,lr.second+2);
-				invalid.insert(iv);
+				//invalid.insert(iv);
 				XSetForeground(display,gc,0X777777);
 				XPoint& points(iv);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
