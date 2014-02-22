@@ -105,7 +105,7 @@ namespace TreeObjects
 			if (!isBST(node->left) || !isBST(node->right)) return(false);
 			return(true);
 		}
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
+		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
 			if ((*node)==(*this)) {delete node; return root;}
 			node->parent=this;
@@ -153,27 +153,18 @@ namespace TreeObjects
 	template <typename KT,typename VT>
 		struct RbTree : public Bst<KT,VT>
 	{
-		#define RED 1
-		#define BLACK 2 
+		enum {RED=1,BLACK};
 		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
 		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node,int _depth=0)
+		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
-			root=Bst<KT,VT>::insert(root,node,_depth);
+			root=Bst<KT,VT>::insert(root,node);
 			return RedAndBlack(root,node);
 		}
 		private:
 		char clr;
 
-		void DepthCounter(TreeBase* n,int& d)
-		{
-			if (!n) return;
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
-			if (nd.clr==BLACK) d++;
-			if (n->right) DepthCounter(n->right,d);
-			if (n->left) DepthCounter(n->left,d);
-		}
 
 		char color(TreeBase* n)
 		{

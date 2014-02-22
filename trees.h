@@ -6,6 +6,16 @@ namespace TreeDisplay
 {
 	struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
 
+	template <typename KT,typename VT>
+		void DepthCounter(RbTree<KT,VT>* n,int& d)
+		{
+			if (!n) return;
+			RbTree<KT,VT>& nd(*n); 
+			if (color(n)==RbTree<KT,VT>::BLACK) d++;
+			if (n->right) DepthCounter<KT,VT>(n->right,d);
+			if (n->left) DepthCounter<KT,VT>(n->left,d);
+		}
+
 	struct Motion : private deque<pair<double,double> >
 	{
 		Motion(const double _x,const double _y) : x(_x),y(_y) { }
