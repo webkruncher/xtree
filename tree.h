@@ -14,6 +14,18 @@ namespace TreeObjects
 		virtual int isBST(TreeBase* node) = 0;
 		virtual long countnodes()  = 0;
 
+		TreeBase* LeftMost()
+		{
+			TreeBase* current = this;
+			while (current->left != NULL) current = current->left;
+			return current;
+		}
+		TreeBase* RightMost()
+		{
+			TreeBase* current = this;
+			while (current->right != NULL) current = current->right;
+			return current;
+		}
 		TreeBase* grandparent(TreeBase* node)
 		{
 			if ((node != NULL) && (node->parent != NULL))
@@ -160,15 +172,15 @@ namespace TreeObjects
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			return RedAndBlack(root,node);
 		}
-		private:
-		char clr;
-
-		char color(TreeBase* n)
+		const char color(TreeBase* n) const
 		{
 			if (!n) return 0; 
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
 			return nd.clr;
 		}
+		private:
+		char clr;
+
 		TreeBase* red(TreeBase* n) 
 		{ 
 			if (!n) return n; 
