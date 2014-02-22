@@ -177,7 +177,7 @@ namespace TreeObjects
 			if (!n) return n; 
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
 			nd.clr=RED;
-			nd.data(0XFF0000); 
+			nd.data(0X800000); 
 			return n;
 		}
 		TreeBase* black(TreeBase* n) 
