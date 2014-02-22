@@ -43,7 +43,7 @@ namespace TreeObjects
 	{
 		Bst(const KT _key) : key(_key) {}
 		Bst(const KT _key,const VT _data) : key(_key),data(_data) {}
-		virtual ~Bst() {if (left) delete left; if (right) delete right; cout<<"~"<<key<<" ";}
+		virtual ~Bst() {if (left) delete left; if (right) delete right; }
 		virtual long countnodes()  
 		{
 			long leftnodes(0); if (left) leftnodes=left->countnodes();
@@ -197,7 +197,7 @@ namespace TreeObjects
 
 		TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
-			cout<<"RotateLeft"<<endl; cout.flush();
+			//cout<<"RotateLeft"<<endl; cout.flush();
 			TreeBase* other(node->right);
 			/* Turn other's left sub-tree into node's right sub-tree */
 			node->right = other->left;
@@ -223,7 +223,7 @@ namespace TreeObjects
 
 		TreeBase* RotateRight(TreeBase* root, TreeBase* node)
 		{
-			cout<<"RotateRight"<<endl; cout.flush();
+			//cout<<"RotateRight"<<endl; cout.flush();
 			TreeBase* other(node->left);
 			/* Turn other's right sub-tree into node's left sub-tree */
 			node->left = other->right;
@@ -255,10 +255,10 @@ namespace TreeObjects
 			red(node);
 			while ( (node != root) && (color(node->parent) == RED) ) 
 			{
-				cout<<"parent is red"<<endl;
+				//cout<<"parent is red"<<endl;
 				if ( node->parent == node->parent->parent->left ) 
 				{
-					cout<<"parent is on the left"<<endl;
+					//cout<<"parent is on the left"<<endl;
 					/* If node's parent is a left, other is node's right 'uncle' */
 					TreeBase* other(node->parent->parent->right);
 					if ( color(other) == RED ) 
@@ -284,11 +284,11 @@ namespace TreeObjects
 						root=RotateRight( root, node->parent->parent );
 					}
 				} else {
-					cout<<"parent is on the right"<<endl;
+					//cout<<"parent is on the right"<<endl;
 					TreeBase* other(node->parent->parent->left);
 					if ( color(other) == RED ) 
 					{
-						cout<<"other is red"<<endl;
+						//cout<<"other is red"<<endl;
 						/* case 1 - change the colours */
 						black(node->parent);
 						black(other);
@@ -297,16 +297,16 @@ namespace TreeObjects
 						node=node->parent->parent;
 					} else {
 						/* other is a black node */
-						cout<<"other is black"<<endl;
+						//cout<<"other is black"<<endl;
 						if (node==node->parent->left ) 
 						{
-							cout<<"node is on the left"<<endl;
+							//cout<<"node is on the left"<<endl;
 							/* and node is to the left */ 
 							/* case 2 - move node up and rotate */
 							node=node->parent;
 							root=RotateRight(root,node);
 						} else {
-							cout<<"node is on the right"<<endl;
+							//cout<<"node is on the right"<<endl;
 							/* case 3 */
 							black(node->parent);
 							red(node->parent->parent);

@@ -75,9 +75,16 @@ namespace TreeDisplay
 					TreeNode<KT>& gpn(grandparentnode);
 					double gpx(gpn.x);
 					double dx(gpn.x-pn.x);
-					dx/=16; dx*=9; // 9/16s of the difference between parent and grand-parent
+					dx/=16; dx*=7; // 7/16s of the difference between parent and grand-parent
 					if (dx<0) dx*=-1;
+
+					double gpy(gpn.y);
+					double dy(pn.y-gpn.y);
+					dy/=16; dy*=19; // ?/? of the difference between parent and grand-parent
+
+
 					if (k<pk) x=px-dx; else x=px+dx; 
+					y=py+dy;
 					motion(x,y);
 					//stringstream sstxt; sstxt<<node;
 					Text(node.depth,k,pk);//,sstxt.str());
@@ -172,7 +179,7 @@ namespace TreeDisplay
 				{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						TreeBase* n(generate(next.second,tn));
-						if (!root) waitfor=updateloop+100;
+						if (!root) waitfor=updateloop+10;
 						if (!root) root=n;  else root=root->insert(root,n);
 						KT maxvalue(root->maxValue(root));
 						KT minvalue(root->minValue(root));
@@ -228,11 +235,12 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		if (used.size()==100) return make_pair<bool,int>(false,0);
-		if (true)
+		int Max(999);
+		if (used.size()==(Max-1)) return make_pair<bool,int>(false,0);
+		if (false)
 		{	
-			static int j(-11);
-			j++;
+			static int j(11);
+			j--;
 			used.insert(j);
 			return make_pair<bool,int>(true,j);
 		}
@@ -241,8 +249,8 @@ namespace TreeDisplay
 		int k;
 		do 
 		{
-			k=(rand()%100); 
-			k+=50; 
+			k=(rand()%Max); 
+			k+=(Max/2); 
 		} while (used.find(k)!=used.end());
 		used.insert(k);
 		return make_pair<bool,int>(true,k);
