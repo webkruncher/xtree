@@ -30,6 +30,7 @@ namespace TreeDisplay
 			const double disty(y-ty);
 			const double direction(atan2(disty, distx));
 			const double distance(sqrt( (distx * distx) + (disty * disty) ) );
+
 			if (distance<10)
 			{
 				if (empty()) return make_pair<double,double>(0,0);
@@ -40,6 +41,8 @@ namespace TreeDisplay
 					pop_back();
 				}
 			}
+
+
 #if 1
 			double force(distance/3);
 			const double dx(force*cos(direction));
@@ -47,11 +50,8 @@ namespace TreeDisplay
 			return make_pair<double,double>(dx,dy);
 #else
 			double dx(0),dy(0);
-//cout<<"ty:"<<ty<<", y:"<<y<<endl;
-			if (distx<-1) dx=-1; if (distx>1) dx=1;
-			if (disty<-1) dy=-1; if (disty>1) dy=1;
-			if (ty<dy) dy=-1; else if (ty>dy) dy=1;
-			x+=dx; y+=dy;
+			dx=(distx/10); 
+			dy=(disty/10);
 			return make_pair<double,double>(dx,dy);
 #endif
 		}
