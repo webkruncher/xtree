@@ -155,7 +155,7 @@ namespace TreeDisplay
 	{
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false) {}
+			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false),stop(false),waitfor(0) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
 		virtual void operator()(Pixmap& bitmap) {  if (root) draw(invalid,*root,bitmap); }
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
@@ -163,7 +163,8 @@ namespace TreeDisplay
 		{
 			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
 			string tyid(typeid(KT).name());
-			if (!movement) 
+			if ((!waitfor) or (updateloop>waitfor) )
+				if ((!movement) and (!stop))
 			{
 				movement=true;
 				pair<bool,KT> next(Next());
@@ -171,6 +172,7 @@ namespace TreeDisplay
 				{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						TreeBase* n(generate(next.second,tn));
+						if (!root) waitfor=updateloop+100;
 						if (!root) root=n;  else root=root->insert(root,n);
 						KT maxvalue(root->maxValue(root));
 						KT minvalue(root->minValue(root));
@@ -181,11 +183,11 @@ namespace TreeDisplay
 						cout.flush();
 						//cout<<"Min:"<<*used.begin();
 						//cout<<"Max:"<<*used.rbegin();
-						if (minvalue!=(*used.begin())) throw string("Min check failed");
-						if (maxvalue!=(*used.rbegin())) throw string("Max check failed");
-						if (!isbst) throw string("isBST failed");
+						if (minvalue!=(*used.begin())) {stop=true; cout<<("Min check failed")<<endl;}
+						if (maxvalue!=(*used.rbegin())) {stop=true; cout<<("Max check failed")<<endl;}
+						if (!isbst) {stop=true; cout<<("isBST failed")<<endl;}
 						long ttl(root->countnodes());
-						if (ttl!=used.size()) throw string("Wrong number of nodes counted");
+						if (ttl!=used.size()) {stop=true; cout<<("Wrong number of nodes counted")<<endl;}
 						cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
 				} 
 			}
@@ -195,9 +197,10 @@ namespace TreeDisplay
 		}
 		virtual operator InvalidBase& () {return invalid;}
 		private:
+		bool stop;
 		bool movement;
 		set<KT> used;
-		unsigned long updateloop;
+		unsigned long updateloop,waitfor;
 		TreeBase* root;
 		Invalid invalid;
 		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }

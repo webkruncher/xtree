@@ -130,10 +130,10 @@ namespace TreeObjects
 			{
 				if (this->left) 
 				{
-					this->left->insert(root,node,this->depth); 
-					RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*node)); 
-					this->ldepth=0; DepthCounter(this->left,this->ldepth);
-					int diff(id.ldepth-id.rdepth);
+					return this->left->insert(root,node,this->depth); 
+					//RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*node)); 
+					//this->ldepth=0; DepthCounter(this->left,this->ldepth);
+					//int diff(id.ldepth-id.rdepth);
 				} else { 
 					this->left=node;
 					this->ldepth=1;
@@ -141,15 +141,16 @@ namespace TreeObjects
 			} else {
 				if (this->right) 
 				{
-					this->right->insert(root,node,this->depth); 
-					RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*node)); 
-					this->rdepth=0; DepthCounter(this->right,this->rdepth);
+					return this->right->insert(root,node,this->depth); 
+					//RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*node)); 
+					//this->rdepth=0; DepthCounter(this->right,this->rdepth);
 				} else { 
 					this->right=node;
 					this->rdepth=1;
 				}
 			}
-			return root;
+			return rbfixup(root,node);
+			//return root;
 		}
 		private:
 		char clr;
@@ -192,6 +193,130 @@ namespace TreeObjects
 		{
 			o<<ldepth<<","<<rdepth;
 			return o;
+		}
+
+		TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
+		{
+			cout<<"RotateLeft"<<endl; cout.flush();
+			TreeBase* other(node->right);
+			/* Turn other's left sub-tree into node's right sub-tree */
+			node->right = other->left;
+			if ( other->left != NULL ) other->left->parent = node;
+			/* other's new parent was node's parent */
+			other->parent = node->parent;
+			/* Set the parent to point to other instead of node */
+			/* First see whether we're at the root */
+			if ( node->parent == NULL ) root = other;
+			else
+        if ( node == (node->parent)->left )
+            /* node was on the left of its parent */
+            node->parent->left = other;
+        else
+            /* node must have been on the right */
+            node->parent->right = other;
+				/* Finally, put node on other's left */
+			other->left = node;
+			node->parent = other;
+			root->parent=NULL;
+			return root;
+		}
+
+		TreeBase* RotateRight(TreeBase* root, TreeBase* node)
+		{
+			cout<<"RotateRight"<<endl; cout.flush();
+			TreeBase* other(node->left);
+			/* Turn other's right sub-tree into node's left sub-tree */
+			node->left = other->right;
+			if ( other->right != NULL ) other->right->parent = node;
+			/* other's new parent was node's parent */
+			other->parent = node->parent;
+			/* Set the parent to point to other instead of node */
+			/* First see whether we're at the root */
+			if ( node->parent == NULL ) root = other;
+			else
+        if ( node == (node->parent)->right )
+            /* node was on the right of its parent */
+            node->parent->right = other;
+        else
+            /* node must have been on the right */
+            node->parent->left = other;
+			/* Finally, put node on other's right */
+			other->right = node;
+			node->parent = other;
+			root->parent=NULL;
+			return root;
+		}
+
+		TreeBase* rbfixup(TreeBase* root, TreeBase* node)
+		{
+			/* restore the red-black property */
+			if (!node->parent) return root;
+			if (!node->parent->parent) return root;
+			red(node);
+			while ( (node != root) && (color(node->parent) == RED) ) 
+			{
+				cout<<"parent is red"<<endl;
+				if ( node->parent == node->parent->parent->left ) 
+				{
+					cout<<"parent is on the left"<<endl;
+					/* If node's parent is a left, other is node's right 'uncle' */
+					TreeBase* other(node->parent->parent->right);
+					if ( color(other) == RED ) 
+					{
+						/* case 1 - change the colours */
+						black(node->parent);
+						black(other);
+						red(node->parent->parent);
+						/* Move node up the tree */
+						node=node->parent->parent;
+					} else {
+						/* other is a black node */
+						if (node==node->parent->right ) 
+						{
+							/* and node is to the right */ 
+							/* case 2 - move node up and rotate */
+							node=node->parent;
+							root=RotateLeft(root,node);
+						}
+						/* case 3 */
+						black(node->parent);
+						red(node->parent->parent);
+						root=RotateRight( root, node->parent->parent );
+					}
+				} else {
+					cout<<"parent is on the right"<<endl;
+					TreeBase* other(node->parent->parent->left);
+					if ( color(other) == RED ) 
+					{
+						cout<<"other is red"<<endl;
+						/* case 1 - change the colours */
+						black(node->parent);
+						black(other);
+						red(node->parent->parent);
+						/* Move node up the tree */
+						node=node->parent->parent;
+					} else {
+						/* other is a black node */
+						cout<<"other is black"<<endl;
+						if (node==node->parent->left ) 
+						{
+							cout<<"node is on the left"<<endl;
+							/* and node is to the left */ 
+							/* case 2 - move node up and rotate */
+							node=node->parent;
+							root=RotateRight(root,node);
+						} else {
+							cout<<"node is on the right"<<endl;
+							/* case 3 */
+							black(node->parent);
+							red(node->parent->parent);
+							root=RotateLeft(root,node->parent->parent);
+						}
+					}
+				}
+			}
+			/* Colour the root black */
+			return black(root);
 		}
 	};
 } //namespace TreeObjects
