@@ -11,9 +11,9 @@ namespace TreeDisplay
 		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100) {}
 		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),moved(true), motion(X,Y), color(0X003333) { }
 		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(a.moved), motion(a.X,a.Y),color(a.color)  {}
-		public:
-		bool moved;
+		const bool Moved() const {return moved;}
 		protected: 
+		bool moved;
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap);
 		Motion motion;
 		string text;

@@ -97,7 +97,7 @@ namespace TreeDisplay
 			const KT& key(nk);
 			VT& data(nk);
 			data(invalid,display,gc,bitmap);
-			if (data.moved) movement=true;
+			if (data.Moved()) movement=true;
 			if (n.left) draw(invalid,*n.left,bitmap);
 			if (n.right) draw(invalid,*n.right,bitmap);
 		}
