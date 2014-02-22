@@ -30,7 +30,9 @@ namespace TreeDisplay
 					pop_back();
 				}
 			}
-			const double force(distance/3);
+			double force(distance/3);
+			//if (force>10) force=10;
+
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);
@@ -41,14 +43,12 @@ namespace TreeDisplay
 	template<typename KT>
 		struct TreeNode 
 	{
-		TreeNode() : SW(0),SH(0),x(0),y(0),moved(true) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333), moved(true){ BoxSize(); }
-		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),moved(true),motion(a.x,a.y),color(a.color)  {}
+		TreeNode() : SW(0),SH(0),x(0),y(0),moved(10) {}
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333), moved(10){ BoxSize(); }
+		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),moved(10),motion(a.x,a.y),color(a.color)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
 		void operator()(unsigned long long _color)
-		{
-			color=_color;
-		}
+			{ color=_color; }
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
 			k=_k;
@@ -61,6 +61,7 @@ namespace TreeDisplay
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode);
+				if (pn.moved) return;
 				KT pk(parentnode);
 				double px(pn.x);
 				double py(pn.y);
@@ -73,6 +74,7 @@ namespace TreeDisplay
 				{
 					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->parent));
 					TreeNode<KT>& gpn(grandparentnode);
+					if (gpn.moved) return;
 					double gpx(gpn.x);
 					double dx(gpn.x-pn.x);
 					dx/=16; dx*=7; // 7/16s of the difference between parent and grand-parent
@@ -80,8 +82,7 @@ namespace TreeDisplay
 
 					double gpy(gpn.y);
 					double dy(pn.y-gpn.y);
-					dy/=16; dy*=19; // ?/? of the difference between parent and grand-parent
-
+					dy/=16; dy*=17; // 17/16 of the difference between parent and grand-parent
 
 					if (k<pk) x=px-dx; else x=px+dx; 
 					y=py+dy;
@@ -98,9 +99,9 @@ namespace TreeDisplay
 		}
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
 		{
-			moved=false;
+			if (moved) moved--;
 			pair<double,double> p(motion.next(x,y));
-			if ((p.first) or (p.second)) moved=true;
+			if ((p.first) or (p.second)) moved=10;
 			{
 				pair<double,double> ul(x-(CW/2),y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
@@ -123,7 +124,7 @@ namespace TreeDisplay
 				XDrawString(display,bitmap,gc,ul.first,ul.second+(CH),text.c_str(),text.size());
 			}
 		}
-		bool moved;
+		int moved;
 		private:
 		string text;
 		const int SW,SH;

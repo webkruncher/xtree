@@ -131,9 +131,6 @@ namespace TreeObjects
 				if (this->left) 
 				{
 					return this->left->insert(root,node,this->depth); 
-					//RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*node)); 
-					//this->ldepth=0; DepthCounter(this->left,this->ldepth);
-					//int diff(id.ldepth-id.rdepth);
 				} else { 
 					this->left=node;
 					this->ldepth=1;
@@ -142,15 +139,12 @@ namespace TreeObjects
 				if (this->right) 
 				{
 					return this->right->insert(root,node,this->depth); 
-					//RbTree<KT,VT>& id(static_cast<RbTree<KT,VT>&>(*node)); 
-					//this->rdepth=0; DepthCounter(this->right,this->rdepth);
 				} else { 
 					this->right=node;
 					this->rdepth=1;
 				}
 			}
 			return rbfixup(root,node);
-			//return root;
 		}
 		private:
 		char clr;
