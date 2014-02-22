@@ -225,65 +225,44 @@ namespace TreeObjects
 
 		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
 		{
-			/* restore the red-black property */
 			if (!node->parent) return root;
 			if (!node->parent->parent) return root;
 			red(node);
 			while ( (node != root) && (color(node->parent) == RED) ) 
 			{
-				//cout<<"parent is red"<<endl;
 				if ( node->parent == node->parent->parent->left ) 
 				{
-					//cout<<"parent is on the left"<<endl;
-					/* If node's parent is a left, other is node's right 'uncle' */
 					TreeBase* other(node->parent->parent->right);
 					if ( color(other) == RED ) 
 					{
-						/* case 1 - change the colours */
 						black(node->parent);
 						black(other);
 						red(node->parent->parent);
-						/* Move node up the tree */
 						node=node->parent->parent;
 					} else {
-						/* other is a black node */
 						if (node==node->parent->right ) 
 						{
-							/* and node is to the right */ 
-							/* case 2 - move node up and rotate */
 							node=node->parent;
 							root=this->RotateLeft(root,node);
 						}
-						/* case 3 */
 						black(node->parent);
 						red(node->parent->parent);
 						root=this->RotateRight( root, node->parent->parent );
 					}
 				} else {
-					//cout<<"parent is on the right"<<endl;
 					TreeBase* other(node->parent->parent->left);
 					if ( color(other) == RED ) 
 					{
-						//cout<<"other is red"<<endl;
-						/* case 1 - change the colours */
 						black(node->parent);
 						black(other);
 						red(node->parent->parent);
-						/* Move node up the tree */
 						node=node->parent->parent;
 					} else {
-						/* other is a black node */
-						//cout<<"other is black"<<endl;
 						if (node==node->parent->left ) 
 						{
-							//cout<<"node is on the left"<<endl;
-							/* and node is to the left */ 
-							/* case 2 - move node up and rotate */
 							node=node->parent;
 							root=this->RotateRight(root,node);
 						} else {
-							//cout<<"node is on the right"<<endl;
-							/* case 3 */
 							black(node->parent);
 							red(node->parent->parent);
 							root=this->RotateLeft(root,node->parent->parent);
@@ -291,7 +270,6 @@ namespace TreeObjects
 					}
 				}
 			}
-			/* Colour the root black */
 			return black(root);
 		}
 	};
