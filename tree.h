@@ -165,7 +165,6 @@ namespace TreeObjects
 		private:
 		char clr;
 
-
 		char color(TreeBase* n)
 		{
 			if (!n) return 0; 
@@ -189,14 +188,12 @@ namespace TreeObjects
 			return n;
 		}
 
-
 		virtual ostream& operator<<(ostream& o) const { return o; }
-
 
 		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
 		{
 			if (!node->parent) return root;
-			if (!node->parent->parent) return root;
+			//if (!node->parent->parent) return root;
 			red(node);
 			while ( (node != root) && (color(node->parent) == RED) ) 
 			{

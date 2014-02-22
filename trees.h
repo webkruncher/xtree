@@ -40,12 +40,18 @@ namespace TreeDisplay
 					pop_back();
 				}
 			}
+#if 1
 			double force(distance/3);
-			//if (force>10) force=10;
 
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);
+#else
+			double dx(0),dy(0);
+			if (tx<dx) dx=-1; else if (tx>dx) dx=1;
+			if (ty<dy) dy=-1; else if (ty>dy) dy=1;
+			return make_pair<double,double>(dx,dy);
+#endif
 		}
 		private: double x,y;
 	};
@@ -107,8 +113,8 @@ namespace TreeDisplay
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
 		{
 			if (moved) moved--;
-			pair<double,double> p(motion.next(x,y));
-			if ((p.first) or (p.second)) moved=10;
+			pair<double,double> D(motion.next(x,y));
+			if ((D.first) or (D.second)) moved=10;
 			{
 				pair<double,double> ul(x-(CW/2),y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
@@ -118,7 +124,7 @@ namespace TreeDisplay
 				XPoint& points(iv);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 			}
-			x+=p.first; y+=p.second;
+			x+=D.first; y+=D.second;
 			{
 				pair<double,double> ul(x-(CW/2),y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
