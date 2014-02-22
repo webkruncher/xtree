@@ -7,14 +7,20 @@ namespace TreeDisplay
 	struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
 
 	template <typename KT,typename VT>
-		void DepthCounter(RbTree<KT,VT>* n,int& d)
+		void BlackNodeCounter(RbTree<KT,VT>* n,int& d)
 		{
 			if (!n) return;
 			RbTree<KT,VT>& nd(*n); 
 			if (color(n)==RbTree<KT,VT>::BLACK) d++;
-			if (n->right) DepthCounter<KT,VT>(n->right,d);
-			if (n->left) DepthCounter<KT,VT>(n->left,d);
+			if (n->right) BlackNodeCounter<KT,VT>(n->right,d);
+			if (n->left) BlackNodeCounter<KT,VT>(n->left,d);
 		}
+
+	int DepthFinder(TreeBase& tb,int d=0)
+	{
+		if (tb.parent) d=DepthFinder(*tb.parent,d+1);
+		return d;
+	}
 
 	struct Motion : private deque<pair<double,double> >
 	{
@@ -26,10 +32,10 @@ namespace TreeDisplay
 		}
 		pair<double,double> next(double tx,double ty)
 		{
-			const double distx(x-tx);
-			const double disty(y-ty);
-			const double direction(atan2(disty, distx));
-			const double distance(sqrt( (distx * distx) + (disty * disty) ) );
+			double distx(x-tx);
+			double disty(y-ty);
+			double direction(atan2(disty, distx));
+			double distance(sqrt( (distx * distx) + (disty * disty) ) );
 
 			if (distance<10)
 			{
@@ -42,6 +48,12 @@ namespace TreeDisplay
 				}
 			}
 
+			distx=(x-tx);
+			disty=(y-ty);
+			direction=(atan2(disty, distx));
+			distance=(sqrt( (distx * distx) + (disty * disty) ) );
+
+			if (distance<10) return make_pair<double,double>(0,0);
 
 #if 1
 			double force(distance/3);
@@ -61,9 +73,9 @@ namespace TreeDisplay
 	template<typename KT>
 		struct TreeNode 
 	{
-		TreeNode() : SW(0),SH(0),X(0),Y(0),moved(10) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10), motion(X,Y), color(0X003333), moved(10){ BoxSize(); }
-		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(10),motion(a.X,a.Y),color(a.color)  {}
+		TreeNode() : SW(0),SH(0),X(0),Y(0),moved(true) {}
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10), motion(X,Y), color(0X003333), moved(true){ BoxSize(); }
+		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(true),motion(a.X,a.Y),color(a.color)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
 		void operator()(unsigned long long _color) { color=_color; }
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
@@ -95,13 +107,22 @@ namespace TreeDisplay
 					double dx(gpn.X-pn.X);
 					dx/=16; dx*=7; // 7/16s of the difference between parent and grand-parent
 					if (dx<0) dx*=-1;
+					if (k<pk) x=px-dx; else x=px+dx; 
+
+
+					#if 0
 
 					double gpy(gpn.Y);
 					double dy(pn.Y-gpn.Y);
 					dy/=16; dy*=17; // 17/16 of the difference between parent and grand-parent
 
-					if (k<pk) x=px-dx; else x=px+dx; 
 					y=py+dy;
+					#else
+					y=30*(DepthFinder(node)+2);
+					//y=py+20;
+					#endif
+
+
 					motion(x,y);
 					Text(k,pk);
 				} else {
@@ -113,9 +134,9 @@ namespace TreeDisplay
 		}
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
 		{
-			if (moved) moved--;
+			moved=false;
 			pair<double,double> D(motion.next(X,Y));
-			if ((D.first) or (D.second)) moved=10;
+			if ((D.first) or (D.second)) moved=true;
 			{
 				pair<double,double> ul(X-(CW/2),Y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
@@ -138,7 +159,7 @@ namespace TreeDisplay
 				XDrawString(display,bitmap,gc,ul.first,ul.second+(CH),text.c_str(),text.size());
 			}
 		}
-		int moved;
+		bool moved;
 		private:
 		string text;
 		const int SW,SH;
