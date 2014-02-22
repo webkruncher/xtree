@@ -196,8 +196,9 @@ namespace TreeDisplay
 								} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 							}
 						}
-						KT maxvalue(root->maxValue(root));
-						KT minvalue(root->minValue(root));
+						Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*root));
+						KT maxvalue(rk.maxValue(root));
+						KT minvalue(rk.minValue(root));
 						bool isbst(root->isBST(root));
 						cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
 						cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";

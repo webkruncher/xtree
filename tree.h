@@ -11,11 +11,8 @@ namespace TreeObjects
 		virtual TreeBase* insert(TreeBase* root,TreeBase*) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 
-		virtual int minValue(TreeBase* node)  = 0;
-		virtual int maxValue(TreeBase* node)  = 0;
 		virtual int isBST(TreeBase* node) = 0;
 		virtual long countnodes()  = 0;
-
 
 		TreeBase* grandparent(TreeBase* node)
 		{
@@ -81,14 +78,14 @@ namespace TreeObjects
 			long rightnodes(0); if (right) rightnodes=right->countnodes();
 			return (leftnodes+rightnodes+1);
 		}
-		virtual int minValue(TreeBase* node) 
+		KT minValue(TreeBase* node) 
 		{
 			TreeBase* current = node;
 			while (current->left != NULL) current = current->left;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
 			return(nd.key);
 		}
-		virtual int maxValue(TreeBase* node) 
+		KT maxValue(TreeBase* node) 
 		{
 			TreeBase* current = node;
 			while (current->right != NULL) current = current->right;

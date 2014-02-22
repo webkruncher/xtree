@@ -197,11 +197,19 @@ int main(int argc,char** argv)
 		stringstream except;
 		try
 		{
-			TreeCanvas<KEYTYPE>* pcanvas(NULL);
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<KEYTYPE>(display,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<KEYTYPE>(display,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack");
-			TreeCanvas<KEYTYPE>& canvas(*pcanvas);
+			Canvas* pcanvas(NULL);
+			if (cmdline.find("-int")!=cmdline.end())
+			{
+				if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<int>(display,gc,displayarea.width, displayarea.height);
+				if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<int>(display,gc,displayarea.width, displayarea.height);
+			}
+			if (cmdline.find("-double")!=cmdline.end())
+			{
+				if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<double>(display,gc,displayarea.width, displayarea.height);
+				if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(display,gc,displayarea.width, displayarea.height);
+			}
+			if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int or -double");
+			Canvas& canvas(*pcanvas);
 			Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
 			program(argc,argv);
 			delete pcanvas;
