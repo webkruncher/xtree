@@ -196,22 +196,8 @@ namespace TreeDisplay
 								} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 							}
 						}
-						Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*root));
-						KT maxvalue(rk.maxValue(root));
-						KT minvalue(rk.minValue(root));
-						bool isbst(root->isBST(root));
-						cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
-						cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
-						cout<<"isBST:"<<boolalpha<<isbst;
-						cout.flush();
-						//cout<<"Min:"<<*used.begin();
-						//cout<<"Max:"<<*used.rbegin();
-						if (minvalue!=(*used.begin())) {stop=true; cout<<("Min check failed")<<endl;}
-						if (maxvalue!=(*used.rbegin())) {stop=true; cout<<("Max check failed")<<endl;}
-						if (!isbst) {stop=true; cout<<("isBST failed")<<endl;}
-						long ttl(root->countnodes());
-						if (ttl!=used.size()) {stop=true; cout<<("Wrong number of nodes counted")<<endl;}
-						cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
+
+						CheckIntegrity(root);
 				} 
 			}
 		
@@ -219,8 +205,29 @@ namespace TreeDisplay
 			updateloop++;
 		}
 		virtual operator InvalidBase& () {return invalid;}
-		private:
+		protected:
 		bool stop;
+		virtual void CheckIntegrity(TreeBase* root)
+		{
+			if (!root) return;
+			Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*root));
+			KT maxvalue(rk.maxValue(root));
+			KT minvalue(rk.minValue(root));
+			bool isbst(root->isBST(root));
+			cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
+			cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
+			cout<<"isBST:"<<boolalpha<<isbst;
+			cout.flush();
+			//cout<<"Min:"<<*used.begin();
+			//cout<<"Max:"<<*used.rbegin();
+			if (minvalue!=(*used.begin())) {stop=true; cout<<("Min check failed")<<endl;}
+			if (maxvalue!=(*used.rbegin())) {stop=true; cout<<("Max check failed")<<endl;}
+			if (!isbst) {stop=true; cout<<("isBST failed")<<endl;}
+			long ttl(root->countnodes());
+			if (ttl!=used.size()) {stop=true; cout<<("Wrong number of nodes counted")<<endl;}
+			cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
+		}
+		private:
 		bool movement;
 		set<KT> used;
 		unsigned long updateloop,waitfor;
@@ -247,6 +254,7 @@ namespace TreeDisplay
 			if (n.left) draw(invalid,*n.left,bitmap);
 			if (n.right) draw(invalid,*n.right,bitmap);
 		}
+
 	};
 
 	template <> pair<bool,int> TreeCanvas<int>::Next()
@@ -303,6 +311,13 @@ namespace TreeDisplay
 		RbTreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: TreeCanvas<KT>(_display,_gc,_ScreenWidth,_ScreenHeight) {}
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbTree<KT,VT>(key,treenode); }
+		virtual void CheckIntegrity(TreeBase* root)
+		{
+			if (!root) return;
+			cout<<"Checking Red Black"<<endl;
+			RbTree<KT,VT>& rk(static_cast<RbTree<KT,VT>&>(*root));
+			TreeCanvas<KT>::CheckIntegrity(root);
+		}
 	};
 } // TreeDisplay
 
