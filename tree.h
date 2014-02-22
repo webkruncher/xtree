@@ -107,7 +107,7 @@ namespace TreeObjects
 		}
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
-			if ((*node)==(*this)) {delete node; return root;}
+			if ((*node)==(*this)) {delete node; return NULL;}
 			node->parent=this;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.data(this->key,*this,this->parent);

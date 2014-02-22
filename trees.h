@@ -42,14 +42,16 @@ namespace TreeDisplay
 			}
 #if 1
 			double force(distance/3);
-
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);
 #else
 			double dx(0),dy(0);
-			if (tx<dx) dx=-1; else if (tx>dx) dx=1;
+//cout<<"ty:"<<ty<<", y:"<<y<<endl;
+			if (distx<-1) dx=-1; if (distx>1) dx=1;
+			if (disty<-1) dy=-1; if (disty>1) dy=1;
 			if (ty<dy) dy=-1; else if (ty>dy) dy=1;
+			x+=dx; y+=dy;
 			return make_pair<double,double>(dx,dy);
 #endif
 		}
@@ -59,12 +61,11 @@ namespace TreeDisplay
 	template<typename KT>
 		struct TreeNode 
 	{
-		TreeNode() : SW(0),SH(0),x(0),y(0),moved(10) {}
-		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),x(_SW/4),y(10), motion(x,y), color(0X003333), moved(10){ BoxSize(); }
-		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),x(a.x),y(a.y),moved(10),motion(a.x,a.y),color(a.color)  {}
+		TreeNode() : SW(0),SH(0),X(0),Y(0),moved(10) {}
+		TreeNode(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10), motion(X,Y), color(0X003333), moved(10){ BoxSize(); }
+		TreeNode(const TreeNode& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(10),motion(a.X,a.Y),color(a.color)  {}
 		void operator()(TreeBase& node,TreeBase* parent) {}
-		void operator()(unsigned long long _color)
-			{ color=_color; }
+		void operator()(unsigned long long _color) { color=_color; }
 		void operator()(KT _k,TreeBase& node,TreeBase* parent)
 		{
 			k=_k;
@@ -78,8 +79,8 @@ namespace TreeDisplay
 				TreeNode<KT>& pn(parentnode);
 				if (pn.moved) return;
 				KT pk(parentnode);
-				double px(pn.x);
-				double py(pn.y);
+				double px(pn.X);
+				double py(pn.Y);
 				const double sw(SW); double sh(SH);
 				double y;
 				if (k<pk) y=py+(CH*3);
@@ -90,13 +91,13 @@ namespace TreeDisplay
 					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->parent));
 					TreeNode<KT>& gpn(grandparentnode);
 					if (gpn.moved) return;
-					double gpx(gpn.x);
-					double dx(gpn.x-pn.x);
+					double gpx(gpn.X);
+					double dx(gpn.X-pn.X);
 					dx/=16; dx*=7; // 7/16s of the difference between parent and grand-parent
 					if (dx<0) dx*=-1;
 
-					double gpy(gpn.y);
-					double dy(pn.y-gpn.y);
+					double gpy(gpn.Y);
+					double dy(pn.Y-gpn.Y);
 					dy/=16; dy*=17; // 17/16 of the difference between parent and grand-parent
 
 					if (k<pk) x=px-dx; else x=px+dx; 
@@ -113,10 +114,10 @@ namespace TreeDisplay
 		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
 		{
 			if (moved) moved--;
-			pair<double,double> D(motion.next(x,y));
+			pair<double,double> D(motion.next(X,Y));
 			if ((D.first) or (D.second)) moved=10;
 			{
-				pair<double,double> ul(x-(CW/2),y-(CH/2));
+				pair<double,double> ul(X-(CW/2),Y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
 				Rect iv(ul.first-1,ul.second-1,lr.first+2,lr.second+2);
 				invalid.insert(iv);
@@ -124,9 +125,9 @@ namespace TreeDisplay
 				XPoint& points(iv);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 			}
-			x+=D.first; y+=D.second;
+			X+=D.first; Y+=D.second;
 			{
-				pair<double,double> ul(x-(CW/2),y-(CH/2));
+				pair<double,double> ul(X-(CW/2),Y-(CH/2));
 				pair<double,double> lr(ul.first+CW,ul.second+CH);
 				Rect iv(ul.first,ul.second,lr.first,lr.second);
 				invalid.insert(iv);
@@ -144,7 +145,7 @@ namespace TreeDisplay
 		const string tyid;
 		int CW,CH;
 		KT k;
-		double x,y;
+		double X,Y;
 		Motion motion;
 		unsigned long color;
 		void Text(KT k,KT pk,string txt="") {stringstream ss; ss<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
@@ -192,7 +193,16 @@ namespace TreeDisplay
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						TreeBase* n(generate(next.second,tn));
 						if (!root) waitfor=updateloop+10;
-						if (!root) root=n;  else root=root->insert(root,n);
+						if (!root) root=n;  
+							else 
+						{
+							TreeBase* nr(root->insert(root,n));
+							if (nr) 
+							{
+								if (root!=nr) cout<<"The root node rotated"<<endl;
+								root=nr;
+							} else cout<<next.first<<" is a duplicate and was deleted"<<endl;
+						}
 						KT maxvalue(root->maxValue(root));
 						KT minvalue(root->minValue(root));
 						bool isbst(root->isBST(root));
