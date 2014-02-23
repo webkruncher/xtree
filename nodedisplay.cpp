@@ -7,7 +7,7 @@ using namespace TreeObjects;
 #include <trees.h>
 using namespace TreeDisplay;
 #include <math.h>
-#include "NodeDisplay.h"
+#include "nodedisplay.h"
 
 namespace TreeDisplay
 {

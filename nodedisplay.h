@@ -63,7 +63,7 @@ namespace TreeDisplay
 					if (k<pk) x=px-dx; else x=px+dx; 
 
 					int depth(DepthFinder(node)+3);
-					y=CH*((depth*depth)/2);
+					y=CH*((depth*depth)/3);
 					if (k<pk) y+=CH;
 
 					motion(x,y);

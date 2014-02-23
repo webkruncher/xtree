@@ -3,9 +3,9 @@
 #define TREE_DISPLAY_H
 #include <math.h>
 struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
-#include "Motivation.h"
-#include "NodeDisplay.h"
-#include "TreeIntegrity.h"
+#include "motivation.h"
+#include "nodedisplay.h"
+#include "treeintegrity.h"
 namespace TreeDisplay
 {
 	template<typename KT>
@@ -15,7 +15,7 @@ namespace TreeDisplay
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false),stop(false),waitfor(0) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
-		virtual void operator()(Pixmap& bitmap) {  if (root) draw(invalid,*root,bitmap); }
+		virtual void operator()(Pixmap& bitmap) {   if (root) draw(invalid,*root,bitmap); }
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
 		virtual void update() 
 		{
@@ -28,33 +28,31 @@ namespace TreeDisplay
 				pair<bool,KT> next(Next());
 				if (next.first)
 				{
+					TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+					TreeBase* n(generate(next.second,tn));
+					if (!root) waitfor=updateloop+10;
+					if (!root) root=n;  
+						else 
+					{
+						TreeBase* nr(root->insert(root,n));
+						if (nr) 
 						{
-							TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-							TreeBase* n(generate(next.second,tn));
-							if (!root) waitfor=updateloop+10;
-							if (!root) root=n;  
-								else 
-							{
-								TreeBase* nr(root->insert(root,n));
-								if (nr) 
-								{
-									if (root!=nr) cout<<"The root node rotated"<<endl;
-									root=nr;
-								} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
-							}
-						}
+							if (root!=nr) cout<<"The root node rotated"<<endl;
+							root=nr;
+						} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
+					}
 
-						if (!CheckIntegrity(root)) stop=true;
+					if (!CheckIntegrity(root)) stop=true;
 				} 
 			}
 		
-			if (!((updateloop)%10)) if (root) traverse(*root);
+			if (!((updateloop)%30)) if (root) traverse(*root);
 			updateloop++;
 		}
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
 		bool stop;
-		virtual bool CheckIntegrity(TreeBase* root) { return BstIntegrity<KT,VT>(root,used); }
+		virtual bool CheckIntegrity(TreeBase* root) { return TreeIntegrity::BstIntegrity<KT,VT>(root,used); }
 		private:
 		bool movement;
 		set<KT> used;
@@ -87,15 +85,17 @@ namespace TreeDisplay
 
 	template <> inline pair<bool,int> TreeCanvas<int>::Next()
 	{ 
-		static int dbler(0);
-		dbler++;
-		if (!(dbler%10))  // return a random value that was already inserted
-		{
-			int w(rand()%used.size());
-			set<int>::iterator it=used.begin();
-			for (int j=0;j<w;j++) it++;
-			return make_pair<bool,int>(true,*it);
-		}
+		#if 0
+			static int dbler(0);
+			dbler++;
+			if (!(dbler%10))  // return a random value that was already inserted
+			{
+				int w(rand()%used.size());
+				set<int>::iterator it=used.begin();
+				for (int j=0;j<w;j++) it++;
+				return make_pair<bool,int>(true,*it);
+			}
+		#endif
 
 		int Max(999);
 		if (used.size()==(Max-1)) return make_pair<bool,int>(false,0);
@@ -143,7 +143,7 @@ namespace TreeDisplay
 		virtual bool CheckIntegrity(TreeBase* root)
 		{
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;
-			return RedBlackIntegrity<KT,VT>(root);
+			return TreeIntegrity::RedBlackIntegrity<KT,VT>(root);
 		}
 	};
 } // TreeDisplay

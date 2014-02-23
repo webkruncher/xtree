@@ -49,7 +49,7 @@ namespace TreeObjects
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
 			else
-        if ( node == (node->parent)->left ) node->parent->left = other;
+        if ( (*node) == (*node->parent->left) ) node->parent->left = other;
         else node->parent->right = other;
 			other->left = node;
 			node->parent = other;
@@ -65,7 +65,7 @@ namespace TreeObjects
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
 			else
-        if ( node == (node->parent)->right ) node->parent->right = other;
+        if ( (*node) == (*node->parent->right) ) node->parent->right = other;
         else node->parent->left = other;
 			other->right = node;
 			node->parent = other;
@@ -202,9 +202,10 @@ namespace TreeObjects
 
 		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
 		{
+			if (!node) return root;
 			if (!node->parent) return root;
 			red(node);
-			while ( (node != root) && (color(node->parent) == RED) ) 
+			while ( (node->parent) && (color(node->parent) == RED) ) 
 			{
 				if ( node->parent == node->parent->parent->left ) 
 				{
@@ -248,6 +249,7 @@ namespace TreeObjects
 			}
 			return black(root);
 		}
+
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(Bst<KT,VT>::RotateLeft(root,node));
@@ -257,6 +259,7 @@ namespace TreeObjects
 			nr.data(nr.key,*newroot,NULL);
 			return newroot;
 		}
+
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(Bst<KT,VT>::RotateRight(root,node));
