@@ -30,7 +30,7 @@ namespace TreeDisplay
 		const bool Moved() const {return moved;}
 		protected: 
 		bool moved;
-		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap);
+		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap);
 		Motion motion;
 		string text;
 		const int SW,SH;
@@ -93,8 +93,8 @@ namespace TreeDisplay
 				}
 			}
 		}
-		void operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
-			{ NodeBase::operator()(invalid,display,gc,bitmap); }
+		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
+			{ NodeBase::operator()(invalid,window,display,gc,bitmap); }
 		private:
 		KT k;
 		void Text(KT k,KT pk,string txt="") {stringstream ss; ss<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}

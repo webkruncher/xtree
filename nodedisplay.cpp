@@ -11,20 +11,22 @@ using namespace TreeDisplay;
 
 namespace TreeDisplay
 {
-		void NodeBase::operator()(Invalid& invalid,Display* display,GC& gc,Pixmap& bitmap)
+		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
 			//invalid.SetTrace(true);
 			moved=false;
 			pair<double,double> D(motion.next(X,Y));
 			if ((D.first) or (D.second)) moved=true;
+			if (moved)
 			{
-				pair<double,double> ul(X-(DCW/2),Y-(DCH/2));
-				pair<double,double> lr(ul.first+DCW,ul.second+DCH);
+				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
+				pair<double,double> lr(ul.first+DCW+2,ul.second+DCH+2);
 				Rect iv(ul.first,ul.second,lr.first,lr.second);
 				invalid.expand(iv);
-				XSetForeground(display,gc,0X777777);
-				XPoint& points(iv);
-				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
+				//XSetForeground(display,gc,0X777777);
+				//invalid.Draw(display,bitmap,window,gc);
+				//XPoint& points(iv);
+				//XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 			}
 			DCH=CH+(size()*CH);
 			DCW=CW;
@@ -35,6 +37,8 @@ namespace TreeDisplay
 				pair<double,double> lr(ul.first+DCW,ul.second+DCH);
 				Rect iv(ul.first,ul.second,lr.first,lr.second);
 				invalid.expand(iv);
+				XSetForeground(display,gc,0XFFFFFF);
+				//invalid.Draw(display,bitmap,window,gc);
 				XPoint& points(iv); XPoint* pt=&points;
 				for (int j=0;j<4;j++,pt++) lastpoints.push_back(*pt);
 				XSetForeground(display,gc,color);

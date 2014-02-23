@@ -80,6 +80,11 @@ namespace TreeObjects
 			return root;
 		}
 
+		bool isLeaf(TreeBase* node) { if ((!node->left) and (!node->right)) return true; else return false; }
+		void Replace(TreeBase* node,TreeBase* with) 
+		{
+		}
+
 		TreeBase *parent,*left,*right;
 		virtual ostream& operator<<(ostream&) const =0;
 	};
@@ -143,6 +148,7 @@ namespace TreeObjects
 			return NULL;
 		}
 
+
 		virtual TreeBase* erase(TreeBase* root,KT what)
 		{
 			TreeBase* found(find(what));
@@ -152,6 +158,37 @@ namespace TreeObjects
 			if (!fd.parent)
 			{	
 				cout<<"Erasing the root node"<<endl;
+				if ((!fd.left) and (!fd.right)) {delete found; return NULL;} // Tree is now empty
+				if ((!fd.left) or (!fd.right))
+				{
+					// Node has only one sub tree
+					if (fd.left)
+					{
+						TreeBase* ret(fd.left);
+						fd.left=NULL;
+						delete found;
+						ret->parent=NULL;
+						return ret;
+					} else {
+						TreeBase* ret(fd.right);
+						fd.right=NULL;
+						delete found;
+						ret->parent=NULL;
+						return ret;
+					}
+				} else {
+					// Node has both sub trees
+					TreeBase* L(fd.left);
+					TreeBase* R(fd.right);
+					fd.left=fd.right=NULL; delete found;
+					TreeBase* LeftsRightMost(L->RightMost());
+					LeftsRightMost->right=R;
+					R->parent=LeftsRightMost;
+					L->parent=NULL;
+					return L;
+				}
+			} else {
+				//fd.parent=NULL;
 			}
 			return root;
 		}
@@ -220,7 +257,31 @@ namespace TreeObjects
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
 			return nd.clr;
 		}
+
+		virtual TreeBase* erase(TreeBase* root,KT what)
+		{
+			cout<<"RB Delete"<<endl;
+			return root;
+		}
+
 		private:
+
+		void DeleteOne(TreeBase* node)
+		{
+			TreeBase* child(this->isLeaf(node->right) ? node->left : node->right);
+			this->Replace(node, child);
+			if (color(node) == BLACK) 
+			{
+				if (color(child) == RED) black(child) = BLACK;
+				else DeleteCase1(child);
+			}
+			delete node;
+		}
+
+		void DeleteCase1(TreeBase* node)
+		{
+		}
+
 		char clr;
 
 		TreeBase* red(TreeBase* n) 

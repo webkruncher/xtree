@@ -12,10 +12,16 @@ namespace TreeDisplay
 		struct TreeCanvas : Canvas
 	{
 		typedef TreeNode<KT> VT ;
-		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false) {}
+		TreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: window(_window), Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
-		virtual void operator()(Pixmap& bitmap) {   if (root) draw(invalid,*root,bitmap); }
+		virtual void operator()(Pixmap& bitmap) 
+		{   
+			XSetForeground(display,gc,0X777777);
+			//invalid.Fill(display,bitmap,gc);
+			XFillRectangle(display,bitmap,gc,0,0,ScreenWidth,ScreenHeight);
+			if (root) draw(invalid,*root,bitmap); 
+		}
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
 		virtual void update() 
 		{
@@ -52,7 +58,7 @@ namespace TreeDisplay
 						}
 					}
 
-					//if (!CheckIntegrity(root)) stop=true;
+					if (!CheckIntegrity(root)) stop=true;
 				} else {
 					removing=!removing;
 					cout<<"Removing:"<<boolalpha<<removing<<endl;
@@ -67,6 +73,7 @@ namespace TreeDisplay
 		bool stop,removing;
 		virtual bool CheckIntegrity(TreeBase* root) { return TreeIntegrity::BstIntegrity<KT,VT>(root,used); }
 		private:
+		Window& window;
 		bool movement;
 		set<KT> used;
 		unsigned long updateloop,waitfor;
@@ -88,7 +95,7 @@ namespace TreeDisplay
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk);
-			data(invalid,display,gc,bitmap);
+			data(invalid,window,display,gc,bitmap);
 			if (data.Moved()) movement=true;
 			if (n.left) draw(invalid,*n.left,bitmap);
 			if (n.right) draw(invalid,*n.right,bitmap);
@@ -101,8 +108,8 @@ namespace TreeDisplay
 		struct RbTreeCanvas : TreeCanvas<KT>
 	{
 		typedef TreeNode<KT> VT ;
-		RbTreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: TreeCanvas<KT>(_display,_gc,_ScreenWidth,_ScreenHeight) {}
+		RbTreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: TreeCanvas<KT>(_display,_window,_gc,_ScreenWidth,_ScreenHeight) {}
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbTree<KT,VT>(key,treenode); }
 		virtual bool CheckIntegrity(TreeBase* root)
 		{
