@@ -42,7 +42,7 @@ namespace TreeDisplay
 						} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 					}
 
-					if (!CheckIntegrity(root)) stop=true;
+					//if (!CheckIntegrity(root)) stop=true;
 				} 
 			}
 		

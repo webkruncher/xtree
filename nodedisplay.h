@@ -6,6 +6,22 @@ namespace TreeDisplay
 	inline int DepthFinder(TreeBase& tb,int d=0)
 		{ if (tb.parent) d=DepthFinder(*tb.parent,d+1); return d; }
 
+	struct XPoints : vector<XPoint>
+	{
+		XPoints() : xpoints(NULL) {}
+		virtual ~XPoints() { if (xpoints) delete[] xpoints; }
+		virtual operator XPoint& () const
+		{
+			if (xpoints) delete[] xpoints;
+			xpoints=new XPoint[size()];	
+			const vector<XPoint>& me(*this);
+			for (int j=0;j<size();j++) { xpoints[j].x=me[j].x; xpoints[j].y=me[j].y; }
+			return *xpoints;
+		}
+		private:
+		mutable XPoint* xpoints;
+	};
+
 	struct NodeBase : map<string,string>
 	{
 		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100) {}
@@ -22,6 +38,8 @@ namespace TreeDisplay
 		unsigned long color;
 		int CW,CH;
 		int DCW,DCH;
+		private:
+		XPoints lastpoints;
 	};
 
 	template<typename KT>
