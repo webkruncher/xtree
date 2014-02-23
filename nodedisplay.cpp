@@ -20,7 +20,7 @@ namespace TreeDisplay
 			{
 				pair<double,double> ul(X-(DCW/2),Y-(DCH/2));
 				pair<double,double> lr(ul.first+DCW,ul.second+DCH);
-				Rect iv(ul.first-1,ul.second-1,lr.first+2,lr.second+2);
+				Rect iv(ul.first,ul.second,lr.first,lr.second);
 				invalid.expand(iv);
 				XSetForeground(display,gc,0X777777);
 				XPoint& points(iv);
@@ -48,7 +48,6 @@ namespace TreeDisplay
 					stringstream ss; ss<<it->first<<" : "<<it->second;
 					XDrawString(display,bitmap,gc,ul.first,ul.second+yoff,ss.str().c_str(),ss.str().size());
 				}
-				
 			}
 		}
 } // namespace TreeDisplay

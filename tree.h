@@ -41,6 +41,13 @@ namespace TreeObjects
 			else return g->left;
 		}
 
+		TreeBase* sibling(TreeBase* node)
+		{
+			if (!node->parent) throw string("root nodes have no sibling");
+			if (node==node->parent->left) return node->parent->right;
+			else return node->parent->left;
+		}
+
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* other(node->right);
@@ -114,6 +121,41 @@ namespace TreeObjects
 			if (!isBST(node->left) || !isBST(node->right)) return(false);
 			return(true);
 		}
+
+		virtual TreeBase* find(KT what)
+		{
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
+			if (nd==what) return this;
+			if (nd<what)
+			{
+				if (left)
+				{
+					Bst<KT,VT>& ld(static_cast<Bst<KT,VT>&>(*left));
+					return ld.find(what);
+				}
+			} else {
+				if (right)
+				{
+					Bst<KT,VT>& rd(static_cast<Bst<KT,VT>&>(*right));
+					return rd.find(what);
+				}
+			}
+			return NULL;
+		}
+
+		virtual TreeBase* erase(TreeBase* root,KT what)
+		{
+			TreeBase* found(find(what));
+			if (!found) return root;
+			Bst<KT,VT>& fd(static_cast<Bst<KT,VT>&>(*found));
+			cout<<"WIP: Found node:"<<fd.key<<endl;
+			if (!fd.parent)
+			{	
+				cout<<"Erasing the root node"<<endl;
+			}
+			return root;
+		}
+
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}

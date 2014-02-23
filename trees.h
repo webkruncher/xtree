@@ -13,7 +13,7 @@ namespace TreeDisplay
 	{
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false),stop(false),waitfor(0) {}
+			: Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
 		virtual void operator()(Pixmap& bitmap) {   if (root) draw(invalid,*root,bitmap); }
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
@@ -28,21 +28,34 @@ namespace TreeDisplay
 				pair<bool,KT> next(Next());
 				if (next.first)
 				{
-					TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-					TreeBase* n(generate(next.second,tn));
-					if (!root) waitfor=updateloop+10;
-					if (!root) root=n;  
-						else 
+					if (!removing)
 					{
-						TreeBase* nr(root->insert(root,n));
-						if (nr) 
+						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+						TreeBase* n(generate(next.second,tn));
+						if (!root) waitfor=updateloop+10;
+						if (!root) root=n;  
+							else 
 						{
-							if (root!=nr) cout<<"The root node rotated"<<endl;
-							root=nr;
-						} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
+							TreeBase* nr(root->insert(root,n));
+							if (nr) 
+							{
+								if (root!=nr) cout<<"The root node rotated"<<endl;
+								root=nr;
+							} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
+						}
+					} else {
+						if (root) 
+						{
+							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
+							cout<<"Erase:"<<next.second<<endl;
+							root=nk.erase(root,next.second);
+						}
 					}
 
 					//if (!CheckIntegrity(root)) stop=true;
+				} else {
+					removing=!removing;
+					cout<<"Removing:"<<boolalpha<<removing<<endl;
 				} 
 			}
 		
@@ -51,7 +64,7 @@ namespace TreeDisplay
 		}
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
-		bool stop;
+		bool stop,removing;
 		virtual bool CheckIntegrity(TreeBase* root) { return TreeIntegrity::BstIntegrity<KT,VT>(root,used); }
 		private:
 		bool movement;
