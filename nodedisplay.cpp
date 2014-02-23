@@ -17,16 +17,33 @@ namespace TreeDisplay
 			moved=false;
 			pair<double,double> D(motion.next(X,Y));
 			if ((D.first) or (D.second)) moved=true;
-			if (moved)
+			if (moved or Remove)
 			{
 				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
 				pair<double,double> lr(ul.first+DCW+2,ul.second+DCH+2);
 				Rect iv(ul.first,ul.second,lr.first,lr.second);
 				invalid.expand(iv);
-				//XSetForeground(display,gc,0X777777);
-				//invalid.Draw(display,bitmap,window,gc);
-				//XPoint& points(iv);
-				//XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
+				if (Remove)
+				{
+					if (Removing<=0X77) 
+					{
+						Removed=true;
+						XSetForeground(display,gc,0X777777);
+					} else {
+						unsigned long color((Removing<<16) | (Removing<<8) | (Removing));
+						XSetForeground(display,gc,color);
+					}
+					XPoint& points(iv);
+					XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
+					if (!Removed)
+					{
+						XSetForeground(display,gc,0XFFFFFF);
+						int yoff(CH);
+						XDrawString(display,bitmap,gc,ul.first,ul.second+yoff,text.c_str(),text.size());
+					}
+					Removing-=3;
+					return;
+				}
 			}
 			DCH=CH+(size()*CH);
 			DCW=CW;

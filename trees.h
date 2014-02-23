@@ -13,7 +13,9 @@ namespace TreeDisplay
 	{
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: window(_window), Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false) {}
+			: window(_window), 
+				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
+				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL) {}
 		virtual ~TreeCanvas() {if (root) delete root;}
 		virtual void operator()(Pixmap& bitmap) 
 		{   
@@ -26,7 +28,22 @@ namespace TreeDisplay
 		virtual void update() 
 		{
 			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
-			string tyid(typeid(KT).name());
+			if (used.empty()) {removing=false;stop=false;}
+		
+			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
+			updateloop++;
+
+			if (removal)
+			{
+				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
+				VT& valuenode(nk);
+				if (!valuenode.undisplay()) return;
+				root=nk.erase(root,removal);
+				if (!root) {movement=false; removing=false; used.clear();stop=false;}
+				removal=NULL;
+				waitfor=updateloop+60;
+			}
+
 			if ((!waitfor) or (updateloop>waitfor) )
 				if ((!movement) and (!stop))
 			{
@@ -54,19 +71,30 @@ namespace TreeDisplay
 						{
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
 							cout<<"Erase:"<<next.second<<endl;
-							root=nk.erase(root,next.second);
+							removal=nk.find(next.second);
 						}
 					}
-
-					if (!CheckIntegrity(root)) stop=true;
+					if (root)
+						if (!removal)
+							if (!CheckIntegrity(root)) 
+						{
+							if (used.size()<20)
+							{
+								cout<<"Used:";
+								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+									cout<<" "<<(*it);	
+								cout<<endl;
+								cout.flush();
+							}
+							stop=true;
+						}
 				} else {
 					removing=!removing;
+					if (!root) {movement=false; removing=false; used.clear();stop=false;}
 					cout<<"Removing:"<<boolalpha<<removing<<endl;
 				} 
 			}
-		
-			if (!((updateloop)%30)) if (root) traverse(*root);
-			updateloop++;
+
 		}
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
@@ -77,7 +105,7 @@ namespace TreeDisplay
 		bool movement;
 		set<KT> used;
 		unsigned long updateloop,waitfor;
-		TreeBase* root;
+		TreeBase* root,*removal;
 		Invalid invalid;
 		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }
 		void traverse(TreeBase& n)

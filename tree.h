@@ -133,50 +133,76 @@ namespace TreeObjects
 			if (nd==what) return this;
 			if (nd<what)
 			{
-				if (left)
+				if (right)
 				{
-					Bst<KT,VT>& ld(static_cast<Bst<KT,VT>&>(*left));
+					Bst<KT,VT>& ld(static_cast<Bst<KT,VT>&>(*right));
 					return ld.find(what);
 				}
 			} else {
-				if (right)
+				if (left)
 				{
-					Bst<KT,VT>& rd(static_cast<Bst<KT,VT>&>(*right));
+					Bst<KT,VT>& rd(static_cast<Bst<KT,VT>&>(*left));
 					return rd.find(what);
 				}
 			}
 			return NULL;
 		}
 
+		void Update(TreeBase* node,bool erasing=false)
+		{
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.data(nd.key,nd,node->parent,erasing);
+		}
 
 		virtual TreeBase* erase(TreeBase* root,KT what)
 		{
 			TreeBase* found(find(what));
-			if (!found) return root;
+			if (!found) 
+			{
+				cout<<what<<" was not found in this tree, and cannot be deleted"<<endl;
+				return root;
+			}
+			return erase(root,find(what));
+		}
+
+		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
+		{
+			if (!found) throw string("Cannot delete null node");
 			Bst<KT,VT>& fd(static_cast<Bst<KT,VT>&>(*found));
 			cout<<"WIP: Found node:"<<fd.key<<endl;
 			if (!fd.parent)
 			{	
 				cout<<"Erasing the root node"<<endl;
-				if ((!fd.left) and (!fd.right)) {delete found; return NULL;} // Tree is now empty
+				if ((!fd.left) and (!fd.right)) 
+				{
+					cout<<"Deleting empty root"<<endl;
+					//Update(found,true);
+					delete found; return NULL;	// Tree is now empty
+				} 
 				if ((!fd.left) or (!fd.right))
 				{
+					cout<<"Node has only one sub tree"<<endl;
 					// Node has only one sub tree
 					if (fd.left)
 					{
+						cout<<"Sub tree is on the left"<<endl;
 						TreeBase* ret(fd.left);
 						fd.left=NULL;
+						//Update(found,true);
 						delete found;
 						ret->parent=NULL;
 						return ret;
 					} else {
+						cout<<"Sub tree is on the right"<<endl;
 						TreeBase* ret(fd.right);
 						fd.right=NULL;
+						//Update(found,true);
 						delete found;
 						ret->parent=NULL;
 						return ret;
 					}
 				} else {
+					cout<<"Node has both sub trees"<<endl;
 					// Node has both sub trees
 					TreeBase* L(fd.left);
 					TreeBase* R(fd.right);
@@ -188,7 +214,49 @@ namespace TreeObjects
 					return L;
 				}
 			} else {
-				//fd.parent=NULL;
+				cout<<"Erasing a child node"<<endl;
+				if ((!fd.left) and (!fd.right)) 
+				{
+					cout<<"Deleting empty child"<<endl;
+					if (fd.parent->left==found) fd.parent->left=NULL;
+					if (fd.parent->right==found) fd.parent->right=NULL;
+					//Update(found,true);
+					delete found; return root;
+				} 
+				if ((!fd.left) or (!fd.right))
+				{
+					cout<<"Node has only one sub tree"<<endl;
+					// Node has only one sub tree
+					if (fd.left)
+					{
+						cout<<"Sub tree is on the left"<<endl;
+						if (fd.parent->left==found) fd.parent->left=fd.left;
+						if (fd.parent->right==found) fd.parent->right=fd.left;
+						//Update(found,true);
+						found->left=found->right=NULL;
+						delete found;
+						return root;
+					} else {
+						cout<<"Sub tree is on the right"<<endl;
+						if (fd.parent->left==found) fd.parent->left=fd.right;
+						if (fd.parent->right==found) fd.parent->right=fd.right;
+						//Update(found,true);
+						found->left=found->right=NULL;
+						delete found;
+						return root;
+					}
+				} else {
+					cout<<"Node has both sub trees"<<endl;
+					// Node has both sub trees
+					TreeBase* L(fd.left);
+					TreeBase* R(fd.right);
+					fd.left=fd.right=NULL; delete found;
+					TreeBase* LeftsRightMost(L->RightMost());
+					LeftsRightMost->right=R;
+					R->parent=LeftsRightMost;
+					L->parent=NULL;
+					return root;
+				}
 			}
 			return root;
 		}

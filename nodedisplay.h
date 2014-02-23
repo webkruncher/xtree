@@ -24,10 +24,16 @@ namespace TreeDisplay
 
 	struct NodeBase : map<string,string>
 	{
-		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100) {}
-		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),moved(true), motion(X,Y), color(0X003333) { }
-		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(a.moved), motion(a.X,a.Y),color(a.color)  {}
+		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false) {}
+		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false) { }
+		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed)  {}
 		const bool Moved() const {return moved;}
+		bool undisplay()
+		{
+			if (!Remove) Removing=0XFF;
+			Remove=true;
+			return Removed;
+		}
 		protected: 
 		bool moved;
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap);
@@ -40,6 +46,8 @@ namespace TreeDisplay
 		int DCW,DCH;
 		private:
 		XPoints lastpoints;
+		bool Remove,Removed;
+		int Removing;
 	};
 
 	template<typename KT>
@@ -49,7 +57,7 @@ namespace TreeDisplay
 		TreeNode(const int _SW,const int _SH) : NodeBase(_SW,_SH) { BoxSize(); }
 		TreeNode(const TreeNode& a) : NodeBase(a)  {}
 		void operator()(unsigned long long _color) { color=_color; }
-		void operator()(KT _k,TreeBase& node,TreeBase* parent)
+		void operator()(KT _k,TreeBase& node,TreeBase* parent,bool erasing=false)
 		{
 			k=_k;
 			if (!parent) 
