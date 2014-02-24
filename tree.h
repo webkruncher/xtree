@@ -1,7 +1,6 @@
 #ifndef KRUNCH_RB_TREE_H
 #define KRUNCH_RB_TREE_H
 
-extern int buggin;
 namespace TreeObjects
 {
 	struct TreeBase
@@ -95,10 +94,8 @@ namespace TreeObjects
 		virtual ~Bst() {if (left) delete left; if (right) delete right; }
 		virtual long countnodes()  
 		{
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
-			const KT& key(nd);
-			cout<<" "<<key;
-
+			//Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
+			//const KT& key(nd);
 			long leftnodes(0); if (left) leftnodes=left->countnodes();
 			long rightnodes(0); if (right) rightnodes=right->countnodes();
 			return (leftnodes+rightnodes+1);
@@ -131,21 +128,18 @@ namespace TreeObjects
 		virtual TreeBase* find(const KT& what)
 		{
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
-if (buggin) {const KT& rk(nd); cout<<" |"<<rk<<" ";}
 			if (nd==what) return this;
 			if (nd<what)
 			{
 				if (right)
 				{
 					Bst<KT,VT>& ld(static_cast<Bst<KT,VT>&>(*right));
-if (buggin) {const KT& lk(ld); cout<<" <"<<lk<<" ";}
 					return ld.find(what);
 				}
 			} else {
 				if (left)
 				{
 					Bst<KT,VT>& rd(static_cast<Bst<KT,VT>&>(*left));
-if (buggin) {const KT& rk(rd); cout<<" >"<<rk<<" ";}
 					return rd.find(what);
 				}
 			}
@@ -161,160 +155,99 @@ if (buggin) {const KT& rk(rd); cout<<" >"<<rk<<" ";}
 		virtual TreeBase* erase(TreeBase* root,KT what)
 		{
 			TreeBase* found(find(what));
-			if (!found) 
-			{
-				cout<<what<<" was not found in this tree, and cannot be deleted"<<endl;
-				return root;
-			}
-			return erase(root,find(what));
+			if (!found) return root;
+			TreeBase *p(found->parent),*l(found->left),*r(found->right);
+			TreeBase* newroot(erase(root,found));
+			Update(found,true); delete found;
+			Update(p); Update(l); Update(r);
+			return newroot;
 		}
 
-		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
+		virtual TreeBase* erase(TreeBase* root,TreeBase* pfound)
 		{
-			if (!found) throw string("Cannot delete null node");
-			Bst<KT,VT>& fd(static_cast<Bst<KT,VT>&>(*found));
-			cout<<"erase node:"<<fd.key<<endl;
-			if (!fd.parent)
+			if (!pfound) throw string("Cannot delete null node");
+			TreeBase& found(*pfound);
+			if (!found.parent)
 			{	
-				cout<<"Erasing the root node"<<endl;
-				if ((!fd.left) and (!fd.right)) 
+				if ((!found.left) and (!found.right))  return NULL;	
+				if ((!found.left) or (!found.right))
 				{
-					cout<<"Deleting empty root"<<endl;
-					Update(found,true);
-delete found; 
-					return NULL;	// Tree is now empty
-				} 
-				if ((!fd.left) or (!fd.right))
-				{
-					cout<<"Node has only one sub tree"<<endl;
-					// Node has only one sub tree
-					if (fd.left)
+					if (found.left)
 					{
-						cout<<"Sub tree is on the left"<<endl;
-						TreeBase* ret(fd.left);
-						fd.left=NULL;
-						Update(found,true);
-						Update(fd.left);
-delete found;
+						TreeBase* ret(found.left);
+						found.left=NULL;
 						return ret;
 					} else {
-						cout<<"Sub tree is on the right"<<endl;
-						TreeBase* ret(fd.right);
-						fd.right=NULL;
-						Update(fd.right);
-						Update(found,true);
-delete found;
+						TreeBase* ret(found.right);
+						found.right=NULL;
 						return ret;
 					}
 				} else {
-					cout<<"Node has both sub trees"<<endl;
-					// Node has both sub trees
-					//if (fd.parent->left==found)  fd.parent->left=NULL;
-					//if (fd.parent->right==found) fd.parent->right=NULL;
-					TreeBase* L(fd.left);
-					TreeBase* R(fd.right);
-					fd.left=NULL; fd.right=NULL; 
+					TreeBase* L(found.left);
+					TreeBase* R(found.right);
+					found.left=NULL; found.right=NULL; 
 					TreeBase* LeftsRightMost(L->RightMost());
 					LeftsRightMost->right=R;
 					R->parent=LeftsRightMost;
 					L->parent=NULL;
-					Update(L);
-					Update(R);
-delete found;
 					return L;
 				}
 			} else {
-				cout<<"Erasing a child node"<<endl;
-				if ((!fd.left) and (!fd.right)) 
+				if ((!found.left) and (!found.right)) 
 				{
-					cout<<"Deleting empty child"<<endl;
-					if (fd.parent->left==found)  fd.parent->left=NULL;
-					if (fd.parent->right==found) fd.parent->right=NULL;
-					Update(found,true);
-					Update(fd.parent);
-delete found; 
-					return root;
+					if (found.parent->left==pfound)  found.parent->left=NULL;
+					if (found.parent->right==pfound) found.parent->right=NULL;
 				} 
-				if ((!fd.left) or (!fd.right))
+				if ((!found.left) or (!found.right))
 				{
-					cout<<"Node has only one sub tree"<<endl;
-					TreeBase* parent(fd.parent);
+					TreeBase* parent(found.parent);
 					// Node has only one sub tree
-					TreeBase* p(fd.parent);
-						Bst<KT,VT>& pd(static_cast<Bst<KT,VT>&>(*p));
-						const KT& pk(pd);
-						cout<<"Parent is "<<pk<<endl;
-					if (fd.left)
+					TreeBase* p(found.parent);
+					if (found.left)
 					{
-						cout<<"Found key has a left child"<<endl;
-						TreeBase* C(fd.left);
-						if (p->left==found)
+						TreeBase* C(found.left);
+						if (p->left==pfound)
 						{
-							cout<<"Found key is on the left of its parent"<<endl;
 							p->left=C;
 							C->parent=p;
 						} else {
-							cout<<"Found key is on the right of its parent"<<endl;
 							p->right=C;
 							C->parent=p;
 						}
-						Update(C);
 					} else {
-						cout<<"Found key has a right child"<<endl;
-						TreeBase* C(fd.right);
-						if (p->left==found)
+						TreeBase* C(found.right);
+						if (p->left==pfound)
 						{
-							cout<<"Found key is on the left of its parent"<<endl;
 							p->left=C;
 							C->parent=p;
 						} else {
-							cout<<"Found key is on the right of its parent"<<endl;
 							p->right=C;
 							C->parent=p;
 						}
-						Update(C);
 					}
-					Update(p);
-					fd.left=NULL; fd.right=NULL;
-			delete found;
-					return root;
+					found.left=NULL; found.right=NULL;
 				} else {
-					cout<<"Node has both sub trees"<<endl;
-					// Node has both sub trees
-					TreeBase* p(fd.parent);
-					if (p->left==found) 
+					TreeBase* p(found.parent);
+					if (p->left==pfound) 
 					{
-						cout<<"Node is on parents left"<<endl;
-						TreeBase* L(fd.left);
-						TreeBase* R(fd.right);
-						found->left=NULL; found->right=NULL;
+						TreeBase* L(found.left);
+						TreeBase* R(found.right);
+						found.left=NULL; found.right=NULL;
 						p->left=R;
 						TreeBase* NewSide(R->LeftMost());
 						L->parent=NewSide;
 						NewSide->left=L;
-						Update(NewSide);
-						Update(p);
-						Update(L);
-						Update(R);
 					}
-					if (p->right==found) 
+					if (p->right==pfound) 
 					{
-						cout<<"Node is on parents right"<<endl;
-						TreeBase* L(fd.left);
-						TreeBase* R(fd.right);
-						found->left=NULL; found->right=NULL;
+						TreeBase* L(found.left);
+						TreeBase* R(found.right);
+						found.left=NULL; found.right=NULL;
 						p->right=L;
 						TreeBase* NewSide(L->RightMost());
 						R->parent=NewSide;
 						NewSide->right=R;
-						Update(NewSide);
-						Update(p);
-						Update(L);
-						Update(R);
 					}
-					Update(found,true);
-delete found;
-					return root;
 				}
 			}
 			return root;
