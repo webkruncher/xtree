@@ -83,87 +83,7 @@ namespace TreeObjects
 		bool isLeaf(TreeBase* node) { if ((!node->left) and (!node->right)) return true; else return false; }
 		TreeBase *parent,*left,*right;
 		virtual ostream& operator<<(ostream&) const =0;
-	};
-	inline ostream& operator<<(ostream& o,const TreeBase& b) {return b.operator<<(o);}
-
-	template <typename KT,typename VT>
-		struct Bst : public TreeBase
-	{
-		Bst(const KT _key) : key(_key) {}
-		Bst(const KT _key,const VT _data) : key(_key), data(_data) {}
-		virtual ~Bst() {if (left) delete left; if (right) delete right; }
-		virtual long countnodes()  
-		{
-			//Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
-			//const KT& key(nd);
-			long leftnodes(0); if (left) leftnodes=left->countnodes();
-			long rightnodes(0); if (right) rightnodes=right->countnodes();
-			return (leftnodes+rightnodes+1);
-		}
-		KT minValue(TreeBase* node) 
-		{
-			TreeBase* current = node;
-			while (current->left != NULL) current = current->left;
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
-			return(nd.key);
-		}
-		KT maxValue(TreeBase* node) 
-		{
-			TreeBase* current = node;
-			while (current->right != NULL) current = current->right;
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
-			return(nd.key);
-		}
-
-		virtual int isBST(TreeBase* node) 
-		{
-			if (!node) return(true);
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			if (node->left!=NULL && maxValue(node->left) > nd.key) return(false);
-			if (node->right!=NULL && minValue(node->right) <= nd.key) return(false);
-			if (!isBST(node->left) || !isBST(node->right)) return(false);
-			return(true);
-		}
-
-		virtual TreeBase* find(const KT& what)
-		{
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
-			if (nd==what) return this;
-			if (nd<what)
-			{
-				if (right)
-				{
-					Bst<KT,VT>& ld(static_cast<Bst<KT,VT>&>(*right));
-					return ld.find(what);
-				}
-			} else {
-				if (left)
-				{
-					Bst<KT,VT>& rd(static_cast<Bst<KT,VT>&>(*left));
-					return rd.find(what);
-				}
-			}
-			return NULL;
-		}
-
-		void Update(TreeBase* node,bool erasing=false)
-		{
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.data(nd.key,nd,node->parent,erasing);
-		}
-
-		virtual TreeBase* erase(TreeBase* root,KT what)
-		{
-			TreeBase* found(find(what));
-			if (!found) return root;
-			TreeBase *p(found->parent),*l(found->left),*r(found->right);
-			TreeBase* newroot(erase(root,found));
-			Update(found,true); delete found;
-			Update(p); Update(l); Update(r);
-			return newroot;
-		}
-
-		virtual TreeBase* erase(TreeBase* root,TreeBase* pfound)
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound)
 		{
 			if (!pfound) throw string("Cannot delete null node");
 			TreeBase& found(*pfound);
@@ -252,6 +172,86 @@ namespace TreeObjects
 			}
 			return root;
 		}
+	};
+	inline ostream& operator<<(ostream& o,const TreeBase& b) {return b.operator<<(o);}
+
+	template <typename KT,typename VT>
+		struct Bst : public TreeBase
+	{
+		Bst(const KT _key) : key(_key) {}
+		Bst(const KT _key,const VT _data) : key(_key), data(_data) {}
+		virtual ~Bst() {if (left) delete left; if (right) delete right; }
+		virtual long countnodes()  
+		{
+			//Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
+			//const KT& key(nd);
+			long leftnodes(0); if (left) leftnodes=left->countnodes();
+			long rightnodes(0); if (right) rightnodes=right->countnodes();
+			return (leftnodes+rightnodes+1);
+		}
+		KT minValue(TreeBase* node) 
+		{
+			TreeBase* current = node;
+			while (current->left != NULL) current = current->left;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
+			return(nd.key);
+		}
+		KT maxValue(TreeBase* node) 
+		{
+			TreeBase* current = node;
+			while (current->right != NULL) current = current->right;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
+			return(nd.key);
+		}
+
+		virtual int isBST(TreeBase* node) 
+		{
+			if (!node) return(true);
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			if (node->left!=NULL && maxValue(node->left) > nd.key) return(false);
+			if (node->right!=NULL && minValue(node->right) <= nd.key) return(false);
+			if (!isBST(node->left) || !isBST(node->right)) return(false);
+			return(true);
+		}
+
+		virtual TreeBase* find(const KT& what)
+		{
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
+			if (nd==what) return this;
+			if (nd<what)
+			{
+				if (right)
+				{
+					Bst<KT,VT>& ld(static_cast<Bst<KT,VT>&>(*right));
+					return ld.find(what);
+				}
+			} else {
+				if (left)
+				{
+					Bst<KT,VT>& rd(static_cast<Bst<KT,VT>&>(*left));
+					return rd.find(what);
+				}
+			}
+			return NULL;
+		}
+
+		void Update(TreeBase* node,bool erasing=false)
+		{
+			if (!node) return;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.data(nd.key,nd,node->parent,erasing);
+		}
+
+		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
+		{
+			if (!found) return root;
+			TreeBase *p(found->parent),*l(found->left),*r(found->right);
+			TreeBase* newroot(TreeBase::remove(root,found));
+			Update(found,true); delete found;
+			Update(p); Update(l); Update(r);
+			return newroot;
+		}
+
 
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
