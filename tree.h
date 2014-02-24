@@ -159,7 +159,9 @@ namespace TreeObjects
 			if (!found) return root;
 			TreeBase *p(found->parent),*l(found->left),*r(found->right);
 			TreeBase* newroot(TreeBase::remove(root,found));
-			Update(found,true); delete found;
+			found->left=NULL; found->right=NULL;
+			Update(found,true); 
+			delete found;
 			Update(p); Update(l); Update(r);
 			return newroot;
 		}
@@ -340,20 +342,10 @@ namespace TreeObjects
 			if ((!found.left) and (!found.right))  return NULL;	
 			if ((!found.left) or (!found.right))
 			{
-				if (found.left)
-				{
-					TreeBase* ret(found.left);
-					found.left=NULL;
-					return ret;
-				} else {
-					TreeBase* ret(found.right);
-					found.right=NULL;
-					return ret;
-				}
+				if (found.left) return found.left; else return found.right;
 			} else {
 				TreeBase* L(found.left);
 				TreeBase* R(found.right);
-				found.left=NULL; found.right=NULL; 
 				TreeBase* LeftsRightMost(L->RightMost());
 				LeftsRightMost->right=R;
 				R->parent=LeftsRightMost;
@@ -364,53 +356,46 @@ namespace TreeObjects
 			TreeBase& parent(*found.parent);
 			if ((!found.left) and (!found.right)) 
 			{
-				if (found.parent->left==pfound)  found.parent->left=NULL;
-				if (found.parent->right==pfound) found.parent->right=NULL;
+				if (parent.left==pfound)  parent.left=NULL;
+				if (parent.right==pfound) parent.right=NULL;
 			} 
 			if ((!found.left) or (!found.right))
 			{
-				TreeBase* p(found.parent);
 				if (found.left)
 				{
 					TreeBase* C(found.left);
-					if (p->left==pfound)
+					if (parent.left==pfound)
 					{
-						p->left=C;
-						C->parent=p;
+						parent.left=C;
+						C->parent=&parent;
 					} else {
-						p->right=C;
-						C->parent=p;
+						parent.right=C;
+						C->parent=&parent;
 					}
 				} else {
 					TreeBase* C(found.right);
-					if (p->left==pfound)
+					if (parent.left==pfound)
 					{
-						p->left=C;
-						C->parent=p;
+						parent.left=C;
+						C->parent=&parent;
 					} else {
-						p->right=C;
-						C->parent=p;
+						parent.right=C;
+						C->parent=&parent;
 					}
 				}
-				found.left=NULL; found.right=NULL;
 			} else {
-				TreeBase* p(found.parent);
-				if (p->left==pfound) 
+				if (parent.left==pfound) 
 				{
 					TreeBase* L(found.left);
 					TreeBase* R(found.right);
-					found.left=NULL; found.right=NULL;
-					p->left=R;
+					parent.left=R; R->parent=&parent;
 					TreeBase* NewSide(R->LeftMost());
 					L->parent=NewSide;
 					NewSide->left=L;
-				}
-				if (p->right==pfound) 
-				{
+				} else {
 					TreeBase* L(found.left);
 					TreeBase* R(found.right);
-					found.left=NULL; found.right=NULL;
-					p->right=L;
+					parent.right=L; L->parent=&parent;
 					TreeBase* NewSide(L->RightMost());
 					R->parent=NewSide;
 					NewSide->right=R;
