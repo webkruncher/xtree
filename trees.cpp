@@ -56,7 +56,7 @@ namespace TreeDisplay
 			return make_pair<bool,int>(true,i);
 		}
 
-		int Max(10);
+		int Max(30);
 		if (used.size()==(Max-1)) return make_pair<bool,int>(false,0);
 		if (false)
 		{	

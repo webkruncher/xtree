@@ -10,6 +10,7 @@ namespace TreeObjects
 		virtual ~TreeBase() {}
 		virtual TreeBase* insert(TreeBase* root,TreeBase*) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
+		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {cout<<"COPYING A TREE BASE"<<endl;}
 
 		virtual int isBST(TreeBase* node) = 0;
 		virtual long countnodes()  = 0;
@@ -92,7 +93,7 @@ namespace TreeObjects
 	{
 		Bst(const KT _key) : key(_key) {}
 		Bst(const KT _key,const VT _data) : key(_key), data(_data) {}
-		virtual ~Bst() {if (left) delete left; if (right) delete right; }
+		virtual ~Bst() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
 		virtual long countnodes()  
 		{
 			//Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
@@ -342,9 +343,9 @@ namespace TreeObjects
 			if ((!found.left) and (!found.right))  return NULL;	
 			if ((!found.left) or (!found.right))
 			{
-				if (found.left) return found.left; 
-				if (found.right) return found.right; 
-				return root;
+				if (found.left) {found.left->parent=NULL; return found.left; }
+				if (found.right) {found.right->parent=NULL; return found.right; }
+				throw string("This is impossible");
 			} else {
 				TreeBase* L(found.left);
 				TreeBase* R(found.right);
@@ -360,6 +361,7 @@ namespace TreeObjects
 			{
 				if (parent.left==pfound)  parent.left=NULL;
 				if (parent.right==pfound) parent.right=NULL;
+				if (pfound==root) return NULL; // should not need this
 				return root;
 			} 
 			if ((!found.left) or (!found.right))

@@ -111,7 +111,7 @@ namespace TreeDisplay
 								cout<<endl;
 								cout.flush();
 							}
-				waitfor=updateloop+60;
+				waitfor=updateloop+10;
 			}
 
 			if ((!waitfor) or (updateloop>waitfor) )

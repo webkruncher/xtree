@@ -47,7 +47,7 @@ namespace TreeDisplay
 						int yoff(CH);
 						XDrawString(display,bitmap,gc,ul.first,ul.second+yoff,text.c_str(),text.size());
 					}
-					Removing-=3;
+					Removing-=10;
 					return;
 				}
 			}
