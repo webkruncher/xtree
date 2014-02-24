@@ -18,7 +18,7 @@ namespace TreeDisplay
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
 				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),input(NULL),output(NULL) 
 		{
-			input=new ifstream("output.txt");
+			//input=new ifstream("output.txt");
 			//output=new ofstream("output.txt");
 		}
 		virtual ~TreeCanvas() {if (input) delete input; if (root) delete root;}

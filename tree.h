@@ -342,7 +342,9 @@ namespace TreeObjects
 			if ((!found.left) and (!found.right))  return NULL;	
 			if ((!found.left) or (!found.right))
 			{
-				if (found.left) return found.left; else return found.right;
+				if (found.left) return found.left; 
+				if (found.right) return found.right; 
+				return root;
 			} else {
 				TreeBase* L(found.left);
 				TreeBase* R(found.right);
@@ -358,6 +360,7 @@ namespace TreeObjects
 			{
 				if (parent.left==pfound)  parent.left=NULL;
 				if (parent.right==pfound) parent.right=NULL;
+				return root;
 			} 
 			if ((!found.left) or (!found.right))
 			{
