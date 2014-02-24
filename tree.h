@@ -83,95 +83,7 @@ namespace TreeObjects
 		bool isLeaf(TreeBase* node) { if ((!node->left) and (!node->right)) return true; else return false; }
 		TreeBase *parent,*left,*right;
 		virtual ostream& operator<<(ostream&) const =0;
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound)
-		{
-			if (!pfound) throw string("Cannot delete null node");
-			TreeBase& found(*pfound);
-			if (!found.parent)
-			{	
-				if ((!found.left) and (!found.right))  return NULL;	
-				if ((!found.left) or (!found.right))
-				{
-					if (found.left)
-					{
-						TreeBase* ret(found.left);
-						found.left=NULL;
-						return ret;
-					} else {
-						TreeBase* ret(found.right);
-						found.right=NULL;
-						return ret;
-					}
-				} else {
-					TreeBase* L(found.left);
-					TreeBase* R(found.right);
-					found.left=NULL; found.right=NULL; 
-					TreeBase* LeftsRightMost(L->RightMost());
-					LeftsRightMost->right=R;
-					R->parent=LeftsRightMost;
-					L->parent=NULL;
-					return L;
-				}
-			} else {
-				if ((!found.left) and (!found.right)) 
-				{
-					if (found.parent->left==pfound)  found.parent->left=NULL;
-					if (found.parent->right==pfound) found.parent->right=NULL;
-				} 
-				if ((!found.left) or (!found.right))
-				{
-					TreeBase* parent(found.parent);
-					// Node has only one sub tree
-					TreeBase* p(found.parent);
-					if (found.left)
-					{
-						TreeBase* C(found.left);
-						if (p->left==pfound)
-						{
-							p->left=C;
-							C->parent=p;
-						} else {
-							p->right=C;
-							C->parent=p;
-						}
-					} else {
-						TreeBase* C(found.right);
-						if (p->left==pfound)
-						{
-							p->left=C;
-							C->parent=p;
-						} else {
-							p->right=C;
-							C->parent=p;
-						}
-					}
-					found.left=NULL; found.right=NULL;
-				} else {
-					TreeBase* p(found.parent);
-					if (p->left==pfound) 
-					{
-						TreeBase* L(found.left);
-						TreeBase* R(found.right);
-						found.left=NULL; found.right=NULL;
-						p->left=R;
-						TreeBase* NewSide(R->LeftMost());
-						L->parent=NewSide;
-						NewSide->left=L;
-					}
-					if (p->right==pfound) 
-					{
-						TreeBase* L(found.left);
-						TreeBase* R(found.right);
-						found.left=NULL; found.right=NULL;
-						p->right=L;
-						TreeBase* NewSide(L->RightMost());
-						R->parent=NewSide;
-						NewSide->right=R;
-					}
-				}
-			}
-			return root;
-		}
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
 	};
 	inline ostream& operator<<(ostream& o,const TreeBase& b) {return b.operator<<(o);}
 
@@ -418,6 +330,96 @@ namespace TreeObjects
 			return newroot;
 		}
 	};
+
+	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
+	{
+		if (!pfound) throw string("Cannot delete null node");
+		TreeBase& found(*pfound);
+		if (!found.parent)
+		{	
+			if ((!found.left) and (!found.right))  return NULL;	
+			if ((!found.left) or (!found.right))
+			{
+				if (found.left)
+				{
+					TreeBase* ret(found.left);
+					found.left=NULL;
+					return ret;
+				} else {
+					TreeBase* ret(found.right);
+					found.right=NULL;
+					return ret;
+				}
+			} else {
+				TreeBase* L(found.left);
+				TreeBase* R(found.right);
+				found.left=NULL; found.right=NULL; 
+				TreeBase* LeftsRightMost(L->RightMost());
+				LeftsRightMost->right=R;
+				R->parent=LeftsRightMost;
+				L->parent=NULL;
+				return L;
+			}
+		} else {
+			TreeBase& parent(*found.parent);
+			if ((!found.left) and (!found.right)) 
+			{
+				if (found.parent->left==pfound)  found.parent->left=NULL;
+				if (found.parent->right==pfound) found.parent->right=NULL;
+			} 
+			if ((!found.left) or (!found.right))
+			{
+				TreeBase* p(found.parent);
+				if (found.left)
+				{
+					TreeBase* C(found.left);
+					if (p->left==pfound)
+					{
+						p->left=C;
+						C->parent=p;
+					} else {
+						p->right=C;
+						C->parent=p;
+					}
+				} else {
+					TreeBase* C(found.right);
+					if (p->left==pfound)
+					{
+						p->left=C;
+						C->parent=p;
+					} else {
+						p->right=C;
+						C->parent=p;
+					}
+				}
+				found.left=NULL; found.right=NULL;
+			} else {
+				TreeBase* p(found.parent);
+				if (p->left==pfound) 
+				{
+					TreeBase* L(found.left);
+					TreeBase* R(found.right);
+					found.left=NULL; found.right=NULL;
+					p->left=R;
+					TreeBase* NewSide(R->LeftMost());
+					L->parent=NewSide;
+					NewSide->left=L;
+				}
+				if (p->right==pfound) 
+				{
+					TreeBase* L(found.left);
+					TreeBase* R(found.right);
+					found.left=NULL; found.right=NULL;
+					p->right=L;
+					TreeBase* NewSide(L->RightMost());
+					R->parent=NewSide;
+					NewSide->right=R;
+				}
+			}
+		}
+		return root;
+	}
+
 } //namespace TreeObjects
 #endif // KRUNCH_RB_TREE_H
 
