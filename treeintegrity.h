@@ -4,6 +4,14 @@
 
 namespace TreeIntegrity
 {
+	template<typename KT,typename VT> 
+		inline void PrintInOrder(TreeBase* node)
+	{
+		if (node->left) PrintInOrder<KT,VT>(node->left);
+		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
+		const KT& v(rk); cout<<v<<" ";
+		if (node->right) PrintInOrder<KT,VT>(node->right);
+	}	
 
 	template<typename KT,typename VT> 
 		inline bool BstIntegrity(TreeBase* root,set<KT>& used)
@@ -24,6 +32,7 @@ namespace TreeIntegrity
 			if (minvalue!=(*used.begin())) {cout<<("Min check failed")<<endl; return false;}
 			if (maxvalue!=(*used.rbegin())) {cout<<("Max check failed")<<endl; return false;}
 			if (!isbst) {cout<<("isBST failed")<<endl; return false;}
+			cout<<"Count:"; cout.flush();
 			long ttl(root->countnodes());
 			if (ttl!=used.size()) {cout<<("Wrong number of nodes counted")<<endl; return false;}
 			//cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;

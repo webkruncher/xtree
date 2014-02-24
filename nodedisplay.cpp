@@ -11,6 +11,7 @@ using namespace TreeDisplay;
 
 namespace TreeDisplay
 {
+		//#define GHOSTS
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
 			//invalid.SetTrace(true);
@@ -22,7 +23,12 @@ namespace TreeDisplay
 				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
 				pair<double,double> lr(ul.first+DCW+2,ul.second+DCH+2);
 				Rect iv(ul.first,ul.second,lr.first,lr.second);
-				invalid.expand(iv);
+				#ifdef GHOSTS
+					if (Remove) if (Removing<0X88) {Removed=true; return;}
+					invalid.insert(iv);
+				#else
+					invalid.expand(iv);
+				#endif
 				if (Remove)
 				{
 					if (Removing<=0X77) 
@@ -30,7 +36,7 @@ namespace TreeDisplay
 						Removed=true;
 						XSetForeground(display,gc,0X777777);
 					} else {
-						unsigned long color((Removing<<16) | (Removing<<8) | (Removing));
+						unsigned long color((Removing<<0) | (Removing<<8) | (Removing));
 						XSetForeground(display,gc,color);
 					}
 					XPoint& points(iv);
@@ -53,7 +59,11 @@ namespace TreeDisplay
 				pair<double,double> ul(X-(DCW/2),Y-(DCH/2));
 				pair<double,double> lr(ul.first+DCW,ul.second+DCH);
 				Rect iv(ul.first,ul.second,lr.first,lr.second);
-				invalid.expand(iv);
+				#ifdef GHOSTS
+					invalid.insert(iv);
+				#else
+					invalid.expand(iv);
+				#endif
 				XSetForeground(display,gc,0XFFFFFF);
 				//invalid.Draw(display,bitmap,window,gc);
 				XPoint& points(iv); XPoint* pt=&points;

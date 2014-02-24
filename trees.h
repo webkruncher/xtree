@@ -2,6 +2,7 @@
 #ifndef TREE_DISPLAY_H
 #define TREE_DISPLAY_H
 #include <math.h>
+#include <fstream>
 struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>::insert(r); } };
 #include "motivation.h"
 #include "nodedisplay.h"
@@ -15,8 +16,12 @@ namespace TreeDisplay
 		TreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
-				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL) {}
-		virtual ~TreeCanvas() {if (root) delete root;}
+				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),input(NULL),output(NULL) 
+		{
+			input=new ifstream("output.txt");
+			//output=new ofstream("output.txt");
+		}
+		virtual ~TreeCanvas() {if (input) delete input; if (root) delete root;}
 		virtual void operator()(Pixmap& bitmap) 
 		{   
 			XSetForeground(display,gc,0X777777);
@@ -28,7 +33,7 @@ namespace TreeDisplay
 		virtual void update() 
 		{
 			//if (updateloop>300) { if (root) delete root; root=NULL; return; }
-			if (used.empty()) {removing=false;stop=false;}
+			//if (used.empty()) {removing=false;stop=false;}
 		
 			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
 			updateloop++;
@@ -38,9 +43,74 @@ namespace TreeDisplay
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
 				VT& valuenode(nk);
 				if (!valuenode.undisplay()) return;
-				root=nk.erase(root,removal);
-				if (!root) {movement=false; removing=false; used.clear();stop=false;}
+				TreeBase* newroot(nk.erase(root,removal));
+				cout<<"Returned from erase"<<endl; cout.flush();
+				cout<<"nullifying removal"<<endl; cout.flush();
 				removal=NULL;
+
+				if (newroot==root) cout<<"Root node is unchanged"<<endl; cout.flush();
+				if (!newroot) cout<<"The tree is now empty, the root is NULL"<<endl; 
+					else if (newroot!=root)
+					{
+						cout<<"newroot"<<endl; cout.flush();
+						Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
+						const KT& rootkey(nk);
+						cout<<"The new root node is "<<rootkey<<endl;
+					}
+
+				if (newroot!=root) 
+				{
+					cout<<"Root node is different"<<endl;
+					root=newroot;
+				}
+				cout<<"checkpoint"<<endl; cout.flush();
+				if (!root)	
+				{
+					cout<<"no root, checking input"<<endl; cout.flush();
+					if (input) 
+					{
+						cout<<"deleting input"<<endl; cout.flush();
+						delete input; input=NULL;
+					}
+					cout<<"clear"<<endl; cout.flush();
+					movement=false; removing=false; used.clear();stop=false;
+				}
+				cout<<"counting nodes"<<endl; cout.flush();
+				if (root) cout<<"The tree now has "<<root->countnodes()<<" nodes"<<endl; cout.flush();
+
+
+						if (root) cout<<"Integrity check..."<<endl; cout.flush();
+						if (root) 
+							if (!CheckIntegrity(root)) 
+						{
+							if (used.size()<40)
+							{
+								cout<<"Integrity check failed:";
+								cout<<"Used: ";
+								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+									cout<<" "<<(*it);	
+								cout<<endl<<" Bst:";
+								TreeIntegrity::PrintInOrder<KT,VT>(root);
+								cout<<endl;
+								cout.flush();
+							}
+							stop=true;
+						}
+
+
+
+				if (root)
+							if (used.size()<40)
+							{
+								cout<<"Removed."<<endl;
+								cout<<"Used:";
+								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+									cout<<(*it)<<" ";	
+								cout<<endl<<" Bst:";
+								TreeIntegrity::PrintInOrder<KT,VT>(root);
+								cout<<endl;
+								cout.flush();
+							}
 				waitfor=updateloop+60;
 			}
 
@@ -48,14 +118,17 @@ namespace TreeDisplay
 				if ((!movement) and (!stop))
 			{
 				movement=true;
-				pair<bool,KT> next(Next());
+				pair<bool,KT> next(Next(input));
 				if (next.first)
 				{
+					if (output) (*output)<<next.second<<endl;
 					if (!removing)
 					{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+						cout<<"creating "<<next.second<<endl;
 						TreeBase* n(generate(next.second,tn));
 						if (!root) waitfor=updateloop+10;
+						if (!root) if (output) {delete output; output=new ofstream("output.txt");}
 						if (!root) root=n;  
 							else 
 						{
@@ -74,25 +147,50 @@ namespace TreeDisplay
 							removal=nk.find(next.second);
 						}
 					}
-					if (root)
+
 						if (!removal)
 							if (!CheckIntegrity(root)) 
 						{
 							if (used.size()<20)
 							{
-								cout<<"Used:";
+								cout<<"Integrity check failed:";
+								cout<<"Used: ";
 								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
 									cout<<" "<<(*it);	
+								cout<<endl<<" Bst:";
+								TreeIntegrity::PrintInOrder<KT,VT>(root);
 								cout<<endl;
 								cout.flush();
 							}
 							stop=true;
 						}
+
+#if 0
+				if (removing)
+							if (used.size()<20)
+							{
+								cout<<"Used: ";
+								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+									cout<<" "<<(*it);	
+								cout<<endl<<" Bst:";
+								TreeIntegrity::PrintInOrder<KT,VT>(root);
+								cout<<endl;
+								cout.flush();
+							}
+#endif
+
+
 				} else {
-					removing=!removing;
-					if (!root) {movement=false; removing=false; used.clear();stop=false;}
-					cout<<"Removing:"<<boolalpha<<removing<<endl;
-				} 
+					if (!removing) 
+					{
+						removing=true;
+						if (output) (*output)<<endl;
+					} else
+						if (used.empty()) 
+						{
+							if (!root) {movement=false; removing=false; stop=false;}
+						}
+				}
 			}
 
 		}
@@ -101,13 +199,15 @@ namespace TreeDisplay
 		bool stop,removing;
 		virtual bool CheckIntegrity(TreeBase* root) { return TreeIntegrity::BstIntegrity<KT,VT>(root,used); }
 		private:
+		ifstream* input;
+		ofstream* output;
 		Window& window;
 		bool movement;
 		set<KT> used;
 		unsigned long updateloop,waitfor;
 		TreeBase* root,*removal;
 		Invalid invalid;
-		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }
+		pair<bool,KT> Next(ifstream*) { return make_pair<bool,KT>(true,rand()%10); }
 		void traverse(TreeBase& n)
 		{
 			movement=false;
