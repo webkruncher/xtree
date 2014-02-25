@@ -35,6 +35,7 @@ namespace TreeDisplay
 		private:
 		void UpdateTree();
 		void Deletions();
+		void Additions();
 		Window& window;
 		bool movement;
 		int flipcounter;

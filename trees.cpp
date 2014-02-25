@@ -137,14 +137,8 @@ namespace TreeDisplay
 	}
 
 	template <typename KT>
-		void TreeCanvas<KT>::UpdateTree()
+		void TreeCanvas<KT>::Additions()
 	{
-			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
-			updateloop++;
-
-			Deletions();
-
-
 			if ((!waitfor) or (updateloop>waitfor) )
 				if ((!movement) and (!stop))
 			{
@@ -155,7 +149,6 @@ namespace TreeDisplay
 					if (!removing)
 					{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-						//cout<<"creating "<<next.second<<endl;
 						TreeBase* n(generate(next.second,tn));
 						if (!root) waitfor=updateloop+10;
 						if (!root) root=n;  
@@ -198,6 +191,19 @@ namespace TreeDisplay
 
 				} 
 			}
+	}
+
+
+	template <typename KT>
+		void TreeCanvas<KT>::UpdateTree()
+	{
+			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
+			updateloop++;
+
+			Deletions();
+			Additions();
+
+
 
 			if (!root) {movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
