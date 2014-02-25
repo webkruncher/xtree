@@ -14,7 +14,7 @@ namespace TreeDisplay
 	double GenerateNumber(double Max) { double k=(rand()%((int)Max)); k/=(((double)(rand()%((int)Max))+1)); return k; }
 
 	template <typename T>
-		pair<bool,T> NextItem(set<T>& used,const bool removing)
+		pair<bool,T> NextItem(set<T>& used,const int Max,const bool removing)
 	{
 		if (removing)
 		{
@@ -26,21 +26,15 @@ namespace TreeDisplay
 			return make_pair<bool,T>(true,*it);
 		}
 
-		T Max(30);
 		if (used.size()==(Max-1)) return make_pair<bool,T>(false,0);
-
 		srand(time(0));
-		T k;
-		do 
-		{
-			k=GenerateNumber(Max);
-		} while (used.find(k)!=used.end());
+		T k; do { k=GenerateNumber(Max); } while (used.find(k)!=used.end());
 		used.insert(k);
 		return make_pair<bool,T>(true,k);
 	}
 
-	template <> pair<bool,int> TreeCanvas<int>::Next() { return NextItem<int>(used,removing); }
-	template <> pair<bool,double> TreeCanvas<double>::Next() { return NextItem<double>(used,removing); }
+	template <> pair<bool,int> TreeCanvas<int>::Next(int Max) { return NextItem<int>(used,Max,removing); }
+	template <> pair<bool,double> TreeCanvas<double>::Next(int Max) { return NextItem<double>(used,Max,removing); }
 
 	template <typename KT>
 		void TreeCanvas<KT>::Deletions()
@@ -120,7 +114,7 @@ namespace TreeDisplay
 				if ((!movement) and (!stop))
 			{
 				movement=true;
-				pair<bool,KT> next(Next());
+				pair<bool,KT> next(Next(40));
 				if (next.first)
 				{
 					if (!removing)

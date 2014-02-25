@@ -43,7 +43,7 @@ namespace TreeDisplay
 		unsigned long updateloop,waitfor;
 		TreeBase* root,*removal;
 		Invalid invalid;
-		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }
+		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
 		void traverse(TreeBase& n)
 		{
 			movement=false;
