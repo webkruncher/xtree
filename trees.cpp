@@ -9,60 +9,38 @@ using namespace TreeDisplay;
 
 namespace TreeDisplay
 {
-	template <> pair<bool,int> TreeCanvas<int>::Next()
-	{ 
+
+	int GenerateNumber(int Max) { return ((rand()%Max)+(Max/2)); }
+	double GenerateNumber(double Max) { double k=(rand()%((int)Max)); k/=(((double)(rand()%((int)Max))+1)); return k; }
+
+	template <typename T>
+		pair<bool,T> NextItem(set<T>& used,const bool removing)
+	{
 		if (removing)
 		{
-			if (used.empty()) return make_pair<bool,int>(false,0);
+			if (used.empty()) return make_pair<bool,T>(false,0);
 			int w(rand()%used.size());
-			set<int>::iterator it=used.begin();
+			typename set<T>::iterator it=used.begin();
 			for (int j=0;j<w;j++) it++;
 			used.erase(it);
-			return make_pair<bool,int>(true,*it);
+			return make_pair<bool,T>(true,*it);
 		}
 
-		int Max(30);
-		if (used.size()==(Max-1)) return make_pair<bool,int>(false,0);
-		if (false)
-		{	
-			static int j(11);
-			j--;
-			used.insert(j);
-			return make_pair<bool,int>(true,j);
-		}
+		T Max(30);
+		if (used.size()==(Max-1)) return make_pair<bool,T>(false,0);
 
 		srand(time(0));
-		int k;
+		T k;
 		do 
 		{
-			k=(rand()%Max); 
-			k+=(Max/2); 
+			k=GenerateNumber(Max);
 		} while (used.find(k)!=used.end());
 		used.insert(k);
-		return make_pair<bool,int>(true,k);
+		return make_pair<bool,T>(true,k);
 	}
 
-	template <> pair<bool,double> TreeCanvas<double>::Next()
-	{ 
-		if (removing)
-		{
-				int w(rand()%used.size());
-				set<double>::iterator it=used.begin();
-				for (int j=0;j<w;j++) it++;
-				used.erase(it);
-				return make_pair<bool,int>(true,*it);
-		}
-		if (used.size()==10) return make_pair<bool,double>(false,0);
-		srand(time(0));
-		double k;
-		do 
-		{
-			k=(rand()%100); 
-			k/=(((double)(rand()%100)+1));
-		} while (used.find(k)!=used.end());
-		used.insert(k);
-		return make_pair<bool,double>(true,k);
-	}
+	template <> pair<bool,int> TreeCanvas<int>::Next() { return NextItem<int>(used,removing); }
+	template <> pair<bool,double> TreeCanvas<double>::Next() { return NextItem<double>(used,removing); }
 
 	template <typename KT>
 		void TreeCanvas<KT>::Deletions()
@@ -105,7 +83,7 @@ namespace TreeDisplay
 						{
 							if (used.size()<40)
 							{
-								cout<<"Integrity check failed:";
+								cout<<"Integrity check failed:"<<endl;
 								cout<<"Used: ";
 								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
 									cout<<" "<<(*it);	
@@ -174,10 +152,10 @@ namespace TreeDisplay
 						{
 							if (used.size()<20)
 							{
-								cout<<"Integrity check failed:";
-								cout<<"Used: ";
+								cout<<"Integrity check failed:"<<endl;
+								cout<<"Used:";
 								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
-									cout<<" "<<(*it);	
+									cout<<(*it)<<" ";	
 								cout<<endl<<" Bst:";
 								TreeIntegrity::PrintInOrder<KT,VT>(root);
 								cout<<endl;
@@ -202,8 +180,6 @@ namespace TreeDisplay
 			Deletions();
 			Additions();
 
-
-
 			if (!root) {movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
 			if (!(updateloop%flipcounter))
@@ -211,8 +187,6 @@ namespace TreeDisplay
 				flipcounter=((rand()%1000)+100);
 				if (root) removing=!removing;
 			}
-
-
 	}
 
 } // TreeDisplay
