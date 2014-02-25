@@ -57,7 +57,7 @@ namespace TreeObjects
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
 			else
-        if ( (*node) == (*node->parent->left) ) 
+        if ( node == node->parent->left ) 
 					node->parent->left = other;
         else node->parent->right = other;
 			other->left = node;
@@ -74,7 +74,7 @@ namespace TreeObjects
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
 			else
-        if ( (*node) == (*node->parent->right) ) node->parent->right = other;
+        if ( node == node->parent->right ) node->parent->right = other;
         else node->parent->left = other;
 			other->right = node;
 			node->parent = other;
@@ -152,6 +152,7 @@ namespace TreeObjects
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.data(nd.key,nd,node->parent,erasing);
 		}
+
 
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
@@ -363,7 +364,6 @@ namespace TreeObjects
 			{
 				if (parent.left==pfound)  parent.left=NULL;
 				if (parent.right==pfound) parent.right=NULL;
-				if (pfound==root) return NULL; // should not need this
 				return root;
 			} 
 			if ((!found.left) or (!found.right))
