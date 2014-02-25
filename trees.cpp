@@ -7,8 +7,35 @@ using namespace TreeObjects;
 using namespace TreeDisplay;
 #include <math.h>
 
+namespace TreeObjects
+{
+	template <>
+		void Bst<double,TreeNode<double> >::Update(TreeBase* node,TreeBase* pnode,bool erasing)
+	{
+			typedef double KT;
+			typedef TreeNode<KT> VT ;
+			if (!node) return;
+			if (!pnode) return;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.data(nd.key,(*pnode),pnode->parent,erasing);
+	}
+
+	template <>
+		void Bst<int,TreeNode<int> >::Update(TreeBase* node,TreeBase* pnode,bool erasing)
+	{
+			typedef int KT;
+			typedef TreeNode<KT> VT ;
+			if (!node) return;
+			if (!pnode) return;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.data(nd.key,(*pnode),pnode->parent,erasing);
+	}
+}
+
 namespace TreeDisplay
 {
+
+		
 
 	int GenerateNumber(int Max) { return ((rand()%Max)+(Max/2)); }
 	double GenerateNumber(double Max) { double k=(rand()%((int)Max)); k/=(((double)(rand()%((int)Max))+1)); return k; }

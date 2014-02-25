@@ -146,14 +146,7 @@ namespace TreeObjects
 			return NULL;
 		}
 
-
-		void Update(TreeBase* node,TreeBase* pnode,bool erasing=false)
-		{
-			if (!node) return;
-			if (!pnode) return;
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.data(nd.key,(*pnode),pnode->parent,erasing);
-		}
+		void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
 
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
@@ -172,8 +165,6 @@ namespace TreeObjects
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
 			node->parent=this;
-			//Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			//nd.data(this->key,*this,this->parent);
 			Update(node,this);
 			if ((*node)<(*this))
 			{
