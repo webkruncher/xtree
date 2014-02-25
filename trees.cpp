@@ -7,7 +7,6 @@ using namespace TreeObjects;
 using namespace TreeDisplay;
 #include <math.h>
 
-int buggin(1);
 namespace TreeDisplay
 {
 	template <> pair<bool,int> TreeCanvas<int>::Next()
