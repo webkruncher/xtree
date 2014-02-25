@@ -138,93 +138,86 @@ namespace Utilities
 
 int main(int argc,char** argv)
 {
+	KeyMap keys;
+	XSizeHints displayarea;
+	Display *display;
+	display = XOpenDisplay (getenv ("DISPLAY"));
+	int screen(DefaultScreen(display));
+	const unsigned long background(0X777777);
+	const unsigned long foreground(0X777777);
 
-//		Bst<int,int> *testmap;
-//		const int rk(0);
-//		testmap=new Bst<int,int>(rk);
+	displayarea.x = 000;
+	displayarea.y = 000;
+	Utilities::GetScreenSize(display,displayarea.width,displayarea.height);
+	displayarea.flags = PPosition | PSize;
 
+	Utilities::CmdLine cmdline(argc,argv,"trees");
 
-		KeyMap keys;
-		XSizeHints displayarea;
-		Display *display;//(XOpenDisplay(""));
-		display = XOpenDisplay (getenv ("DISPLAY"));
-		int screen(DefaultScreen(display));
-		const unsigned long background(0X777777);
-		const unsigned long foreground(0X777777);
-
-		displayarea.x = 000;
-		displayarea.y = 000;
-		Utilities::GetScreenSize(display,displayarea.width,displayarea.height);
-		displayarea.flags = PPosition | PSize;
-
-		Utilities::CmdLine cmdline(argc,argv,"trees");
-
-		XSetWindowAttributes attributes;
-		Window window,parent(0);
-		GC gc;
-		unsigned int Class(CopyFromParent);
-		int depth(CopyFromParent);
-		unsigned int border(0);
-		unsigned long valuemask(CopyFromParent);
-		if (!cmdline.exists("-root"))
-		{
-			window=XCreateSimpleWindow(display,DefaultRootWindow(display), 
-				displayarea.x,displayarea.y,displayarea.width,displayarea.height,5,foreground,background);
-			gc=(XCreateGC(display,window,0,0));
-			XSetBackground(display,gc,background);
-			XSetForeground(display,gc,foreground);
-			XSelectInput(display,window,ButtonPressMask|KeyPressMask|ExposureMask);
-			XMapRaised(display,window);
-		} else {
-
-			long long int wid(0);
-			if (cmdline.exists("-window-id"))
-			{
-				string sswid(cmdline["-window-id"]); sswid.erase(0,2);
-				char* pEnd; wid = strtoll ((char*)sswid.c_str(), &pEnd, 16);
-			}
-				parent=wid; 
-				if (parent)
-					window=XCreateWindow(display, parent,
-						displayarea.x,displayarea.y, displayarea.width,displayarea.height, 
-						border, depth, Class, CopyFromParent, valuemask, &attributes);
-				else window=Utilities::ScreenRoot(DefaultScreenOfDisplay(display));
-				gc=XCreateGC(display,window,0,0);
-				if (wid) XMapRaised(display,window);
-		}
-
-
+	XSetWindowAttributes attributes;
+	Window window,parent(0);
+	GC gc;
+	unsigned int Class(CopyFromParent);
+	int depth(CopyFromParent);
+	unsigned int border(0);
+	unsigned long valuemask(CopyFromParent);
+	if (!cmdline.exists("-root"))
+	{
+		window=XCreateSimpleWindow(display,DefaultRootWindow(display), 
+			displayarea.x,displayarea.y,displayarea.width,displayarea.height,5,foreground,background);
+		gc=(XCreateGC(display,window,0,0));
+		XSetBackground(display,gc,background);
 		XSetForeground(display,gc,foreground);
-		XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
-
-		stringstream except;
-		try
+		XSelectInput(display,window,ButtonPressMask|KeyPressMask|ExposureMask);
+		XMapRaised(display,window);
+	} else {
+		long long int wid(0);
+		if (cmdline.exists("-window-id"))
 		{
-			Canvas* pcanvas(NULL);
-			if (cmdline.find("-int")!=cmdline.end())
-			{
-				if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
-				if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
-			}
-			if (cmdline.find("-double")!=cmdline.end())
-			{
-				if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
-				if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
-			}
-			if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int or -double");
-			Canvas& canvas(*pcanvas);
-			Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
-			program(argc,argv);
-			delete pcanvas;
+			string sswid(cmdline["-window-id"]); sswid.erase(0,2);
+			char* pEnd; wid = strtoll ((char*)sswid.c_str(), &pEnd, 16);
 		}
-		catch(runtime_error& e){except<<"runtime error:"<<e.what();}
-		catch(string& e){except<<"exception: "<<e;}
-		catch(...){except<<"unknown error";}
-		if (!except.str().empty()) cout<<except.str()<<endl;
-
-		XFreeGC(display,gc);
-		XDestroyWindow(display,window);
-		XCloseDisplay(display);
-		return 0;
+			parent=wid; 
+			if (parent)
+				window=XCreateWindow(display, parent,
+					displayarea.x,displayarea.y, displayarea.width,displayarea.height, 
+					border, depth, Class, CopyFromParent, valuemask, &attributes);
+			else window=Utilities::ScreenRoot(DefaultScreenOfDisplay(display));
+			gc=XCreateGC(display,window,0,0);
+			if (wid) XMapRaised(display,window);
 	}
+
+
+	XSetForeground(display,gc,foreground);
+	XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
+
+	stringstream except;
+	try
+	{
+		Canvas* pcanvas(NULL);
+		if (cmdline.find("-int")!=cmdline.end())
+		{
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
+		}
+		if (cmdline.find("-double")!=cmdline.end())
+		{
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
+		}
+		if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int or -double");
+		Canvas& canvas(*pcanvas);
+		Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
+		program(argc,argv);
+		delete pcanvas;
+	}
+	catch(runtime_error& e){except<<"runtime error:"<<e.what();}
+	catch(string& e){except<<"exception: "<<e;}
+	catch(...){except<<"unknown error";}
+	if (!except.str().empty()) cout<<except.str()<<endl;
+
+	XFreeGC(display,gc);
+	XDestroyWindow(display,window);
+	XCloseDisplay(display);
+	return 0;
+}
 

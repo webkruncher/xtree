@@ -102,8 +102,8 @@ namespace TreeObjects
 		}
 		KT minValue(TreeBase* node) 
 		{
-			TreeBase* current = node;
-			while (current->left != NULL) current = current->left;
+			TreeBase* current(node);
+			while (current->left!=NULL) current=current->left;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
 			return(nd.key);
 		}
@@ -199,7 +199,6 @@ namespace TreeObjects
 			return a.key==b.key; 
 		}
 		operator const KT& (){return key;}
-		//operator VT& (){return data;}
 		VT& Data(){return data;}
 		virtual ostream& operator<<(ostream& o) const {return o;}
 		protected:
@@ -210,7 +209,7 @@ namespace TreeObjects
 	template <typename KT,typename VT>
 		struct RbTree : public Bst<KT,VT>
 	{
-		enum {RED=1,BLACK};
+		enum COLOR {NONE=0,RED,BLACK} ;
 		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
 		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
@@ -246,9 +245,7 @@ namespace TreeObjects
 		}
 
 		private:
-
-
-		char clr;
+		COLOR clr; // color enum
 
 		TreeBase* red(TreeBase* n) 
 		{ 
