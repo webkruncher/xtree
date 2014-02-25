@@ -14,8 +14,7 @@ namespace TreeObjects
 	{
 			typedef double KT;
 			typedef TreeNode<KT> VT ;
-			if (!node) return;
-			if (!pnode) return;
+			if (!node) return; if (!pnode) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.data(nd.key,(*pnode),pnode->parent,erasing);
 	}
@@ -25,8 +24,7 @@ namespace TreeObjects
 	{
 			typedef int KT;
 			typedef TreeNode<KT> VT ;
-			if (!node) return;
-			if (!pnode) return;
+			if (!node) return; if (!pnode) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.data(nd.key,(*pnode),pnode->parent,erasing);
 	}
@@ -34,9 +32,6 @@ namespace TreeObjects
 
 namespace TreeDisplay
 {
-
-		
-
 	int GenerateNumber(int Max) { return ((rand()%Max)+(Max/2)); }
 	double GenerateNumber(double Max) { double k=(rand()%((int)Max)); k/=(((double)(rand()%((int)Max))+1)); return k; }
 

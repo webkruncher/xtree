@@ -237,7 +237,7 @@ namespace TreeObjects
 				if (p->left) newroot=RedAndBlack(newroot,p->left);
 			}
 			found->left=NULL; found->right=NULL;
-			//if (newroot) this->Update(newroot); 
+			if (newroot) this->Update(newroot,newroot); 
 			if (l) this->Update(l,p); if (r) this->Update(r,p);
 			delete found;
 			return newroot;
