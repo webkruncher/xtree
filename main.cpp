@@ -135,9 +135,19 @@ namespace Utilities
 	}
 } // Utilities
 
+struct Widget
+{
+	Widget() {cout<<"W";}
+	~Widget() {cout<<"~W";}
+};
 
 int main(int argc,char** argv)
 {
+	Map<int,Widget> widgets;
+	Widget& first(widgets[0]);
+	
+		
+	
 	KeyMap keys;
 	XSizeHints displayarea;
 	Display *display;

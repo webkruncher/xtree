@@ -82,7 +82,6 @@ namespace TreeObjects
 			return root;
 		}
 
-		bool isLeaf(TreeBase* node) { if ((!node->left) and (!node->right)) return true; else return false; }
 		TreeBase *parent,*left,*right;
 		virtual ostream& operator<<(ostream&) const =0;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
@@ -252,7 +251,6 @@ namespace TreeObjects
 			if (!n) return n; 
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
 			nd.clr=RED;
-			nd.data(0X800000); 
 			return n;
 		}
 		TreeBase* black(TreeBase* n) 
@@ -260,7 +258,6 @@ namespace TreeObjects
 			if (!n) return n; 
 			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
 			nd.clr=BLACK;
-			nd.data(0); 
 			return n;
 		}
 
@@ -404,6 +401,33 @@ namespace TreeObjects
 		}
 		return root;
 	}
+
+
+	// Wip - designed to resemble an stl map
+	template <typename KT,typename VT>
+		struct Map
+	{
+		Map() : root(NULL) {}
+		virtual ~Map() {if (root) delete root;}
+		void erase(const KT& key)
+		{
+			if (!root) return;
+			TreeBase* found(root->find(key));
+			if (found) root=static_cast<RbTree<KT,VT>*>(root)->erase(root,found);
+		}
+		VT& operator[](const KT key)
+		{
+			if (!root) {root=new RbTree<KT,VT>(key); return root->Data();}
+			TreeBase* found(root->find(key));
+			if (found) return static_cast<RbTree<KT,VT>*>(found)->Data();
+			RbTree<KT,VT>* node(new RbTree<KT,VT>(key)); 
+			root->insert(root,node);
+			return node->Data();
+			throw string("Cannot insert");
+		}
+		private:
+		RbTree<KT,VT>* root;
+	};
 
 } //namespace TreeObjects
 #endif // KRUNCH_RB_TREE_H

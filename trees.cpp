@@ -28,6 +28,42 @@ namespace TreeObjects
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.data(nd.key,(*pnode),pnode->parent,erasing);
 	}
+
+	template <> TreeBase* RbTree<int,TreeNode<int> >::red(TreeBase* n)
+	{
+		if (!n) return n; 
+		RbTree<int,TreeNode<int> >& nd(static_cast<RbTree<int,TreeNode<int> >&>(*n)); 
+		nd.clr=RED;
+		nd.data(0X800000); 
+		return n;
+	}
+
+	template <> TreeBase* RbTree<int,TreeNode<int> >::black(TreeBase* n)
+	{
+		if (!n) return n; 
+		RbTree<int,TreeNode<int> >& nd(static_cast<RbTree<int,TreeNode<int> >&>(*n)); 
+		nd.clr=BLACK;
+		nd.data(0X00000); 
+		return n;
+	}
+
+	template <> TreeBase* RbTree<double,TreeNode<double> >::red(TreeBase* n)
+	{
+		if (!n) return n; 
+		RbTree<double,TreeNode<double> >& nd(static_cast<RbTree<double,TreeNode<double> >&>(*n)); 
+		nd.clr=RED;
+		nd.data(0X800000); 
+		return n;
+	}
+
+	template <> TreeBase* RbTree<double,TreeNode<double> >::black(TreeBase* n)
+	{
+		if (!n) return n; 
+		RbTree<double,TreeNode<double> >& nd(static_cast<RbTree<double,TreeNode<double> >&>(*n)); 
+		nd.clr=BLACK;
+		nd.data(0X00000); 
+		return n;
+	}
 }
 
 namespace TreeDisplay
