@@ -129,38 +129,38 @@ namespace TreeDisplay
 				if (root) cout<<"The tree now has "<<root->countnodes()<<" nodes"<<endl; cout.flush();
 
 
-						if (root) cout<<"Integrity check..."<<endl; cout.flush();
-						if (root) 
-							if (!CheckIntegrity(root)) 
-						{
-							if (used.size()<40)
-							{
-								cout<<"Integrity check failed:"<<endl;
-								cout<<"Used: ";
-								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
-									cout<<" "<<(*it);	
-								cout<<endl<<" Bst:";
-								TreeIntegrity::PrintInOrder<KT,VT>(root);
-								cout<<endl;
-								cout.flush();
-							}
-							stop=true;
-						}
+				if (root) cout<<"Integrity check..."<<endl; cout.flush();
+				if (root) 
+					if (!CheckIntegrity(root)) 
+				{
+					if (used.size()<40)
+					{
+						cout<<"Integrity check failed:"<<endl;
+						cout<<"Used: ";
+						for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+							cout<<" "<<(*it);	
+						cout<<endl<<" Bst:";
+						TreeIntegrity::PrintInOrder<KT,VT>(root);
+						cout<<endl;
+						cout.flush();
+					}
+					stop=true;
+				}
 
 
 
 				if (root)
-							if (used.size()<40)
-							{
-								cout<<"Removed."<<endl;
-								cout<<"Used:";
-								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
-									cout<<(*it)<<" ";	
-								cout<<endl<<" Bst:";
-								TreeIntegrity::PrintInOrder<KT,VT>(root);
-								cout<<endl;
-								cout.flush();
-							}
+					if (used.size()<40)
+					{
+						cout<<"Removed."<<endl;
+						cout<<"Used:";
+						for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+							cout<<(*it)<<" ";	
+						cout<<endl<<" Bst:";
+						TreeIntegrity::PrintInOrder<KT,VT>(root);
+						cout<<endl;
+						cout.flush();
+					}
 				waitfor=updateloop+10;
 			}
 	}

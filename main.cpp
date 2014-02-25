@@ -143,8 +143,8 @@ struct Widget
 
 int main(int argc,char** argv)
 {
-	Map<int,Widget> widgets;
-	Widget& first(widgets[0]);
+	Map<string,Widget> widgets;
+	Widget& first(widgets["widget"]);
 	
 		
 	

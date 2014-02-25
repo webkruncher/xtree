@@ -197,6 +197,16 @@ namespace TreeObjects
 			const Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(__b));
 			return a.key==b.key; 
 		}
+		virtual bool operator<(const KT& b) 
+		{ 
+			const Bst<KT,VT>& a(static_cast<Bst<KT,VT>&>(*this));
+			return a.key<b; 
+		}
+		virtual bool operator==(const KT& b) 
+		{ 
+			const Bst<KT,VT>& a(static_cast<Bst<KT,VT>&>(*this));
+			return a.key==b;
+		}
 		operator const KT& (){return key;}
 		VT& Data(){return data;}
 		virtual ostream& operator<<(ostream& o) const {return o;}
