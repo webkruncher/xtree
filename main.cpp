@@ -139,12 +139,24 @@ struct Widget
 {
 	Widget() {cout<<"W";}
 	~Widget() {cout<<"~W";}
+	void operator=(string what){name=what;}
+	ostream& operator<<(ostream& o) const {o<<name; return o;}
+	private: string name;
 };
+inline ostream& operator<<(ostream& o,const Widget& w){return w.operator<<(o);}
 
 int main(int argc,char** argv)
 {
-	Map<string,Widget> widgets;
-	Widget& first(widgets["widget"]);
+	{	// Tester
+		Map<string,Widget> widgets;
+		Widget& first(widgets["widget1"]);
+		first="test 1";
+		cout<<"First:"<<widgets["widget1"]<<endl;
+		cout<<"Second:"<<widgets["widget2"]<<endl;
+		Widget& second(widgets["widget2"]);
+		second="test 2";
+		cout<<"Second:"<<widgets["widget2"]<<endl;
+	}
 	
 		
 	
