@@ -199,8 +199,10 @@ namespace TreeObjects
 			return a.key==b.key; 
 		}
 		operator const KT& (){return key;}
-		operator VT& (){return data;}
+		//operator VT& (){return data;}
+		VT& Data(){return data;}
 		virtual ostream& operator<<(ostream& o) const {return o;}
+		protected:
 		const KT key;
 		VT data;	
 	};

@@ -49,7 +49,7 @@ namespace TreeDisplay
 			movement=false;
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
-			VT& data(nk);
+			VT& data(nk.Data());
 			data(key,nk,nk.parent);
 			if (n.left) traverse(*n.left);
 			if (n.right) traverse(*n.right);
@@ -58,7 +58,7 @@ namespace TreeDisplay
 		{
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
-			VT& data(nk);
+			VT& data(nk.Data());
 			data(invalid,window,display,gc,bitmap);
 			if (data.Moved()) movement=true;
 			if (n.left) draw(invalid,*n.left,bitmap);

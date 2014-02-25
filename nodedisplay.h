@@ -67,7 +67,7 @@ namespace TreeDisplay
 				Text(k,k);
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
-				TreeNode<KT>& pn(parentnode);
+				TreeNode<KT>& pn(parentnode.Data());
 				if (pn.moved) return;
 				KT pk(parentnode);
 				double px(pn.X);
@@ -80,7 +80,7 @@ namespace TreeDisplay
 				if (parent->parent)
 				{
 					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->parent));
-					TreeNode<KT>& gpn(grandparentnode);
+					TreeNode<KT>& gpn(grandparentnode.Data());
 					if (gpn.moved) return;
 					double gpx(gpn.X);
 					double dx(gpn.X-pn.X);

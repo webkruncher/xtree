@@ -16,7 +16,7 @@ namespace TreeObjects
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.data(nd.key,(*pnode),pnode->parent,erasing);
+			nd.Data()(nd.key,(*pnode),pnode->parent,erasing);
 	}
 
 	template <>
@@ -64,7 +64,7 @@ namespace TreeDisplay
 			if (removal)
 			{
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
-				VT& valuenode(nk);
+				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
 				TreeBase* newroot(nk.erase(root,removal));
 				removal=NULL;

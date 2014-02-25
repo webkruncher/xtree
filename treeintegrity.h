@@ -70,7 +70,7 @@ namespace TreeIntegrity
 			{
 				RbTree<KT,VT>& rb(static_cast<RbTree<KT,VT>&>(node));
 				const KT& key(rb);
-				VT& data(rb); clear(data);
+				VT& data(rb.Data()); clear(data);
 				#if 0
 				int diff(abs(lc-rc));
 				if (diff>2) 

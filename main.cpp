@@ -138,8 +138,12 @@ namespace Utilities
 
 int main(int argc,char** argv)
 {
-		//for (double j=1;j<100;j++)
-		//	cout<<setprecision(2)<<setw(5)<<"log("<<j<<")="<<setprecision(2)<<setw(5)<<log(j)<<endl;
+
+//		Bst<int,int> *testmap;
+//		const int rk(0);
+//		testmap=new Bst<int,int>(rk);
+
+
 		KeyMap keys;
 		XSizeHints displayarea;
 		Display *display;//(XOpenDisplay(""));
