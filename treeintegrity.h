@@ -88,7 +88,7 @@ namespace TreeIntegrity
 					stringstream ss;
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";
-					if (!ss.str().empty()) data["rb"]=ss.str();
+					//if (!ss.str().empty()) data["rb"]=ss.str();
 				}
 			}
 		}; 

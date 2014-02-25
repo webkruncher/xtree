@@ -99,4 +99,157 @@ namespace TreeDisplay
 		return make_pair<bool,double>(true,k);
 	}
 
+	template <typename KT>
+		void TreeCanvas<KT>::Deletions()
+	{
+			if (removal)
+			{
+				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
+				VT& valuenode(nk);
+				if (!valuenode.undisplay()) return;
+				TreeBase* newroot(nk.erase(root,removal));
+				removal=NULL;
+
+				if (newroot==root) cout<<"Root node is unchanged"<<endl; cout.flush();
+				if (!newroot) cout<<"The tree is now empty, the root is NULL"<<endl; 
+					else if (newroot!=root)
+					{
+						cout<<"newroot"<<endl; cout.flush();
+						Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
+						const KT& rootkey(nk);
+						cout<<"The new root node is "<<rootkey<<endl;
+					}
+
+				if (newroot!=root) 
+				{
+					cout<<"Root node is different"<<endl;
+					root=newroot;
+				}
+				if (!root)	
+				{
+					cout<<"no root, checking input"<<endl; cout.flush();
+					if (input) 
+					{
+						cout<<"deleting input"<<endl; cout.flush();
+						delete input; input=NULL;
+					}
+					cout<<"clear"<<endl; cout.flush();
+					movement=false; removing=false; used.clear();stop=false;
+				}
+				cout<<"counting nodes"<<endl; cout.flush();
+				if (root) cout<<"The tree now has "<<root->countnodes()<<" nodes"<<endl; cout.flush();
+
+
+						if (root) cout<<"Integrity check..."<<endl; cout.flush();
+						if (root) 
+							if (!CheckIntegrity(root)) 
+						{
+							if (used.size()<40)
+							{
+								cout<<"Integrity check failed:";
+								cout<<"Used: ";
+								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+									cout<<" "<<(*it);	
+								cout<<endl<<" Bst:";
+								TreeIntegrity::PrintInOrder<KT,VT>(root);
+								cout<<endl;
+								cout.flush();
+							}
+							stop=true;
+						}
+
+
+
+				if (root)
+							if (used.size()<40)
+							{
+								cout<<"Removed."<<endl;
+								cout<<"Used:";
+								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+									cout<<(*it)<<" ";	
+								cout<<endl<<" Bst:";
+								TreeIntegrity::PrintInOrder<KT,VT>(root);
+								cout<<endl;
+								cout.flush();
+							}
+				waitfor=updateloop+10;
+			}
+	}
+
+	template <typename KT>
+		void TreeCanvas<KT>::UpdateTree()
+	{
+			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
+			updateloop++;
+
+			Deletions();
+
+
+			if ((!waitfor) or (updateloop>waitfor) )
+				if ((!movement) and (!stop))
+			{
+				movement=true;
+				pair<bool,KT> next(Next(input));
+				if (next.first)
+				{
+					if (output) (*output)<<next.second<<endl;
+					if (!removing)
+					{
+						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+						//cout<<"creating "<<next.second<<endl;
+						TreeBase* n(generate(next.second,tn));
+						if (!root) waitfor=updateloop+10;
+						if (!root) if (output) {delete output; output=new ofstream("output.txt");}
+						if (!root) root=n;  
+							else 
+						{
+							TreeBase* nr(root->insert(root,n));
+							if (nr) 
+							{
+								if (root!=nr) cout<<"The root node rotated"<<endl;
+								root=nr;
+							} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
+						}
+					} else {
+						if (root) 
+						{
+							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
+							cout<<"Erase:"<<next.second<<endl;
+							removal=nk.find(next.second);
+						}
+					}
+
+						if (!removal)
+							if (!CheckIntegrity(root)) 
+						{
+							if (used.size()<20)
+							{
+								cout<<"Integrity check failed:";
+								cout<<"Used: ";
+								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
+									cout<<" "<<(*it);	
+								cout<<endl<<" Bst:";
+								TreeIntegrity::PrintInOrder<KT,VT>(root);
+								cout<<endl;
+								cout.flush();
+							}
+							stop=true;
+						}
+
+
+
+				} else {
+					if (!removing) 
+					{
+						removing=true;
+						if (output) (*output)<<endl;
+					} else
+						if (used.empty()) 
+						{
+							if (!root) {movement=false; removing=false; stop=false;}
+						}
+				}
+			}
+	}
+
 } // TreeDisplay
