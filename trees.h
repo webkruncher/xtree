@@ -125,7 +125,7 @@ namespace TreeDisplay
 					if (!removing)
 					{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-						cout<<"creating "<<next.second<<endl;
+						//cout<<"creating "<<next.second<<endl;
 						TreeBase* n(generate(next.second,tn));
 						if (!root) waitfor=updateloop+10;
 						if (!root) if (output) {delete output; output=new ofstream("output.txt");}

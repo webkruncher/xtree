@@ -7,7 +7,7 @@ namespace TreeObjects
 	{
 		virtual bool operator<(const TreeBase&) = 0;
 		virtual bool operator==(const TreeBase&) = 0;
-		virtual ~TreeBase() {}
+		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
 		virtual TreeBase* insert(TreeBase* root,TreeBase*) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {cout<<"COPYING A TREE BASE"<<endl;}
@@ -57,7 +57,8 @@ namespace TreeObjects
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
 			else
-        if ( (*node) == (*node->parent->left) ) node->parent->left = other;
+        if ( (*node) == (*node->parent->left) ) 
+					node->parent->left = other;
         else node->parent->right = other;
 			other->left = node;
 			node->parent = other;
@@ -93,11 +94,8 @@ namespace TreeObjects
 	{
 		Bst(const KT _key) : key(_key) {}
 		Bst(const KT _key,const VT _data) : key(_key), data(_data) {}
-		virtual ~Bst() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
 		virtual long countnodes()  
 		{
-			//Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
-			//const KT& key(nd);
 			long leftnodes(0); if (left) leftnodes=left->countnodes();
 			long rightnodes(0); if (right) rightnodes=right->countnodes();
 			return (leftnodes+rightnodes+1);
@@ -233,10 +231,21 @@ namespace TreeObjects
 			return nd.clr;
 		}
 
-		virtual TreeBase* erase(TreeBase* root,KT what)
+		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
-			cout<<"RB Delete"<<endl;
-			return root;
+			if (!found) return root;
+			TreeBase *p(found->parent),*l(found->left),*r(found->right);
+			TreeBase* newroot(TreeBase::remove(root,found));
+			this->Update(found,true); 
+			if ( (p) and (newroot) )
+			{
+				if (p->right) newroot=RedAndBlack(newroot,p->right);
+				if (p->left) newroot=RedAndBlack(newroot,p->left);
+			}
+			found->left=NULL; found->right=NULL;
+			if (newroot) this->Update(newroot); if (l) this->Update(l); if (r) this->Update(r);
+			delete found;
+			return newroot;
 		}
 
 		private:
@@ -268,7 +277,7 @@ namespace TreeObjects
 			if (!node) return root;
 			if (!node->parent) return root;
 			red(node);
-			while ( (node->parent) && (color(node->parent) == RED) ) 
+			while ( (node) && (node->parent) && (node->parent->parent) && (color(node->parent) == RED) ) 
 			{
 				if ( node->parent == node->parent->parent->left ) 
 				{
@@ -316,20 +325,14 @@ namespace TreeObjects
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(Bst<KT,VT>::RotateLeft(root,node));
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.data(this->key,*this,this->parent);
-			Bst<KT,VT>& nr(static_cast<Bst<KT,VT>&>(*newroot));
-			nr.data(nr.key,*newroot,NULL);
+			this->Update(node); this->Update(newroot);
 			return newroot;
 		}
 
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(Bst<KT,VT>::RotateRight(root,node));
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.data(this->key,*this,this->parent);
-			Bst<KT,VT>& nr(static_cast<Bst<KT,VT>&>(*newroot));
-			nr.data(nr.key,*newroot,NULL);
+			this->Update(node); this->Update(newroot);
 			return newroot;
 		}
 	};
@@ -345,7 +348,6 @@ namespace TreeObjects
 			{
 				if (found.left) {found.left->parent=NULL; return found.left; }
 				if (found.right) {found.right->parent=NULL; return found.right; }
-				throw string("This is impossible");
 			} else {
 				TreeBase* L(found.left);
 				TreeBase* R(found.right);
