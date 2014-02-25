@@ -16,16 +16,11 @@ namespace TreeDisplay
 		TreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
-				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),input(NULL),output(NULL) 
-		{
-			//input=new ifstream("output.txt");
-			//output=new ofstream("output.txt");
-		}
-		virtual ~TreeCanvas() {if (input) delete input; if (root) delete root;}
+				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) { }
+		virtual ~TreeCanvas() {if (root) delete root;}
 		virtual void operator()(Pixmap& bitmap) 
 		{   
 			XSetForeground(display,gc,0X777777);
-			//invalid.Fill(display,bitmap,gc);
 			XFillRectangle(display,bitmap,gc,0,0,ScreenWidth,ScreenHeight);
 			if (root) draw(invalid,*root,bitmap); 
 		}
@@ -40,15 +35,14 @@ namespace TreeDisplay
 		private:
 		void UpdateTree();
 		void Deletions();
-		ifstream* input;
-		ofstream* output;
 		Window& window;
 		bool movement;
+		int flipcounter;
 		set<KT> used;
 		unsigned long updateloop,waitfor;
 		TreeBase* root,*removal;
 		Invalid invalid;
-		pair<bool,KT> Next(ifstream*) { return make_pair<bool,KT>(true,rand()%10); }
+		pair<bool,KT> Next() { return make_pair<bool,KT>(true,rand()%10); }
 		void traverse(TreeBase& n)
 		{
 			movement=false;

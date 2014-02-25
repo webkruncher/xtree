@@ -10,50 +10,16 @@ using namespace TreeDisplay;
 int buggin(1);
 namespace TreeDisplay
 {
-	template <> pair<bool,int> TreeCanvas<int>::Next(ifstream* input)
+	template <> pair<bool,int> TreeCanvas<int>::Next()
 	{ 
 		if (removing)
 		{
-			if (input)
-			{
-				string line;
-				ifstream& in(*input);
-				if (in.eof()) return make_pair<bool,int>(false,0);
-				getline(in,line);
-				if (line.empty()) return make_pair<bool,int>(false,0);
-				int i(atoi(line.c_str()));
-				used.erase(i);
-				return make_pair<bool,int>(true,i);
-			}
 			if (used.empty()) return make_pair<bool,int>(false,0);
 			int w(rand()%used.size());
 			set<int>::iterator it=used.begin();
 			for (int j=0;j<w;j++) it++;
 			used.erase(it);
 			return make_pair<bool,int>(true,*it);
-		}
-		#if 0
-			static int dbler(0);
-			dbler++;
-			if (!(dbler%10))  // return a random value that was already inserted
-			{
-				int w(rand()%used.size());
-				set<int>::iterator it=used.begin();
-				for (int j=0;j<w;j++) it++;
-				return make_pair<bool,int>(true,*it);
-			}
-		#endif
-
-		if (input)
-		{
-			string line;
-			ifstream& in(*input);
-			if (in.eof()) return make_pair<bool,int>(false,0);
-			getline(in,line);
-			if (line.empty()) return make_pair<bool,int>(false,0);
-			int i(atoi(line.c_str()));
-			used.insert(i);
-			return make_pair<bool,int>(true,i);
 		}
 
 		int Max(30);
@@ -77,7 +43,7 @@ namespace TreeDisplay
 		return make_pair<bool,int>(true,k);
 	}
 
-	template <> pair<bool,double> TreeCanvas<double>::Next(ifstream* input)
+	template <> pair<bool,double> TreeCanvas<double>::Next()
 	{ 
 		if (removing)
 		{
@@ -102,7 +68,6 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::Deletions()
 	{
-
 			if (removal)
 			{
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
@@ -128,12 +93,6 @@ namespace TreeDisplay
 				}
 				if (!root)	
 				{
-					cout<<"no root, checking input"<<endl; cout.flush();
-					if (input) 
-					{
-						cout<<"deleting input"<<endl; cout.flush();
-						delete input; input=NULL;
-					}
 					cout<<"clear"<<endl; cout.flush();
 					movement=false; removing=false; used.clear();stop=false;
 				}
@@ -190,17 +149,15 @@ namespace TreeDisplay
 				if ((!movement) and (!stop))
 			{
 				movement=true;
-				pair<bool,KT> next(Next(input));
+				pair<bool,KT> next(Next());
 				if (next.first)
 				{
-					if (output) (*output)<<next.second<<endl;
 					if (!removing)
 					{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						//cout<<"creating "<<next.second<<endl;
 						TreeBase* n(generate(next.second,tn));
 						if (!root) waitfor=updateloop+10;
-						if (!root) if (output) {delete output; output=new ofstream("output.txt");}
 						if (!root) root=n;  
 							else 
 						{
@@ -239,18 +196,18 @@ namespace TreeDisplay
 
 
 
-				} else {
-					if (!removing) 
-					{
-						removing=true;
-						if (output) (*output)<<endl;
-					} else
-						if (used.empty()) 
-						{
-							if (!root) {movement=false; removing=false; stop=false;}
-						}
-				}
+				} 
 			}
+
+			if (!root) {movement=false; removing=false; stop=false;}
+			if (!flipcounter) flipcounter=((rand()%1000)+100);
+			if (!(updateloop%flipcounter))
+			{
+				flipcounter=((rand()%1000)+100);
+				if (root) removing=!removing;
+			}
+
+
 	}
 
 } // TreeDisplay
