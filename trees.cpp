@@ -86,7 +86,7 @@ namespace TreeDisplay
 
 		if (used.size()==(Max-1)) return make_pair<bool,T>(false,0);
 		srand(time(0));
-		T k; do { k=GenerateNumber(Max); } while (used.find(k)!=used.end());
+		T k; do { k=GenerateNumber((T)Max); } while (used.find(k)!=used.end());
 		used.insert(k);
 		return make_pair<bool,T>(true,k);
 	}
