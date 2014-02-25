@@ -102,6 +102,7 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::Deletions()
 	{
+
 			if (removal)
 			{
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
