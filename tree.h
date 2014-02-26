@@ -12,7 +12,7 @@ namespace TreeObjects
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
 
-		virtual int isBST(TreeBase* node) = 0;
+		virtual bool isBST(TreeBase* node) = 0;
 		virtual long countnodes()  = 0;
 
 		TreeBase* LeftMost()
@@ -114,7 +114,7 @@ namespace TreeObjects
 			return(nd.key);
 		}
 
-		virtual int isBST(TreeBase* node) 
+		virtual bool isBST(TreeBase* node) 
 		{
 			if (!node) return(true);
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));

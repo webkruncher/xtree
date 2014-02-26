@@ -29,6 +29,17 @@ namespace TreeObjects
 			nd.data(nd.key,(*pnode),pnode->parent,erasing);
 	}
 
+	template <>
+		void Bst<string,TreeNode<string> >::Update(TreeBase* node,TreeBase* pnode,bool erasing)
+	{
+			typedef string KT;
+			typedef TreeNode<KT> VT ;
+			if (!node) return; if (!pnode) return;
+			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			nd.Data()(nd.key,(*pnode),pnode->parent,erasing);
+	}
+
+
 	template <> TreeBase* RbTree<int,TreeNode<int> >::red(TreeBase* n)
 	{
 		if (!n) return n; 
@@ -64,12 +75,71 @@ namespace TreeObjects
 		nd.data(0X00000); 
 		return n;
 	}
+
+	template <> TreeBase* RbTree<string,TreeNode<string> >::red(TreeBase* n)
+	{
+		if (!n) return n; 
+		RbTree<string,TreeNode<string> >& nd(static_cast<RbTree<string,TreeNode<string> >&>(*n)); 
+		nd.clr=RED;
+		nd.data(0X800000); 
+		return n;
+	}
+
+	template <> TreeBase* RbTree<string,TreeNode<string> >::black(TreeBase* n)
+	{
+		if (!n) return n; 
+		RbTree<string,TreeNode<string> >& nd(static_cast<RbTree<string,TreeNode<string> >&>(*n)); 
+		nd.clr=BLACK;
+		nd.data(0X00000); 
+		return n;
+	}
 }
 
 namespace TreeDisplay
 {
 	int GenerateNumber(int Max) { return ((rand()%Max)+(Max/2)); }
 	double GenerateNumber(double Max) { double k=(rand()%((int)Max)); k/=(((double)(rand()%((int)Max))+1)); return k; }
+
+	struct Strings : vector<string>
+	{
+		Strings()
+		{
+			push_back("Jack");
+			push_back("Fred");
+			push_back("Joe");
+			push_back("Nat");
+			push_back("Jim");
+			push_back("Hop");
+			push_back("Pop");
+			push_back("Sally");
+			push_back("Fox");
+			push_back("Sox");
+			push_back("Lorax");
+		}
+	} GlobalStrings;
+
+	pair<bool,string> NextString(set<string>& used,const int Max,const bool removing)
+	{
+		if (removing)
+		{
+			if (used.empty()) return make_pair<bool,string>(false,"");
+			int w(rand()%used.size());
+			set<string>::iterator it=used.begin();
+			for (int j=0;j<w;j++) it++;
+			used.erase(it);
+			return make_pair<bool,string>(true,*it);
+		}
+
+		if (used.size()==(Max-1)) return make_pair<bool,string>(false,"");
+		srand(time(0));
+		string k; do 
+		{ 
+				int j(rand()%GlobalStrings.size());
+				k=GlobalStrings[j];
+		} while (used.find(k)!=used.end());
+		used.insert(k);
+		return make_pair<bool,string>(true,k);
+	}	
 
 	template <typename T>
 		pair<bool,T> NextItem(set<T>& used,const int Max,const bool removing)
@@ -93,6 +163,7 @@ namespace TreeDisplay
 
 	template <> pair<bool,int> TreeCanvas<int>::Next(int Max) { return NextItem<int>(used,Max,removing); }
 	template <> pair<bool,double> TreeCanvas<double>::Next(int Max) { return NextItem<double>(used,Max,removing); }
+	template <> pair<bool,string> TreeCanvas<string>::Next(int Max) { return NextString(used,Max,removing); }
 
 	template <typename KT>
 		void TreeCanvas<KT>::Deletions()
@@ -148,7 +219,6 @@ namespace TreeDisplay
 				}
 
 
-
 				if (root)
 					if (used.size()<40)
 					{
@@ -198,7 +268,6 @@ namespace TreeDisplay
 							removal=nk.find(next.second);
 						}
 					}
-
 						if (!removal)
 							if (!CheckIntegrity(root)) 
 						{
@@ -215,13 +284,27 @@ namespace TreeDisplay
 							}
 							stop=true;
 						}
-
-
-
 				} 
 			}
 	}
 
+
+	template <> void TreeCanvas<string>::UpdateTree()
+	{
+			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
+			updateloop++;
+
+			Deletions();
+			Additions();
+
+			if (!root) {movement=false; removing=false; stop=false;}
+			if (!flipcounter) flipcounter=((rand()%1000)+100);
+			if (!(updateloop%flipcounter))
+			{
+				flipcounter=((rand()%1000)+100);
+				if (root) removing=!removing;
+			}
+	}
 
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
@@ -242,3 +325,4 @@ namespace TreeDisplay
 	}
 
 } // TreeDisplay
+

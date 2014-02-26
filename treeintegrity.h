@@ -34,6 +34,7 @@ namespace TreeIntegrity
 			if (maxvalue!=(*used.rbegin())) {cout<<("Max check failed")<<endl; return false;}
 			if (!isbst) {cout<<("isBST failed")<<endl; return false;}
 			long ttl(root->countnodes());
+			cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
 			if (ttl!=used.size()) {cout<<("Wrong number of nodes counted")<<endl; return false;}
 			//cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
 			return true;

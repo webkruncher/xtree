@@ -137,8 +137,6 @@ namespace Utilities
 
 struct Widget
 {
-	Widget() {cout<<"W";}
-	~Widget() {cout<<"~W";}
 	void operator=(string what){name=what;}
 	ostream& operator<<(ostream& o) const {o<<name; return o;}
 	private: string name;
@@ -152,7 +150,6 @@ int main(int argc,char** argv)
 		Widget& first(widgets["widget1"]);
 		first="test 1";
 		cout<<"First:"<<widgets["widget1"]<<endl;
-		cout<<"Second:"<<widgets["widget2"]<<endl;
 		Widget& second(widgets["widget2"]);
 		second="test 2";
 		cout<<"Second:"<<widgets["widget2"]<<endl;
@@ -225,6 +222,11 @@ int main(int argc,char** argv)
 		{
 			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
 			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
+		}
+		if (cmdline.find("-string")!=cmdline.end())
+		{
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<string>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<string>(display,window,gc,displayarea.width, displayarea.height);
 		}
 		if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int or -double");
 		Canvas& canvas(*pcanvas);

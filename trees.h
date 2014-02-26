@@ -25,8 +25,6 @@ namespace TreeDisplay
 			if (root) draw(invalid,*root,bitmap); 
 		}
 		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
-
-
 		virtual void update() { UpdateTree(); }
 		virtual operator InvalidBase& () {return invalid;}
 		protected:

@@ -126,6 +126,13 @@ namespace TreeDisplay
 	}
 
 	template <> inline void TreeNode<double>::BoxSize() { CW=60; CH=12; }
+	template <> inline void TreeNode<string>::Text(string k,string pk,string txt)
+	{
+		stringstream ss;
+		ss<<k; if (!txt.empty()) ss<<" "<<txt;
+		text=ss.str();
+	}
+	template <> inline void TreeNode<string>::BoxSize() { CW=50; CH=12; }
 } //namespace TreeDisplay
 
 #endif // NODE_DISPLAY_H
