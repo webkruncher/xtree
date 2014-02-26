@@ -22,7 +22,7 @@ namespace TreeObjects
 			TreeBase* found(root->find(key));
 			if (found) return static_cast<RbMap<KT,VT>*>(found)->Data();
 			RbMap<KT,VT>* node(new RbMap<KT,VT>(key)); 
-			root->insert(root,node);
+			root=static_cast<RbMap<KT,VT>*>(root->insert(root,node));
 			return node->Data();
 		}
 		void inorder(TreeBase* node=NULL)
