@@ -137,32 +137,24 @@ namespace Utilities
 
 struct Widget
 {
+	virtual ~Widget(){}
 	void operator=(string what){name=what;}
 	ostream& operator<<(ostream& o) const {o<<name; return o;}
 	operator const bool()
 	{
 		cout<<"T:"<<name<<",";
 	}
+	static int test();
 	private: string name;
 };
 inline ostream& operator<<(ostream& o,const Widget& w){return w.operator<<(o);}
 
+
+
 int main(int argc,char** argv)
 {
-	{	// Tester
-		Map<string,Widget> widgets;
-		Widget& first(widgets["widget1"]);
-		first="test 1";
-		cout<<"First:"<<widgets["widget1"]<<endl;
-		Widget& second(widgets["widget2"]);
-		second="test 2";
-		cout<<"Second:"<<widgets["widget2"]<<endl;
-		cout<<"Testing..."<<endl;
-		widgets.inorder();
-		widgets.erase("widget1");
-	}
-	
-		
+	Utilities::CmdLine cmdline(argc,argv,"trees");
+	if (cmdline.exists("-test")) return Widget::test();
 	
 	KeyMap keys;
 	XSizeHints displayarea;
@@ -177,7 +169,6 @@ int main(int argc,char** argv)
 	Utilities::GetScreenSize(display,displayarea.width,displayarea.height);
 	displayarea.flags = PPosition | PSize;
 
-	Utilities::CmdLine cmdline(argc,argv,"trees");
 
 	XSetWindowAttributes attributes;
 	Window window,parent(0);
@@ -250,5 +241,38 @@ int main(int argc,char** argv)
 	XDestroyWindow(display,window);
 	XCloseDisplay(display);
 	return 0;
+}
+
+int Widget::test()
+{
+	bool ok(true);
+	{
+		Map<string,Widget> widgets;
+		{
+			Widget& first(widgets["widget1"]);
+			first="Test1";
+			cout<<"First:"<<widgets["widget1"]<<endl;
+		}
+
+		{
+			Widget& second(widgets["widget2"]);
+			second="Test2";
+			cout<<"Second:"<<widgets["widget2"]<<endl;
+		}
+
+		{
+			Widget& third(widgets["widget3"]);
+			third="Test3";
+			cout<<"Third:"<<widgets["widget3"]<<endl;
+		}
+
+		widgets.inorder();
+		//widgets.erase("widget1");
+		cout<<endl<<"Done, testing"<<endl;cout.flush();
+		ok=(widgets.isBST());
+		cout<<"unwinding"<<endl;cout.flush();
+	}
+	cout<<"unwound"<<endl;cout.flush();
+	if (ok) return 0; else return -1;
 }
 
