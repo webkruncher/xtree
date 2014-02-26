@@ -223,63 +223,27 @@ namespace TreeObjects
 		VT data;	
 	};
 
-	template <typename KT,typename VT>
-		struct RbTree : public Bst<KT,VT>
+
+	template <typename KT,typename VT,typename TT>
+		struct RbTreeBase : public TT
 	{
+		typedef RbTreeBase<KT,VT,TT> TB;
 		enum COLOR {NONE=0,RED,BLACK} ;
-		RbTree(const KT _key) : Bst<KT,VT>(_key) {}
-		RbTree(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+		COLOR Red(){return RED;}
+		COLOR Black(){return BLACK;}
+		RbTreeBase(const KT _key) : TT(_key) {}
+		RbTreeBase(const KT _key,const VT _data) : TT(_key,_data) {}
 
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
-			root=Bst<KT,VT>::insert(root,node);
+			root=TT::insert(root,node);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			return RedAndBlack(root,node);
 		}
-		const char color(TreeBase* n) const
-		{
-			if (!n) return 0; 
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
-			return nd.clr;
-		}
-
-		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
-		{
-			if (!found) return root;
-			TreeBase *p(found->parent),*l(found->left),*r(found->right);
-			TreeBase* newroot(TreeBase::remove(root,found));
-			this->Update(found,p,true); 
-			if ( (p) and (newroot) )
-			{
-				if (p->right) newroot=RedAndBlack(newroot,p->right);
-				if (p->left) newroot=RedAndBlack(newroot,p->left);
-			}
-			found->left=NULL; found->right=NULL;
-			if (newroot) this->Update(newroot,newroot); 
-			if (l) this->Update(l,p); if (r) this->Update(r,p);
-			delete found;
-			return newroot;
-		}
-
-		private:
-		COLOR clr; // color enum
-
-		TreeBase* red(TreeBase* n) 
-		{ 
-			if (!n) return n; 
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
-			nd.clr=RED;
-			return n;
-		}
-		TreeBase* black(TreeBase* n) 
-		{ 
-			if (!n) return n; 
-			RbTree<KT,VT>& nd(static_cast<RbTree<KT,VT>&>(*n)); 
-			nd.clr=BLACK;
-			return n;
-		}
-
-		virtual ostream& operator<<(ostream& o) const { return o; }
+		
+		virtual TreeBase* red(TreeBase* n) = 0;
+		virtual TreeBase* black(TreeBase* n) = 0;
+		virtual const char color(TreeBase* n) const = 0;
 
 		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
 		{
@@ -331,6 +295,27 @@ namespace TreeObjects
 			return black(root);
 		}
 
+		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
+		{
+			if (!found) return root;
+			TreeBase *p(found->parent),*l(found->left),*r(found->right);
+			TreeBase* newroot(TreeBase::remove(root,found));
+			this->Update(found,p,true); 
+			if ( (p) and (newroot) )
+			{
+				if (p->right) newroot=this->RedAndBlack(newroot,p->right);
+				if (p->left) newroot=this->RedAndBlack(newroot,p->left);
+			}
+			found->left=NULL; found->right=NULL;
+			if (newroot) this->Update(newroot,newroot); 
+			if (l) this->Update(l,p); if (r) this->Update(r,p);
+			delete found;
+			return newroot;
+		}
+		COLOR clr; // color enum
+		protected:
+		private:
+		virtual ostream& operator<<(ostream& o) const { return o; }
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(Bst<KT,VT>::RotateLeft(root,node));
@@ -345,6 +330,7 @@ namespace TreeObjects
 			return newroot;
 		}
 	};
+
 
 	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
 	{
@@ -419,6 +405,49 @@ namespace TreeObjects
 		}
 		return root;
 	}
+
+	template <typename KT,typename VT>
+		struct RbTree : public RbTreeBase<KT,VT,Bst<KT,VT> >
+	{
+		typedef RbTreeBase<KT,VT,Bst<KT,VT> > TB;
+
+		RbTree(const KT _key) : TB(_key) {}
+		RbTree(const KT _key,const VT _data) : TB(_key,_data) {}
+
+		virtual TreeBase* red(TreeBase* n) 
+		{ 
+			if (!n) return n; 
+			TB& nd(static_cast<TB&>(*n)); 
+			nd.clr=this->Red();
+			return n;
+		}
+		virtual TreeBase* black(TreeBase* n) 
+		{ 
+			if (!n) return n; 
+			TB& nd(static_cast<TB&>(*n)); 
+			nd.clr=this->Black();
+			return n;
+		}
+		virtual const char color(TreeBase* n) const
+		{
+			if (!n) return 0; 
+			TB& nd(static_cast<TB&>(*n)); 
+			return nd.clr;
+		}
+	};
+#if 0
+	template <typename KT>
+		struct RbTreeSet : public RbTreeBase<KT,BstBase<KT> >
+	{
+		typedef RbTreeBase<KT,BstBase<KT> > TB;
+
+		RbTreeSet(const KT _key) : TB(_key) {}
+		RbTreeSet(const KT _key,const VT _data) : TB(_key,_data) {}
+
+		TreeBase* red(TreeBase* n) { return TB::red(n); }
+		TreeBase* black(TreeBase* n) { return TB::black(n); }
+	};
+#endif
 
 
 } //namespace TreeObjects
