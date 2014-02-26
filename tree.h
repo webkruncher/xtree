@@ -420,6 +420,27 @@ namespace TreeObjects
 	};
 
 
+	template <typename KT>
+		struct RbTreeSetBase : public BstBase<KT>, RbBase
+	{
+		RbTreeSetBase(const KT _key) : BstBase<KT>(_key) {}
+
+		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		{
+			root=BstBase<KT>::insert(root,node);
+			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
+			return this->RedAndBlack(root,node);
+		}
+		
+		virtual TreeBase* red(TreeBase* n) = 0;
+		virtual TreeBase* black(TreeBase* n) = 0;
+		virtual const char color(TreeBase* n) const = 0;
+
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateLeft(root,node); }
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateRight(root,node); }
+		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
+	};
 
 	template <typename KT,typename VT>
 		struct RbTree : public RbTreeMapBase<KT,VT>
@@ -450,19 +471,35 @@ namespace TreeObjects
 			return nd.clr;
 		}
 	};
-#if 0
+
 	template <typename KT>
-		struct RbTreeSet : public RbTreeBase<KT,BstBase<KT> >
+		struct RbSet : public RbTreeSetBase<KT>
 	{
-		typedef RbTreeBase<KT,BstBase<KT> > TB;
+		typedef RbTreeSetBase<KT> TB;
 
-		RbTreeSet(const KT _key) : TB(_key) {}
-		RbTreeSet(const KT _key,const VT _data) : TB(_key,_data) {}
+		RbSet(const KT _key) : TB(_key) {}
 
-		TreeBase* red(TreeBase* n) { return TB::red(n); }
-		TreeBase* black(TreeBase* n) { return TB::black(n); }
+		virtual TreeBase* red(TreeBase* n) 
+		{ 
+			if (!n) return n; 
+			TB& nd(static_cast<TB&>(*n)); 
+			nd.clr=this->Red();
+			return n;
+		}
+		virtual TreeBase* black(TreeBase* n) 
+		{ 
+			if (!n) return n; 
+			TB& nd(static_cast<TB&>(*n)); 
+			nd.clr=this->Black();
+			return n;
+		}
+		virtual const char color(TreeBase* n) const
+		{
+			if (!n) return 0; 
+			TB& nd(static_cast<TB&>(*n)); 
+			return nd.clr;
+		}
 	};
-#endif
 
 
 } //namespace TreeObjects
