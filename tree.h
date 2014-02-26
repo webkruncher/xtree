@@ -238,14 +238,14 @@ namespace TreeObjects
 
 
 	template <typename KT,typename VT,typename TT>
-		struct RbTreeBase : public TT
+		struct RbTreeMapBase : public TT
 	{
-		typedef RbTreeBase<KT,VT,TT> TB;
+		typedef RbTreeMapBase<KT,VT,TT> TB;
 		enum COLOR {NONE=0,RED,BLACK} ;
 		COLOR Red(){return RED;}
 		COLOR Black(){return BLACK;}
-		RbTreeBase(const KT _key) : TT(_key) {}
-		RbTreeBase(const KT _key,const VT _data) : TT(_key,_data) {}
+		RbTreeMapBase(const KT _key) : TT(_key) {}
+		RbTreeMapBase(const KT _key,const VT _data) : TT(_key,_data) {}
 
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
@@ -404,9 +404,9 @@ namespace TreeObjects
 	}
 
 	template <typename KT,typename VT>
-		struct RbTree : public RbTreeBase<KT,VT,Bst<KT,VT> >
+		struct RbTree : public RbTreeMapBase<KT,VT,Bst<KT,VT> >
 	{
-		typedef RbTreeBase<KT,VT,Bst<KT,VT> > TB;
+		typedef RbTreeMapBase<KT,VT,Bst<KT,VT> > TB;
 
 		RbTree(const KT _key) : TB(_key) {}
 		RbTree(const KT _key,const VT _data) : TB(_key,_data) {}
