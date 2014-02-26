@@ -419,11 +419,11 @@ namespace TreeObjects
 	{
 		Map() : root(NULL) {}
 		virtual ~Map() {if (root) delete root;}
-		void erase(const KT& key)
+		void erase(const KT key)
 		{
 			if (!root) return;
 			TreeBase* found(root->find(key));
-			if (found) root=static_cast<RbTree<KT,VT>*>(root)->erase(root,found);
+			if (found) root=static_cast<RbTree<KT,VT>*>(root->erase(root,found));
 		}
 		VT& operator[](const KT key)
 		{
@@ -434,6 +434,14 @@ namespace TreeObjects
 			root->insert(root,node);
 			return node->Data();
 			throw string("Cannot insert");
+		}
+		void inorder(TreeBase* node=NULL)
+		{
+			if (node==NULL) node=root;
+			if (node->left) inorder(node->left);	
+			VT& data(static_cast<RbTree<KT,VT>*>(node)->Data());
+			const bool t(data);
+			if (node->right) inorder(node->right);	
 		}
 		private:
 		RbTree<KT,VT>* root;

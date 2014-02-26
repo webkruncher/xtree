@@ -139,6 +139,10 @@ struct Widget
 {
 	void operator=(string what){name=what;}
 	ostream& operator<<(ostream& o) const {o<<name; return o;}
+	operator const bool()
+	{
+		cout<<"T:"<<name<<",";
+	}
 	private: string name;
 };
 inline ostream& operator<<(ostream& o,const Widget& w){return w.operator<<(o);}
@@ -153,6 +157,9 @@ int main(int argc,char** argv)
 		Widget& second(widgets["widget2"]);
 		second="test 2";
 		cout<<"Second:"<<widgets["widget2"]<<endl;
+		cout<<"Testing..."<<endl;
+		widgets.inorder();
+		widgets.erase("widget1");
 	}
 	
 		

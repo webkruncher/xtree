@@ -104,18 +104,16 @@ namespace TreeDisplay
 	{
 		Strings()
 		{
-			push_back("Jack");
-			push_back("Fred");
-			push_back("Joe");
-			push_back("Nat");
-			push_back("Jim");
-			push_back("Hop");
-			push_back("Pop");
-			push_back("Sally");
-			push_back("Fox");
-			push_back("Sox");
-			push_back("Lorax");
+			Strings& m(*this);
+			m("Marco"); m("Jack"); m("Fred"); m("Joe"); m("Nat"); m("Jim"); m("Hop"); 
+			m("Pop"); m("Sally"); m("Fox"); m("Sox"); m("Lorax"); m("Sam"); m("Joe");
+			m("Sue"); m("Dave"); m("Charlie"); m("Diane"); m("Angie"); m("John"); m("Frank");
+			m("Rick"); m("Dick"); m("Jane"); m("Jill"); m("Bruno"); m("Tina"); m("Ike");
+			m("Michelle"); m("Vallerie"); m("Roxanne"); m("Jessie"); m("Pete"); m("Suzie"); m("Bill");
+			m("Mary"); m("Joan"); m("Pat"); m("Karen"); m("Martin"); m("Ted"); m("Allie");
+			//while (size()<50) {stringstream ss; ss<<"s"<<size(); m(ss.str()); }
 		}
+		private: void operator()(string s){push_back(s);}
 	} GlobalStrings;
 
 	pair<bool,string> NextString(set<string>& used,const int Max,const bool removing)
@@ -301,7 +299,7 @@ namespace TreeDisplay
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
 			if (!(updateloop%flipcounter))
 			{
-				flipcounter=((rand()%1000)+100);
+				flipcounter=((rand()%100)+100);
 				if (root) removing=!removing;
 			}
 	}
