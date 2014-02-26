@@ -208,6 +208,19 @@ namespace TreeObjects
 		}
 		operator const KT& (){return key;}
 		virtual ostream& operator<<(ostream& o) const {return o;}
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
+		{
+			TreeBase* newroot(TreeBase::RotateLeft(root,node));
+			this->Update(node,this->parent); 
+			return newroot;
+		}
+
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
+		{
+			TreeBase* newroot(TreeBase::RotateRight(root,node));
+			this->Update(node,this->parent); 
+			return newroot;
+		}
 		protected:
 		const KT key;
 	};
@@ -313,22 +326,6 @@ namespace TreeObjects
 			return newroot;
 		}
 		COLOR clr; // color enum
-		protected:
-		private:
-		virtual ostream& operator<<(ostream& o) const { return o; }
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
-		{
-			TreeBase* newroot(Bst<KT,VT>::RotateLeft(root,node));
-			this->Update(node,this->parent); 
-			return newroot;
-		}
-
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
-		{
-			TreeBase* newroot(Bst<KT,VT>::RotateRight(root,node));
-			this->Update(node,this->parent); 
-			return newroot;
-		}
 	};
 
 
