@@ -20,7 +20,7 @@ if [[ -f trees ]]; then
 
 	#./trees -string -redblack 2>/dev/null
 	#./trees -int -bst 2>/dev/null
-	#./trees -int -redblack 2>/dev/null
+	./trees -int -redblack 2>/dev/null
 	#./trees -int -bst 2>/dev/null
 	#./trees -double -redblack 2>/dev/null
 	#./trees -double -bst 2>/dev/null

@@ -13,7 +13,6 @@ namespace TreeObjects
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
 
 		virtual bool isBST(TreeBase* node) = 0;
-		virtual long countnodes()  = 0;
 
 		TreeBase* LeftMost()
 		{
@@ -47,6 +46,13 @@ namespace TreeObjects
 			if (!node->parent) throw string("root nodes have no sibling");
 			if (node==node->parent->left) return node->parent->right;
 			else return node->parent->left;
+		}
+
+		virtual long countnodes()  
+		{
+			long leftnodes(0); if (left) leftnodes=left->countnodes();
+			long rightnodes(0); if (right) rightnodes=right->countnodes();
+			return (leftnodes+rightnodes+1);
 		}
 
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
@@ -88,36 +94,29 @@ namespace TreeObjects
 	};
 	inline ostream& operator<<(ostream& o,const TreeBase& b) {return b.operator<<(o);}
 
-	template <typename KT,typename VT>
-		struct Bst : public TreeBase
+	template <typename KT>
+		struct BstBase : public TreeBase
 	{
-		Bst(const KT _key) : key(_key) {}
-		Bst(const KT _key,const VT _data) : key(_key), data(_data) {}
-		virtual long countnodes()  
-		{
-			long leftnodes(0); if (left) leftnodes=left->countnodes();
-			long rightnodes(0); if (right) rightnodes=right->countnodes();
-			return (leftnodes+rightnodes+1);
-		}
+		BstBase(const KT _key) : key(_key) {}
 		KT minValue(TreeBase* node) 
 		{
 			TreeBase* current(node);
 			while (current->left!=NULL) current=current->left;
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
+			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*current));
 			return(nd.key);
 		}
 		KT maxValue(TreeBase* node) 
 		{
 			TreeBase* current = node;
 			while (current->right != NULL) current = current->right;
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*current));
+			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*current));
 			return(nd.key);
 		}
 
 		virtual bool isBST(TreeBase* node) 
 		{
 			if (!node) return(true);
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
+			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*node));
 			if (node->left!=NULL && maxValue(node->left) > nd.key) return(false);
 			if (node->right!=NULL && minValue(node->right) <= nd.key) return(false);
 			if (!isBST(node->left) || !isBST(node->right)) return(false);
@@ -126,26 +125,26 @@ namespace TreeObjects
 
 		virtual TreeBase* find(const KT& what)
 		{
-			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*this));
+			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
 			if (nd==what) return this;
 			if (nd<what)
 			{
 				if (right)
 				{
-					Bst<KT,VT>& ld(static_cast<Bst<KT,VT>&>(*right));
+					BstBase<KT>& ld(static_cast<BstBase<KT>&>(*right));
 					return ld.find(what);
 				}
 			} else {
 				if (left)
 				{
-					Bst<KT,VT>& rd(static_cast<Bst<KT,VT>&>(*left));
+					BstBase<KT>& rd(static_cast<BstBase<KT>&>(*left));
 					return rd.find(what);
 				}
 			}
 			return NULL;
 		}
 
-		void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
+		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
 
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
@@ -185,33 +184,42 @@ namespace TreeObjects
 		}
 		virtual bool operator<(const TreeBase& _b) 
 		{ 
-			const Bst<KT,VT>& a(static_cast<Bst<KT,VT>&>(*this));
+			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
 			TreeBase& __b(const_cast<TreeBase&>(_b));
-			const Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(__b));
+			const BstBase<KT>& b(static_cast<BstBase<KT>&>(__b));
 			return a.key<b.key; 
 		}
 		virtual bool operator==(const TreeBase& _b) 
 		{ 
-			const Bst<KT,VT>& a(static_cast<Bst<KT,VT>&>(*this));
+			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
 			TreeBase& __b(const_cast<TreeBase&>(_b));
-			const Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(__b));
+			const BstBase<KT>& b(static_cast<BstBase<KT>&>(__b));
 			return a.key==b.key; 
 		}
 		virtual bool operator<(const KT& b) 
 		{ 
-			const Bst<KT,VT>& a(static_cast<Bst<KT,VT>&>(*this));
+			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
 			return a.key<b; 
 		}
 		virtual bool operator==(const KT& b) 
 		{ 
-			const Bst<KT,VT>& a(static_cast<Bst<KT,VT>&>(*this));
+			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
 			return a.key==b;
 		}
 		operator const KT& (){return key;}
-		VT& Data(){return data;}
 		virtual ostream& operator<<(ostream& o) const {return o;}
 		protected:
 		const KT key;
+	};
+
+	template <typename KT,typename VT>
+		struct Bst : public BstBase<KT>
+	{
+		Bst(const KT _key) : BstBase<KT>(_key) {}
+		Bst(const KT _key,const VT _data) : BstBase<KT>(_key), data(_data) {}
+		VT& Data(){return data;}
+		protected:
+		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
 		VT data;	
 	};
 
