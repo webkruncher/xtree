@@ -24,7 +24,6 @@ namespace TreeObjects
 			RbMap<KT,VT>* node(new RbMap<KT,VT>(key)); 
 			root->insert(root,node);
 			return node->Data();
-			throw string("Cannot insert");
 		}
 		void inorder(TreeBase* node=NULL)
 		{

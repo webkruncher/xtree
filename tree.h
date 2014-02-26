@@ -417,6 +417,7 @@ namespace TreeObjects
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateRight(root,node); }
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
+		virtual TreeBase* erase(TreeBase* root,TreeBase* found){return RbBase::erase(root,found);}
 	};
 
 

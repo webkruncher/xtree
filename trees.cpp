@@ -104,12 +104,19 @@ namespace TreeDisplay
 		Strings()
 		{
 			Strings& m(*this);
-			m("Marco"); m("Jack"); m("Fred"); m("Joe"); m("Nat"); m("Jim"); m("Hop"); 
-			m("Pop"); m("Sally"); m("Fox"); m("Sox"); m("Lorax"); m("Sam"); m("Joe");
-			m("Sue"); m("Dave"); m("Charlie"); m("Diane"); m("Angie"); m("John"); m("Frank");
-			m("Rick"); m("Dick"); m("Jane"); m("Jill"); m("Bruno"); m("Tina"); m("Ike");
-			m("Michelle"); m("Vallerie"); m("Roxanne"); m("Jessie"); m("Pete"); m("Suzie"); m("Bill");
-			m("Mary"); m("Joan"); m("Pat"); m("Karen"); m("Martin"); m("Ted"); m("Allie");
+			if (true)
+			{
+				m("Marco"); m("Jack"); m("Fred"); m("Joe"); m("Nat"); m("Jim"); m("Hop"); 
+				m("Pop"); m("Sally"); m("Fox"); m("Sox"); m("Lorax"); m("Sam"); m("Joe");
+				m("Sue"); m("Dave"); m("Charlie"); m("Diane"); m("Angie"); m("John"); m("Frank");
+				m("Rick"); m("Dick"); m("Jane"); m("Jill"); m("Bruno"); m("Tina"); m("Ike");
+				m("Michelle"); m("Vallerie"); m("Roxanne"); m("Jessie"); m("Pete"); m("Suzie"); m("Bill");
+				m("Mary"); m("Joan"); m("Pat"); m("Karen"); m("Martin"); m("Ted"); m("Allie");
+			} else {
+				m("widget1");
+				m("widget2");
+				m("widget3");
+			}
 			//while (size()<50) {stringstream ss; ss<<"s"<<size(); m(ss.str()); }
 		}
 		private: void operator()(string s){push_back(s);}
@@ -239,7 +246,7 @@ namespace TreeDisplay
 				if ((!movement) and (!stop))
 			{
 				movement=true;
-				pair<bool,KT> next(Next(40));
+				pair<bool,KT> next(Next(30));
 				if (next.first)
 				{
 					if (!removing)

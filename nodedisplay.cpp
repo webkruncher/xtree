@@ -45,7 +45,7 @@ namespace TreeDisplay
 					{
 						XSetForeground(display,gc,0XFFFFFF);
 						int yoff(CH);
-						XDrawString(display,bitmap,gc,ul.first,ul.second+yoff,text.c_str(),text.size());
+						XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,text.c_str(),text.size());
 					}
 					Removing-=10;
 					return;
@@ -72,12 +72,12 @@ namespace TreeDisplay
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 				XSetForeground(display,gc,0XFFFFFF);
 				int yoff(CH);
-				XDrawString(display,bitmap,gc,ul.first,ul.second+yoff,text.c_str(),text.size());
+				XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,text.c_str(),text.size());
 				for (iterator it=begin();it!=end();it++)
 				{
 					yoff+=CH;
 					stringstream ss; ss<<it->first<<" : "<<it->second;
-					XDrawString(display,bitmap,gc,ul.first,ul.second+yoff,ss.str().c_str(),ss.str().size());
+					XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,ss.str().c_str(),ss.str().size());
 				}
 			}
 		}

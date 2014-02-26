@@ -106,7 +106,7 @@ namespace TreeDisplay
 		private:
 		KT k;
 		void Text(KT k,KT pk,string txt="") {stringstream ss; ss<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
-		void BoxSize() {CW=50; CH=12;}
+		void BoxSize() {CW=50; CH=14;}
 	};
 
 	template <> inline void TreeNode<int>::Text(int k,int pk,string txt)
@@ -116,7 +116,7 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> inline void TreeNode<int>::BoxSize() { CW=30; CH=12; }
+	template <> inline void TreeNode<int>::BoxSize() { CW=30; CH=14; }
 
 	template <> inline void TreeNode<double>::Text(double k,double pk,string txt)
 	{
@@ -125,14 +125,14 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> inline void TreeNode<double>::BoxSize() { CW=60; CH=12; }
+	template <> inline void TreeNode<double>::BoxSize() { CW=60; CH=14; }
 	template <> inline void TreeNode<string>::Text(string k,string pk,string txt)
 	{
 		stringstream ss;
 		ss<<k; if (!txt.empty()) ss<<" "<<txt;
 		text=ss.str();
 	}
-	template <> inline void TreeNode<string>::BoxSize() { CW=60; CH=12; }
+	template <> inline void TreeNode<string>::BoxSize() { CW=60; CH=14; }
 } //namespace TreeDisplay
 
 #endif // NODE_DISPLAY_H
