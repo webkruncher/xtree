@@ -3,6 +3,9 @@
 
 namespace TreeObjects
 {
+	#ifndef NULL
+	#define NULL 0
+	#endif
 	struct TreeBase
 	{
 		virtual bool operator<(const TreeBase&) = 0;
@@ -44,7 +47,7 @@ namespace TreeObjects
 
 		TreeBase* sibling(TreeBase* node)
 		{
-			if (!node->parent) throw string("root nodes have no sibling");
+			if (!node->parent) return NULL;
 			if (node==node->parent->left) return node->parent->right;
 			else return node->parent->left;
 		}
@@ -90,10 +93,8 @@ namespace TreeObjects
 		}
 
 		TreeBase *parent,*left,*right;
-		virtual ostream& operator<<(ostream&) const =0;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
 	};
-	inline ostream& operator<<(ostream& o,const TreeBase& b) {return b.operator<<(o);}
 
 	template <typename KT>
 		struct BstBase : public TreeBase
@@ -208,7 +209,6 @@ namespace TreeObjects
 			return a.key==b;
 		}
 		operator const KT& (){return key;}
-		virtual ostream& operator<<(ostream& o) const {return o;}
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(TreeBase::RotateLeft(root,node));
@@ -229,7 +229,7 @@ namespace TreeObjects
 
 	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
 	{
-		if (!pfound) throw string("Cannot delete null node");
+		if (!pfound) return root;
 		TreeBase& found(*pfound);
 		if (!found.parent)
 		{	
@@ -397,10 +397,10 @@ namespace TreeObjects
 
 
 	template <typename KT,typename VT>
-		struct RbTreeMapBase : public Bst<KT,VT>, RbBase
+		struct RbMapMapBase : public Bst<KT,VT>, RbBase
 	{
-		RbTreeMapBase(const KT _key) : Bst<KT,VT>(_key) {}
-		RbTreeMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+		RbMapMapBase(const KT _key) : Bst<KT,VT>(_key) {}
+		RbMapMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
@@ -421,9 +421,9 @@ namespace TreeObjects
 
 
 	template <typename KT>
-		struct RbTreeSetBase : public BstBase<KT>, RbBase
+		struct RbMapSetBase : public BstBase<KT>, RbBase
 	{
-		RbTreeSetBase(const KT _key) : BstBase<KT>(_key) {}
+		RbMapSetBase(const KT _key) : BstBase<KT>(_key) {}
 
 		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
 		{
@@ -443,12 +443,12 @@ namespace TreeObjects
 	};
 
 	template <typename KT,typename VT>
-		struct RbTree : public RbTreeMapBase<KT,VT>
+		struct RbMap : public RbMapMapBase<KT,VT>
 	{
-		typedef RbTreeMapBase<KT,VT> TB;
+		typedef RbMapMapBase<KT,VT> TB;
 
-		RbTree(const KT _key) : TB(_key) {}
-		RbTree(const KT _key,const VT _data) : TB(_key,_data) {}
+		RbMap(const KT _key) : TB(_key) {}
+		RbMap(const KT _key,const VT _data) : TB(_key,_data) {}
 
 		virtual TreeBase* red(TreeBase* n) 
 		{ 
@@ -473,9 +473,9 @@ namespace TreeObjects
 	};
 
 	template <typename KT>
-		struct RbSet : public RbTreeSetBase<KT>
+		struct RbSet : public RbMapSetBase<KT>
 	{
-		typedef RbTreeSetBase<KT> TB;
+		typedef RbMapSetBase<KT> TB;
 
 		RbSet(const KT _key) : TB(_key) {}
 

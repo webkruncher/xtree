@@ -14,14 +14,14 @@ namespace TreeObjects
 		{
 			if (!root) return;
 			TreeBase* found(root->find(key));
-			if (found) root=static_cast<RbTree<KT,VT>*>(root->erase(root,found));
+			if (found) root=static_cast<RbMap<KT,VT>*>(root->erase(root,found));
 		}
 		VT& operator[](const KT key)
 		{
-			if (!root) {root=new RbTree<KT,VT>(key); return root->Data();}
+			if (!root) {root=new RbMap<KT,VT>(key); return root->Data();}
 			TreeBase* found(root->find(key));
-			if (found) return static_cast<RbTree<KT,VT>*>(found)->Data();
-			RbTree<KT,VT>* node(new RbTree<KT,VT>(key)); 
+			if (found) return static_cast<RbMap<KT,VT>*>(found)->Data();
+			RbMap<KT,VT>* node(new RbMap<KT,VT>(key)); 
 			root->insert(root,node);
 			return node->Data();
 			throw string("Cannot insert");
@@ -30,13 +30,13 @@ namespace TreeObjects
 		{
 			if (node==NULL) node=root;
 			if (node->left) inorder(node->left);	
-			VT& data(static_cast<RbTree<KT,VT>*>(node)->Data());
+			VT& data(static_cast<RbMap<KT,VT>*>(node)->Data());
 			const bool t(data);
 			if (node->right) inorder(node->right);	
 		}
 		bool isBST() { if (!root) return true; return root->isBST(root); }
 		private:
-		RbTree<KT,VT>* root;
+		RbMap<KT,VT>* root;
 	};
 
 } // namespace TreeObjects

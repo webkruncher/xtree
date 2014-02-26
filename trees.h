@@ -67,12 +67,12 @@ namespace TreeDisplay
 
 
 	template<typename KT>
-		struct RbTreeCanvas : TreeCanvas<KT>
+		struct RbMapCanvas : TreeCanvas<KT>
 	{
 		typedef TreeNode<KT> VT ;
-		RbTreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+		RbMapCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: TreeCanvas<KT>(_display,_window,_gc,_ScreenWidth,_ScreenHeight) {}
-		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbTree<KT,VT>(key,treenode); }
+		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbMap<KT,VT>(key,treenode); }
 		virtual bool CheckIntegrity(TreeBase* root)
 		{
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;

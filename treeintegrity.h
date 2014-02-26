@@ -1,5 +1,3 @@
-
-
 #ifndef TREE_INTEGRITY
 #define TREE_INTEGRITY
 
@@ -44,18 +42,18 @@ namespace TreeIntegrity
 		template<typename KT,typename VT>
 			struct Visitor
 		{
-			Visitor(RbTree<KT,VT>& _rk) : rk(_rk),ok(true) {}
+			Visitor(RbMap<KT,VT>& _rk) : rk(_rk),ok(true) {}
 			operator bool () 
 			{ 
 				PostOrder(rk);
 				return ok; 
 			}
 			private:
-			RbTree<KT,VT>& rk;
+			RbMap<KT,VT>& rk;
 			bool ok;
 			void PostOrder(TreeBase& node)
 			{
-				RbTree<KT,VT>& rb(static_cast<RbTree<KT,VT>&>(node));
+				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
 				if (node.left) PostOrder(*node.left);
 				if (node.right) PostOrder(*node.right);
 				Visit(node);
@@ -68,7 +66,7 @@ namespace TreeIntegrity
 			}
 			void Visit(TreeBase& node)
 			{
-				RbTree<KT,VT>& rb(static_cast<RbTree<KT,VT>&>(node));
+				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
 				const KT& key(rb);
 				VT& data(rb.Data()); clear(data);
 				#if 0
@@ -77,14 +75,14 @@ namespace TreeIntegrity
 				{
 					stringstream ss;
 					ss<<lc<<","<<rc;
-					if (rb.color(&rb)==RbTree<KT,VT>::BLACK) data["lr"]=ss.str();
+					if (rb.color(&rb)==RbMap<KT,VT>::BLACK) data["lr"]=ss.str();
 				}
 				#endif
-				if (rb.color(&node)==RbTree<KT,VT>::RED) 
+				if (rb.color(&node)==RbMap<KT,VT>::RED) 
 				{
 					bool leftisred(false),rightisred(false);
-					if (rb.right) if (rb.color(rb.right)==RbTree<KT,VT>::RED) rightisred=true;
-					if (rb.left) if (rb.color(rb.left)==RbTree<KT,VT>::RED) leftisred=true;
+					if (rb.right) if (rb.color(rb.right)==RbMap<KT,VT>::RED) rightisred=true;
+					if (rb.left) if (rb.color(rb.left)==RbMap<KT,VT>::RED) leftisred=true;
 					stringstream ss;
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";
@@ -99,11 +97,11 @@ namespace TreeIntegrity
 	{
 		if (!root) return true;
 		//cout<<"Checking Red Black"<<endl;
-		RbTree<KT,VT>& rk(static_cast<RbTree<KT,VT>&>(*root));
+		RbMap<KT,VT>& rk(static_cast<RbMap<KT,VT>&>(*root));
 		TreeBase* leftmost(root->LeftMost());
 		TreeBase* rightmost(root->RightMost());
-		RbTree<KT,VT>& lm(static_cast<RbTree<KT,VT>&>(*leftmost));
-		RbTree<KT,VT>& rm(static_cast<RbTree<KT,VT>&>(*rightmost));
+		RbMap<KT,VT>& lm(static_cast<RbMap<KT,VT>&>(*leftmost));
+		RbMap<KT,VT>& rm(static_cast<RbMap<KT,VT>&>(*rightmost));
 		const KT& L(lm);
 		const KT& R(rm);
 		RedBlackCheck::Visitor<KT,VT> visitor(rk);

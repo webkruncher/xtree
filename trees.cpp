@@ -1,4 +1,3 @@
-
 #include "x11grid.h"
 using namespace X11Methods;
 #include <treemap.h>
@@ -40,55 +39,55 @@ namespace TreeObjects
 	}
 
 
-	template <> TreeBase* RbTree<int,TreeNode<int> >::red(TreeBase* n)
+	template <> TreeBase* RbMap<int,TreeNode<int> >::red(TreeBase* n)
 	{
 		if (!n) return n; 
-		RbTree<int,TreeNode<int> >& nd(static_cast<RbTree<int,TreeNode<int> >&>(*n)); 
+		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
 		nd.clr=RED;
 		nd.data(0X800000); 
 		return n;
 	}
 
-	template <> TreeBase* RbTree<int,TreeNode<int> >::black(TreeBase* n)
+	template <> TreeBase* RbMap<int,TreeNode<int> >::black(TreeBase* n)
 	{
 		if (!n) return n; 
-		RbTree<int,TreeNode<int> >& nd(static_cast<RbTree<int,TreeNode<int> >&>(*n)); 
+		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
 		nd.clr=BLACK;
 		nd.data(0X00000); 
 		return n;
 	}
 
-	template <> TreeBase* RbTree<double,TreeNode<double> >::red(TreeBase* n)
+	template <> TreeBase* RbMap<double,TreeNode<double> >::red(TreeBase* n)
 	{
 		if (!n) return n; 
-		RbTree<double,TreeNode<double> >& nd(static_cast<RbTree<double,TreeNode<double> >&>(*n)); 
+		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
 		nd.clr=RED;
 		nd.data(0X800000); 
 		return n;
 	}
 
-	template <> TreeBase* RbTree<double,TreeNode<double> >::black(TreeBase* n)
+	template <> TreeBase* RbMap<double,TreeNode<double> >::black(TreeBase* n)
 	{
 		if (!n) return n; 
-		RbTree<double,TreeNode<double> >& nd(static_cast<RbTree<double,TreeNode<double> >&>(*n)); 
+		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
 		nd.clr=BLACK;
 		nd.data(0X00000); 
 		return n;
 	}
 
-	template <> TreeBase* RbTree<string,TreeNode<string> >::red(TreeBase* n)
+	template <> TreeBase* RbMap<string,TreeNode<string> >::red(TreeBase* n)
 	{
 		if (!n) return n; 
-		RbTree<string,TreeNode<string> >& nd(static_cast<RbTree<string,TreeNode<string> >&>(*n)); 
+		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
 		nd.clr=RED;
 		nd.data(0X800000); 
 		return n;
 	}
 
-	template <> TreeBase* RbTree<string,TreeNode<string> >::black(TreeBase* n)
+	template <> TreeBase* RbMap<string,TreeNode<string> >::black(TreeBase* n)
 	{
 		if (!n) return n; 
-		RbTree<string,TreeNode<string> >& nd(static_cast<RbTree<string,TreeNode<string> >&>(*n)); 
+		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
 		nd.clr=BLACK;
 		nd.data(0X00000); 
 		return n;

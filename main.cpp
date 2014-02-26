@@ -1,5 +1,3 @@
-
-
 #include "x11grid.h"
 using namespace X11Methods;
 #include <treemap.h>
@@ -213,17 +211,17 @@ int main(int argc,char** argv)
 		Canvas* pcanvas(NULL);
 		if (cmdline.find("-int")!=cmdline.end())
 		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
 			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
 		}
 		if (cmdline.find("-double")!=cmdline.end())
 		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
 			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
 		}
 		if (cmdline.find("-string")!=cmdline.end())
 		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbTreeCanvas<string>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<string>(display,window,gc,displayarea.width, displayarea.height);
 			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<string>(display,window,gc,displayarea.width, displayarea.height);
 		}
 		if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int or -double");
