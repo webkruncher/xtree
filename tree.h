@@ -13,6 +13,7 @@ namespace TreeObjects
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
 
 		virtual bool isBST(TreeBase* node) = 0;
+		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
 
 		TreeBase* LeftMost()
 		{
@@ -312,27 +313,18 @@ namespace TreeObjects
 		VT data;	
 	};
 
-
-	template <typename KT,typename VT,typename TT>
-		struct RbTreeMapBase : public TT
+	struct RbBase 
 	{
-		typedef RbTreeMapBase<KT,VT,TT> TB;
 		enum COLOR {NONE=0,RED,BLACK} ;
 		COLOR Red(){return RED;}
 		COLOR Black(){return BLACK;}
-		RbTreeMapBase(const KT _key) : TT(_key) {}
-		RbTreeMapBase(const KT _key,const VT _data) : TT(_key,_data) {}
-
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
-		{
-			root=TT::insert(root,node);
-			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
-			return RedAndBlack(root,node);
-		}
-		
 		virtual TreeBase* red(TreeBase* n) = 0;
 		virtual TreeBase* black(TreeBase* n) = 0;
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) = 0;
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) = 0;
 		virtual const char color(TreeBase* n) const = 0;
+		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
 
 		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
 		{
@@ -383,21 +375,20 @@ namespace TreeObjects
 			}
 			return black(root);
 		}
-
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
 			if (!found) return root;
 			TreeBase *p(found->parent),*l(found->left),*r(found->right);
-			TreeBase* newroot(TreeBase::remove(root,found));
-			this->Update(found,p,true); 
+			TreeBase* newroot(remove(root,found));
+			Update(found,p,true); 
 			if ( (p) and (newroot) )
 			{
 				if (p->right) newroot=this->RedAndBlack(newroot,p->right);
 				if (p->left) newroot=this->RedAndBlack(newroot,p->left);
 			}
 			found->left=NULL; found->right=NULL;
-			if (newroot) this->Update(newroot,newroot); 
-			if (l) this->Update(l,p); if (r) this->Update(r,p);
+			if (newroot) Update(newroot,newroot); 
+			if (l) Update(l,p); if (r) Update(r,p);
 			delete found;
 			return newroot;
 		}
@@ -405,11 +396,35 @@ namespace TreeObjects
 	};
 
 
+	template <typename KT,typename VT>
+		struct RbTreeMapBase : public Bst<KT,VT>, RbBase
+	{
+		RbTreeMapBase(const KT _key) : Bst<KT,VT>(_key) {}
+		RbTreeMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+
+		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		{
+			root=Bst<KT,VT>::insert(root,node);
+			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
+			return this->RedAndBlack(root,node);
+		}
+		
+		virtual TreeBase* red(TreeBase* n) = 0;
+		virtual TreeBase* black(TreeBase* n) = 0;
+		virtual const char color(TreeBase* n) const = 0;
+
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateLeft(root,node); }
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateRight(root,node); }
+		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
+	};
+
+
 
 	template <typename KT,typename VT>
-		struct RbTree : public RbTreeMapBase<KT,VT,Bst<KT,VT> >
+		struct RbTree : public RbTreeMapBase<KT,VT>
 	{
-		typedef RbTreeMapBase<KT,VT,Bst<KT,VT> > TB;
+		typedef RbTreeMapBase<KT,VT> TB;
 
 		RbTree(const KT _key) : TB(_key) {}
 		RbTree(const KT _key,const VT _data) : TB(_key,_data) {}
