@@ -225,6 +225,82 @@ namespace TreeObjects
 		const KT key;
 	};
 
+
+	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
+	{
+		if (!pfound) throw string("Cannot delete null node");
+		TreeBase& found(*pfound);
+		if (!found.parent)
+		{	
+			if ((!found.left) and (!found.right))  return NULL;	
+			if ((!found.left) or (!found.right))
+			{
+				if (found.left) {found.left->parent=NULL; return found.left; }
+				if (found.right) {found.right->parent=NULL; return found.right; }
+			} else {
+				TreeBase* L(found.left);
+				TreeBase* R(found.right);
+				TreeBase* LeftsRightMost(L->RightMost());
+				LeftsRightMost->right=R;
+				R->parent=LeftsRightMost;
+				L->parent=NULL;
+				return L;
+			}
+		} else {
+			TreeBase& parent(*found.parent);
+			if ((!found.left) and (!found.right)) 
+			{
+				if (parent.left==pfound)  parent.left=NULL;
+				if (parent.right==pfound) parent.right=NULL;
+				return root;
+			} 
+			if ((!found.left) or (!found.right))
+			{
+				if (found.left)
+				{
+					TreeBase* C(found.left);
+					if (parent.left==pfound)
+					{
+						parent.left=C;
+						C->parent=&parent;
+					} else {
+						parent.right=C;
+						C->parent=&parent;
+					}
+				} else {
+					TreeBase* C(found.right);
+					if (parent.left==pfound)
+					{
+						parent.left=C;
+						C->parent=&parent;
+					} else {
+						parent.right=C;
+						C->parent=&parent;
+					}
+				}
+			} else {
+				if (parent.left==pfound) 
+				{
+					TreeBase* L(found.left);
+					TreeBase* R(found.right);
+					parent.left=R; R->parent=&parent;
+					TreeBase* NewSide(R->LeftMost());
+					L->parent=NewSide;
+					NewSide->left=L;
+				} else {
+					TreeBase* L(found.left);
+					TreeBase* R(found.right);
+					parent.right=L; L->parent=&parent;
+					TreeBase* NewSide(L->RightMost());
+					R->parent=NewSide;
+					NewSide->right=R;
+				}
+			}
+		}
+		return root;
+	}
+
+
 	template <typename KT,typename VT>
 		struct Bst : public BstBase<KT>
 	{
@@ -329,79 +405,6 @@ namespace TreeObjects
 	};
 
 
-	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
-	{
-		if (!pfound) throw string("Cannot delete null node");
-		TreeBase& found(*pfound);
-		if (!found.parent)
-		{	
-			if ((!found.left) and (!found.right))  return NULL;	
-			if ((!found.left) or (!found.right))
-			{
-				if (found.left) {found.left->parent=NULL; return found.left; }
-				if (found.right) {found.right->parent=NULL; return found.right; }
-			} else {
-				TreeBase* L(found.left);
-				TreeBase* R(found.right);
-				TreeBase* LeftsRightMost(L->RightMost());
-				LeftsRightMost->right=R;
-				R->parent=LeftsRightMost;
-				L->parent=NULL;
-				return L;
-			}
-		} else {
-			TreeBase& parent(*found.parent);
-			if ((!found.left) and (!found.right)) 
-			{
-				if (parent.left==pfound)  parent.left=NULL;
-				if (parent.right==pfound) parent.right=NULL;
-				return root;
-			} 
-			if ((!found.left) or (!found.right))
-			{
-				if (found.left)
-				{
-					TreeBase* C(found.left);
-					if (parent.left==pfound)
-					{
-						parent.left=C;
-						C->parent=&parent;
-					} else {
-						parent.right=C;
-						C->parent=&parent;
-					}
-				} else {
-					TreeBase* C(found.right);
-					if (parent.left==pfound)
-					{
-						parent.left=C;
-						C->parent=&parent;
-					} else {
-						parent.right=C;
-						C->parent=&parent;
-					}
-				}
-			} else {
-				if (parent.left==pfound) 
-				{
-					TreeBase* L(found.left);
-					TreeBase* R(found.right);
-					parent.left=R; R->parent=&parent;
-					TreeBase* NewSide(R->LeftMost());
-					L->parent=NewSide;
-					NewSide->left=L;
-				} else {
-					TreeBase* L(found.left);
-					TreeBase* R(found.right);
-					parent.right=L; L->parent=&parent;
-					TreeBase* NewSide(L->RightMost());
-					R->parent=NewSide;
-					NewSide->right=R;
-				}
-			}
-		}
-		return root;
-	}
 
 	template <typename KT,typename VT>
 		struct RbTree : public RbTreeMapBase<KT,VT,Bst<KT,VT> >
