@@ -2,7 +2,7 @@
 LIB=-L/usr/local/lib -L/usr/X11R6/lib -lX11 ../x11grid/x11grid.a
 INC=-I. -I /usr/X11R6/include -I /usr/local/include -I ../x11grid
 
-INCS=nodedisplay.h trees.h tree.h treeintegrity.h motivation.h
+INCS=nodedisplay.h trees.h tree.h treemap.h treeset.h treeintegrity.h motivation.h
 
 FNIT=-fno-implicit-templates
 FREPO=-frepo

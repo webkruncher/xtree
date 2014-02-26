@@ -1,5 +1,5 @@
-#ifndef KRUNCH_RB_TREE_H
-#define KRUNCH_RB_TREE_H
+#ifndef DIGITAL_ARBORIST_H
+#define DIGITAL_ARBORIST_H
 
 namespace TreeObjects
 {
@@ -448,6 +448,6 @@ namespace TreeObjects
 	};
 
 } //namespace TreeObjects
-#endif // KRUNCH_RB_TREE_H
+#endif // DIGITAL_ARBORIST_H
 
 

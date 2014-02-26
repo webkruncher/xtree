@@ -2,7 +2,7 @@
 
 #include "x11grid.h"
 using namespace X11Methods;
-#include <tree.h>
+#include <treeset.h>
 using namespace TreeObjects;
 #include <trees.h>
 using namespace TreeDisplay;
