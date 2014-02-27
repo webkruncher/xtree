@@ -316,8 +316,8 @@ namespace TreeObjects
 	struct RbBase 
 	{
 		enum COLOR {NONE=0,RED,BLACK} ;
-		COLOR Red(){return RED;}
-		COLOR Black(){return BLACK;}
+		const COLOR Red() const {return RED;}
+		const COLOR Black() const {return BLACK;}
 		virtual TreeBase* red(TreeBase* n) = 0;
 		virtual TreeBase* black(TreeBase* n) = 0;
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) = 0;
@@ -478,9 +478,7 @@ namespace TreeObjects
 		struct RbSet : public RbMapSetBase<KT>
 	{
 		typedef RbMapSetBase<KT> TB;
-
 		RbSet(const KT _key) : TB(_key) {}
-
 		virtual TreeBase* red(TreeBase* n) 
 		{ 
 			if (!n) return n; 
