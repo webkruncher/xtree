@@ -22,7 +22,16 @@ namespace TreeObjects
 			TreeBase* found(root->find(key));
 			if (found) return ;
 			RbSet<KT>* node(new RbSet<KT>(key)); 
-			root->insert(root,node);
+			root=static_cast<RbSet<KT>*>(root->insert(root,node));
+		}
+		void inorder(TreeBase* node=NULL)
+		{
+			if (node==NULL) node=root;
+			if (node->left) inorder(node->left);	
+			RbSet<KT>& item(static_cast<RbSet<KT>& >(*node)); 
+			const KT& key(item);
+			//std::cout<<key<<" ";
+			if (node->right) inorder(node->right);	
 		}
 		bool isBST() { if (!root) return true; return root->isBST(root); }
 		private:

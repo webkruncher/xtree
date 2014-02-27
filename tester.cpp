@@ -1,12 +1,13 @@
 
+#include <iostream>
+#include <string>
+#include <sstream>
+
 #include <tree.h>
 #include <treemap.h>
 #include <treeset.h>
 using namespace TreeObjects;
 
-#include <iostream>
-#include <string>
-#include <sstream>
 using namespace std;
 
 
@@ -40,6 +41,7 @@ int Widget::test()
 {
 	bool ok(true);
 	{
+		cout<<"Testing map"<<endl;
 		Map<string,Widget> widgets;
 		{
 			Widget& first(widgets["widget1"]);
@@ -61,11 +63,25 @@ int Widget::test()
 
 		widgets.inorder();
 		widgets.erase("widget1");
-		cout<<endl<<"Done, testing"<<endl;cout.flush();
 		ok=(widgets.isBST());
-		cout<<"unwinding"<<endl;cout.flush();
 	}
-	cout<<"unwound"<<endl;cout.flush();
-	if (ok) return 0; else return -1;
+	cout<<" Map test complete, success:"<<boolalpha<<ok<<endl;
+	if (!ok)  return -1;
+	{
+		cout<<"Testing set"<<endl;
+		Set<string> items;
+		items.insert("Jack");
+		items.insert("Fred");
+		items.insert("Jack");
+		items.insert("Joe");
+		items.insert("Nat");
+		items.erase("Jack");
+		items.erase("Jim");
+		items.inorder();
+		ok=(items.isBST());
+	}
+	cout<<" Set test complete, success:"<<boolalpha<<ok<<endl;
+	if (!ok)  return -1;
+	return 0;
 }
 
