@@ -33,7 +33,7 @@ namespace TreeObjects
 		TreeBase* grandparent(TreeBase* node)
 		{
 			if ((node != NULL) && (node->parent != NULL))
-			return node->parent->parent;
+				return node->parent->parent;
 			else return NULL;
 		}
 		 
@@ -500,8 +500,6 @@ namespace TreeObjects
 			return nd.clr;
 		}
 	};
-
-
 } //namespace TreeObjects
 #endif // DIGITAL_ARBORIST_H
 
