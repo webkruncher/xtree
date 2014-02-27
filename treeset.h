@@ -30,7 +30,8 @@ namespace TreeObjects
 			if (node->left) inorder(node->left);	
 			RbSet<KT>& item(static_cast<RbSet<KT>& >(*node)); 
 			const KT& key(item);
-			std::cout<<key<<" ";
+			std::cout<<key<<" ";	// tbd: Create a method like the Data()(...) method in the map so the key may print without 
+														// the cout in this method.
 			if (node->right) inorder(node->right);	
 		}
 		bool isBST() { if (!root) return true; return root->isBST(root); }
