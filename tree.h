@@ -347,10 +347,11 @@ namespace TreeObjects
 						{
 							node=node->parent;
 							root=this->RotateLeft(root,node);
+						} else {
+							black(node->parent);
+							red(node->parent->parent);
+							root=this->RotateRight( root, node->parent->parent );
 						}
-						black(node->parent);
-						red(node->parent->parent);
-						root=this->RotateRight( root, node->parent->parent );
 					}
 				} else {
 					TreeBase* other(node->parent->parent->left);
