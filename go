@@ -11,7 +11,7 @@ update=`make -n | grep ^g++ | wc -l | tr -d ' '`
 [[ $update != 0 ]] && rm trees
 make tester
 if [[ -f tester ]]; then 
-	./tester 
+	cat input.txt | ./tester 
 	if [[ $? != 0 ]]; then
 		echo "Test failed"
 	else
@@ -21,7 +21,7 @@ if [[ -f tester ]]; then
 	make 
 	#./trees -string -redblack 2>/dev/null
 	#./trees -int -bst 2>/dev/null
-	./trees -int -redblack 2>/dev/null
+	#./trees -int -redblack 2>/dev/null
 	#./trees -int -bst 2>/dev/null
 	#./trees -double -redblack 2>/dev/null
 	#./trees -double -bst 2>/dev/null

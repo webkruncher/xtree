@@ -1,87 +1,63 @@
-
-#include <iostream>
-#include <string>
-#include <sstream>
-
-#include <tree.h>
-#include <treemap.h>
 #include <treeset.h>
 using namespace TreeObjects;
+#include <cstdio>
+#include <memory>
+#include <set>
+#include <sys/time.h>
 
-using namespace std;
-
-
-struct Widget
+void TestTreeSet(const long* numbers,const long size)
 {
-	Widget() {}
-	Widget(int j)
-	{
-		stringstream ss; ss<<j; name=ss.str();
-	}
-	virtual ~Widget(){}
-	void operator=(string what){name=what;}
-	ostream& operator<<(ostream& o) const {o<<name; return o;}
-	operator const bool()
-	{
-		cout<<"T:"<<name<<",";
-	}
-	static int test();
-	private: string name;
-};
-inline ostream& operator<<(ostream& o,const Widget& w){return w.operator<<(o);}
+	Set<long> items;
+	for (long j=0;j<size;j++) items.insert(numbers[j]);
+	for (long j=0;j<size;j++) items.erase(numbers[j]);
+}
 
+void TestStlSet(const long* numbers,const long size)
+{
+	std::set<long> items;
+	for (long j=0;j<size;j++) items.insert(numbers[j]);
+	for (long j=0;j<size;j++) items.erase(numbers[j]);
+}
+
+inline double timedifference(timespec& x, timespec& y)
+{	//warning: not fully tested
+	timespec result; const double scale(1E+9); 
+	if (x.tv_nsec < y.tv_nsec) { double nsec = (y.tv_nsec - x.tv_nsec) / scale + 1; y.tv_nsec -= scale * nsec; y.tv_sec += nsec; }
+	if (x.tv_nsec - y.tv_nsec > scale) { double nsec = (x.tv_nsec - y.tv_nsec) / scale; y.tv_nsec += scale * nsec; y.tv_sec -= nsec; }
+	result.tv_sec = x.tv_sec - y.tv_sec;
+	result.tv_nsec = x.tv_nsec - y.tv_nsec;
+	return ((result.tv_sec*scale) + result.tv_nsec);
+}
 
 int main(int,char**)
 {
-	return Widget::test();
-	return 0;
-}
+	char hash(0);
+	long N(0);
+	fscanf(stdin,"%c%ld",&hash,&N);
+	if (hash!='#') {printf("First line of input must be lenght preceeded by #\n"); return -1;}
+	printf("Input size:%ld\n",N);
+	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
+	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
 
-int Widget::test()
-{
-	bool ok(true);
-	{
-		cout<<"Testing map"<<endl;
-		Map<string,Widget> widgets;
-		{
-			Widget& first(widgets["widget1"]);
-			first="Test1";
-			cout<<"First:"<<widgets["widget1"]<<endl;
-		}
 
-		{
-			Widget& second(widgets["widget2"]);
-			second="Test2";
-			cout<<"Second:"<<widgets["widget2"]<<endl;
-		}
+	timespec t1,t2;
+	double StlTime,TreeObjectsTime;
 
-		{
-			Widget& third(widgets["widget3"]);
-			third="Test3";
-			cout<<"Third:"<<widgets["widget3"]<<endl;
-		}
+	clock_gettime(CLOCK_MONOTONIC,&t1);
+	TestTreeSet(numbers,N);
+	clock_gettime(CLOCK_MONOTONIC,&t2);
+	TreeObjectsTime=timedifference(t2,t1);
 
-		widgets.inorder();
-		widgets.erase("widget1");
-		ok=(widgets.isBST());
-	}
-	cout<<" Map test complete, success:"<<boolalpha<<ok<<endl;
-	if (!ok)  return -1;
-	{
-		cout<<"Testing set"<<endl;
-		Set<string> items;
-		items.insert("Jack");
-		items.insert("Fred");
-		items.insert("Jack");
-		items.insert("Joe");
-		items.insert("Nat");
-		items.erase("Jack");
-		items.erase("Jim");
-		items.inorder();
-		ok=(items.isBST());
-	}
-	cout<<" Set test complete, success:"<<boolalpha<<ok<<endl;
-	if (!ok)  return -1;
+	clock_gettime(CLOCK_MONOTONIC,&t1);
+	TestStlSet(numbers,N);
+	clock_gettime(CLOCK_MONOTONIC,&t2);
+	StlTime=timedifference(t2,t1);
+
+	free(numbers);
+
+
+	printf("The STL set took %0.02f\n",StlTime/1e9);
+	printf("The TreeObjects set took %0.02f\n",TreeObjectsTime/1e9);
 	return 0;
 }
 
