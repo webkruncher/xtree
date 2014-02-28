@@ -1,5 +1,5 @@
 #include <treeset.h>
-using namespace TreeObjects;
+
 #include <cstdio>
 #include <memory>
 #include <set>
@@ -7,7 +7,7 @@ using namespace TreeObjects;
 
 void TestTreeSet(const long* numbers,const long size)
 {
-	Set<long> items;
+	TreeObjects::Set<long> items;
 	for (long j=0;j<size;j++) items.insert(numbers[j]);
 	for (long j=0;j<size;j++) items.erase(numbers[j]);
 }
@@ -34,7 +34,7 @@ int main(int,char**)
 	char hash(0);
 	long N(0);
 	fscanf(stdin,"%c%ld",&hash,&N);
-	if (hash!='#') {printf("First line of input must be lenght preceeded by #\n"); return -1;}
+	if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
 	printf("Input size:%ld\n",N);
 	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
 	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
@@ -56,8 +56,8 @@ int main(int,char**)
 	free(numbers);
 
 
-	printf("The STL set took %0.02f\n",StlTime/1e9);
-	printf("The TreeObjects set took %0.02f\n",TreeObjectsTime/1e9);
+	printf("STL:  %0.02f seconds\n",StlTime/1e9);
+	printf("Tree: %0.02f seconds\n",TreeObjectsTime/1e9);
 	return 0;
 }
 
