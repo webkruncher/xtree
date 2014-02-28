@@ -9,14 +9,14 @@ void TestTreeSet(const long* numbers,const long size)
 {
 	TreeObjects::Set<long> items;
 	for (long j=0;j<size;j++) items.insert(numbers[j]);
-	for (long j=0;j<size;j++) items.erase(numbers[j]);
+	//for (long j=0;j<size;j++) items.erase(numbers[j]);
 }
 
 void TestStlSet(const long* numbers,const long size)
 {
 	std::set<long> items;
 	for (long j=0;j<size;j++) items.insert(numbers[j]);
-	for (long j=0;j<size;j++) items.erase(numbers[j]);
+	//for (long j=0;j<size;j++) items.erase(numbers[j]);
 }
 
 inline double timedifference(timespec& x, timespec& y)
