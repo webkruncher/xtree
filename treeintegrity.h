@@ -1,5 +1,6 @@
 #ifndef TREE_INTEGRITY
 #define TREE_INTEGRITY
+#include <stack>
 
 namespace TreeIntegrity
 {
@@ -39,6 +40,7 @@ namespace TreeIntegrity
 
 	namespace RedBlackCheck
 	{
+
 		template<typename KT,typename VT>
 			struct Visitor
 		{
@@ -51,25 +53,30 @@ namespace TreeIntegrity
 			private:
 			RbMap<KT,VT>& rk;
 			bool ok;
-			void PostOrder(TreeBase& node)
+			int PostOrder(TreeBase& node)
 			{
 				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
-				if (node.left) PostOrder(*node.left);
-				if (node.right) PostOrder(*node.right);
-				Visit(node);
+				int ld(0),rd(0);	
+				if (node.parent)
+					if (rb.color(&rb)==RbMap<KT,VT>::BLACK) 
+						if (node.parent->left==&node) ld=1; else rd=1;
+				if (node.left) ld+=PostOrder(*node.left);
+				if (node.right) rd+=PostOrder(*node.right);
+				Visit(node,ld,rd);
+				return max(ld,rd);
 			}
 			void clear(VT& data)
 			{
 				map<string,string>::iterator it;
 				it=data.find("lr"); if (it!=data.end()) data.erase(it);
 				it=data.find("rb"); if (it!=data.end()) data.erase(it);
-			}
-			void Visit(TreeBase& node)
+			}	
+			void Visit(TreeBase& node,const int lc,const int rc)
 			{
 				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
 				const KT& key(rb);
 				VT& data(rb.Data()); clear(data);
-				#if 0
+				#if 1
 				int diff(abs(lc-rc));
 				if (diff>2) 
 				{
@@ -86,7 +93,7 @@ namespace TreeIntegrity
 					stringstream ss;
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";
-					//if (!ss.str().empty()) data["rb"]=ss.str();
+					if (!ss.str().empty()) data["rb"]=ss.str();
 				}
 			}
 		}; 

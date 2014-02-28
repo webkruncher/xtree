@@ -165,7 +165,18 @@ namespace TreeDisplay
 		return make_pair<bool,T>(true,k);
 	}
 
+#if 0
+	template <> pair<bool,int> TreeCanvas<int>::Next(int Max) 
+	{
+		static int n(0);
+		int next(n);
+		n++;
+		used.insert(next);
+		return make_pair<bool,int>(true,next);
+	}
+#else
 	template <> pair<bool,int> TreeCanvas<int>::Next(int Max) { return NextItem<int>(used,Max,removing); }
+#endif
 	template <> pair<bool,double> TreeCanvas<double>::Next(int Max) { return NextItem<double>(used,Max,removing); }
 	template <> pair<bool,string> TreeCanvas<string>::Next(int Max) { return NextString(used,Max,removing); }
 
@@ -318,6 +329,7 @@ namespace TreeDisplay
 
 			Deletions();
 			Additions();
+			//return;
 
 			if (!root) {movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);

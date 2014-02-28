@@ -18,7 +18,7 @@ namespace TreeDisplay
 			moved=false;
 			pair<double,double> D(motion.next(X,Y));
 			if ((D.first) or (D.second)) moved=true;
-			if (moved or Remove)
+			//if (moved or Remove)
 			{
 				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
 				pair<double,double> lr(ul.first+DCW+2,ul.second+DCH+2);
