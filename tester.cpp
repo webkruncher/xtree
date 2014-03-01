@@ -19,6 +19,7 @@ void TestStlSet(const long* numbers,const long size)
 	for (long j=0;j<size;j++) items.erase(numbers[j]);
 }
 
+
 inline double timedifference(timespec& x, timespec& y)
 {	//warning: not fully tested
 	timespec result; const double scale(1E+9); 

@@ -313,6 +313,7 @@ namespace TreeObjects
 		VT data;	
 	};
 
+
 	struct RbBase 
 	{
 		enum COLOR {NONE=0,RED,BLACK} ;
