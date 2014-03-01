@@ -377,6 +377,12 @@ namespace TreeObjects
 			}
 			return black(root);
 		}
+
+		// This violates both red black invariants.  
+		// A rb-transplant needs to be created, and the fixup 
+		// will need to use a doubly black and red black node
+		// with a method to walk up the tree, repainting until
+		// both rb invariants are preserved.
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
 			if (!found) return root;
