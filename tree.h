@@ -94,6 +94,7 @@ namespace TreeObjects
 
 		TreeBase *parent,*left,*right;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
+		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
 	};
 
 	template <typename KT>
@@ -227,78 +228,48 @@ namespace TreeObjects
 	};
 
 
-	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
+	inline TreeBase* TreeBase::transplant(TreeBase* root,TreeBase* u,TreeBase* v)
 	{
-		if (!pfound) return root;
-		TreeBase& found(*pfound);
-		if (!found.parent)
-		{	
-			if ((!found.left) and (!found.right))  return NULL;	
-			if ((!found.left) or (!found.right))
-			{
-				if (found.left) {found.left->parent=NULL; return found.left; }
-				if (found.right) {found.right->parent=NULL; return found.right; }
-			} else {
-				TreeBase* L(found.left);
-				TreeBase* R(found.right);
-				TreeBase* LeftsRightMost(L->RightMost());
-				LeftsRightMost->right=R;
-				R->parent=LeftsRightMost;
-				L->parent=NULL;
-				return L;
-			}
+		TreeBase* ret(root);
+		if (u->parent==NULL)
+		{
+			ret=v;
 		} else {
-			TreeBase& parent(*found.parent);
-			if ((!found.left) and (!found.right)) 
+			if (u==u->parent->left)
 			{
-				if (parent.left==pfound)  parent.left=NULL;
-				if (parent.right==pfound) parent.right=NULL;
-				return root;
-			} 
-			if ((!found.left) or (!found.right))
-			{
-				if (found.left)
-				{
-					TreeBase* C(found.left);
-					if (parent.left==pfound)
-					{
-						parent.left=C;
-						C->parent=&parent;
-					} else {
-						parent.right=C;
-						C->parent=&parent;
-					}
-				} else {
-					TreeBase* C(found.right);
-					if (parent.left==pfound)
-					{
-						parent.left=C;
-						C->parent=&parent;
-					} else {
-						parent.right=C;
-						C->parent=&parent;
-					}
-				}
+				u->parent->left=v;
 			} else {
-				if (parent.left==pfound) 
-				{
-					TreeBase* L(found.left);
-					TreeBase* R(found.right);
-					parent.left=R; R->parent=&parent;
-					TreeBase* NewSide(R->LeftMost());
-					L->parent=NewSide;
-					NewSide->left=L;
-				} else {
-					TreeBase* L(found.left);
-					TreeBase* R(found.right);
-					parent.right=L; L->parent=&parent;
-					TreeBase* NewSide(L->RightMost());
-					R->parent=NewSide;
-					NewSide->right=R;
-				}
+				u->parent->right=v;
 			}
 		}
-		return root;
+		if (v!=NULL) v->parent=u->parent;
+		return ret;
+	}
+
+	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
+	{
+		TreeBase* ret(root);
+		if (pfound->left==NULL)
+		{
+			ret=transplant(ret,pfound,pfound->right);
+		} else {
+			if (pfound->right==NULL)
+			{
+				ret=transplant(ret,pfound,pfound->left);
+			} else {
+				TreeBase* y(pfound->right->LeftMost());
+				if (y->parent!=pfound)
+				{
+					ret=transplant(ret,y,y->right);
+					y->right=pfound->right;
+					y->right->parent=y;
+				}
+				ret=transplant(ret,pfound,y);
+				y->left=pfound->left;
+				y->left->parent=y;
+			}
+		}
+		return ret;
 	}
 
 
