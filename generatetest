@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-let much=250000
+let much=500000
 rm input.txt
 echo "#${much}">input.txt
 for (( c=1; c <= ${much}; c++ )); do

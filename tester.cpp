@@ -30,6 +30,8 @@
 #include <memory>
 #include <set>
 #include <sys/time.h>
+#include <utility>
+#include <vector>
 
 void TestTreeSet(const long* numbers,const long size)
 {
@@ -56,17 +58,8 @@ inline double timedifference(timespec& x, timespec& y)
 	return ((result.tv_sec*scale) + result.tv_nsec);
 }
 
-int main(int,char**)
+std::pair<double,double> TestBoth(const long* numbers,const long N)
 {
-	char hash(0);
-	long N(0);
-	fscanf(stdin,"%c%ld",&hash,&N);
-	if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
-	printf("Input size:%ld\n",N);
-	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
-	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
-
-
 	timespec t1,t2;
 	double StlTime,TreeObjectsTime;
 
@@ -79,12 +72,48 @@ int main(int,char**)
 	TestStlSet(numbers,N);
 	clock_gettime(CLOCK_MONOTONIC,&t2);
 	StlTime=timedifference(t2,t1);
+	return std::make_pair<double,double>(TreeObjectsTime,StlTime);
+}
+
+struct Times : std::vector<std::pair<double,double> >
+{
+	operator std::pair<double,double> ()
+	{
+		using namespace std;
+		pair<double,double> avg;
+		for (iterator it=begin();it!=end();it++)
+		{
+			avg.first+=it->first;
+			avg.second+=it->second;
+		}
+		avg.first/=size();
+		avg.second/=size();
+		return avg;
+	}
+};
+
+int main(int,char**)
+{
+	char hash(0);
+	long N(0),T(10);
+	fscanf(stdin,"%c%ld",&hash,&N);
+	if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
+	printf("Input size:%ld\n",N);
+	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
+	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
+
+	Times alltimes;
+
+	for (int t=0;t<T;t++) alltimes.push_back(TestBoth(numbers,N));	
 
 	free(numbers);
 
+	std::pair<double,double> Averages(alltimes);
 
-	printf("STL:  %0.02f seconds\n",StlTime/1e9);
-	printf("Tree: %0.02f seconds\n",TreeObjectsTime/1e9);
+
+	printf("Average times after %d iterations:\n",T);
+	printf("STL:  %0.02f seconds\n",Averages.second/1e9);
+	printf("Tree: %0.02f seconds\n",Averages.first/1e9);
 	return 0;
 }
 
