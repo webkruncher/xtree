@@ -27,6 +27,11 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+
+					#include <iostream> // temporary	
+					using namespace std;
+
+
 namespace TreeObjects
 {
 	#ifndef NULL
@@ -119,7 +124,7 @@ namespace TreeObjects
 		}
 
 		TreeBase *parent,*left,*right;
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
 		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
 	};
 
@@ -274,6 +279,7 @@ namespace TreeObjects
 
 	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
 	{
+cout<<"TreeBase::remove"<<endl<<endl;
 		TreeBase* ret(root);
 		if (pfound->left==NULL)
 		{
@@ -308,6 +314,12 @@ namespace TreeObjects
 		protected:
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
 		VT data;	
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound)
+		{
+			TreeBase& me(static_cast<TreeBase&>(*this));
+	cout<<"Bst::remove"<<endl<<endl;
+			return me.remove(root,pfound);
+		}
 	};
 
 
@@ -322,9 +334,49 @@ namespace TreeObjects
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) = 0;
 		virtual const char color(TreeBase* n) const = 0;
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
+		virtual operator TreeBase& () = 0;
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
 
-		TreeBase* RedAndBlack(TreeBase* root, TreeBase* node)
+		TreeBase* RedAndBlackDelete(TreeBase* root, TreeBase* node)
+		{
+			if (!node) return root;
+			while ( (node != root) && (color(node) == BLACK) ) 
+			{
+				if ( node == node->parent->left ) 
+				{
+					TreeBase* other(node->parent->right);
+					if ( color(other) == RED ) 
+					{
+						black(other);
+						red(other->parent);
+						root=this->RotateLeft(root,node->parent);
+						other=node->parent->right;
+					}
+					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
+					{
+						red(other);
+						node=node->parent;
+					} else {
+						if (color(other->right) == BLACK) 
+						{
+							black(other->left);
+							red(other);
+							root=this->RotateRight(root,other);
+							other=node->parent->right;
+						}
+						if (color(node->parent)==BLACK) black(other); else red(other);
+						black(node->parent);
+						black(other->right);
+						root=this->RotateLeft(root,node->parent);
+						node=root;
+					}
+				}
+			}
+			black(node);
+			return root;
+		}
+
+		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
 		{
 			if (!node) return root;
 			if (!node->parent) return root;
@@ -375,6 +427,9 @@ namespace TreeObjects
 			return black(root);
 		}
 
+
+
+
 		// This violates both red black invariants.  
 		// A rb-transplant needs to be created, and the fixup 
 		// will need to use a doubly black and red black node
@@ -382,15 +437,18 @@ namespace TreeObjects
 		// both rb invariants are preserved.
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
+cout<<"Rb::Erase..."<<endl;
 			if (!found) return root;
 			TreeBase *p(found->parent),*l(found->left),*r(found->right);
-			TreeBase* newroot(remove(root,found));
+			TreeBase* newroot(RbBase::remove(root,found));
 			Update(found,p,true); 
+#if 0
 			if ( (p) and (newroot) )
 			{
 				if (p->right) newroot=this->RedAndBlack(newroot,p->right);
 				if (p->left) newroot=this->RedAndBlack(newroot,p->left);
 			}
+#endif
 			found->left=NULL; found->right=NULL;
 			if (newroot) Update(newroot,newroot); 
 			if (l) Update(l,p); if (r) Update(r,p);
@@ -400,6 +458,40 @@ namespace TreeObjects
 		COLOR clr; // color enum
 	};
 
+	inline TreeBase* RbBase::remove(TreeBase* root,TreeBase* pfound)
+	{
+		TreeBase& me(static_cast<TreeBase&>(*this));
+cout<<"RbBase::Remove..."<<endl<<endl;
+		TreeBase* ret(root);
+		TreeBase* Y(pfound);
+		char Ycolor(this->color(Y));
+		if (pfound->left==NULL)
+		{
+			ret=me.transplant(ret,pfound,pfound->right);
+		} else {
+			if (pfound->right==NULL)
+			{
+				Y=pfound->LeftMost();
+				Ycolor=this->color(Y);
+				ret=me.transplant(ret,pfound,pfound->left);
+			} else {
+				TreeBase* y(pfound->right->LeftMost());
+				if (y->parent!=pfound)
+				{
+					ret=me.transplant(ret,y,y->right);
+					y->right=pfound->right;
+					y->right->parent=y;
+				}
+				ret=me.transplant(ret,pfound,y);
+				y->left=pfound->left;
+				y->left->parent=y;
+				Ycolor=this->color(pfound);
+			}
+		}
+		if (Ycolor==BLACK)
+			return RedAndBlackDelete(root,pfound);
+		return ret;
+	}
 
 	template <typename KT,typename VT>
 		struct RbMapMapBase : public Bst<KT,VT>, RbBase
@@ -411,7 +503,7 @@ namespace TreeObjects
 		{
 			root=Bst<KT,VT>::insert(root,node);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
-			return this->RedAndBlack(root,node);
+			return this->RedAndBlackInsert(root,node);
 		}
 		
 		virtual TreeBase* red(TreeBase* n) = 0;
@@ -423,6 +515,7 @@ namespace TreeObjects
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found){return RbBase::erase(root,found);}
+		virtual operator TreeBase& () {return *this;}
 	};
 
 
@@ -435,7 +528,7 @@ namespace TreeObjects
 		{
 			root=BstBase<KT>::insert(root,node);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
-			return this->RedAndBlack(root,node);
+			return this->RedAndBlackInsert(root,node);
 		}
 		
 		virtual TreeBase* red(TreeBase* n) = 0;
@@ -447,6 +540,7 @@ namespace TreeObjects
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found){return RbBase::erase(root,found);}
+		virtual operator TreeBase& () {return *this;}
 	};
 
 	template <typename KT,typename VT>

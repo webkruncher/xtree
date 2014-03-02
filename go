@@ -9,24 +9,16 @@ popd
 [[ $update != 0 ]] && rm trees
 update=`make -n | grep ^g++ | wc -l | tr -d ' '`
 [[ $update != 0 ]] && rm trees
+[[ $update != 0 ]] && rm tester
 make tester
-if [[ -f tester ]]; then 
-	cat input.txt | ./tester 
-	if [[ $? != 0 ]]; then
-		echo "Test failed"
-	else
-		echo "Test passed"
-	fi
-
-	make 
-	#./trees -string -redblack 2>/dev/null
-	#./trees -int -bst 2>/dev/null
-	#./trees -int -redblack 2>/dev/null
-	#./trees -int -bst 2>/dev/null
-	#./trees -double -redblack 2>/dev/null
-	#./trees -double -bst 2>/dev/null
-	#./trees 2>/dev/null
-	#startx ./trees
-fi
+make 
+./trees -string -redblack 2>/dev/null
+#./trees -int -bst 2>/dev/null
+#./trees -int -redblack 2>/dev/null
+#./trees -int -bst 2>/dev/null
+#./trees -double -redblack 2>/dev/null
+#./trees -double -bst 2>/dev/null
+#./trees 2>/dev/null
+#startx ./trees
 
 

@@ -1,8 +1,15 @@
 #!/usr/local/bin/bash
 
-let much=500000
-rm input.txt
-echo "#${much}">input.txt
-for (( c=1; c <= ${much}; c++ )); do
-		echo $RANDOM >> input.txt
+let many=10
+let factor=10000
+
+echo "Generating ${many} random input lists"
+
+for (( much=1; much <= ${many}; much++ )); do
+		most=`echo "${much}*${factor}" | bc`
+		rm random.${most}.txt
+		echo "#${most}"> random.${most}.txt
+		for (( c=1; c <= ${most}; c++ )); do
+			echo $RANDOM >> random.${most}.txt
+		done    
 done    

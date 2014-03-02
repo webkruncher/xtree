@@ -32,19 +32,46 @@
 #include <sys/time.h>
 #include <utility>
 #include <vector>
+#include <iostream>
+#include <iomanip>
+#include <locale> 
+
+#define TREEOBJECTS first
+#define STLOBJECTS second
+
+
+
+struct Punk: public std::numpunct<char>
+{
+	protected:
+	virtual char do_thousands_sep() const {return ',';}
+	virtual std::string do_grouping() const {return "\03";}
+};
+
+void Insert(std::set<long>& items,const long number) { items.insert(number); }
+void Erase(std::set<long>& items,const long number) { items.erase(number);}
+void Insert(TreeObjects::Set<long>& items,const long number) { items.insert(number);}
+void Erase(TreeObjects::Set<long>& items,const long number) { items.erase(number);}
+
+template <typename T>
+	void Test(T& items,const long* numbers,const long size) 
+{ 
+	for (long j=0;j<size;j++) Insert(items,numbers[j]);
+	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
+	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
+	for (long j=0;j<size;j++) Erase(items,numbers[j]);
+}
 
 void TestTreeSet(const long* numbers,const long size)
 {
 	TreeObjects::Set<long> items;
-	for (long j=0;j<size;j++) items.insert(numbers[j]);
-	for (long j=0;j<size;j++) items.erase(numbers[j]);
+	Test<TreeObjects::Set<long> >(items,numbers,size);
 }
 
 void TestStlSet(const long* numbers,const long size)
 {
 	std::set<long> items;
-	for (long j=0;j<size;j++) items.insert(numbers[j]);
-	for (long j=0;j<size;j++) items.erase(numbers[j]);
+	Test<std::set<long> >(items,numbers,size);
 }
 
 
@@ -72,7 +99,10 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 	TestStlSet(numbers,N);
 	clock_gettime(CLOCK_MONOTONIC,&t2);
 	StlTime=timedifference(t2,t1);
-	return std::make_pair<double,double>(TreeObjectsTime,StlTime);
+	std::pair<double,double> ret;
+	ret.TREEOBJECTS=TreeObjectsTime;
+	ret.STLOBJECTS=StlTime;
+	return ret;
 }
 
 struct Times : std::vector<std::pair<double,double> >
@@ -94,26 +124,40 @@ struct Times : std::vector<std::pair<double,double> >
 
 int main(int,char**)
 {
+	using namespace std;
 	char hash(0);
-	long N(0),T(10);
+	long N(0),T(20);
 	fscanf(stdin,"%c%ld",&hash,&N);
 	if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
-	printf("Input size:%ld\n",N);
 	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
 	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
-
 	Times alltimes;
-
 	for (int t=0;t<T;t++) alltimes.push_back(TestBoth(numbers,N));	
-
 	free(numbers);
 
+
+
+	Punk punk; cout.imbue(locale(cout.getloc(), &punk));
 	std::pair<double,double> Averages(alltimes);
 
 
-	printf("Average times after %d iterations:\n",T);
-	printf("STL:  %0.02f seconds\n",Averages.second/1e9);
-	printf("Tree: %0.02f seconds\n",Averages.first/1e9);
+	double much;
+
+	if (Averages.TREEOBJECTS>Averages.STLOBJECTS) 
+			much=(100-((Averages.STLOBJECTS/Averages.TREEOBJECTS)*100));
+	else
+			much=(100-((Averages.TREEOBJECTS/Averages.STLOBJECTS)*100));
+
+	Averages.first/=1e9; Averages.second/=1e9;
+	
+	cout<<"Testing with "<<N<<" random generated numbers, average times after "<<T<<" iterations:"<<endl;
+	cout<<setw(14)<<right<<"STL:"<<setprecision(3)<<setw(10)<<fixed<<Averages.STLOBJECTS<<" seconds"<<endl;
+	cout<<setw(14)<<right<<"TreeObjects:"<<setprecision(3)<<setw(10)<<fixed<<Averages.TREEOBJECTS<<" seconds"<<endl;
+	string resulttext;
+	if (Averages.STLOBJECTS>Averages.TREEOBJECTS) resulttext="The Tree Objects set was ";
+	else resulttext="The std::set was ";
+	cout<<resulttext<<setprecision(3)<<fixed<<much<<"% faster"<<endl<<endl;
+	
 	return 0;
 }
 

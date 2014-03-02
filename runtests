@@ -1,0 +1,14 @@
+
+
+let many=10
+let factor=10000
+
+echo "Starting tests at `date`" > results.txt
+echo "" >> results.txt
+for (( c=1; c <= ${many}; c++ )); do
+	most=`echo "${c}*${factor}" | bc`
+	cat random.${most}.txt | nice -20 ./tester  | tee -a results.txt
+	[[ $? != 0 ]] && echo "Test failed" | tee -a results.txt
+done
+
+
