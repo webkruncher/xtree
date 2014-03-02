@@ -27,11 +27,6 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
-
-					#include <iostream> // temporary	
-					using namespace std;
-
-
 namespace TreeObjects
 {
 	#ifndef NULL
