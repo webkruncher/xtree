@@ -131,6 +131,7 @@ int main(int,char**)
 	if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
 	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
 	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
+
 	Times alltimes;
 	for (int t=0;t<T;t++) alltimes.push_back(TestBoth(numbers,N));	
 	free(numbers);

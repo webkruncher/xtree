@@ -92,7 +92,9 @@ namespace TreeObjects
 
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
+			if (!node) return root;
 			TreeBase* other(node->right);
+			if (!other) return root;
 			node->right = other->left;
 			if ( other->left != NULL ) other->left->parent = node;
 			other->parent = node->parent;
@@ -109,7 +111,9 @@ namespace TreeObjects
 
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
 		{
+			if (!node) return root;
 			TreeBase* other(node->left);
+			if (!other) return root;
 			node->left = other->right;
 			if ( other->right != NULL ) other->right->parent = node;
 			other->parent = node->parent;
@@ -279,7 +283,6 @@ namespace TreeObjects
 
 	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
 	{
-cout<<"TreeBase::remove"<<endl<<endl;
 		TreeBase* ret(root);
 		if (pfound->left==NULL)
 		{
@@ -317,7 +320,6 @@ cout<<"TreeBase::remove"<<endl<<endl;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound)
 		{
 			TreeBase& me(static_cast<TreeBase&>(*this));
-	cout<<"Bst::remove"<<endl<<endl;
 			return me.remove(root,pfound);
 		}
 	};
@@ -340,40 +342,78 @@ cout<<"TreeBase::remove"<<endl<<endl;
 		TreeBase* RedAndBlackDelete(TreeBase* root, TreeBase* node)
 		{
 			if (!node) return root;
-			while ( (node != root) && (color(node) == BLACK) ) 
+			while ( (root) && (node) && (node->parent) && (node != root) && (color(node) == BLACK) ) 
 			{
+cout<<"^"; cout.flush();
 				if ( node == node->parent->left ) 
 				{
 					TreeBase* other(node->parent->right);
-					if ( color(other) == RED ) 
+					if (other)
 					{
-						black(other);
-						red(other->parent);
-						root=this->RotateLeft(root,node->parent);
-						other=node->parent->right;
-					}
-					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
-					{
-						red(other);
-						node=node->parent;
-					} else {
-						if (color(other->right) == BLACK) 
+						if ( color(other) == RED ) 
 						{
-							black(other->left);
-							red(other);
-							root=this->RotateRight(root,other);
+							black(other);
+							red(other->parent);
+							root=this->RotateLeft(root,node->parent);
 							other=node->parent->right;
 						}
-						if (color(node->parent)==BLACK) black(other); else red(other);
-						black(node->parent);
-						black(other->right);
-						root=this->RotateLeft(root,node->parent);
-						node=root;
-					}
+						if (other)
+						{
+							if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
+							{
+								red(other);
+								node=node->parent;
+							} else {
+								if (color(other->right) == BLACK) 
+								{
+									black(other->left);
+									red(other);
+									root=this->RotateRight(root,other);
+									other=node->parent->right;
+								}
+								if (color(node->parent)==BLACK) black(other); else red(other);
+								black(node->parent);
+								black(other->right);
+								return black(this->RotateLeft(root,node->parent));
+							}
+						}
+					} else return black(root);
+				} else {
+					TreeBase* other(node->parent->left);
+					if (other)
+					{
+						if ( color(other) == RED ) 
+						{
+							black(other);
+							red(other->parent);
+							root=this->RotateRight(root,node->parent);
+							other=node->parent->left;
+						}
+						if (other)
+						{
+							if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
+							{
+								red(other);
+								node=node->parent;
+							} else {
+								if (color(other->left) == BLACK) 
+								{
+									black(other->right);
+									red(other);
+									root=this->RotateLeft(root,other);
+									other=node->parent->left;
+								}
+								if (color(node->parent)==BLACK) black(other); else red(other);
+								black(node->parent);
+								black(other->left);
+								return black(this->RotateRight(root,node->parent));
+							}
+						}
+					} else return black(root);
 				}
 			}
 			black(node);
-			return root;
+			return black(root);
 		}
 
 		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
@@ -430,14 +470,9 @@ cout<<"TreeBase::remove"<<endl<<endl;
 
 
 
-		// This violates both red black invariants.  
-		// A rb-transplant needs to be created, and the fixup 
-		// will need to use a doubly black and red black node
-		// with a method to walk up the tree, repainting until
-		// both rb invariants are preserved.
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
-cout<<"Rb::Erase..."<<endl;
+cout<<"*";
 			if (!found) return root;
 			TreeBase *p(found->parent),*l(found->left),*r(found->right);
 			TreeBase* newroot(RbBase::remove(root,found));
@@ -445,8 +480,8 @@ cout<<"Rb::Erase..."<<endl;
 #if 0
 			if ( (p) and (newroot) )
 			{
-				if (p->right) newroot=this->RedAndBlack(newroot,p->right);
-				if (p->left) newroot=this->RedAndBlack(newroot,p->left);
+				if (p->right) newroot=this->RedAndBlackDelete(newroot,p->right);
+				if (p->left) newroot=this->RedAndBlackDelete(newroot,p->left);
 			}
 #endif
 			found->left=NULL; found->right=NULL;
@@ -461,36 +496,37 @@ cout<<"Rb::Erase..."<<endl;
 	inline TreeBase* RbBase::remove(TreeBase* root,TreeBase* pfound)
 	{
 		TreeBase& me(static_cast<TreeBase&>(*this));
-cout<<"RbBase::Remove..."<<endl<<endl;
-		TreeBase* ret(root);
+		cout<<"-";
 		TreeBase* Y(pfound);
+		TreeBase* X(NULL);
 		char Ycolor(this->color(Y));
 		if (pfound->left==NULL)
 		{
-			ret=me.transplant(ret,pfound,pfound->right);
+			X=pfound->right;
+			root=me.transplant(root,pfound,pfound->right);
 		} else {
 			if (pfound->right==NULL)
 			{
-				Y=pfound->LeftMost();
-				Ycolor=this->color(Y);
-				ret=me.transplant(ret,pfound,pfound->left);
+				X=pfound->left;
+				root=me.transplant(root,pfound,pfound->left);
 			} else {
 				TreeBase* y(pfound->right->LeftMost());
-				if (y->parent!=pfound)
+				Ycolor=(this->color(Y));
+				X=Y->right;
+				if (y->parent==pfound)
 				{
-					ret=me.transplant(ret,y,y->right);
+					root=me.transplant(root,y,y->right);
 					y->right=pfound->right;
-					y->right->parent=y;
+					if (y->right) y->right->parent=y;
 				}
-				ret=me.transplant(ret,pfound,y);
+				root=me.transplant(root,pfound,y);
 				y->left=pfound->left;
-				y->left->parent=y;
+				if (y->left) y->left->parent=y;
 				Ycolor=this->color(pfound);
 			}
 		}
-		if (Ycolor==BLACK)
-			return RedAndBlackDelete(root,pfound);
-		return ret;
+		if (Ycolor==BLACK) return RedAndBlackDelete(root,pfound);
+		return root;
 	}
 
 	template <typename KT,typename VT>
