@@ -71,6 +71,11 @@ namespace TreeObjects
 			else return g->left;
 		}
 
+		virtual const bool isleaf(TreeBase* node) const
+		{
+			if ((!node->left) and (!node->right)) return true; else return false;	
+		}
+
 		TreeBase* sibling(TreeBase* node)
 		{
 			if (!node->parent) return NULL;
@@ -240,6 +245,7 @@ namespace TreeObjects
 			return a.key==b;
 		}
 		operator const KT& (){return key;}
+		virtual const bool isleaf(TreeBase* node) const {return TreeBase::isleaf(node);}
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(TreeBase::RotateLeft(root,node));
@@ -326,6 +332,7 @@ namespace TreeObjects
 		const COLOR Black() const {return BLACK;}
 		virtual TreeBase* red(TreeBase* n) = 0;
 		virtual TreeBase* black(TreeBase* n) = 0;
+		virtual const bool isleaf(TreeBase* node) const = 0;
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) = 0;
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) = 0;
 		virtual const char color(TreeBase* n) const = 0;
@@ -457,6 +464,11 @@ namespace TreeObjects
 					}
 				}
 			}
+			if ( color(node) == RED ) 
+			{
+				if (node->right) if (this->isleaf(node->right)) black(node->right);
+				if (node->left) if (this->isleaf(node->left)) black(node->left);
+			}
 			return black(root);
 		}
 
@@ -531,6 +543,7 @@ namespace TreeObjects
 		virtual TreeBase* black(TreeBase* n) = 0;
 		virtual const char color(TreeBase* n) const = 0;
 
+		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateLeft(root,node); }
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateRight(root,node); }
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
@@ -556,6 +569,7 @@ namespace TreeObjects
 		virtual TreeBase* black(TreeBase* n) = 0;
 		virtual const char color(TreeBase* n) const = 0;
 
+		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateLeft(root,node); }
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateRight(root,node); }
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }

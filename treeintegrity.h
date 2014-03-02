@@ -105,6 +105,7 @@ namespace TreeIntegrity
 				int diff(abs(lc-rc));
 				if (diff>2) 
 				{
+					//ok=false;
 					stringstream ss;
 					ss<<lc<<","<<rc;
 					if (rb.color(&rb)==RbMap<KT,VT>::BLACK) data["lr"]=ss.str();
@@ -118,6 +119,7 @@ namespace TreeIntegrity
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";
 					if (!ss.str().empty()) data["rb"]=ss.str();
+					//if (leftisred or rightisred) ok=false;
 				}
 			}
 		}; 
@@ -138,6 +140,7 @@ namespace TreeIntegrity
 		RedBlackCheck::Visitor<KT,VT> visitor(rk);
 		if (!visitor) {cout<<"Red Black check failed"<<endl; return false;}
 		return true;
+		//return visitor;
 	}
 } //TreeIntegrity
 #endif // TREE_INTEGRITY
