@@ -411,7 +411,7 @@ namespace TreeObjects
 				}
 			}
 			black(node);
-			return black(root);
+			return root;
 		}
 
 		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
@@ -502,21 +502,22 @@ namespace TreeObjects
 				TreeBase* y(pfound->right->LeftMost());
 				Ycolor=(this->color(Y));
 				X=Y->right;
-				if (y->parent==pfound)
+				if (y->parent!=pfound)
 				{
 					root=me.transplant(root,y,y->right);
 					y->right=pfound->right;
-					if (y->right) y->right->parent=y;
+					y->right->parent=y;
 				}
 				root=me.transplant(root,pfound,y);
 				y->left=pfound->left;
-				if (y->left) y->left->parent=y;
+				y->left->parent=y;
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
 		if (Ycolor==BLACK) return RedAndBlackDelete(root,X);
 		return root;
 	}
+
 
 	template <typename KT,typename VT>
 		struct RbMapMapBase : public Bst<KT,VT>, RbBase
