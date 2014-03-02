@@ -283,28 +283,27 @@ namespace TreeObjects
 
 	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
 	{
-		TreeBase* ret(root);
 		if (pfound->left==NULL)
 		{
-			ret=transplant(ret,pfound,pfound->right);
+			root=transplant(root,pfound,pfound->right);
 		} else {
 			if (pfound->right==NULL)
 			{
-				ret=transplant(ret,pfound,pfound->left);
+				root=transplant(root,pfound,pfound->left);
 			} else {
 				TreeBase* y(pfound->right->LeftMost());
 				if (y->parent!=pfound)
 				{
-					ret=transplant(ret,y,y->right);
+					root=transplant(root,y,y->right);
 					y->right=pfound->right;
 					y->right->parent=y;
 				}
-				ret=transplant(ret,pfound,y);
+				root=transplant(root,pfound,y);
 				y->left=pfound->left;
 				y->left->parent=y;
 			}
 		}
-		return ret;
+		return root;
 	}
 
 
@@ -512,7 +511,7 @@ namespace TreeObjects
 				root=me.transplant(root,pfound,y);
 				y->left=pfound->left;
 				if (y->left) y->left->parent=y;
-				Ycolor=this->color(pfound);
+				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
 		if (Ycolor==BLACK) return RedAndBlackDelete(root,X);
