@@ -102,7 +102,6 @@ namespace TreeIntegrity
 				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
 				const KT& key(rb);
 				VT& data(rb.Data()); clear(data);
-				#if 1
 				int diff(abs(lc-rc));
 				if (diff>2) 
 				{
@@ -110,7 +109,6 @@ namespace TreeIntegrity
 					ss<<lc<<","<<rc;
 					if (rb.color(&rb)==RbMap<KT,VT>::BLACK) data["lr"]=ss.str();
 				}
-				#endif
 				if (rb.color(&node)==RbMap<KT,VT>::RED) 
 				{
 					bool leftisred(false),rightisred(false);

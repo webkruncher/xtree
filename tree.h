@@ -344,7 +344,6 @@ namespace TreeObjects
 			if (!node) return root;
 			while ( (root) && (node) && (node->parent) && (node != root) && (color(node) == BLACK) ) 
 			{
-cout<<"^"; cout.flush();
 				if ( node == node->parent->left ) 
 				{
 					TreeBase* other(node->parent->right);
@@ -472,18 +471,10 @@ cout<<"^"; cout.flush();
 
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
-cout<<"*";
 			if (!found) return root;
 			TreeBase *p(found->parent),*l(found->left),*r(found->right);
 			TreeBase* newroot(RbBase::remove(root,found));
 			Update(found,p,true); 
-#if 0
-			if ( (p) and (newroot) )
-			{
-				if (p->right) newroot=this->RedAndBlackDelete(newroot,p->right);
-				if (p->left) newroot=this->RedAndBlackDelete(newroot,p->left);
-			}
-#endif
 			found->left=NULL; found->right=NULL;
 			if (newroot) Update(newroot,newroot); 
 			if (l) Update(l,p); if (r) Update(r,p);
@@ -496,7 +487,6 @@ cout<<"*";
 	inline TreeBase* RbBase::remove(TreeBase* root,TreeBase* pfound)
 	{
 		TreeBase& me(static_cast<TreeBase&>(*this));
-		cout<<"-";
 		TreeBase* Y(pfound);
 		TreeBase* X(NULL);
 		char Ycolor(this->color(Y));
@@ -525,7 +515,7 @@ cout<<"*";
 				Ycolor=this->color(pfound);
 			}
 		}
-		if (Ycolor==BLACK) return RedAndBlackDelete(root,pfound);
+		if (Ycolor==BLACK) return RedAndBlackDelete(root,X);
 		return root;
 	}
 
