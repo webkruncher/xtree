@@ -467,7 +467,7 @@ namespace TreeObjects
 					}
 				}
 			}
-#if 0
+#if 1
 			if ( color(node) == RED ) 
 			{
 				if ((node->parent) and (color(node->parent)==RED))
@@ -546,10 +546,10 @@ namespace TreeObjects
 		{
 			root=Bst<KT,VT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
-			if (d) return root;
-				BstBase<KT>& nd(static_cast<BstBase<KT>&>(*node));
-				const KT& k(nd);
-				cout<<"RBInsert:"<<k<<endl;
+			if (d) return black(root);
+				//BstBase<KT>& nd(static_cast<BstBase<KT>&>(*node));
+				//const KT& k(nd);
+				//cout<<"RBInsert:"<<k<<endl;
 			
 			return this->RedAndBlackInsert(root,node);
 		}
@@ -577,7 +577,7 @@ namespace TreeObjects
 		{
 			root=BstBase<KT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
-			if (d) return root;
+			if (d) return black(root);
 			return this->RedAndBlackInsert(root,node);
 		}
 		
