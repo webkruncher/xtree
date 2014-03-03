@@ -467,7 +467,7 @@ namespace TreeObjects
 					}
 				}
 			}
-#if 1
+#if 0
 			if ( color(node) == RED ) 
 			{
 				if ((node->parent) and (color(node->parent)==RED))
@@ -537,20 +537,16 @@ namespace TreeObjects
 
 
 	template <typename KT,typename VT>
-		struct RbMapMapBase : public Bst<KT,VT>, RbBase
+		struct RbMapBase : public Bst<KT,VT>, RbBase
 	{
-		RbMapMapBase(const KT _key) : Bst<KT,VT>(_key) {}
-		RbMapMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+		RbMapBase(const KT _key) : Bst<KT,VT>(_key) {}
+		RbMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
 		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
 			root=Bst<KT,VT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
-				//BstBase<KT>& nd(static_cast<BstBase<KT>&>(*node));
-				//const KT& k(nd);
-				//cout<<"RBInsert:"<<k<<endl;
-			
 			return this->RedAndBlackInsert(root,node);
 		}
 		
@@ -569,9 +565,9 @@ namespace TreeObjects
 
 
 	template <typename KT>
-		struct RbMapSetBase : public BstBase<KT>, RbBase
+		struct RbSetBase : public BstBase<KT>, RbBase
 	{
-		RbMapSetBase(const KT _key) : BstBase<KT>(_key) {}
+		RbSetBase(const KT _key) : BstBase<KT>(_key) {}
 
 		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
@@ -595,9 +591,9 @@ namespace TreeObjects
 	};
 
 	template <typename KT,typename VT>
-		struct RbMap : public RbMapMapBase<KT,VT>
+		struct RbMap : public RbMapBase<KT,VT>
 	{
-		typedef RbMapMapBase<KT,VT> TB;
+		typedef RbMapBase<KT,VT> TB;
 
 		RbMap(const KT _key) : TB(_key) {}
 		RbMap(const KT _key,const VT _data) : TB(_key,_data) {}
@@ -625,9 +621,9 @@ namespace TreeObjects
 	};
 
 	template <typename KT>
-		struct RbSet : public RbMapSetBase<KT>
+		struct RbSet : public RbSetBase<KT>
 	{
-		typedef RbMapSetBase<KT> TB;
+		typedef RbSetBase<KT> TB;
 		RbSet(const KT _key) : TB(_key) {}
 		virtual TreeBase* red(TreeBase* n) 
 		{ 
