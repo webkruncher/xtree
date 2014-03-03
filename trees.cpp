@@ -261,7 +261,6 @@ namespace TreeDisplay
 					stop=true;
 				}
 
-
 				if (root)
 					if (used.size()<40)
 					{
@@ -274,7 +273,7 @@ namespace TreeDisplay
 						cout<<endl;
 						cout.flush();
 					}
-				waitfor=updateloop+10;
+				//waitfor=updateloop+10;
 			}
 	}
 
@@ -284,6 +283,7 @@ namespace TreeDisplay
 			if ((!waitfor) or (updateloop>waitfor) )
 				if ((!movement) and (!stop))
 			{
+				waitfor=0;
 				movement=true;
 				pair<bool,KT> next(Next(MOST));
 				if (next.first)
@@ -334,7 +334,9 @@ namespace TreeDisplay
 
 	template <> void TreeCanvas<string>::UpdateTree()
 	{
-			if (root) if (!((updateloop)%MOST)) if (root) traverse(*root);
+			//if (root) if (!((updateloop)%MOST)) 
+			//if (root) traverse(*root);
+			if (!(updateloop%20))if (root) traverse(*root);
 			updateloop++;
 
 			Deletions();
@@ -352,7 +354,8 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
-			if (root) if (!((updateloop)%MOST)) if (root) traverse(*root);
+			//if (root) if (!((updateloop)%MOST)) 
+			if (!(updateloop%20))if (root) traverse(*root);
 			updateloop++;
 
 			Deletions();

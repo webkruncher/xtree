@@ -421,8 +421,8 @@ namespace TreeObjects
 
 		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
 		{
-			if (!node) return root;
-			if (!node->parent) return root;
+			if (!node) return black(root);
+			//if (!node->parent) return black(root);
 			red(node);
 			while ( (node) && (node->parent) && (node->parent->parent) && (color(node->parent) == RED) ) 
 			{
