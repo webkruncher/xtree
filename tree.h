@@ -421,10 +421,8 @@ namespace TreeObjects
 
 		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
 		{
-			if (!node) return black(root);
-			//if (!node->parent) return black(root);
-			red(node);
-			while ( (node) && (node->parent) && (node->parent->parent) && (color(node->parent) == RED) ) 
+			black(root); red(node);
+			while ( color(node->parent) == RED ) 
 			{
 				if ( node->parent == node->parent->parent->left ) 
 				{
@@ -440,11 +438,10 @@ namespace TreeObjects
 						{
 							node=node->parent;
 							root=this->RotateLeft(root,node);
-						} else {
-							black(node->parent);
-							red(node->parent->parent);
-							root=this->RotateRight( root, node->parent->parent );
-						}
+						} 
+						black(node->parent);
+						red(node->parent->parent);
+						root=this->RotateRight( root, node->parent->parent );
 					}
 				} else {
 					TreeBase* other(node->parent->parent->left);
@@ -459,26 +456,13 @@ namespace TreeObjects
 						{
 							node=node->parent;
 							root=this->RotateRight(root,node);
-						} else {
-							black(node->parent);
-							red(node->parent->parent);
-							root=this->RotateLeft(root,node->parent->parent);
 						}
+						black(node->parent);
+						red(node->parent->parent);
+						root=this->RotateLeft(root,node->parent->parent);
 					}
 				}
 			}
-#if 0
-			if ( color(node) == RED ) 
-			{
-				if ((node->parent) and (color(node->parent)==RED))
-				{
-					black(node);
-				} else {
-					if (node->right) if (this->isleaf(node->right)) black(node->right);
-					if (node->left) if (this->isleaf(node->left)) black(node->left);
-				}
-			}
-#endif
 			return black(root);
 		}
 
