@@ -358,6 +358,7 @@ namespace TreeObjects
 			if (!node) return root;
 			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
+				if (!node->parent) continue;
 				if ( node == node->parent->left ) 
 				{
 					TreeBase* other(node->parent->right);
@@ -368,6 +369,7 @@ namespace TreeObjects
 						root=this->RotateLeft(root,node->parent);
 						other=node->parent->right;
 					}
+					if (!other) {node=node->parent;continue;}
 					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
 					{
 						red(other);
@@ -387,6 +389,7 @@ namespace TreeObjects
 						node=root;
 					}
 				} 
+				if (!node->parent) continue;
 				if ( node == node->parent->right ) 
 				{
 					TreeBase* other(node->parent->left);
@@ -397,6 +400,7 @@ namespace TreeObjects
 						root=this->RotateRight(root,node->parent);
 						other=node->parent->left;
 					}
+					if (!other) {node=node->parent;continue;}
 					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
 					{
 						red(other);
