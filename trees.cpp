@@ -358,8 +358,9 @@ namespace TreeDisplay
 			if (!(updateloop%20))if (root) traverse(*root);
 			updateloop++;
 
-			Deletions();
+			//Deletions();
 			Additions();
+return;
 
 			if (!root) {movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
