@@ -32,6 +32,8 @@ using namespace TreeObjects;
 using namespace TreeDisplay;
 #include <math.h>
 
+#define MOST 100
+
 namespace TreeObjects
 {
 	template <>
@@ -143,7 +145,7 @@ namespace TreeDisplay
 				m("widget2");
 				m("widget3");
 			}
-			//while (size()<50) {stringstream ss; ss<<"s"<<size(); m(ss.str()); }
+			//while (size()<MOST) {stringstream ss; ss<<"s"<<size(); m(ss.str()); }
 		}
 		private: void operator()(string s){push_back(s);}
 	} GlobalStrings;
@@ -259,7 +261,6 @@ namespace TreeDisplay
 					stop=true;
 				}
 
-
 				if (root)
 					if (used.size()<40)
 					{
@@ -272,7 +273,7 @@ namespace TreeDisplay
 						cout<<endl;
 						cout.flush();
 					}
-				waitfor=updateloop+10;
+				//waitfor=updateloop+10;
 			}
 	}
 
@@ -282,8 +283,9 @@ namespace TreeDisplay
 			if ((!waitfor) or (updateloop>waitfor) )
 				if ((!movement) and (!stop))
 			{
+				waitfor=0;
 				movement=true;
-				pair<bool,KT> next(Next(50));
+				pair<bool,KT> next(Next(MOST));
 				if (next.first)
 				{
 					if (!removing)
@@ -332,7 +334,9 @@ namespace TreeDisplay
 
 	template <> void TreeCanvas<string>::UpdateTree()
 	{
-			if (root) if (!((updateloop)%50)) if (root) traverse(*root);
+			//if (root) if (!((updateloop)%MOST)) 
+			//if (root) traverse(*root);
+			if (!(updateloop%20))if (root) traverse(*root);
 			updateloop++;
 
 			Deletions();
@@ -350,12 +354,12 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
-			if (root) if (!((updateloop)%50)) if (root) traverse(*root);
+			//if (root) if (!((updateloop)%MOST)) 
+			if (!(updateloop%20))if (root) traverse(*root);
 			updateloop++;
 
 			Deletions();
 			Additions();
-			//return;
 
 			if (!root) {movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);

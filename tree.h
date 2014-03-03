@@ -27,6 +27,9 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+		#include <iostream>		 // temporary
+		using namespace std;
+
 namespace TreeObjects
 {
 	#ifndef NULL
@@ -37,7 +40,7 @@ namespace TreeObjects
 		virtual bool operator<(const TreeBase&) = 0;
 		virtual bool operator==(const TreeBase&) = 0;
 		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
-		virtual TreeBase* insert(TreeBase* root,TreeBase*) = 0;
+		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
 
@@ -197,7 +200,7 @@ namespace TreeObjects
 		}
 
 
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
 			node->parent=this;
@@ -206,14 +209,14 @@ namespace TreeObjects
 			{
 				if (this->left) 
 				{
-					return this->left->insert(root,node);
+					return this->left->insert(root,node,d+1);
 				} else { 
 					this->left=node;
 				}
 			} else {
 				if (this->right) 
 				{
-					return this->right->insert(root,node);
+					return this->right->insert(root,node,d+1);
 				} else { 
 					this->right=node;
 				}
@@ -340,88 +343,87 @@ namespace TreeObjects
 		virtual operator TreeBase& () = 0;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
 
+		void Rotator(TreeBase* node)
+		{
+			if (!node) return;
+			if (color(node)==RED)
+			{
+				if (node->left) if (isleaf(node->left)) black(node->left);
+				if (node->right) if (isleaf(node->right)) black(node->right);
+			}
+		}
+
 		TreeBase* RedAndBlackDelete(TreeBase* root, TreeBase* node)
 		{
 			if (!node) return root;
-			while ( (root) && (node) && (node->parent) && (node != root) && (color(node) == BLACK) ) 
+			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
 				if ( node == node->parent->left ) 
 				{
 					TreeBase* other(node->parent->right);
-					if (other)
+					if ( color(other) == RED ) 
 					{
-						if ( color(other) == RED ) 
+						black(other);
+						red(other->parent);
+						root=this->RotateLeft(root,node->parent);
+						other=node->parent->right;
+					}
+					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
+					{
+						red(other);
+						node=node->parent;
+					} else {
+						if (color(other->right) == BLACK) 
 						{
-							black(other);
-							red(other->parent);
-							root=this->RotateLeft(root,node->parent);
+							black(other->left);
+							red(other);
+							root=this->RotateRight(root,other);
 							other=node->parent->right;
 						}
-						if (other)
-						{
-							if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
-							{
-								red(other);
-								node=node->parent;
-							} else {
-								if (color(other->right) == BLACK) 
-								{
-									black(other->left);
-									red(other);
-									root=this->RotateRight(root,other);
-									other=node->parent->right;
-								}
-								if (color(node->parent)==BLACK) black(other); else red(other);
-								black(node->parent);
-								black(other->right);
-								return black(this->RotateLeft(root,node->parent));
-							}
-						}
-					} else return black(root);
-				} else {
+						if (color(node->parent)==BLACK) black(other); else red(other);
+						black(node->parent);
+						black(other->right);
+						root=this->RotateLeft(root,node->parent);
+						node=root;
+					}
+				} 
+				if ( node == node->parent->right ) 
+				{
 					TreeBase* other(node->parent->left);
-					if (other)
+					if ( color(other) == RED ) 
 					{
-						if ( color(other) == RED ) 
+						black(other);
+						red(other->parent);
+						root=this->RotateRight(root,node->parent);
+						other=node->parent->left;
+					}
+					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
+					{
+						red(other);
+						node=node->parent;
+					} else {
+						if (color(other->left) == BLACK) 
 						{
-							black(other);
-							red(other->parent);
-							root=this->RotateRight(root,node->parent);
+							black(other->right);
+							red(other);
+							root=this->RotateLeft(root,other);
 							other=node->parent->left;
 						}
-						if (other)
-						{
-							if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
-							{
-								red(other);
-								node=node->parent;
-							} else {
-								if (color(other->left) == BLACK) 
-								{
-									black(other->right);
-									red(other);
-									root=this->RotateLeft(root,other);
-									other=node->parent->left;
-								}
-								if (color(node->parent)==BLACK) black(other); else red(other);
-								black(node->parent);
-								black(other->left);
-								return black(this->RotateRight(root,node->parent));
-							}
-						}
-					} else return black(root);
-				}
+						if (color(node->parent)==BLACK) black(other); else red(other);
+						black(node->parent);
+						black(other->left);
+						root=this->RotateRight(root,node->parent);
+						node=root;
+					}
+				} 
 			}
-			black(node);
-			return root;
+			return black(root);
 		}
 
 		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
 		{
-			if (!node) return root;
-			if (!node->parent) return root;
-			red(node);
-			while ( (node) && (node->parent) && (node->parent->parent) && (color(node->parent) == RED) ) 
+			black(root); red(node);
+			while ( color(node->parent) == RED ) 
 			{
 				if ( node->parent == node->parent->parent->left ) 
 				{
@@ -437,11 +439,10 @@ namespace TreeObjects
 						{
 							node=node->parent;
 							root=this->RotateLeft(root,node);
-						} else {
-							black(node->parent);
-							red(node->parent->parent);
-							root=this->RotateRight( root, node->parent->parent );
-						}
+						} 
+						black(node->parent);
+						red(node->parent->parent);
+						root=this->RotateRight( root, node->parent->parent );
 					}
 				} else {
 					TreeBase* other(node->parent->parent->left);
@@ -456,18 +457,12 @@ namespace TreeObjects
 						{
 							node=node->parent;
 							root=this->RotateRight(root,node);
-						} else {
-							black(node->parent);
-							red(node->parent->parent);
-							root=this->RotateLeft(root,node->parent->parent);
 						}
+						black(node->parent);
+						red(node->parent->parent);
+						root=this->RotateLeft(root,node->parent->parent);
 					}
 				}
-			}
-			if ( color(node) == RED ) 
-			{
-				if (node->right) if (this->isleaf(node->right)) black(node->right);
-				if (node->left) if (this->isleaf(node->left)) black(node->left);
 			}
 			return black(root);
 		}
@@ -527,15 +522,16 @@ namespace TreeObjects
 
 
 	template <typename KT,typename VT>
-		struct RbMapMapBase : public Bst<KT,VT>, RbBase
+		struct RbMapBase : public Bst<KT,VT>, RbBase
 	{
-		RbMapMapBase(const KT _key) : Bst<KT,VT>(_key) {}
-		RbMapMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+		RbMapBase(const KT _key) : Bst<KT,VT>(_key) {}
+		RbMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
-			root=Bst<KT,VT>::insert(root,node);
+			root=Bst<KT,VT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
+			if (d) return black(root);
 			return this->RedAndBlackInsert(root,node);
 		}
 		
@@ -544,8 +540,10 @@ namespace TreeObjects
 		virtual const char color(TreeBase* n) const = 0;
 
 		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateLeft(root,node); }
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateRight(root,node); }
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) 
+			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) 
+			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found){return RbBase::erase(root,found);}
@@ -554,14 +552,15 @@ namespace TreeObjects
 
 
 	template <typename KT>
-		struct RbMapSetBase : public BstBase<KT>, RbBase
+		struct RbSetBase : public BstBase<KT>, RbBase
 	{
-		RbMapSetBase(const KT _key) : BstBase<KT>(_key) {}
+		RbSetBase(const KT _key) : BstBase<KT>(_key) {}
 
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
-			root=BstBase<KT>::insert(root,node);
+			root=BstBase<KT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
+			if (d) return black(root);
 			return this->RedAndBlackInsert(root,node);
 		}
 		
@@ -570,8 +569,10 @@ namespace TreeObjects
 		virtual const char color(TreeBase* n) const = 0;
 
 		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateLeft(root,node); }
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) { return BstBase<KT>::RotateRight(root,node); }
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) 
+			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) 
+			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found){return RbBase::erase(root,found);}
@@ -579,9 +580,9 @@ namespace TreeObjects
 	};
 
 	template <typename KT,typename VT>
-		struct RbMap : public RbMapMapBase<KT,VT>
+		struct RbMap : public RbMapBase<KT,VT>
 	{
-		typedef RbMapMapBase<KT,VT> TB;
+		typedef RbMapBase<KT,VT> TB;
 
 		RbMap(const KT _key) : TB(_key) {}
 		RbMap(const KT _key,const VT _data) : TB(_key,_data) {}
@@ -609,9 +610,9 @@ namespace TreeObjects
 	};
 
 	template <typename KT>
-		struct RbSet : public RbMapSetBase<KT>
+		struct RbSet : public RbSetBase<KT>
 	{
-		typedef RbMapSetBase<KT> TB;
+		typedef RbSetBase<KT> TB;
 		RbSet(const KT _key) : TB(_key) {}
 		virtual TreeBase* red(TreeBase* n) 
 		{ 
