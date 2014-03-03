@@ -27,6 +27,9 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+		#include <iostream>		 // temporary
+		using namespace std;
+
 namespace TreeObjects
 {
 	#ifndef NULL
@@ -37,7 +40,7 @@ namespace TreeObjects
 		virtual bool operator<(const TreeBase&) = 0;
 		virtual bool operator==(const TreeBase&) = 0;
 		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
-		virtual TreeBase* insert(TreeBase* root,TreeBase*) = 0;
+		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
 
@@ -197,7 +200,7 @@ namespace TreeObjects
 		}
 
 
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
 			node->parent=this;
@@ -206,14 +209,14 @@ namespace TreeObjects
 			{
 				if (this->left) 
 				{
-					return this->left->insert(root,node);
+					return this->left->insert(root,node,d+1);
 				} else { 
 					this->left=node;
 				}
 			} else {
 				if (this->right) 
 				{
-					return this->right->insert(root,node);
+					return this->right->insert(root,node,d+1);
 				} else { 
 					this->right=node;
 				}
@@ -464,11 +467,18 @@ namespace TreeObjects
 					}
 				}
 			}
+#if 0
 			if ( color(node) == RED ) 
 			{
-				if (node->right) if (this->isleaf(node->right)) black(node->right);
-				if (node->left) if (this->isleaf(node->left)) black(node->left);
+				if ((node->parent) and (color(node->parent)==RED))
+				{
+					black(node);
+				} else {
+					if (node->right) if (this->isleaf(node->right)) black(node->right);
+					if (node->left) if (this->isleaf(node->left)) black(node->left);
+				}
 			}
+#endif
 			return black(root);
 		}
 
@@ -532,10 +542,15 @@ namespace TreeObjects
 		RbMapMapBase(const KT _key) : Bst<KT,VT>(_key) {}
 		RbMapMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
-			root=Bst<KT,VT>::insert(root,node);
+			root=Bst<KT,VT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
+			if (d) return root;
+				BstBase<KT>& nd(static_cast<BstBase<KT>&>(*node));
+				const KT& k(nd);
+				cout<<"RBInsert:"<<k<<endl;
+			
 			return this->RedAndBlackInsert(root,node);
 		}
 		
@@ -558,10 +573,11 @@ namespace TreeObjects
 	{
 		RbMapSetBase(const KT _key) : BstBase<KT>(_key) {}
 
-		virtual TreeBase* insert(TreeBase* root,TreeBase* node)
+		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
-			root=BstBase<KT>::insert(root,node);
+			root=BstBase<KT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
+			if (d) return root;
 			return this->RedAndBlackInsert(root,node);
 		}
 		
