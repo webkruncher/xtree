@@ -40,11 +40,11 @@ namespace TreeDisplay
 		//#define GHOSTS
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
+			SetFont(display,gc);
 			//invalid.SetTrace(true);
 			moved=false;
 			pair<double,double> D(motion.next(X,Y));
 			if ((D.first) or (D.second)) moved=true;
-			//if (moved or Remove)
 			{
 				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
 				pair<double,double> lr(ul.first+DCW+2,ul.second+DCH+2);
@@ -91,7 +91,6 @@ namespace TreeDisplay
 					invalid.expand(iv);
 				#endif
 				XSetForeground(display,gc,0XFFFFFF);
-				//invalid.Draw(display,bitmap,window,gc);
 				XPoint& points(iv); XPoint* pt=&points;
 				for (int j=0;j<4;j++,pt++) lastpoints.push_back(*pt);
 				XSetForeground(display,gc,color);

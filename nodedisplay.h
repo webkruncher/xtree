@@ -50,9 +50,9 @@ namespace TreeDisplay
 
 	struct NodeBase : map<string,string>
 	{
-		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false) {}
-		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false) { }
-		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed)  {}
+		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
+		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
+		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
 		const bool Moved() const {return moved;}
 		bool undisplay()
 		{
@@ -74,6 +74,19 @@ namespace TreeDisplay
 		XPoints lastpoints;
 		bool Remove,Removed;
 		int Removing;
+		XFontStruct* font_info;
+		void SetFont(Display* display,GC& gc)
+		{
+			if (font_info) return;
+			char* font_name = "*-courier-*-8-*";
+			font_info = XLoadQueryFont(display, font_name);
+			if (!font_info) 
+			{
+					cout<<"Cannot load "<<font_name<<endl;
+					return;
+			}
+			XSetFont(display, gc, font_info->fid);
+		}
 	};
 
 	template<typename KT>
@@ -142,7 +155,7 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> inline void TreeNode<int>::BoxSize() { CW=30; CH=14; }
+	template <> inline void TreeNode<int>::BoxSize() { CW=20; CH=10; }
 
 	template <> inline void TreeNode<double>::Text(double k,double pk,string txt)
 	{
@@ -151,14 +164,14 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> inline void TreeNode<double>::BoxSize() { CW=60; CH=14; }
+	template <> inline void TreeNode<double>::BoxSize() { CW=40; CH=10; }
 	template <> inline void TreeNode<string>::Text(string k,string pk,string txt)
 	{
 		stringstream ss;
 		ss<<k; if (!txt.empty()) ss<<" "<<txt;
 		text=ss.str();
 	}
-	template <> inline void TreeNode<string>::BoxSize() { CW=60; CH=14; }
+	template <> inline void TreeNode<string>::BoxSize() { CW=40; CH=10; }
 } //namespace TreeDisplay
 
 #endif // NODE_DISPLAY_H

@@ -283,7 +283,7 @@ namespace TreeDisplay
 				if ((!movement) and (!stop))
 			{
 				movement=true;
-				pair<bool,KT> next(Next(30));
+				pair<bool,KT> next(Next(50));
 				if (next.first)
 				{
 					if (!removing)
@@ -332,7 +332,7 @@ namespace TreeDisplay
 
 	template <> void TreeCanvas<string>::UpdateTree()
 	{
-			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
+			if (root) if (!((updateloop)%50)) if (root) traverse(*root);
 			updateloop++;
 
 			Deletions();
@@ -350,7 +350,7 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
-			if (root) if (!((updateloop)%30)) if (root) traverse(*root);
+			if (root) if (!((updateloop)%50)) if (root) traverse(*root);
 			updateloop++;
 
 			Deletions();
