@@ -343,22 +343,14 @@ namespace TreeObjects
 		virtual operator TreeBase& () = 0;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
 
-		void Rotator(TreeBase* node)
-		{
-			if (!node) return;
-			if (color(node)==RED)
-			{
-				if (node->left) if (isleaf(node->left)) black(node->left);
-				if (node->right) if (isleaf(node->right)) black(node->right);
-			}
-		}
+		void Rotator(TreeBase* node) {}
 
 		TreeBase* RedAndBlackDelete(TreeBase* root, TreeBase* node)
 		{
 			if (!node) return root;
 			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
-				if (!node->parent) continue;
+				//if (!node->parent) continue;
 				if ( node == node->parent->left ) 
 				{
 					TreeBase* other(node->parent->right);
@@ -389,7 +381,7 @@ namespace TreeObjects
 						node=root;
 					}
 				} 
-				if (!node->parent) continue;
+				//if (!node->parent) continue;
 				if ( node == node->parent->right ) 
 				{
 					TreeBase* other(node->parent->left);
@@ -506,18 +498,18 @@ namespace TreeObjects
 				X=pfound->left;
 				root=me.transplant(root,pfound,pfound->left);
 			} else {
-				TreeBase* y(pfound->right->LeftMost());
+				Y=(pfound->right->LeftMost());
 				Ycolor=(this->color(Y));
 				X=Y->right;
-				if (y->parent!=pfound)
+				if (Y->parent!=pfound)
 				{
-					root=me.transplant(root,y,y->right);
-					y->right=pfound->right;
-					y->right->parent=y;
+					root=me.transplant(root,Y,Y->right);
+					Y->right=pfound->right;
+					Y->right->parent=Y;
 				}
-				root=me.transplant(root,pfound,y);
-				y->left=pfound->left;
-				y->left->parent=y;
+				root=me.transplant(root,pfound,Y);
+				Y->left=pfound->left;
+				Y->left->parent=Y;
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
