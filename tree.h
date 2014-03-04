@@ -421,6 +421,7 @@ namespace TreeObjects
 					}
 				} 
 			}
+			black(node);
 			return black(root);
 		}
 
