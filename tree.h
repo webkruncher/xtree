@@ -350,7 +350,7 @@ namespace TreeObjects
 			if (!node) return root;
 			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
-				//if (!node->parent) continue;
+				if (!node->parent) continue;
 				if ( node == node->parent->left ) 
 				{
 					TreeBase* other(node->parent->right);
@@ -381,7 +381,7 @@ namespace TreeObjects
 						node=root;
 					}
 				} 
-				//if (!node->parent) continue;
+				if (!node->parent) continue;
 				if ( node == node->parent->right ) 
 				{
 					TreeBase* other(node->parent->left);
