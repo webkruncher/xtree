@@ -217,10 +217,18 @@ int main(int argc,char** argv)
 	XSetForeground(display,gc,foreground);
 	XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
 
+	if (cmdline.exists("-root")) cmdline.erase("-root");
+	if (cmdline.exists("-window-id")) cmdline.erase("-window-id");
+
 	stringstream except;
 	try
 	{
 		Canvas* pcanvas(NULL);
+		if (cmdline.empty())
+		{
+			cmdline["-int"]="";
+			cmdline["-redblack"]="";
+		}
 		if (cmdline.find("-int")!=cmdline.end())
 		{
 			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
