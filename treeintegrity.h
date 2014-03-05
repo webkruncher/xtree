@@ -102,8 +102,9 @@ namespace TreeIntegrity
 				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
 				const KT& key(rb);
 				VT& data(rb.Data()); clear(data);
+				int m((max(abs(lc),abs(rc)))*2);
 				int diff(abs(lc-rc));
-				if (diff>2) 
+				if (diff>m)  
 				{
 					ok=false;
 					stringstream ss;
