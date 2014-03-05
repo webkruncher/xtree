@@ -53,6 +53,12 @@
 				<p>
 					The tester.cpp source is used to test the add and delete throughput against the stl set.  
 				</p>
+				<p>
+					It doesn't look like this tree is really balancing correctly.  I tried to make this work without implementing
+					NIL nodes.  I'm hoping that I can find a way to keep from violating the red black rules by implicit NIL nodes,
+					but maybe that's the problem.  If I can't find a way to keep the tree balanced, the next step will probably involve
+					adding the sentinel, and incorporating the use of doubly black, and red-black nodes..
+				</p>
 
       </section>
       <footer>
