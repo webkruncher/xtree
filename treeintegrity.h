@@ -120,7 +120,7 @@ namespace TreeIntegrity
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";
 					if (!ss.str().empty()) data["rb"]=ss.str();
-					if (leftisred or rightisred) ok=false;
+					//if (leftisred or rightisred) ok=false;
 				}
 			}
 		}; 
