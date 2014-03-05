@@ -343,7 +343,7 @@ namespace TreeObjects
 		virtual operator TreeBase& () = 0;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
 
-		void Rotator(TreeBase* node) {}
+		void Rotator(TreeBase* node) {Update(node,node->parent);}
 
 		TreeBase* RedAndBlackDelete(TreeBase* root, TreeBase* node)
 		{
