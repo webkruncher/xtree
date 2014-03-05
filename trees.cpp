@@ -219,29 +219,29 @@ namespace TreeDisplay
 				TreeBase* newroot(nk.erase(root,removal));
 				removal=NULL;
 
-				if (newroot==root) cout<<"Root node is unchanged"<<endl; cout.flush();
-				if (!newroot) cout<<"The tree is now empty, the root is NULL"<<endl; 
+				//if (newroot==root) cout<<"Root node is unchanged"<<endl; cout.flush();
+				if (!newroot) ;//cout<<"The tree is now empty, the root is NULL"<<endl; 
 					else if (newroot!=root)
 					{
-						cout<<"newroot"<<endl; cout.flush();
+						//cout<<"newroot"<<endl; cout.flush();
 						Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
 						const KT& rootkey(nk);
-						cout<<"The new root node is "<<rootkey<<endl;
+						//cout<<"The new root node is "<<rootkey<<endl;
 					}
 
 				if (newroot!=root) 
 				{
-					cout<<"Root node is different"<<endl;
+					//cout<<"Root node is different"<<endl;
 					root=newroot;
 				}
 				if (!root)	
 				{
-					cout<<"clear"<<endl; cout.flush();
+					//cout<<"clear"<<endl; cout.flush();
 					movement=false; removing=false; used.clear();stop=false;
 				}
+#if 0
 				cout<<"counting nodes"<<endl; cout.flush();
 				if (root) cout<<"The tree now has "<<root->countnodes()<<" nodes"<<endl; cout.flush();
-
 
 				if (root) cout<<"Integrity check..."<<endl; cout.flush();
 				if (root) 
@@ -274,6 +274,7 @@ namespace TreeDisplay
 						cout.flush();
 					}
 				//waitfor=updateloop+10;
+#endif
 			}
 	}
 
@@ -299,7 +300,7 @@ namespace TreeDisplay
 							TreeBase* nr(root->insert(root,n));
 							if (nr) 
 							{
-								if (root!=nr) cout<<"The root node rotated"<<endl;
+								//if (root!=nr) cout<<"The root node rotated"<<endl;
 								root=nr;
 							} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
@@ -307,10 +308,11 @@ namespace TreeDisplay
 						if (root) 
 						{
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
-							cout<<"Erase:"<<next.second<<endl;
+							//cout<<"Erase:"<<next.second<<endl;
 							removal=nk.find(next.second);
 						}
 					}
+#if 0
 						if (!removal)
 							if (!CheckIntegrity(root)) 
 						{
@@ -327,6 +329,7 @@ namespace TreeDisplay
 							}
 							stop=true;
 						}
+#endif
 				} 
 			}
 	}
