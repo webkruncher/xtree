@@ -414,7 +414,7 @@ namespace TreeObjects
 				} 
 			}
 			black(node);
-			return black(root);
+			return (root);
 		}
 
 		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
