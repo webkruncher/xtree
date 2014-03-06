@@ -50,9 +50,9 @@ namespace TreeDisplay
 
 	struct NodeBase : map<string,string>
 	{
-		NodeBase() : SW(0),SH(0),X(0),Y(0),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
-		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
-		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),X(a.X),Y(a.Y),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
+		NodeBase() : SW(0),SH(0),X(0),Y(0),PX(0),PY(0),parented(false),coverlastlin(false),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
+		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),PX(0),PY(0),parented(false),coverlastlin(false),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
+		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),PX(a.PX),PY(a.PY),X(a.X),Y(a.Y),parented(false),coverlastlin(false),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
 		const bool Moved() const {return moved;}
 		bool undisplay()
 		{
@@ -66,7 +66,8 @@ namespace TreeDisplay
 		Motion motion;
 		string text;
 		const int SW,SH;
-		double X,Y;
+		double X,Y,PX,PY,LSX,LSY,LPX,LPY;
+		bool parented,coverlastlin;
 		unsigned long color;
 		int CW,CH;
 		int DCW,DCH;
@@ -104,6 +105,7 @@ namespace TreeDisplay
 				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
 				Text(k,k);
+				parented=false;
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode.Data());
@@ -111,6 +113,9 @@ namespace TreeDisplay
 				KT pk(parentnode);
 				double px(pn.X);
 				double py(pn.Y);
+				parented=true;
+				PX=pn.X;
+				PY=pn.Y;
 				const double sw(SW); double sh(SH);
 				double y;
 				if (k<pk) y=py+(CH*3);

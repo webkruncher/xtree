@@ -74,6 +74,11 @@ namespace TreeDisplay
 						XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,text.c_str(),text.size());
 					}
 					Removing-=10;
+					if (coverlastlin)
+					{
+						XDrawLine(display,bitmap,gc,LSX,LSY,LPX,LPY);
+						coverlastlin=false;
+					}
 					return;
 				}
 			}
@@ -103,6 +108,14 @@ namespace TreeDisplay
 					yoff+=CH;
 					stringstream ss; ss<<it->first<<" : "<<it->second;
 					XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,ss.str().c_str(),ss.str().size());
+				}
+				if (parented)
+				{
+					XSetForeground(display,gc,0XAAAACC);
+					XDrawLine(display,bitmap,gc,X,Y,PX,PY);
+					LSX=X; LSY=Y;
+					LPX=PX; LPY=PY;
+					coverlastlin=true;
 				}
 			}
 		}
