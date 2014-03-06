@@ -109,7 +109,7 @@ namespace TreeDisplay
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode.Data());
-				if (pn.moved) return;
+				//if (pn.moved) return;
 				KT pk(parentnode);
 				double px(pn.X);
 				double py(pn.Y);
