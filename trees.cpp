@@ -239,11 +239,10 @@ namespace TreeDisplay
 					//cout<<"clear"<<endl; cout.flush();
 					movement=false; removing=false; used.clear();stop=false;
 				}
-#if 0
-				cout<<"counting nodes"<<endl; cout.flush();
-				if (root) cout<<"The tree now has "<<root->countnodes()<<" nodes"<<endl; cout.flush();
+				//cout<<"counting nodes"<<endl; cout.flush();
+				//if (root) cout<<"The tree now has "<<root->countnodes()<<" nodes"<<endl; cout.flush();
 
-				if (root) cout<<"Integrity check..."<<endl; cout.flush();
+				//if (root) cout<<"Integrity check..."<<endl; cout.flush();
 				if (root) 
 					if (!CheckIntegrity(root)) 
 				{
@@ -261,6 +260,7 @@ namespace TreeDisplay
 					stop=true;
 				}
 
+#if 0
 				if (root)
 					if (used.size()<40)
 					{
@@ -312,7 +312,6 @@ namespace TreeDisplay
 							removal=nk.find(next.second);
 						}
 					}
-#if 0
 						if (!removal)
 							if (!CheckIntegrity(root)) 
 						{
@@ -329,7 +328,6 @@ namespace TreeDisplay
 							}
 							stop=true;
 						}
-#endif
 				} 
 			}
 	}

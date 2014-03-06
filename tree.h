@@ -57,6 +57,33 @@ namespace TreeObjects
 			while (current->right != NULL) current = current->right;
 			return current;
 		}
+
+		TreeBase* Predecessor()
+		{
+			if (left) return left->RightMost();
+			TreeBase* y(parent);
+			TreeBase* x(this);
+			while (y->parent and x==y->left)
+			{
+				x=y;
+				y=y->parent;
+			}
+			return y;
+		}
+
+		TreeBase* Successor()
+		{
+			if (right) return right->LeftMost();
+			TreeBase* y(parent);
+			TreeBase* x(this);
+			while (y->parent and x==y->right)
+			{
+				x=y;
+				y=y->parent;
+			}
+			return y;
+		}
+
 		TreeBase* grandparent(TreeBase* node)
 		{
 			if ((node != NULL) && (node->parent != NULL))

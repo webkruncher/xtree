@@ -35,8 +35,77 @@ namespace TreeIntegrity
 	{
 		if (node->left) PrintInOrder<KT,VT>(node->left);
 		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
-		const KT& v(rk); cout<<v<<" ";
+		const KT& v(rk); //cout<<v<<" ";
 		if (node->right) PrintInOrder<KT,VT>(node->right);
+	}	
+
+	template<typename KT,typename VT> 
+		inline void TestSuccessor(TreeBase* root,TreeBase* node,set<KT>& used,bool& ok)
+	{
+		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
+		const KT& v(rk); //cout<<v<<" ";
+		typename set<KT>::iterator fit(used.find(v));
+		typename set<KT>::reverse_iterator it(used.find(v));
+		if (fit==used.end()) throw string("Your key is not in the used set");
+		TreeBase* maximum(root->RightMost());
+		if (node==maximum) 
+		{
+			// tbd...
+			//if (fit==used.end()) return; 
+			//cout<<"RightMost node is not used.rbegin()"<<endl;
+			//ok=false;
+			return;
+		}
+		fit++;
+		TreeBase* successor(node->Successor());
+		Bst<KT,VT>& prk(static_cast<Bst<KT,VT>&>(*successor));
+		const KT& pv(prk); 
+		const KT& upv(*fit);
+		if (pv!=upv)
+		{
+			cout<<"Successor test failed for "<<v<<":"<<pv<<"!="<<upv<<endl;
+			ok=false;
+		}
+	}
+
+	template<typename KT,typename VT> 
+		inline void TestPredecessor(TreeBase* root,TreeBase* node,set<KT>& used,bool& ok)
+	{
+		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
+		const KT& v(rk); //cout<<v<<" ";
+		typename set<KT>::iterator it(used.find(v));
+		if (it==used.end()) throw string("Your key is not in the used set");
+		TreeBase* minimum(root->LeftMost());
+		if (node==minimum) 
+		{
+			if (it==used.begin()) return; 
+			cout<<"Leftmost node is not used.begin()"<<endl;
+			ok=false;
+			return;
+		}
+		it--;
+		TreeBase* predecessor(node->Predecessor());
+		Bst<KT,VT>& prk(static_cast<Bst<KT,VT>&>(*predecessor));
+		const KT& pv(prk); 
+		const KT& upv(*it);
+		if (pv!=upv)
+		{
+			cout<<"Predecessor test failed for "<<v<<":"<<pv<<"!="<<upv<<endl;
+			ok=false;
+		}
+		
+	}
+
+	template<typename KT,typename VT> 
+		inline void TestPredecessorsAndSuccessors(TreeBase* root,TreeBase* node,set<KT>& used,bool& ok)
+	{
+		if (node->left) TestPredecessorsAndSuccessors<KT,VT>(root,node->left,used,ok);
+		if (node) 
+		{
+			TestPredecessor<KT,VT>(root,node,used,ok);
+			TestSuccessor<KT,VT>(root,node,used,ok);
+		}
+		if (node->right) TestPredecessorsAndSuccessors<KT,VT>(root,node->right,used,ok);
 	}	
 
 	template<typename KT,typename VT> 
@@ -48,20 +117,22 @@ namespace TreeIntegrity
 			KT minvalue(rk.minValue(root));
 			KT rootvalue(rk);
 			bool isbst(root->isBST(root));
-			cout<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
-			cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
-			cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
-			cout<<"isBST:"<<boolalpha<<isbst;
-			cout<<"; Used: Min:"<<*used.begin();
-			cout<<", Max:"<<*used.rbegin()<<endl;
-			cout.flush();
+			//cout<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
+			//cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
+			//cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
+			//cout<<"isBST:"<<boolalpha<<isbst;
+			//cout<<"; Used: Min:"<<*used.begin();
+			//cout<<", Max:"<<*used.rbegin()<<endl;
+			//cout.flush();
 			if (minvalue!=(*used.begin())) {cout<<("Min check failed")<<endl; return false;}
 			if (maxvalue!=(*used.rbegin())) {cout<<("Max check failed")<<endl; return false;}
 			if (!isbst) {cout<<("isBST failed")<<endl; return false;}
 			long ttl(root->countnodes());
 			if (ttl!=used.size()) {cout<<("Wrong number of nodes counted")<<endl; return false;}
 			//cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
-			return true;
+			bool ok(true);
+			TestPredecessorsAndSuccessors<KT,VT>(root,root,used,ok);
+			return ok;
 	}
 
 	namespace RedBlackCheck
