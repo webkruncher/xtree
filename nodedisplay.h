@@ -128,7 +128,7 @@ namespace TreeDisplay
 					if (gpn.moved) return;
 					double gpx(gpn.X);
 					double dx(gpn.X-pn.X);
-					dx/=16; dx*=7; // 7/16s of the difference between parent and grand-parent
+					dx/=16; dx*=5; // 7/16s of the difference between parent and grand-parent
 					if (dx<0) dx*=-1;
 					if (k<pk) x=px-dx; else x=px+dx; 
 

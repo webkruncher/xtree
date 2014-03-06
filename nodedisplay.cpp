@@ -40,13 +40,12 @@ namespace TreeDisplay
 		//#define GHOSTS
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
-				if (coverlastlin)
-				{
-					XSetForeground(display,gc,0X777777);
-					XDrawLine(display,bitmap,gc,LSX,LSY,LPX,LPY);
-					coverlastlin=false;
-					//parented=false;
-				}
+			if (coverlastlin)
+			{
+				XSetForeground(display,gc,0X777777);
+				XDrawLine(display,bitmap,gc,LSX,LSY,LPX,LPY);
+				coverlastlin=false;
+			}
 			SetFont(display,gc);
 			//invalid.SetTrace(true);
 			moved=false;
