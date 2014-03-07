@@ -108,8 +108,8 @@ namespace TreeDisplay
 		{
 			RbMapBase<KT,VT>& rb(static_cast<RbMapBase<KT,VT>&>(node));
 			VT& data(rb.Data());
-			map<string,string>::iterator it;
-			it=data.find(name); if (it!=data.end()) data.erase(it);
+			map<string,string>::iterator it(data.find(name));
+			if (it!=data.end()) data.erase(it);
 		}
 		void message(TreeBase& node,string name,string value) 
 		{
