@@ -363,7 +363,7 @@ namespace TreeObjects
 		virtual const bool isleaf(TreeBase* node) const = 0;
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) = 0;
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) = 0;
-		virtual const char color(TreeBase* n) const = 0;
+		virtual const COLOR color(TreeBase* n) const = 0;
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
 		virtual operator TreeBase& () = 0;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
@@ -559,7 +559,7 @@ namespace TreeObjects
 		
 		virtual TreeBase* red(TreeBase* n) = 0;
 		virtual TreeBase* black(TreeBase* n) = 0;
-		virtual const char color(TreeBase* n) const = 0;
+		virtual const COLOR color(TreeBase* n) const = 0;
 
 		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) 
@@ -588,7 +588,7 @@ namespace TreeObjects
 		
 		virtual TreeBase* red(TreeBase* n) = 0;
 		virtual TreeBase* black(TreeBase* n) = 0;
-		virtual const char color(TreeBase* n) const = 0;
+		virtual const COLOR color(TreeBase* n) const = 0;
 
 		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) 
@@ -623,9 +623,9 @@ namespace TreeObjects
 			nd.clr=this->Black();
 			return n;
 		}
-		virtual const char color(TreeBase* n) const
+		virtual const RbBase::COLOR color(TreeBase* n) const
 		{
-			if (!n) return 0; 
+			if (!n) return RbBase::NONE; 
 			TB& nd(static_cast<TB&>(*n)); 
 			return nd.clr;
 		}
@@ -650,9 +650,9 @@ namespace TreeObjects
 			nd.clr=this->Black();
 			return n;
 		}
-		virtual const char color(TreeBase* n) const
+		virtual const RbBase::COLOR color(TreeBase* n) const
 		{
-			if (!n) return 0; 
+			if (!n) return RbBase::NONE; 
 			TB& nd(static_cast<TB&>(*n)); 
 			return nd.clr;
 		}
