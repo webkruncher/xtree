@@ -144,7 +144,7 @@ namespace TreeIntegrity
 	namespace RedBlackCheck
 	{
 
-		template<typename KT,typename VT>
+		template<typename KT>
 			struct Visitor
 		{
 			Visitor(TreeBase& _rk,IntegrityAdvisor& _advisor) : rk(_rk),advisor(_advisor),ok(true) {}
@@ -204,14 +204,14 @@ namespace TreeIntegrity
 		}; 
 	} // RedBlackCheck
 
-	template<typename KT,typename VT> 
+	template<typename KT>
 		inline bool RedBlackIntegrity(TreeBase* root,IntegrityAdvisor& advisor)
 	{
 		if (!root) return true;
 		TreeBase& rk(static_cast<TreeBase&>(*root));
 		TreeBase* leftmost(root->LeftMost());
 		TreeBase* rightmost(root->RightMost());
-		RedBlackCheck::Visitor<KT,VT> visitor(rk,advisor);
+		RedBlackCheck::Visitor<KT> visitor(rk,advisor);
 		if (!visitor) {cout<<"Red Black check failed"<<endl; return false;}
 		return true;
 		//return visitor;

@@ -102,7 +102,7 @@ namespace TreeDisplay
 		virtual bool CheckIntegrity(TreeBase* root)
 		{
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;
-			return TreeIntegrity::RedBlackIntegrity<KT,VT>(root,*this);
+			return TreeIntegrity::RedBlackIntegrity<KT>(root,*this);
 		}
 		void clear(TreeBase& node,string name)
 		{
