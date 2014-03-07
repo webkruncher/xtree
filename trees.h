@@ -93,7 +93,7 @@ namespace TreeDisplay
 
 
 	template<typename KT>
-		struct RbMapCanvas : TreeCanvas<KT>
+		struct RbMapCanvas : TreeCanvas<KT>, TreeIntegrity::IntegrityAdvisor
 	{
 		typedef TreeNode<KT> VT ;
 		RbMapCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
@@ -102,7 +102,20 @@ namespace TreeDisplay
 		virtual bool CheckIntegrity(TreeBase* root)
 		{
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;
-			return TreeIntegrity::RedBlackIntegrity<KT,VT>(root);
+			return TreeIntegrity::RedBlackIntegrity<KT,VT>(root,*this);
+		}
+		void clear(TreeBase& node,string name)
+		{
+			RbMapBase<KT,VT>& rb(static_cast<RbMapBase<KT,VT>&>(node));
+			VT& data(rb.Data());
+			map<string,string>::iterator it;
+			it=data.find(name); if (it!=data.end()) data.erase(it);
+		}
+		void message(TreeBase& node,string name,string value) 
+		{
+			RbMapBase<KT,VT>& rb(static_cast<RbMapBase<KT,VT>&>(node));
+			VT& data(rb.Data());
+			data[name]=value;
 		}
 	};
 } // TreeDisplay

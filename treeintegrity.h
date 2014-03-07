@@ -30,6 +30,12 @@
 
 namespace TreeIntegrity
 {
+	struct IntegrityAdvisor
+	{
+		virtual void clear(TreeBase&,string) = 0;
+		virtual void message(TreeBase&,string,string) = 0;
+	};
+
 	template<typename KT,typename VT> 
 		inline void PrintInOrder(TreeBase* node)
 	{
@@ -141,56 +147,57 @@ namespace TreeIntegrity
 		template<typename KT,typename VT>
 			struct Visitor
 		{
-			Visitor(RbMap<KT,VT>& _rk) : rk(_rk),ok(true) {}
+			Visitor(TreeBase& _rk,IntegrityAdvisor& _advisor) : rk(_rk),advisor(_advisor),ok(true) {}
 			operator bool () 
 			{ 
 				PostOrder(rk);
 				return ok; 
 			}
 			private:
-			RbMap<KT,VT>& rk;
+			TreeBase& rk;
+			IntegrityAdvisor& advisor;
 			bool ok;
 			int PostOrder(TreeBase& node)
 			{
-				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
+				RbBase& rb(reinterpret_cast<RbBase&>(node));
 				int ld(0),rd(0);	
 				if (node.parent)
-					if (rb.color(&rb)==RbMap<KT,VT>::BLACK) 
+				{
+					if (rb.color(&node)==RbBase::BLACK) 
 						if (node.parent->left==&node) ld=1; else rd=1;
+				}
 				if (node.left) ld+=PostOrder(*node.left);
 				if (node.right) rd+=PostOrder(*node.right);
 				Visit(node,ld,rd);
 				return max(ld,rd);
 			}
-			void clear(VT& data)
-			{
-				map<string,string>::iterator it;
-				it=data.find("lr"); if (it!=data.end()) data.erase(it);
-				it=data.find("rb"); if (it!=data.end()) data.erase(it);
-			}	
 			void Visit(TreeBase& node,const int lc,const int rc)
 			{
-				RbMap<KT,VT>& rb(static_cast<RbMap<KT,VT>&>(node));
+				BstBase<KT>& rb(static_cast<BstBase<KT>&>(node));
+				RbBase& rbc(reinterpret_cast<RbBase&>(node));
 				const KT& key(rb);
-				VT& data(rb.Data()); clear(data);
+				advisor.clear(node,"bal");
+				advisor.clear(node,"red");
 				int m((max(abs(lc),abs(rc)))*2);
 				int diff(abs(lc-rc));
-				if (diff>m)  
+				//if (diff>2)  
 				{
-					ok=false;
+					//ok=false;
 					stringstream ss;
 					ss<<lc<<","<<rc;
-					if (rb.color(&rb)==RbMap<KT,VT>::BLACK) data["lr"]=ss.str();
+					if (rbc.color(&node)==RbBase::BLACK) 
+						advisor.message(node,"bal",ss.str());
 				}
-				if (rb.color(&node)==RbMap<KT,VT>::RED) 
+				if (rbc.color(&node)==RbBase::RED) 
 				{
 					bool leftisred(false),rightisred(false);
-					if (rb.right) if (rb.color(rb.right)==RbMap<KT,VT>::RED) rightisred=true;
-					if (rb.left) if (rb.color(rb.left)==RbMap<KT,VT>::RED) leftisred=true;
+					if (rb.right) if (rbc.color(rb.right)==RbBase::RED) rightisred=true;
+					if (rb.left) if (rbc.color(rb.left)==RbBase::RED) leftisred=true;
 					stringstream ss;
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";
-					if (!ss.str().empty()) data["rb"]=ss.str();
+					if (!ss.str().empty()) 
+						advisor.message(node,"red",ss.str());
 					//if (leftisred or rightisred) ok=false;
 				}
 			}
@@ -198,18 +205,13 @@ namespace TreeIntegrity
 	} // RedBlackCheck
 
 	template<typename KT,typename VT> 
-		inline bool RedBlackIntegrity(TreeBase* root)
+		inline bool RedBlackIntegrity(TreeBase* root,IntegrityAdvisor& advisor)
 	{
 		if (!root) return true;
-		//cout<<"Checking Red Black"<<endl;
-		RbMap<KT,VT>& rk(static_cast<RbMap<KT,VT>&>(*root));
+		TreeBase& rk(static_cast<TreeBase&>(*root));
 		TreeBase* leftmost(root->LeftMost());
 		TreeBase* rightmost(root->RightMost());
-		RbMap<KT,VT>& lm(static_cast<RbMap<KT,VT>&>(*leftmost));
-		RbMap<KT,VT>& rm(static_cast<RbMap<KT,VT>&>(*rightmost));
-		const KT& L(lm);
-		const KT& R(rm);
-		RedBlackCheck::Visitor<KT,VT> visitor(rk);
+		RedBlackCheck::Visitor<KT,VT> visitor(rk,advisor);
 		if (!visitor) {cout<<"Red Black check failed"<<endl; return false;}
 		return true;
 		//return visitor;
