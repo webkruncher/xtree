@@ -58,6 +58,7 @@ namespace TreeObjects
 			const KT& key(item);
 			if (node->right) inorder(node->right);	
 		}
+		operator TreeBase* () const {return root;}
 		bool isBST() { if (!root) return true; return root->isBST(root); }
 		private:
 		RbSet<KT>* root;

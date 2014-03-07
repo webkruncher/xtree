@@ -39,10 +39,10 @@ namespace TreeIntegrity
 		if (node->right) PrintInOrder<KT,VT>(node->right);
 	}	
 
-	template<typename KT,typename VT> 
+	template<typename KT>
 		inline void TestSuccessor(TreeBase* root,TreeBase* node,set<KT>& used,bool& ok)
 	{
-		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
+		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
 		typename set<KT>::iterator fit(used.find(v));
 		typename set<KT>::reverse_iterator it(used.find(v));
@@ -58,7 +58,7 @@ namespace TreeIntegrity
 		}
 		fit++;
 		TreeBase* successor(node->Successor());
-		Bst<KT,VT>& prk(static_cast<Bst<KT,VT>&>(*successor));
+		BstBase<KT>& prk(static_cast<BstBase<KT>&>(*successor));
 		const KT& pv(prk); 
 		const KT& upv(*fit);
 		if (pv!=upv)
@@ -68,10 +68,10 @@ namespace TreeIntegrity
 		}
 	}
 
-	template<typename KT,typename VT> 
+	template<typename KT>
 		inline void TestPredecessor(TreeBase* root,TreeBase* node,set<KT>& used,bool& ok)
 	{
-		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
+		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
 		typename set<KT>::iterator it(used.find(v));
 		if (it==used.end()) throw string("Your key is not in the used set");
@@ -85,7 +85,7 @@ namespace TreeIntegrity
 		}
 		it--;
 		TreeBase* predecessor(node->Predecessor());
-		Bst<KT,VT>& prk(static_cast<Bst<KT,VT>&>(*predecessor));
+		BstBase<KT>& prk(static_cast<BstBase<KT>&>(*predecessor));
 		const KT& pv(prk); 
 		const KT& upv(*it);
 		if (pv!=upv)
@@ -96,23 +96,23 @@ namespace TreeIntegrity
 		
 	}
 
-	template<typename KT,typename VT> 
+	template<typename KT>
 		inline void TestPredecessorsAndSuccessors(TreeBase* root,TreeBase* node,set<KT>& used,bool& ok)
 	{
-		if (node->left) TestPredecessorsAndSuccessors<KT,VT>(root,node->left,used,ok);
+		if (node->left) TestPredecessorsAndSuccessors<KT>(root,node->left,used,ok);
 		if (node) 
 		{
-			TestPredecessor<KT,VT>(root,node,used,ok);
-			TestSuccessor<KT,VT>(root,node,used,ok);
+			TestPredecessor<KT>(root,node,used,ok);
+			TestSuccessor<KT>(root,node,used,ok);
 		}
-		if (node->right) TestPredecessorsAndSuccessors<KT,VT>(root,node->right,used,ok);
+		if (node->right) TestPredecessorsAndSuccessors<KT>(root,node->right,used,ok);
 	}	
 
-	template<typename KT,typename VT> 
+	template<typename KT>
 		inline bool BstIntegrity(TreeBase* root,set<KT>& used)
 	{
 			if (!root) return true;
-			Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*root));
+			BstBase<KT>& rk(static_cast<BstBase<KT>&>(*root));
 			KT maxvalue(rk.maxValue(root));
 			KT minvalue(rk.minValue(root));
 			KT rootvalue(rk);
@@ -131,7 +131,7 @@ namespace TreeIntegrity
 			if (ttl!=used.size()) {cout<<("Wrong number of nodes counted")<<endl; return false;}
 			//cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
 			bool ok(true);
-			TestPredecessorsAndSuccessors<KT,VT>(root,root,used,ok);
+			TestPredecessorsAndSuccessors<KT>(root,root,used,ok);
 			return ok;
 	}
 

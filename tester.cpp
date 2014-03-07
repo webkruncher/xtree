@@ -36,6 +36,12 @@
 #include <iomanip>
 #include <locale> 
 
+#include <map>
+#include <sstream>
+using namespace std;
+using namespace TreeObjects;
+#include <treeintegrity.h> 
+
 #define TREEOBJECTS first
 #define STLOBJECTS second
 
@@ -85,6 +91,43 @@ inline double timedifference(timespec& x, timespec& y)
 	return ((result.tv_sec*scale) + result.tv_nsec);
 }
 
+#if 0 // wip - need to either use a map, or create set integrity checks...
+template <typename KT>
+	bool IntegrityCheck(TreeObjects::TreeBase* root,std::set<KT>& used)
+{
+	if (!TreeIntegrity::BstIntegrity<KT,VT>(root,used)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<KT,VT>(root)) return false;
+	return true;
+}
+
+template <typename T>
+	bool Check(T& items,const long* numbers,const long size) 
+{ 
+	using namespace std;
+	set<long> checkitems;
+	for (long j=0;j<size;j++) 
+	{
+			Insert(items,numbers[j]);
+			Insert(checkitems,numbers[j]);
+	}
+	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
+	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
+	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	for (long j=0;j<size;j++) Erase(items,numbers[j]);
+	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	return true;
+}
+
+bool IntegrityCheck(const long* numbers,const long size)
+{
+	TreeObjects::Set<long> items;
+	return Check<TreeObjects::Set<long> >(items,numbers,size);
+}
+
+#endif
+
 std::pair<double,double> TestBoth(const long* numbers,const long N)
 {
 	timespec t1,t2;
@@ -102,6 +145,10 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 	std::pair<double,double> ret;
 	ret.TREEOBJECTS=TreeObjectsTime;
 	ret.STLOBJECTS=StlTime;
+
+//	if (!IntegrityCheck(numbers,N))
+//		std::cout<<"Integrity check failed"<<std::endl;
+
 	return ret;
 }
 

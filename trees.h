@@ -55,7 +55,7 @@ namespace TreeDisplay
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
 		bool stop,removing;
-		virtual bool CheckIntegrity(TreeBase* root) { return TreeIntegrity::BstIntegrity<KT,VT>(root,used); }
+		virtual bool CheckIntegrity(TreeBase* root) { return TreeIntegrity::BstIntegrity<KT>(root,used); }
 		private:
 		void UpdateTree();
 		void Deletions();
