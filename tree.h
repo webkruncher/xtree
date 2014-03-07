@@ -355,7 +355,7 @@ namespace TreeObjects
 
 	struct RbBase 
 	{
-		enum COLOR {NONE=0,RED,BLACK} ;
+		enum COLOR {NONE=0,RED=10,BLACK=20} ;
 		const COLOR Red() const {return RED;}
 		const COLOR Black() const {return BLACK;}
 		virtual TreeBase* red(TreeBase* n) = 0;

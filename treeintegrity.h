@@ -28,6 +28,7 @@
 #define TREE_INTEGRITY
 #include <stack>
 
+#define BREAKPOINT asm ("int $0X03") ;
 namespace TreeIntegrity
 {
 	struct IntegrityAdvisor
@@ -143,7 +144,6 @@ namespace TreeIntegrity
 
 	namespace RedBlackCheck
 	{
-
 		template<typename KT>
 			struct Visitor
 		{
@@ -159,11 +159,13 @@ namespace TreeIntegrity
 			bool ok;
 			int PostOrder(TreeBase& node)
 			{
-				RbBase& rb(reinterpret_cast<RbBase&>(node));
+				RbBase* prbc(dynamic_cast<RbBase*>(&node));
+				if (!prbc) {cout<<"Error in dynamic cast"<<endl;return 0;}
+				RbBase& rbc(*prbc);
 				int ld(0),rd(0);	
 				if (node.parent)
 				{
-					if (rb.color(&node)==RbBase::BLACK) 
+					if (rbc.color(&node)==RbBase::BLACK) 
 						if (node.parent->left==&node) ld=1; else rd=1;
 				}
 				if (node.left) ld+=PostOrder(*node.left);
@@ -174,10 +176,13 @@ namespace TreeIntegrity
 			void Visit(TreeBase& node,const int lc,const int rc)
 			{
 				BstBase<KT>& rb(static_cast<BstBase<KT>&>(node));
-				RbBase& rbc(reinterpret_cast<RbBase&>(node));
+					//BREAKPOINT 
+				RbBase* prbc(dynamic_cast<RbBase*>(&node));
+				if (!prbc) {cout<<"This is not an RbBase node"<<endl; return;}
+				RbBase& rbc(*prbc);
 				const KT& key(rb);
-				advisor.clear(node,"bal");
-				advisor.clear(node,"red");
+				advisor.clear(node,"d");
+				advisor.clear(node,"c");
 				int m((max(abs(lc),abs(rc)))*2);
 				int diff(abs(lc-rc));
 				//if (diff>2)  
@@ -186,7 +191,7 @@ namespace TreeIntegrity
 					stringstream ss;
 					ss<<lc<<","<<rc;
 					if (rbc.color(&node)==RbBase::BLACK) 
-						advisor.message(node,"bal",ss.str());
+						advisor.message(node,"d",ss.str());
 				}
 				if (rbc.color(&node)==RbBase::RED) 
 				{
@@ -197,7 +202,7 @@ namespace TreeIntegrity
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";
 					if (!ss.str().empty()) 
-						advisor.message(node,"red",ss.str());
+						advisor.message(node,"c",ss.str());
 					//if (leftisred or rightisred) ok=false;
 				}
 			}
