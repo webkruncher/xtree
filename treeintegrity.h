@@ -176,7 +176,6 @@ namespace TreeIntegrity
 			void Visit(TreeBase& node,const int lc,const int rc)
 			{
 				BstBase<KT>& rb(static_cast<BstBase<KT>&>(node));
-					//BREAKPOINT 
 				RbBase* prbc(dynamic_cast<RbBase*>(&node));
 				if (!prbc) {cout<<"This is not an RbBase node"<<endl; return;}
 				RbBase& rbc(*prbc);
@@ -185,7 +184,7 @@ namespace TreeIntegrity
 				advisor.clear(node,"c");
 				int m((max(abs(lc),abs(rc)))*2);
 				int diff(abs(lc-rc));
-				//if (diff>2)  
+				if (diff>2)  
 				{
 					//ok=false;
 					stringstream ss;

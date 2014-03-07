@@ -13,7 +13,7 @@ COMPILESETTINGS= $(FNIT) $(FREPO) -c -I. -lpthread $(LIB) $(INC) -w -g
 trees: main.o trees.o nodedisplay.o
 	g++ $(LINKSETTINGS)  main.o trees.o nodedisplay.o -o trees 
 
-tester: tester.cpp tree.h treemap.h treeset.h
+tester: tester.cpp tree.h treemap.h treeset.h treeintegrity.h
 	g++ -I. tester.cpp -o tester -g
 
 nodedisplay.o: nodedisplay.cpp $(INCS)

@@ -91,12 +91,23 @@ inline double timedifference(timespec& x, timespec& y)
 	return ((result.tv_sec*scale) + result.tv_nsec);
 }
 
-#if 0 // wip - need to either use a map, or create set integrity checks...
+
+struct Advisor : TreeIntegrity::IntegrityAdvisor
+{
+	virtual void clear(TreeBase&,string){} 
+	virtual void message(TreeBase& node,string name,string value)
+	{
+		RbSetBase<long>& rb(static_cast<RbSetBase<long>&>(node));
+		const long& key(rb);
+		cout<<key<<" "<<name<<":"<<value<<endl;
+	} 
+} Violations;
+
 template <typename KT>
 	bool IntegrityCheck(TreeObjects::TreeBase* root,std::set<KT>& used)
 {
-	if (!TreeIntegrity::BstIntegrity<KT,VT>(root,used)) return false;
-	if (!TreeIntegrity::RedBlackIntegrity<KT,VT>(root)) return false;
+	if (!TreeIntegrity::BstIntegrity<KT>(root,used)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<KT>(root,Violations)) return false;
 	return true;
 }
 
@@ -110,13 +121,17 @@ template <typename T>
 			Insert(items,numbers[j]);
 			Insert(checkitems,numbers[j]);
 	}
-	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
 	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
-	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
 	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
-	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
-	if (!items.IntegrityCheck<KT>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
 	return true;
 }
 
@@ -126,7 +141,6 @@ bool IntegrityCheck(const long* numbers,const long size)
 	return Check<TreeObjects::Set<long> >(items,numbers,size);
 }
 
-#endif
 
 std::pair<double,double> TestBoth(const long* numbers,const long N)
 {
@@ -146,8 +160,8 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 	ret.TREEOBJECTS=TreeObjectsTime;
 	ret.STLOBJECTS=StlTime;
 
-//	if (!IntegrityCheck(numbers,N))
-//		std::cout<<"Integrity check failed"<<std::endl;
+	if (!IntegrityCheck(numbers,N))
+		std::cout<<"Integrity check failed"<<std::endl;
 
 	return ret;
 }
