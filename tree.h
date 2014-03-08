@@ -27,7 +27,6 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
-
 namespace TreeObjects
 {
 	#ifndef NULL
@@ -160,6 +159,7 @@ namespace TreeObjects
 		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
 	};
 
+
 	template <typename KT>
 		struct BstBase : public TreeBase
 	{
@@ -189,7 +189,7 @@ namespace TreeObjects
 			return(true);
 		}
 
-		virtual TreeBase* find(const KT& what)
+		virtual BstBase<KT>* find(const KT what)
 		{
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
 			if (nd==what) return this;
@@ -291,6 +291,41 @@ namespace TreeObjects
 		const KT key;
 	};
 
+	template <typename KT>
+		struct Iterator
+	{
+		Iterator(TreeBase* _node) : node(_node) {Invalidate();}
+		bool operator--(int)
+		{
+			if (begin==node) return false;
+			node=node->Predecessor(); return true;
+		}
+		bool operator++(int)
+		{
+			if (end==node) return false;
+			node=node->Successor(); return true;
+		}
+		void Invalidate()
+		{
+			root=Root();
+			begin=root->LeftMost();
+			end=root->RightMost();
+		}
+		operator const KT& ()
+		{
+			BstBase<KT>& b(static_cast<BstBase<KT>&>(*node));
+			return b;
+		}
+		private:
+		TreeBase *root,*begin,*end;
+		TreeBase* Root()
+		{
+			TreeBase* current(node);
+			while (current->parent) current=current->parent;
+			return current;
+		}
+		TreeBase* node;
+	};
 
 	inline TreeBase* TreeBase::transplant(TreeBase* root,TreeBase* u,TreeBase* v)
 	{
