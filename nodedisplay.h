@@ -29,7 +29,7 @@
 
 namespace TreeDisplay
 {
-	inline int DepthFinder(SentinelBase& tb,int d=0)
+	inline int DepthFinder(Trunk& tb,int d=0)
 		{ if (tb.Parent()) d=DepthFinder(*tb.Parent(),d+1); return d; }
 
 	struct XPoints : vector<XPoint>
@@ -97,7 +97,7 @@ namespace TreeDisplay
 		TreeNode(const int _SW,const int _SH) : NodeBase(_SW,_SH) { BoxSize(); }
 		TreeNode(const TreeNode& a) : NodeBase(a)  {}
 		void operator()(unsigned long long _color) { color=_color; }
-		void operator()(KT _k,SentinelBase& node,SentinelBase* parent,bool erasing=false)
+		void operator()(KT _k,Trunk& node,Trunk* parent,bool erasing=false)
 		{
 			k=_k;
 			iterator niltxt(find("nil"));

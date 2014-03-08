@@ -97,8 +97,8 @@ inline double timedifference(timespec& x, timespec& y)
 
 struct Advisor : TreeIntegrity::IntegrityAdvisor
 {
-	virtual void clear(SentinelBase&,string){} 
-	virtual void message(SentinelBase& node,string name,string value)
+	virtual void clear(Trunk&,string){} 
+	virtual void message(Trunk& node,string name,string value)
 	{
 		RbSetBase<long>& rb(static_cast<RbSetBase<long>&>(node));
 		const long& key(rb);
@@ -107,7 +107,7 @@ struct Advisor : TreeIntegrity::IntegrityAdvisor
 } Violations;
 
 template <typename KT>
-	bool IntegrityCheck(TreeObjects::SentinelBase* root,std::set<KT>& used)
+	bool IntegrityCheck(TreeObjects::Trunk* root,std::set<KT>& used)
 {
 	if (!TreeIntegrity::BstIntegrity<KT>(root,used)) return false;
 	if (!TreeIntegrity::RedBlackIntegrity<KT>(root,Violations)) return false;

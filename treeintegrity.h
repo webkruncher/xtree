@@ -33,12 +33,12 @@ namespace TreeIntegrity
 {
 	struct IntegrityAdvisor
 	{
-		virtual void clear(SentinelBase&,string) = 0;
-		virtual void message(SentinelBase&,string,string) = 0;
+		virtual void clear(Trunk&,string) = 0;
+		virtual void message(Trunk&,string,string) = 0;
 	};
 
 	template<typename KT,typename VT> 
-		inline void PrintInOrder(SentinelBase* node)
+		inline void PrintInOrder(Trunk* node)
 	{
 		if (node->Left()) PrintInOrder<KT,VT>(node->Left());
 		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
@@ -47,14 +47,14 @@ namespace TreeIntegrity
 	}	
 
 	template<typename KT>
-		inline void TestSuccessor(SentinelBase* root,SentinelBase* node,set<KT>& used,bool& ok)
+		inline void TestSuccessor(Trunk* root,Trunk* node,set<KT>& used,bool& ok)
 	{
 		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
 		typename set<KT>::iterator fit(used.find(v));
 		typename set<KT>::reverse_iterator it(used.find(v));
 		if (fit==used.end()) throw string("Your key is not in the used set");
-		SentinelBase* maximum(root->RightMost());
+		Trunk* maximum(root->RightMost());
 		if (node==maximum) 
 		{
 			// tbd...
@@ -64,7 +64,7 @@ namespace TreeIntegrity
 			return;
 		}
 		fit++;
-		SentinelBase* successor(node->Successor());
+		Trunk* successor(node->Successor());
 		BstBase<KT>& prk(static_cast<BstBase<KT>&>(*successor));
 		const KT& pv(prk); 
 		const KT& upv(*fit);
@@ -76,13 +76,13 @@ namespace TreeIntegrity
 	}
 
 	template<typename KT>
-		inline void TestPredecessor(SentinelBase* root,SentinelBase* node,set<KT>& used,bool& ok)
+		inline void TestPredecessor(Trunk* root,Trunk* node,set<KT>& used,bool& ok)
 	{
 		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
 		typename set<KT>::iterator it(used.find(v));
 		if (it==used.end()) throw string("Your key is not in the used set");
-		SentinelBase* minimum(root->LeftMost());
+		Trunk* minimum(root->LeftMost());
 		if (node==minimum) 
 		{
 			if (it==used.begin()) return; 
@@ -91,7 +91,7 @@ namespace TreeIntegrity
 			return;
 		}
 		it--;
-		SentinelBase* predecessor(node->Predecessor());
+		Trunk* predecessor(node->Predecessor());
 		BstBase<KT>& prk(static_cast<BstBase<KT>&>(*predecessor));
 		const KT& pv(prk); 
 		const KT& upv(*it);
@@ -104,7 +104,7 @@ namespace TreeIntegrity
 	}
 
 	template<typename KT>
-		inline void TestPredecessorsAndSuccessors(SentinelBase* root,SentinelBase* node,set<KT>& used,bool& ok)
+		inline void TestPredecessorsAndSuccessors(Trunk* root,Trunk* node,set<KT>& used,bool& ok)
 	{
 		if (node->Left()) TestPredecessorsAndSuccessors<KT>(root,node->Left(),used,ok);
 		if (node) 
@@ -116,7 +116,7 @@ namespace TreeIntegrity
 	}	
 
 	template<typename KT>
-		inline bool BstIntegrity(SentinelBase* root,set<KT>& used)
+		inline bool BstIntegrity(Trunk* root,set<KT>& used)
 	{
 			if (!root) return true;
 			BstBase<KT>& rk(static_cast<BstBase<KT>&>(*root));
@@ -147,17 +147,17 @@ namespace TreeIntegrity
 		template<typename KT>
 			struct Visitor
 		{
-			Visitor(SentinelBase& _rk,IntegrityAdvisor& _advisor) : rk(_rk),advisor(_advisor),ok(true) {}
+			Visitor(Trunk& _rk,IntegrityAdvisor& _advisor) : rk(_rk),advisor(_advisor),ok(true) {}
 			operator bool () 
 			{ 
 				PostOrder(rk);
 				return ok; 
 			}
 			private:
-			SentinelBase& rk;
+			Trunk& rk;
 			IntegrityAdvisor& advisor;
 			bool ok;
-			int PostOrder(SentinelBase& node)
+			int PostOrder(Trunk& node)
 			{
 				RbBase* prbc(dynamic_cast<RbBase*>(&node));
 				if (!prbc) {cout<<"Error in dynamic cast"<<endl;return 0;}
@@ -173,7 +173,7 @@ namespace TreeIntegrity
 				Visit(node,ld,rd);
 				return max(ld,rd);
 			}
-			void Visit(SentinelBase& node,const int lc,const int rc)
+			void Visit(Trunk& node,const int lc,const int rc)
 			{
 				BstBase<KT>& rb(static_cast<BstBase<KT>&>(node));
 				RbBase* prbc(dynamic_cast<RbBase*>(&node));
@@ -209,12 +209,12 @@ namespace TreeIntegrity
 	} // RedBlackCheck
 
 	template<typename KT>
-		inline bool RedBlackIntegrity(SentinelBase* root,IntegrityAdvisor& advisor)
+		inline bool RedBlackIntegrity(Trunk* root,IntegrityAdvisor& advisor)
 	{
 		if (!root) return true;
-		SentinelBase& rk(static_cast<SentinelBase&>(*root));
-		SentinelBase* leftmost(root->LeftMost());
-		SentinelBase* rightmost(root->RightMost());
+		Trunk& rk(static_cast<Trunk&>(*root));
+		Trunk* leftmost(root->LeftMost());
+		Trunk* rightmost(root->RightMost());
 		RedBlackCheck::Visitor<KT> visitor(rk,advisor);
 		if (!visitor) {cout<<"Red Black check failed"<<endl; return false;}
 		return true;
