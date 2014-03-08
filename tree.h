@@ -79,7 +79,7 @@ namespace TreeObjects
 		TreeBase *parent,*left,*right;
 	};
 
-	struct Sentinel : SentinelBase
+	struct Sentinel : TreeBase
 	{
 		virtual bool isnil() {return true;}
 	};
