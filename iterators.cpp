@@ -32,7 +32,7 @@ using namespace std;
 int main(int,char**)
 {
 	Set<int> nums;
-	for (int j=0;j<100;j+=10) nums.insert(j);
+	for (int j=0;j<=100;j+=10) nums.insert(j);
 	BstBase<int>* root(nums);
 	if (!root) {cout<<"No root"<<endl; return -1;}
 	BstBase<int>* item(root->find(30));
@@ -42,6 +42,9 @@ int main(int,char**)
 		const int& n(it);
 		cout<<n<<endl;
 	}
+	BstBase<int>& righty(it);
+	const int& onehundred(righty);
+	if (onehundred!=100) cout<<"Right Failed"<<endl;
 	while (it--)
 	{
 		const int& n(it);
@@ -49,7 +52,7 @@ int main(int,char**)
 	}
 	BstBase<int>& lefty(it);
 	const int& zero(lefty);
-	if (zero!=0) cout<<"Failed"<<endl;
+	if (zero!=0) cout<<"Left Failed"<<endl;
 	return 0;
 }
 
