@@ -33,41 +33,55 @@ namespace TreeObjects
 	#define NULL 0
 	#endif
 
+	struct TreeBase;
 	struct SentinelBase
 	{
 		virtual bool isnil() { return false;}
+		virtual bool operator<(const TreeBase&) {return false;}
+		virtual bool operator==(const TreeBase&) {return false;}
+		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) {return NULL;}
+		virtual bool isBST(TreeBase* node) {return false;}
+		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) {}
+		virtual TreeBase* LeftMost(){return NULL;}
+		virtual TreeBase* RightMost(){return NULL;}
+		virtual TreeBase* Predecessor(){return NULL;}
+		virtual TreeBase* Successor(){return NULL;}
+		virtual const bool isleaf(TreeBase* node) const {return false;}
+		virtual const bool isnul(TreeBase* node) const {return true;}
+		virtual long countnodes() {return 0;}
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node){return NULL;}
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node){return NULL;}
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) {return NULL;}
+		virtual TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v){return NULL;}
 	};
 
 	struct TreeBase : SentinelBase
 	{
-		virtual bool operator<(const TreeBase&) = 0;
-		virtual bool operator==(const TreeBase&) = 0;
-		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
-		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
+		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
+		virtual bool operator<(const TreeBase&) = 0;
+		virtual bool operator==(const TreeBase&) = 0;
+		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) = 0;
 		virtual bool isBST(TreeBase* node) = 0;
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
-		TreeBase* LeftMost();
-		TreeBase* RightMost();
-		TreeBase* Predecessor();
-		TreeBase* Successor();
-		TreeBase* grandparent(TreeBase* node);
-		TreeBase* uncle(TreeBase* node);
-		const bool isleaf(TreeBase* node) const;
-		const bool isnul(TreeBase* node) const;
-		TreeBase* sibling(TreeBase* node);
-		long countnodes() ; 
+		virtual TreeBase* LeftMost();
+		virtual TreeBase* RightMost();
+		virtual TreeBase* Predecessor();
+		virtual TreeBase* Successor();
+		virtual const bool isleaf(TreeBase* node) const;
+		virtual const bool isnul(TreeBase* node) const;
+		virtual long countnodes() ; 
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node);
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node);
-		TreeBase *parent,*left,*right;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
-		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
+		virtual TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
+		TreeBase *parent,*left,*right;
 	};
 
 	struct Sentinel : SentinelBase
 	{
-		virtual bool isnil() { return true;}
+		virtual bool isnil() {return true;}
 	};
 
 	inline TreeBase* TreeBase::LeftMost()
@@ -86,36 +100,22 @@ namespace TreeObjects
 
 	inline TreeBase* TreeBase::Predecessor()
 	{
-		if (left) return left->RightMost();
+		if (!isnul(left)) return left->RightMost();
 		TreeBase* y(parent);
 		TreeBase* x(this);
-		while (y->parent and x==y->left) { x=y; y=y->parent; }
+		while ((!isnul(y->parent)) and x==y->left) { x=y; y=y->parent; }
 		return y;
 	}
 
 	inline TreeBase* TreeBase::Successor()
 	{
-		if (right) return right->LeftMost();
+		if (!isnul(right)) return right->LeftMost();
 		TreeBase* y(parent);
 		TreeBase* x(this);
-		while (y->parent and x==y->right) { x=y; y=y->parent; }
+		while ((!isnul(y->parent)) and x==y->right) { x=y; y=y->parent; }
 		return y;
 	}
 
-	inline TreeBase* TreeBase::grandparent(TreeBase* node)
-	{
-		if ((node != NULL) && (node->parent != NULL))
-			return node->parent->parent;
-		else return NULL;
-	}
-	 
-	inline TreeBase* TreeBase::uncle(TreeBase* node)
-	{
-		TreeBase* g(grandparent(node));
-		if (g == NULL) return NULL; 
-		if (node->parent == g->left) return g->right;
-		else return g->left;
-	}
 
 	inline const bool TreeBase::isleaf(TreeBase* node) const
 	{
@@ -135,12 +135,6 @@ namespace TreeObjects
 		return false;	
 	}
 
-	inline TreeBase* TreeBase::sibling(TreeBase* node)
-	{
-		if (!node->parent) return NULL;
-		if (node==node->parent->left) return node->parent->right;
-		else return node->parent->left;
-	}
 
 	inline long TreeBase::countnodes()  
 	{
@@ -155,9 +149,9 @@ namespace TreeObjects
 		TreeBase* other(node->right);
 		if (!other) return root;
 		node->right = other->left;
-		if ( other->left != NULL ) other->left->parent = node;
+		if ( !isnul(other->left) ) other->left->parent = node;
 		other->parent = node->parent;
-		if ( node->parent == NULL ) root = other;
+		if ( isnul(node->parent) ) root = other;
 		else 
 			if ( node == node->parent->left ) node->parent->left = other;
 			else node->parent->right = other;
@@ -173,9 +167,9 @@ namespace TreeObjects
 		TreeBase* other(node->left);
 		if (!other) return root;
 		node->left = other->right;
-		if ( other->right != NULL ) other->right->parent = node;
+		if ( !isnul(other->right) ) other->right->parent = node;
 		other->parent = node->parent;
-		if ( node->parent == NULL ) root = other;
+		if ( isnul(node->parent) ) root = other;
 		else 
 			if ( node == node->parent->right ) node->parent->right = other;
 			else node->parent->left = other;
