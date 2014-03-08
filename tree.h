@@ -32,7 +32,13 @@ namespace TreeObjects
 	#ifndef NULL
 	#define NULL 0
 	#endif
-	struct TreeBase
+
+	struct SentinelBase
+	{
+		virtual bool isnil() { return false;}
+	};
+
+	struct TreeBase : SentinelBase
 	{
 		virtual bool operator<(const TreeBase&) = 0;
 		virtual bool operator==(const TreeBase&) = 0;
@@ -44,53 +50,69 @@ namespace TreeObjects
 		virtual bool isBST(TreeBase* node) = 0;
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
 
-		TreeBase* LeftMost()
+		TreeBase* LeftMost();
+		TreeBase* RightMost();
+		TreeBase* Predecessor();
+		TreeBase* Successor();
+		TreeBase* grandparent(TreeBase* node);
+		TreeBase* uncle(TreeBase* node);
+		const bool isleaf(TreeBase* node) const;
+		TreeBase* sibling(TreeBase* node);
+		long countnodes() ; 
+		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node);
+		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node);
+		TreeBase *parent,*left,*right;
+		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
+		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
+	};
+
+	struct Sentinel : SentinelBase
+	{
+		virtual bool isnil() { return true;}
+	};
+
+
+
+		inline TreeBase* TreeBase::LeftMost()
 		{
 			TreeBase* current = this;
 			while (current->left != NULL) current = current->left;
 			return current;
 		}
-		TreeBase* RightMost()
+
+		inline TreeBase* TreeBase::RightMost()
 		{
 			TreeBase* current = this;
 			while (current->right != NULL) current = current->right;
 			return current;
 		}
 
-		TreeBase* Predecessor()
+		inline TreeBase* TreeBase::Predecessor()
 		{
 			if (left) return left->RightMost();
 			TreeBase* y(parent);
 			TreeBase* x(this);
-			while (y->parent and x==y->left)
-			{
-				x=y;
-				y=y->parent;
-			}
+			while (y->parent and x==y->left) { x=y; y=y->parent; }
 			return y;
 		}
 
-		TreeBase* Successor()
+		inline TreeBase* TreeBase::Successor()
 		{
 			if (right) return right->LeftMost();
 			TreeBase* y(parent);
 			TreeBase* x(this);
-			while (y->parent and x==y->right)
-			{
-				x=y;
-				y=y->parent;
-			}
+			while (y->parent and x==y->right) { x=y; y=y->parent; }
 			return y;
 		}
 
-		TreeBase* grandparent(TreeBase* node)
+		inline TreeBase* TreeBase::grandparent(TreeBase* node)
 		{
 			if ((node != NULL) && (node->parent != NULL))
 				return node->parent->parent;
 			else return NULL;
 		}
 		 
-		TreeBase* uncle(TreeBase* node)
+		inline TreeBase* TreeBase::uncle(TreeBase* node)
 		{
 			TreeBase* g(grandparent(node));
 			if (g == NULL) return NULL; 
@@ -98,26 +120,26 @@ namespace TreeObjects
 			else return g->left;
 		}
 
-		virtual const bool isleaf(TreeBase* node) const
+		inline const bool TreeBase::isleaf(TreeBase* node) const
 		{
 			if ((!node->left) and (!node->right)) return true; else return false;	
 		}
 
-		TreeBase* sibling(TreeBase* node)
+		inline TreeBase* TreeBase::sibling(TreeBase* node)
 		{
 			if (!node->parent) return NULL;
 			if (node==node->parent->left) return node->parent->right;
 			else return node->parent->left;
 		}
 
-		virtual long countnodes()  
+		inline long TreeBase::countnodes()  
 		{
 			long leftnodes(0); if (left) leftnodes=left->countnodes();
 			long rightnodes(0); if (right) rightnodes=right->countnodes();
 			return (leftnodes+rightnodes+1);
 		}
 
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
+		inline TreeBase* TreeBase::RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			if (!node) return root;
 			TreeBase* other(node->right);
@@ -135,7 +157,7 @@ namespace TreeObjects
 			return root;
 		}
 
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
+		inline TreeBase* TreeBase::RotateRight(TreeBase* root, TreeBase* node)
 		{
 			if (!node) return root;
 			TreeBase* other(node->left);
@@ -153,10 +175,7 @@ namespace TreeObjects
 			return root;
 		}
 
-		TreeBase *parent,*left,*right;
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
-		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
-	};
+
 
 
 	template <typename KT>
