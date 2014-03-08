@@ -46,10 +46,8 @@ namespace TreeObjects
 		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) = 0;
 		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
-
 		virtual bool isBST(TreeBase* node) = 0;
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
-
 		TreeBase* LeftMost();
 		TreeBase* RightMost();
 		TreeBase* Predecessor();
@@ -57,6 +55,7 @@ namespace TreeObjects
 		TreeBase* grandparent(TreeBase* node);
 		TreeBase* uncle(TreeBase* node);
 		const bool isleaf(TreeBase* node) const;
+		const bool isnul(TreeBase* node) const;
 		TreeBase* sibling(TreeBase* node);
 		long countnodes() ; 
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node);
@@ -71,109 +70,120 @@ namespace TreeObjects
 		virtual bool isnil() { return true;}
 	};
 
+	inline TreeBase* TreeBase::LeftMost()
+	{
+		TreeBase* current = this;
+		while (!isnul(current->left)) current = current->left;
+		return current;
+	}
 
+	inline TreeBase* TreeBase::RightMost()
+	{
+		TreeBase* current = this;
+		while (!isnul(current->right)) current = current->right;
+		return current;
+	}
 
-		inline TreeBase* TreeBase::LeftMost()
-		{
-			TreeBase* current = this;
-			while (current->left != NULL) current = current->left;
-			return current;
-		}
+	inline TreeBase* TreeBase::Predecessor()
+	{
+		if (left) return left->RightMost();
+		TreeBase* y(parent);
+		TreeBase* x(this);
+		while (y->parent and x==y->left) { x=y; y=y->parent; }
+		return y;
+	}
 
-		inline TreeBase* TreeBase::RightMost()
-		{
-			TreeBase* current = this;
-			while (current->right != NULL) current = current->right;
-			return current;
-		}
+	inline TreeBase* TreeBase::Successor()
+	{
+		if (right) return right->LeftMost();
+		TreeBase* y(parent);
+		TreeBase* x(this);
+		while (y->parent and x==y->right) { x=y; y=y->parent; }
+		return y;
+	}
 
-		inline TreeBase* TreeBase::Predecessor()
-		{
-			if (left) return left->RightMost();
-			TreeBase* y(parent);
-			TreeBase* x(this);
-			while (y->parent and x==y->left) { x=y; y=y->parent; }
-			return y;
-		}
+	inline TreeBase* TreeBase::grandparent(TreeBase* node)
+	{
+		if ((node != NULL) && (node->parent != NULL))
+			return node->parent->parent;
+		else return NULL;
+	}
+	 
+	inline TreeBase* TreeBase::uncle(TreeBase* node)
+	{
+		TreeBase* g(grandparent(node));
+		if (g == NULL) return NULL; 
+		if (node->parent == g->left) return g->right;
+		else return g->left;
+	}
 
-		inline TreeBase* TreeBase::Successor()
-		{
-			if (right) return right->LeftMost();
-			TreeBase* y(parent);
-			TreeBase* x(this);
-			while (y->parent and x==y->right) { x=y; y=y->parent; }
-			return y;
-		}
+	inline const bool TreeBase::isleaf(TreeBase* node) const
+	{
+		if 
+		(
+			((!node->left) or (node->left->isnil()) )
+				and 
+			((!node->right) or (node->right->isnil()) )
+		) 
+			return true; else return false;	
+	}
 
-		inline TreeBase* TreeBase::grandparent(TreeBase* node)
-		{
-			if ((node != NULL) && (node->parent != NULL))
-				return node->parent->parent;
-			else return NULL;
-		}
-		 
-		inline TreeBase* TreeBase::uncle(TreeBase* node)
-		{
-			TreeBase* g(grandparent(node));
-			if (g == NULL) return NULL; 
-			if (node->parent == g->left) return g->right;
-			else return g->left;
-		}
+	inline const bool TreeBase::isnul(TreeBase* node) const
+	{
+		if (!node) return true;
+		if (node->isnil()) return true;
+		return false;	
+	}
 
-		inline const bool TreeBase::isleaf(TreeBase* node) const
-		{
-			if ((!node->left) and (!node->right)) return true; else return false;	
-		}
+	inline TreeBase* TreeBase::sibling(TreeBase* node)
+	{
+		if (!node->parent) return NULL;
+		if (node==node->parent->left) return node->parent->right;
+		else return node->parent->left;
+	}
 
-		inline TreeBase* TreeBase::sibling(TreeBase* node)
-		{
-			if (!node->parent) return NULL;
-			if (node==node->parent->left) return node->parent->right;
-			else return node->parent->left;
-		}
+	inline long TreeBase::countnodes()  
+	{
+		long leftnodes(0); if (left) leftnodes=left->countnodes();
+		long rightnodes(0); if (right) rightnodes=right->countnodes();
+		return (leftnodes+rightnodes+1);
+	}
 
-		inline long TreeBase::countnodes()  
-		{
-			long leftnodes(0); if (left) leftnodes=left->countnodes();
-			long rightnodes(0); if (right) rightnodes=right->countnodes();
-			return (leftnodes+rightnodes+1);
-		}
+	inline TreeBase* TreeBase::RotateLeft(TreeBase* root, TreeBase* node)
+	{
+		if (!node) return root;
+		TreeBase* other(node->right);
+		if (!other) return root;
+		node->right = other->left;
+		if ( other->left != NULL ) other->left->parent = node;
+		other->parent = node->parent;
+		if ( node->parent == NULL ) root = other;
+		else 
+			if ( node == node->parent->left ) node->parent->left = other;
+			else node->parent->right = other;
+		other->left = node;
+		node->parent = other;
+		root->parent=NULL;
+		return root;
+	}
 
-		inline TreeBase* TreeBase::RotateLeft(TreeBase* root, TreeBase* node)
-		{
-			if (!node) return root;
-			TreeBase* other(node->right);
-			if (!other) return root;
-			node->right = other->left;
-			if ( other->left != NULL ) other->left->parent = node;
-			other->parent = node->parent;
-			if ( node->parent == NULL ) root = other;
-			else 
-				if ( node == node->parent->left ) node->parent->left = other;
-				else node->parent->right = other;
-			other->left = node;
-			node->parent = other;
-			root->parent=NULL;
-			return root;
-		}
-
-		inline TreeBase* TreeBase::RotateRight(TreeBase* root, TreeBase* node)
-		{
-			if (!node) return root;
-			TreeBase* other(node->left);
-			if (!other) return root;
-			node->left = other->right;
-			if ( other->right != NULL ) other->right->parent = node;
-			other->parent = node->parent;
-			if ( node->parent == NULL ) root = other;
-			else 
-				if ( node == node->parent->right ) node->parent->right = other;
-				else node->parent->left = other;
-			other->right = node;
-			node->parent = other;
-			root->parent=NULL;
-			return root;
-		}
+	inline TreeBase* TreeBase::RotateRight(TreeBase* root, TreeBase* node)
+	{
+		if (!node) return root;
+		TreeBase* other(node->left);
+		if (!other) return root;
+		node->left = other->right;
+		if ( other->right != NULL ) other->right->parent = node;
+		other->parent = node->parent;
+		if ( node->parent == NULL ) root = other;
+		else 
+			if ( node == node->parent->right ) node->parent->right = other;
+			else node->parent->left = other;
+		other->right = node;
+		node->parent = other;
+		root->parent=NULL;
+		return root;
+	}
 
 
 

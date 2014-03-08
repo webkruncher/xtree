@@ -100,11 +100,14 @@ namespace TreeDisplay
 		void operator()(KT _k,TreeBase& node,TreeBase* parent,bool erasing=false)
 		{
 			k=_k;
-			if (!parent) 
+			iterator niltxt(find("nil"));
+			if (niltxt!=end()) erase(niltxt);
+			if ((!parent) or (parent->isnil()) ) 
 			{
 				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
 				Text(k,k);
+				if (parent and parent->isnil()) NodeBase::operator[]("nil")="parent";
 				parented=false;
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
@@ -143,6 +146,8 @@ namespace TreeDisplay
 					motion(x,y);
 					Text(k,pk);
 				}
+				if (node.left and node.left->isnil()) NodeBase::operator[]("nil")+="l ";
+				if (node.right and node.right->isnil()) NodeBase::operator[]("nil")+="r";
 			}
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
