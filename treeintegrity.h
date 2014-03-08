@@ -163,10 +163,10 @@ namespace TreeIntegrity
 				if (!prbc) {cout<<"Error in dynamic cast"<<endl;return 0;}
 				RbBase& rbc(*prbc);
 				int ld(0),rd(0);	
-				if (node.parent)
+				if (node.Parent())
 				{
 					if (rbc.color(&node)==RbBase::BLACK) 
-						if (node.parent->left==&node) ld=1; else rd=1;
+						if (node.Parent()->left==&node) ld=1; else rd=1;
 				}
 				if (node.left) ld+=PostOrder(*node.left);
 				if (node.right) rd+=PostOrder(*node.right);

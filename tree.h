@@ -55,9 +55,10 @@ namespace TreeObjects
 		virtual TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v){return NULL;}
 	};
 
+
 	struct TreeBase : SentinelBase
 	{
-		TreeBase() : parent(NULL), left(NULL), right(NULL) {}
+		TreeBase() : left(NULL),right(NULL),parent(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
 		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
 		virtual bool operator<(const TreeBase&) = 0;
@@ -65,21 +66,25 @@ namespace TreeObjects
 		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) = 0;
 		virtual bool isBST(TreeBase* node) = 0;
 		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
-		virtual TreeBase* LeftMost();
-		virtual TreeBase* RightMost();
-		virtual TreeBase* Predecessor();
-		virtual TreeBase* Successor();
-		virtual const bool isleaf(TreeBase* node) const;
-		virtual const bool isnul(TreeBase* node) const;
-		virtual long countnodes() ; 
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node);
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node);
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
-		virtual TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
-		TreeBase *parent,*left,*right;
+		TreeBase* LeftMost();
+		TreeBase* RightMost();
+		TreeBase* Predecessor();
+		TreeBase* Successor();
+		const bool isleaf(TreeBase* node) const;
+		const bool isnul(TreeBase* node) const;
+		long countnodes() ; 
+		TreeBase* RotateLeft(TreeBase* root, TreeBase* node);
+		TreeBase* RotateRight(TreeBase* root, TreeBase* node);
+		TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
+		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
+		TreeBase *left,*right;
+		TreeBase* Parent(){return parent;}
+		void SetParent(TreeBase* p){parent=p;}
+		private:
+		TreeBase *parent;
 	};
 
-	struct Sentinel : TreeBase
+	struct Sentinel : SentinelBase
 	{
 		virtual bool isnil() {return true;}
 	};
@@ -101,18 +106,18 @@ namespace TreeObjects
 	inline TreeBase* TreeBase::Predecessor()
 	{
 		if (!isnul(left)) return left->RightMost();
-		TreeBase* y(parent);
+		TreeBase* y(Parent());
 		TreeBase* x(this);
-		while ((!isnul(y->parent)) and x==y->left) { x=y; y=y->parent; }
+		while ((!isnul(y->Parent())) and x==y->left) { x=y; y=y->Parent(); }
 		return y;
 	}
 
 	inline TreeBase* TreeBase::Successor()
 	{
 		if (!isnul(right)) return right->LeftMost();
-		TreeBase* y(parent);
+		TreeBase* y(Parent());
 		TreeBase* x(this);
-		while ((!isnul(y->parent)) and x==y->right) { x=y; y=y->parent; }
+		while ((!isnul(y->Parent())) and x==y->right) { x=y; y=y->Parent(); }
 		return y;
 	}
 
@@ -149,15 +154,15 @@ namespace TreeObjects
 		TreeBase* other(node->right);
 		if (!other) return root;
 		node->right = other->left;
-		if ( !isnul(other->left) ) other->left->parent = node;
-		other->parent = node->parent;
-		if ( isnul(node->parent) ) root = other;
+		if ( !isnul(other->left) ) other->left->SetParent(node);
+		other->SetParent(node->Parent());
+		if ( isnul(node->Parent()) ) root = other;
 		else 
-			if ( node == node->parent->left ) node->parent->left = other;
-			else node->parent->right = other;
+			if ( node == node->Parent()->left ) node->Parent()->left = other;
+			else node->Parent()->right = other;
 		other->left = node;
-		node->parent = other;
-		root->parent=NULL;
+		node->SetParent(other);
+		root->SetParent(NULL);
 		return root;
 	}
 
@@ -167,15 +172,15 @@ namespace TreeObjects
 		TreeBase* other(node->left);
 		if (!other) return root;
 		node->left = other->right;
-		if ( !isnul(other->right) ) other->right->parent = node;
-		other->parent = node->parent;
-		if ( isnul(node->parent) ) root = other;
+		if ( !isnul(other->right) ) other->right->SetParent(node);
+		other->SetParent(node->Parent());
+		if ( isnul(node->Parent()) ) root = other;
 		else 
-			if ( node == node->parent->right ) node->parent->right = other;
-			else node->parent->left = other;
+			if ( node == node->Parent()->right ) node->Parent()->right = other;
+			else node->Parent()->left = other;
 		other->right = node;
-		node->parent = other;
-		root->parent=NULL;
+		node->SetParent(other);
+		root->SetParent(NULL);
 		return root;
 	}
 
@@ -237,10 +242,10 @@ namespace TreeObjects
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
 			if (!found) return root;
-			TreeBase *p(found->parent),*l(found->left),*r(found->right);
+			TreeBase *p(found->Parent()),*l(found->left),*r(found->right);
 			TreeBase* newroot(TreeBase::remove(root,found));
 			found->left=NULL; found->right=NULL;
-			Update(found,found->parent,true); 
+			Update(found,found->Parent(),true); 
 			Update(p,found); Update(l,found); Update(r,found);
 			delete found;
 			return newroot;
@@ -250,7 +255,7 @@ namespace TreeObjects
 		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
-			node->parent=this;
+			node->SetParent(this);
 			Update(node,this);
 			if ((*node)<(*this))
 			{
@@ -299,14 +304,14 @@ namespace TreeObjects
 		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(TreeBase::RotateLeft(root,node));
-			this->Update(node,this->parent); 
+			this->Update(node,this->Parent()); 
 			return newroot;
 		}
 
 		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
 		{
 			TreeBase* newroot(TreeBase::RotateRight(root,node));
-			this->Update(node,this->parent); 
+			this->Update(node,this->Parent()); 
 			return newroot;
 		}
 		protected:
@@ -348,7 +353,7 @@ namespace TreeObjects
 		TreeBase* Root()
 		{
 			TreeBase* current(node);
-			while (current->parent) current=current->parent;
+			while (current->Parent()) current=current->Parent();
 			return current;
 		}
 		TreeBase* node;
@@ -357,18 +362,18 @@ namespace TreeObjects
 	inline TreeBase* TreeBase::transplant(TreeBase* root,TreeBase* u,TreeBase* v)
 	{
 		TreeBase* ret(root);
-		if (u->parent==NULL)
+		if (u->Parent()==NULL)
 		{
 			ret=v;
 		} else {
-			if (u==u->parent->left)
+			if (u==u->Parent()->left)
 			{
-				u->parent->left=v;
+				u->Parent()->left=v;
 			} else {
-				u->parent->right=v;
+				u->Parent()->right=v;
 			}
 		}
-		if (v!=NULL) v->parent=u->parent;
+		if (v!=NULL) v->SetParent(u->Parent());
 		return ret;
 	}
 
@@ -383,15 +388,15 @@ namespace TreeObjects
 				root=transplant(root,pfound,pfound->left);
 			} else {
 				TreeBase* y(pfound->right->LeftMost());
-				if (y->parent!=pfound)
+				if (y->Parent()!=pfound)
 				{
 					root=transplant(root,y,y->right);
 					y->right=pfound->right;
-					y->right->parent=y;
+					y->right->SetParent(y);
 				}
 				root=transplant(root,pfound,y);
 				y->left=pfound->left;
-				y->left->parent=y;
+				y->left->SetParent(y);
 			}
 		}
 		return root;
@@ -430,72 +435,72 @@ namespace TreeObjects
 		virtual operator TreeBase& () = 0;
 		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
 
-		void Rotator(TreeBase* node) {Update(node,node->parent);}
+		void Rotator(TreeBase* node) {Update(node,node->Parent());}
 
 		TreeBase* RedAndBlackDelete(TreeBase* root, TreeBase* node)
 		{
 			if (!node) return root;
 			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
-				if (!node->parent) continue;
-				if ( node == node->parent->left ) 
+				if (!node->Parent()) continue;
+				if ( node == node->Parent()->left ) 
 				{
-					TreeBase* other(node->parent->right);
+					TreeBase* other(node->Parent()->right);
 					if ( color(other) == RED ) 
 					{
 						black(other);
-						red(other->parent);
-						root=this->RotateLeft(root,node->parent);
-						other=node->parent->right;
+						red(other->Parent());
+						root=this->RotateLeft(root,node->Parent());
+						other=node->Parent()->right;
 					}
-					if (!other) {node=node->parent;continue;}
+					if (!other) {node=node->Parent();continue;}
 					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
 					{
 						red(other);
-						node=node->parent;
+						node=node->Parent();
 					} else {
 						if (color(other->right) == BLACK) 
 						{
 							black(other->left);
 							red(other);
 							root=this->RotateRight(root,other);
-							other=node->parent->right;
+							other=node->Parent()->right;
 						}
-						if (color(node->parent)==BLACK) black(other); else red(other);
-						black(node->parent);
+						if (color(node->Parent())==BLACK) black(other); else red(other);
+						black(node->Parent());
 						black(other->right);
-						root=this->RotateLeft(root,node->parent);
+						root=this->RotateLeft(root,node->Parent());
 						node=root;
 					}
 				} 
-				if (!node->parent) continue;
-				if ( node == node->parent->right ) 
+				if (!node->Parent()) continue;
+				if ( node == node->Parent()->right ) 
 				{
-					TreeBase* other(node->parent->left);
+					TreeBase* other(node->Parent()->left);
 					if ( color(other) == RED ) 
 					{
 						black(other);
-						red(other->parent);
-						root=this->RotateRight(root,node->parent);
-						other=node->parent->left;
+						red(other->Parent());
+						root=this->RotateRight(root,node->Parent());
+						other=node->Parent()->left;
 					}
-					if (!other) {node=node->parent;continue;}
+					if (!other) {node=node->Parent();continue;}
 					if ( (color(other->left)==BLACK) and (color(other->right)==BLACK) )
 					{
 						red(other);
-						node=node->parent;
+						node=node->Parent();
 					} else {
 						if (color(other->left) == BLACK) 
 						{
 							black(other->right);
 							red(other);
 							root=this->RotateLeft(root,other);
-							other=node->parent->left;
+							other=node->Parent()->left;
 						}
-						if (color(node->parent)==BLACK) black(other); else red(other);
-						black(node->parent);
+						if (color(node->Parent())==BLACK) black(other); else red(other);
+						black(node->Parent());
 						black(other->left);
-						root=this->RotateRight(root,node->parent);
+						root=this->RotateRight(root,node->Parent());
 						node=root;
 					}
 				} 
@@ -507,44 +512,44 @@ namespace TreeObjects
 		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
 		{
 			black(root); red(node);
-			while ( color(node->parent) == RED ) 
+			while ( color(node->Parent()) == RED ) 
 			{
-				if ( node->parent == node->parent->parent->left ) 
+				if ( node->Parent() == node->Parent()->Parent()->left ) 
 				{
-					TreeBase* other(node->parent->parent->right);
+					TreeBase* other(node->Parent()->Parent()->right);
 					if ( color(other) == RED ) 
 					{
-						black(node->parent);
+						black(node->Parent());
 						black(other);
-						red(node->parent->parent);
-						node=node->parent->parent;
+						red(node->Parent()->Parent());
+						node=node->Parent()->Parent();
 					} else {
-						if (node==node->parent->right ) 
+						if (node==node->Parent()->right ) 
 						{
-							node=node->parent;
+							node=node->Parent();
 							root=this->RotateLeft(root,node);
 						} 
-						black(node->parent);
-						red(node->parent->parent);
-						root=this->RotateRight( root, node->parent->parent );
+						black(node->Parent());
+						red(node->Parent()->Parent());
+						root=this->RotateRight( root, node->Parent()->Parent() );
 					}
 				} else {
-					TreeBase* other(node->parent->parent->left);
+					TreeBase* other(node->Parent()->Parent()->left);
 					if ( color(other) == RED ) 
 					{
-						black(node->parent);
+						black(node->Parent());
 						black(other);
-						red(node->parent->parent);
-						node=node->parent->parent;
+						red(node->Parent()->Parent());
+						node=node->Parent()->Parent();
 					} else {
-						if (node==node->parent->left ) 
+						if (node==node->Parent()->left ) 
 						{
-							node=node->parent;
+							node=node->Parent();
 							root=this->RotateRight(root,node);
 						}
-						black(node->parent);
-						red(node->parent->parent);
-						root=this->RotateLeft(root,node->parent->parent);
+						black(node->Parent());
+						red(node->Parent()->Parent());
+						root=this->RotateLeft(root,node->Parent()->Parent());
 					}
 				}
 			}
@@ -557,7 +562,7 @@ namespace TreeObjects
 		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
 		{
 			if (!found) return root;
-			TreeBase *p(found->parent),*l(found->left),*r(found->right);
+			TreeBase *p(found->Parent()),*l(found->left),*r(found->right);
 			TreeBase* newroot(RbBase::remove(root,found));
 			Update(found,p,true); 
 			found->left=NULL; found->right=NULL;
@@ -596,15 +601,15 @@ namespace TreeObjects
 				Y=(pfound->right->LeftMost());
 				Ycolor=(this->color(Y));
 				X=Y->right;
-				if (Y->parent!=pfound)
+				if (Y->Parent()!=pfound)
 				{
 					root=me.transplant(root,Y,Y->right);
 					Y->right=pfound->right;
-					Y->right->parent=Y;
+					Y->right->SetParent(Y);
 				}
 				root=me.transplant(root,pfound,Y);
 				Y->left=pfound->left;
-				Y->left->parent=Y;
+				Y->left->SetParent(Y);
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}

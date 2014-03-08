@@ -43,7 +43,7 @@ namespace TreeObjects
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.Data()(nd.key,(*pnode),pnode->parent,erasing);
+			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
 
 	template <>
@@ -53,7 +53,7 @@ namespace TreeObjects
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.data(nd.key,(*pnode),pnode->parent,erasing);
+			nd.data(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
 
 	template <>
@@ -63,7 +63,7 @@ namespace TreeObjects
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
-			nd.Data()(nd.key,(*pnode),pnode->parent,erasing);
+			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
 
 

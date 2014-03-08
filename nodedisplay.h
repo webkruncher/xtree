@@ -30,7 +30,7 @@
 namespace TreeDisplay
 {
 	inline int DepthFinder(TreeBase& tb,int d=0)
-		{ if (tb.parent) d=DepthFinder(*tb.parent,d+1); return d; }
+		{ if (tb.Parent()) d=DepthFinder(*tb.Parent(),d+1); return d; }
 
 	struct XPoints : vector<XPoint>
 	{
@@ -124,9 +124,9 @@ namespace TreeDisplay
 				if (k<pk) y=py+(CH*3);
 				else y=py+(CH*3)-CH;
 				double x;
-				if (parent->parent)
+				if (parent->Parent())
 				{
-					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->parent));
+					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->Parent()));
 					TreeNode<KT>& gpn(grandparentnode.Data());
 					if (gpn.moved) return;
 					double gpx(gpn.X);

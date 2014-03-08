@@ -74,7 +74,7 @@ namespace TreeDisplay
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk.Data());
-			data(key,nk,nk.parent);
+			data(key,nk,nk.Parent());
 			if (n.left) traverse(*n.left);
 			if (n.right) traverse(*n.right);
 		}
