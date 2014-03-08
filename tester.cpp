@@ -102,7 +102,7 @@ struct Advisor : TreeIntegrity::IntegrityAdvisor
 	{
 		RbSetBase<long>& rb(static_cast<RbSetBase<long>&>(node));
 		const long& key(rb);
-		cout<<key<<" "<<name<<":"<<value<<endl;
+		//cout<<key<<" "<<name<<":"<<value<<endl;
 	} 
 } Violations;
 
@@ -118,9 +118,9 @@ template <typename T>
 	bool Check(T& items,const long* numbers,const long size) 
 { 
 	using namespace std;
-	cout<<"Checking "<<dec<<size<<" numbers"<<endl;
+	//cout<<"Checking "<<dec<<size<<" numbers"<<endl;
 	set<long> checkitems;
-	cout<<"Inserting "<<dec<<size<<" numbers"<<endl;
+	//cout<<"Inserting "<<dec<<size<<" numbers"<<endl;
 	for (long j=0;j<size;j++) 
 	{
 			Insert(items,numbers[j]);
@@ -128,7 +128,7 @@ template <typename T>
 	}
 	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
 	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
-	cout<<"Erasing "<<dec<<(size/2)<<" numbers"<<endl;
+	//cout<<"Erasing "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=0;j<size/2;j++) 
 	{
 		Erase(items,numbers[j]);
@@ -136,7 +136,7 @@ template <typename T>
 	}
 	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
 	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
-	cout<<"Inserting "<<dec<<(size/2)<<" numbers"<<endl;
+	//cout<<"Inserting "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=size/2;j>=0;j--) 
 	{
 		Insert(items,numbers[j]);
@@ -144,7 +144,7 @@ template <typename T>
 	}
 	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
 	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
-	cout<<"Erasing "<<dec<<(size)<<" numbers"<<endl;
+	//cout<<"Erasing "<<dec<<(size)<<" numbers"<<endl;
 	for (long j=0;j<size;j++) 
 	{
 		Erase(items,numbers[j]);
