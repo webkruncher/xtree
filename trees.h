@@ -75,8 +75,8 @@ namespace TreeDisplay
 			const KT& key(nk);
 			VT& data(nk.Data());
 			data(key,nk,nk.Parent());
-			if (n.left) traverse(*n.left);
-			if (n.right) traverse(*n.right);
+			if (n.Left()) traverse(*n.Left());
+			if (n.Right()) traverse(*n.Right());
 		}
 		void draw(Invalid& invalid,TreeBase& n,Pixmap& bitmap)
 		{
@@ -85,8 +85,8 @@ namespace TreeDisplay
 			VT& data(nk.Data());
 			data(invalid,window,display,gc,bitmap);
 			if (data.Moved()) movement=true;
-			if (n.left) draw(invalid,*n.left,bitmap);
-			if (n.right) draw(invalid,*n.right,bitmap);
+			if (n.Left()) draw(invalid,*n.Left(),bitmap);
+			if (n.Right()) draw(invalid,*n.Right(),bitmap);
 		}
 
 	};

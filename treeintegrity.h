@@ -40,10 +40,10 @@ namespace TreeIntegrity
 	template<typename KT,typename VT> 
 		inline void PrintInOrder(TreeBase* node)
 	{
-		if (node->left) PrintInOrder<KT,VT>(node->left);
+		if (node->Left()) PrintInOrder<KT,VT>(node->Left());
 		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
-		if (node->right) PrintInOrder<KT,VT>(node->right);
+		if (node->Right()) PrintInOrder<KT,VT>(node->Right());
 	}	
 
 	template<typename KT>
@@ -106,13 +106,13 @@ namespace TreeIntegrity
 	template<typename KT>
 		inline void TestPredecessorsAndSuccessors(TreeBase* root,TreeBase* node,set<KT>& used,bool& ok)
 	{
-		if (node->left) TestPredecessorsAndSuccessors<KT>(root,node->left,used,ok);
+		if (node->Left()) TestPredecessorsAndSuccessors<KT>(root,node->Left(),used,ok);
 		if (node) 
 		{
 			TestPredecessor<KT>(root,node,used,ok);
 			TestSuccessor<KT>(root,node,used,ok);
 		}
-		if (node->right) TestPredecessorsAndSuccessors<KT>(root,node->right,used,ok);
+		if (node->Right()) TestPredecessorsAndSuccessors<KT>(root,node->Right(),used,ok);
 	}	
 
 	template<typename KT>
@@ -166,10 +166,10 @@ namespace TreeIntegrity
 				if (node.Parent())
 				{
 					if (rbc.color(&node)==RbBase::BLACK) 
-						if (node.Parent()->left==&node) ld=1; else rd=1;
+						if (node.Parent()->Left()==&node) ld=1; else rd=1;
 				}
-				if (node.left) ld+=PostOrder(*node.left);
-				if (node.right) rd+=PostOrder(*node.right);
+				if (node.Left()) ld+=PostOrder(*node.Left());
+				if (node.Right()) rd+=PostOrder(*node.Right());
 				Visit(node,ld,rd);
 				return max(ld,rd);
 			}
@@ -195,8 +195,8 @@ namespace TreeIntegrity
 				if (rbc.color(&node)==RbBase::RED) 
 				{
 					bool leftisred(false),rightisred(false);
-					if (rb.right) if (rbc.color(rb.right)==RbBase::RED) rightisred=true;
-					if (rb.left) if (rbc.color(rb.left)==RbBase::RED) leftisred=true;
+					if (rb.Right()) if (rbc.color(rb.Right())==RbBase::RED) rightisred=true;
+					if (rb.Left()) if (rbc.color(rb.Left())==RbBase::RED) leftisred=true;
 					stringstream ss;
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";

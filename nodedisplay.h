@@ -146,8 +146,8 @@ namespace TreeDisplay
 					motion(x,y);
 					Text(k,pk);
 				}
-				if (node.left and node.left->isnil()) NodeBase::operator[]("nil")+="l ";
-				if (node.right and node.right->isnil()) NodeBase::operator[]("nil")+="r";
+				if (node.Left() and node.Left()->isnil()) NodeBase::operator[]("nil")+="l ";
+				if (node.Right() and node.Right()->isnil()) NodeBase::operator[]("nil")+="r";
 			}
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
