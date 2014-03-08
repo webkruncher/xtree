@@ -126,10 +126,9 @@ namespace TreeObjects
 			if ( other->left != NULL ) other->left->parent = node;
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
-			else
-        if ( node == node->parent->left ) 
-					node->parent->left = other;
-        else node->parent->right = other;
+			else 
+				if ( node == node->parent->left ) node->parent->left = other;
+				else node->parent->right = other;
 			other->left = node;
 			node->parent = other;
 			root->parent=NULL;
@@ -145,9 +144,9 @@ namespace TreeObjects
 			if ( other->right != NULL ) other->right->parent = node;
 			other->parent = node->parent;
 			if ( node->parent == NULL ) root = other;
-			else
-        if ( node == node->parent->right ) node->parent->right = other;
-        else node->parent->left = other;
+			else 
+				if ( node == node->parent->right ) node->parent->right = other;
+				else node->parent->left = other;
 			other->right = node;
 			node->parent = other;
 			root->parent=NULL;
