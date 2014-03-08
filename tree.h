@@ -316,6 +316,11 @@ namespace TreeObjects
 			BstBase<KT>& b(static_cast<BstBase<KT>&>(*node));
 			return b;
 		}
+		operator BstBase<KT>& ()
+		{
+			BstBase<KT>& b(static_cast<BstBase<KT>&>(*node));
+			return b;
+		}
 		private:
 		TreeBase *root,*begin,*end;
 		TreeBase* Root()

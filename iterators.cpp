@@ -47,6 +47,9 @@ int main(int,char**)
 		const int& n(it);
 		cout<<n<<endl;
 	}
+	BstBase<int>& lefty(it);
+	const int& zero(lefty);
+	if (zero!=0) cout<<"Failed"<<endl;
 	return 0;
 }
 
