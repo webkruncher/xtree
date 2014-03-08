@@ -41,6 +41,9 @@
 using namespace std;
 using namespace TreeObjects;
 #include <treeintegrity.h> 
+#include <functional>
+#include <numeric>
+#include <stdexcept>
 
 #define TREEOBJECTS first
 #define STLOBJECTS second
@@ -200,9 +203,9 @@ struct Times : std::vector<std::pair<double,double> >
 	}
 };
 
+
 int main(int,char**)
 {
-	using namespace std;
 	char hash(0);
 	long N(0),T(20);
 	fscanf(stdin,"%c%ld",&hash,&N);

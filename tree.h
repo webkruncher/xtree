@@ -515,11 +515,19 @@ namespace TreeObjects
 		char Ycolor(this->color(Y));
 		if (pfound->left==NULL)
 		{
+			if (pfound->right)	
+			{
+				Y=(pfound->right->LeftMost());
+				Ycolor=(this->color(Y));
+			}
 			X=pfound->right;
 			root=me.transplant(root,pfound,pfound->right);
 		} else {
 			if (pfound->right==NULL)
 			{
+				if (pfound->left) Y=(pfound->left->RightMost());
+				else Y=pfound->RightMost();
+				Ycolor=(this->color(Y));
 				X=pfound->left;
 				root=me.transplant(root,pfound,pfound->left);
 			} else {
