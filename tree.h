@@ -37,22 +37,28 @@ namespace TreeObjects
 	struct SentinelBase
 	{
 		virtual bool isnil() { return false;}
-		virtual bool operator<(const TreeBase&) {return false;}
-		virtual bool operator==(const TreeBase&) {return false;}
-		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) {return NULL;}
-		virtual bool isBST(TreeBase* node) {return false;}
-		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) {}
-		virtual TreeBase* LeftMost(){return NULL;}
-		virtual TreeBase* RightMost(){return NULL;}
-		virtual TreeBase* Predecessor(){return NULL;}
-		virtual TreeBase* Successor(){return NULL;}
-		virtual const bool isleaf(TreeBase* node) const {return false;}
-		virtual const bool isnul(TreeBase* node) const {return true;}
+		virtual bool operator<(const SentinelBase&) {return false;}
+		virtual bool operator==(const SentinelBase&) {return false;}
+		virtual SentinelBase* insert(SentinelBase* root,SentinelBase*,char d=0) {return NULL;}
+		virtual bool isBST(SentinelBase* node) {return false;}
+		virtual void Update(SentinelBase* node,SentinelBase* pnode,bool erasing=false) {}
+		virtual SentinelBase* LeftMost(){return NULL;}
+		virtual SentinelBase* RightMost(){return NULL;}
+		virtual SentinelBase* Predecessor(){return NULL;}
+		virtual SentinelBase* Successor(){return NULL;}
+		virtual const bool isleaf(SentinelBase* node) const {return false;}
+		virtual const bool isnul(SentinelBase* node) const {return true;}
 		virtual long countnodes() {return 0;}
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node){return NULL;}
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node){return NULL;}
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound) {return NULL;}
-		virtual TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v){return NULL;}
+		virtual SentinelBase* RotateLeft(SentinelBase* root, SentinelBase* node){return NULL;}
+		virtual SentinelBase* RotateRight(SentinelBase* root, SentinelBase* node){return NULL;}
+		virtual SentinelBase* remove(SentinelBase* root,SentinelBase* pfound) {return NULL;}
+		virtual SentinelBase* transplant(SentinelBase* root,SentinelBase* u,SentinelBase* v){return NULL;}
+		virtual SentinelBase* Parent() = 0;
+		virtual void SetParent(SentinelBase* p) = 0;
+		virtual SentinelBase* Left() = 0;
+		virtual void SetLeft(SentinelBase* l) = 0;
+		virtual SentinelBase* Right() = 0;
+		virtual void SetRight(SentinelBase* r) = 0;
 	};
 
 
@@ -61,71 +67,75 @@ namespace TreeObjects
 		TreeBase() : left(NULL),right(NULL),parent(NULL) {}
 		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
 		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
-		virtual bool operator<(const TreeBase&) = 0;
-		virtual bool operator==(const TreeBase&) = 0;
-		virtual TreeBase* insert(TreeBase* root,TreeBase*,char d=0) = 0;
-		virtual bool isBST(TreeBase* node) = 0;
-		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
-		TreeBase* LeftMost();
-		TreeBase* RightMost();
-		TreeBase* Predecessor();
-		TreeBase* Successor();
-		const bool isleaf(TreeBase* node) const;
-		const bool isnul(TreeBase* node) const;
+		virtual bool operator<(const SentinelBase&) = 0;
+		virtual bool operator==(const SentinelBase&) = 0;
+		virtual SentinelBase* insert(SentinelBase* root,SentinelBase*,char d=0) = 0;
+		virtual bool isBST(SentinelBase* node) = 0;
+		virtual void Update(SentinelBase* node,SentinelBase* pnode,bool erasing=false) = 0;
+		SentinelBase* LeftMost();
+		SentinelBase* RightMost();
+		SentinelBase* Predecessor();
+		SentinelBase* Successor();
+		const bool isleaf(SentinelBase* node) const;
+		const bool isnul(SentinelBase* node) const;
 		long countnodes() ; 
-		TreeBase* RotateLeft(TreeBase* root, TreeBase* node);
-		TreeBase* RotateRight(TreeBase* root, TreeBase* node);
-		TreeBase* remove(TreeBase* root,TreeBase* pfound) = 0;
-		TreeBase* transplant(TreeBase* root,TreeBase* u,TreeBase* v);
-		TreeBase* Parent(){return parent;}
-		void SetParent(TreeBase* p){parent=p;}
-		TreeBase* Left(){return left;}
-		void SetLeft(TreeBase* l){left=l;}
-		TreeBase* Right(){return right;}
-		void SetRight(TreeBase* r){right=r;}
-		private:
-		TreeBase *parent,*left,*right;
+		SentinelBase* RotateLeft(SentinelBase* root, SentinelBase* node);
+		SentinelBase* RotateRight(SentinelBase* root, SentinelBase* node);
+		SentinelBase* remove(SentinelBase* root,SentinelBase* pfound) = 0;
+		SentinelBase* transplant(SentinelBase* root,SentinelBase* u,SentinelBase* v);
+		virtual SentinelBase* Parent(){return parent;}
+		virtual void SetParent(SentinelBase* p){parent=p;}
+		virtual SentinelBase* Left(){return left;}
+		virtual void SetLeft(SentinelBase* l){left=l;}
+		virtual SentinelBase* Right(){return right;}
+		virtual void SetRight(SentinelBase* r){right=r;}
+		private: SentinelBase *parent,*left,*right;
 	};
 
 	struct Sentinel : SentinelBase
 	{
 		virtual bool isnil() {return true;}
+		virtual void SetParent(SentinelBase*){}
+		virtual SentinelBase* Left(){return NULL;}
+		virtual void SetLeft(SentinelBase*){}
+		virtual SentinelBase* Right(){return NULL;}
+		virtual void SetRight(SentinelBase*){}
 	};
 
-	inline TreeBase* TreeBase::LeftMost()
+	inline SentinelBase* TreeBase::LeftMost()
 	{
-		TreeBase* current = this;
+		SentinelBase* current = this;
 		while (!isnul(current->Left())) current = current->Left();
 		return current;
 	}
 
-	inline TreeBase* TreeBase::RightMost()
+	inline SentinelBase* TreeBase::RightMost()
 	{
-		TreeBase* current = this;
+		SentinelBase* current = this;
 		while (!isnul(current->Right())) current = current->Right();
 		return current;
 	}
 
-	inline TreeBase* TreeBase::Predecessor()
+	inline SentinelBase* TreeBase::Predecessor()
 	{
 		if (!isnul(Left())) return Left()->RightMost();
-		TreeBase* y(Parent());
-		TreeBase* x(this);
+		SentinelBase* y(Parent());
+		SentinelBase* x(this);
 		while ((!isnul(y->Parent())) and x==y->Left()) { x=y; y=y->Parent(); }
 		return y;
 	}
 
-	inline TreeBase* TreeBase::Successor()
+	inline SentinelBase* TreeBase::Successor()
 	{
 		if (!isnul(Right())) return Right()->LeftMost();
-		TreeBase* y(Parent());
-		TreeBase* x(this);
+		SentinelBase* y(Parent());
+		SentinelBase* x(this);
 		while ((!isnul(y->Parent())) and x==y->Right()) { x=y; y=y->Parent(); }
 		return y;
 	}
 
 
-	inline const bool TreeBase::isleaf(TreeBase* node) const
+	inline const bool TreeBase::isleaf(SentinelBase* node) const
 	{
 		if 
 		(
@@ -136,7 +146,7 @@ namespace TreeObjects
 			return true; else return false;	
 	}
 
-	inline const bool TreeBase::isnul(TreeBase* node) const
+	inline const bool TreeBase::isnul(SentinelBase* node) const
 	{
 		if (!node) return true;
 		if (node->isnil()) return true;
@@ -151,10 +161,10 @@ namespace TreeObjects
 		return (leftnodes+rightnodes+1);
 	}
 
-	inline TreeBase* TreeBase::RotateLeft(TreeBase* root, TreeBase* node)
+	inline SentinelBase* TreeBase::RotateLeft(SentinelBase* root, SentinelBase* node)
 	{
 		if (!node) return root;
-		TreeBase* other(node->Right());
+		SentinelBase* other(node->Right());
 		if (!other) return root;
 		node->SetRight(other->Left());
 		if ( !isnul(other->Left()) ) other->Left()->SetParent(node);
@@ -169,10 +179,10 @@ namespace TreeObjects
 		return root;
 	}
 
-	inline TreeBase* TreeBase::RotateRight(TreeBase* root, TreeBase* node)
+	inline SentinelBase* TreeBase::RotateRight(SentinelBase* root, SentinelBase* node)
 	{
 		if (!node) return root;
-		TreeBase* other(node->Left());
+		SentinelBase* other(node->Left());
 		if (!other) return root;
 		node->SetLeft(other->Right());
 		if ( !isnul(other->Right()) ) other->Right()->SetParent(node);
@@ -194,22 +204,22 @@ namespace TreeObjects
 		struct BstBase : public TreeBase
 	{
 		BstBase(const KT _key) : key(_key) {}
-		KT minValue(TreeBase* node) 
+		KT minValue(SentinelBase* node) 
 		{
-			TreeBase* current(node);
+			SentinelBase* current(node);
 			while (current->Left()!=NULL) current=current->Left();
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*current));
 			return(nd.key);
 		}
-		KT maxValue(TreeBase* node) 
+		KT maxValue(SentinelBase* node) 
 		{
-			TreeBase* current = node;
+			SentinelBase* current = node;
 			while (current->Right() != NULL) current = current->Right();
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*current));
 			return(nd.key);
 		}
 
-		virtual bool isBST(TreeBase* node) 
+		virtual bool isBST(SentinelBase* node) 
 		{
 			if (!node) return(true);
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*node));
@@ -240,13 +250,13 @@ namespace TreeObjects
 			return NULL;
 		}
 
-		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
+		virtual void Update(SentinelBase* node,SentinelBase* pnode,bool erasing=false) { }
 
-		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
+		virtual SentinelBase* erase(SentinelBase* root,SentinelBase* found)
 		{
 			if (!found) return root;
-			TreeBase *p(found->Parent()),*l(found->Left()),*r(found->Right());
-			TreeBase* newroot(TreeBase::remove(root,found));
+			SentinelBase *p(found->Parent()),*l(found->Left()),*r(found->Right());
+			SentinelBase* newroot(TreeBase::remove(root,found));
 			found->SetLeft(NULL); found->SetRight(NULL);
 			Update(found,found->Parent(),true); 
 			Update(p,found); Update(l,found); Update(r,found);
@@ -255,7 +265,7 @@ namespace TreeObjects
 		}
 
 
-		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
+		SentinelBase* insert(SentinelBase* root,SentinelBase* node,char d=0)
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
 			node->SetParent(this);
@@ -278,17 +288,17 @@ namespace TreeObjects
 			}
 			return root;
 		}
-		virtual bool operator<(const TreeBase& _b) 
+		virtual bool operator<(const SentinelBase& _b) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
-			TreeBase& __b(const_cast<TreeBase&>(_b));
+			SentinelBase& __b(const_cast<SentinelBase&>(_b));
 			const BstBase<KT>& b(static_cast<BstBase<KT>&>(__b));
 			return a.key<b.key; 
 		}
-		virtual bool operator==(const TreeBase& _b) 
+		virtual bool operator==(const SentinelBase& _b) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
-			TreeBase& __b(const_cast<TreeBase&>(_b));
+			SentinelBase& __b(const_cast<SentinelBase&>(_b));
 			const BstBase<KT>& b(static_cast<BstBase<KT>&>(__b));
 			return a.key==b.key; 
 		}
@@ -303,17 +313,17 @@ namespace TreeObjects
 			return a.key==b;
 		}
 		operator const KT& (){return key;}
-		virtual const bool isleaf(TreeBase* node) const {return TreeBase::isleaf(node);}
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node)
+		virtual const bool isleaf(SentinelBase* node) const {return TreeBase::isleaf(node);}
+		virtual SentinelBase* RotateLeft(SentinelBase* root, SentinelBase* node)
 		{
-			TreeBase* newroot(TreeBase::RotateLeft(root,node));
+			SentinelBase* newroot(TreeBase::RotateLeft(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
 		}
 
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node)
+		virtual SentinelBase* RotateRight(SentinelBase* root, SentinelBase* node)
 		{
-			TreeBase* newroot(TreeBase::RotateRight(root,node));
+			SentinelBase* newroot(TreeBase::RotateRight(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
 		}
@@ -324,7 +334,7 @@ namespace TreeObjects
 	template <typename KT>
 		struct Iterator
 	{
-		Iterator(TreeBase* _node) : node(_node) {Invalidate();}
+		Iterator(SentinelBase* _node) : node(_node) {Invalidate();}
 		bool operator--(int)
 		{
 			if (begin==node) return false;
@@ -352,19 +362,19 @@ namespace TreeObjects
 			return b;
 		}
 		private:
-		TreeBase *root,*begin,*end;
-		TreeBase* Root()
+		SentinelBase *root,*begin,*end;
+		SentinelBase* Root()
 		{
-			TreeBase* current(node);
+			SentinelBase* current(node);
 			while (current->Parent()) current=current->Parent();
 			return current;
 		}
-		TreeBase* node;
+		SentinelBase* node;
 	};
 
-	inline TreeBase* TreeBase::transplant(TreeBase* root,TreeBase* u,TreeBase* v)
+	inline SentinelBase* TreeBase::transplant(SentinelBase* root,SentinelBase* u,SentinelBase* v)
 	{
-		TreeBase* ret(root);
+		SentinelBase* ret(root);
 		if (u->Parent()==NULL)
 		{
 			ret=v;
@@ -380,7 +390,7 @@ namespace TreeObjects
 		return ret;
 	}
 
-	inline TreeBase* TreeBase::remove(TreeBase* root,TreeBase* pfound)
+	inline SentinelBase* TreeBase::remove(SentinelBase* root,SentinelBase* pfound)
 	{
 		if (pfound->Left()==NULL)
 		{
@@ -390,15 +400,15 @@ namespace TreeObjects
 			{
 				root=transplant(root,pfound,pfound->Left());
 			} else {
-				TreeBase* y(pfound->Right()->LeftMost());
+				SentinelBase* y(pfound->Right()->LeftMost());
 				if (y->Parent()!=pfound)
 				{
 					root=transplant(root,y,y->Right());
-					y->SetRight(pfound->right);
+					y->SetRight(pfound->Right());
 					y->Right()->SetParent(y);
 				}
 				root=transplant(root,pfound,y);
-				y->SetLeft(pfound->left);
+				y->SetLeft(pfound->Left());
 				y->Left()->SetParent(y);
 			}
 		}
@@ -413,11 +423,11 @@ namespace TreeObjects
 		Bst(const KT _key,const VT _data) : BstBase<KT>(_key), data(_data) {}
 		VT& Data(){return data;}
 		protected:
-		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
+		virtual void Update(SentinelBase* node,SentinelBase* pnode,bool erasing=false) { }
 		VT data;	
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound)
+		virtual SentinelBase* remove(SentinelBase* root,SentinelBase* pfound)
 		{
-			TreeBase& me(static_cast<TreeBase&>(*this));
+			SentinelBase& me(static_cast<SentinelBase&>(*this));
 			return me.remove(root,pfound);
 		}
 	};
@@ -428,19 +438,19 @@ namespace TreeObjects
 		enum COLOR {NONE=0,RED=10,BLACK=20} ;
 		const COLOR Red() const {return RED;}
 		const COLOR Black() const {return BLACK;}
-		virtual TreeBase* red(TreeBase* n) = 0;
-		virtual TreeBase* black(TreeBase* n) = 0;
-		virtual const bool isleaf(TreeBase* node) const = 0;
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) = 0;
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) = 0;
-		virtual const COLOR color(TreeBase* n) const = 0;
-		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) = 0;
-		virtual operator TreeBase& () = 0;
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound); 
+		virtual SentinelBase* red(SentinelBase* n) = 0;
+		virtual SentinelBase* black(SentinelBase* n) = 0;
+		virtual const bool isleaf(SentinelBase* node) const = 0;
+		virtual SentinelBase* RotateLeft(SentinelBase* root, SentinelBase* node) = 0;
+		virtual SentinelBase* RotateRight(SentinelBase* root, SentinelBase* node) = 0;
+		virtual const COLOR color(SentinelBase* n) const = 0;
+		virtual void Update(SentinelBase* node,SentinelBase* pnode,bool erasing=false) = 0;
+		virtual operator SentinelBase& () = 0;
+		virtual SentinelBase* remove(SentinelBase* root,SentinelBase* pfound); 
 
-		void Rotator(TreeBase* node) {Update(node,node->Parent());}
+		void Rotator(SentinelBase* node) {Update(node,node->Parent());}
 
-		TreeBase* RedAndBlackDelete(TreeBase* root, TreeBase* node)
+		SentinelBase* RedAndBlackDelete(SentinelBase* root, SentinelBase* node)
 		{
 			if (!node) return root;
 			while ( (node!=root) and (color(node) == BLACK) ) 
@@ -448,7 +458,7 @@ namespace TreeObjects
 				if (!node->Parent()) continue;
 				if ( node == node->Parent()->Left() ) 
 				{
-					TreeBase* other(node->Parent()->Right());
+					SentinelBase* other(node->Parent()->Right());
 					if ( color(other) == RED ) 
 					{
 						black(other);
@@ -479,7 +489,7 @@ namespace TreeObjects
 				if (!node->Parent()) continue;
 				if ( node == node->Parent()->Right() ) 
 				{
-					TreeBase* other(node->Parent()->Left());
+					SentinelBase* other(node->Parent()->Left());
 					if ( color(other) == RED ) 
 					{
 						black(other);
@@ -512,14 +522,14 @@ namespace TreeObjects
 			return (root);
 		}
 
-		TreeBase* RedAndBlackInsert(TreeBase* root, TreeBase* node)
+		SentinelBase* RedAndBlackInsert(SentinelBase* root, SentinelBase* node)
 		{
 			black(root); red(node);
 			while ( color(node->Parent()) == RED ) 
 			{
 				if ( node->Parent() == node->Parent()->Parent()->Left() ) 
 				{
-					TreeBase* other(node->Parent()->Parent()->Right());
+					SentinelBase* other(node->Parent()->Parent()->Right());
 					if ( color(other) == RED ) 
 					{
 						black(node->Parent());
@@ -537,7 +547,7 @@ namespace TreeObjects
 						root=this->RotateRight( root, node->Parent()->Parent() );
 					}
 				} else {
-					TreeBase* other(node->Parent()->Parent()->Left());
+					SentinelBase* other(node->Parent()->Parent()->Left());
 					if ( color(other) == RED ) 
 					{
 						black(node->Parent());
@@ -562,11 +572,11 @@ namespace TreeObjects
 
 
 
-		virtual TreeBase* erase(TreeBase* root,TreeBase* found)
+		virtual SentinelBase* erase(SentinelBase* root,SentinelBase* found)
 		{
 			if (!found) return root;
-			TreeBase *p(found->Parent()),*l(found->Left()),*r(found->Right());
-			TreeBase* newroot(RbBase::remove(root,found));
+			SentinelBase *p(found->Parent()),*l(found->Left()),*r(found->Right());
+			SentinelBase* newroot(RbBase::remove(root,found));
 			Update(found,p,true); 
 			found->SetLeft(NULL); found->SetRight(NULL); 
 			if (newroot) Update(newroot,newroot); 
@@ -577,11 +587,11 @@ namespace TreeObjects
 		COLOR clr; // color enum
 	};
 
-	inline TreeBase* RbBase::remove(TreeBase* root,TreeBase* pfound)
+	inline SentinelBase* RbBase::remove(SentinelBase* root,SentinelBase* pfound)
 	{
-		TreeBase& me(static_cast<TreeBase&>(*this));
-		TreeBase* Y(pfound);
-		TreeBase* X(NULL);
+		SentinelBase& me(static_cast<SentinelBase&>(*this));
+		SentinelBase* Y(pfound);
+		SentinelBase* X(NULL);
 		char Ycolor(this->color(Y));
 		if (pfound->Left()==NULL)
 		{
@@ -627,7 +637,7 @@ namespace TreeObjects
 		RbMapBase(const KT _key) : Bst<KT,VT>(_key) {}
 		RbMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
 
-		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
+		SentinelBase* insert(SentinelBase* root,SentinelBase* node,char d=0)
 		{
 			root=Bst<KT,VT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
@@ -635,19 +645,19 @@ namespace TreeObjects
 			return this->RedAndBlackInsert(root,node);
 		}
 		
-		virtual TreeBase* red(TreeBase* n) = 0;
-		virtual TreeBase* black(TreeBase* n) = 0;
-		virtual const COLOR color(TreeBase* n) const = 0;
+		virtual SentinelBase* red(SentinelBase* n) = 0;
+		virtual SentinelBase* black(SentinelBase* n) = 0;
+		virtual const COLOR color(SentinelBase* n) const = 0;
 
-		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) 
+		virtual const bool isleaf(SentinelBase* node) const {return BstBase<KT>::isleaf(node);}
+		virtual SentinelBase* RotateLeft(SentinelBase* root, SentinelBase* node) 
 			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) 
+		virtual SentinelBase* RotateRight(SentinelBase* root, SentinelBase* node) 
 			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
-		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
-		virtual TreeBase* erase(TreeBase* root,TreeBase* found){return RbBase::erase(root,found);}
-		virtual operator TreeBase& () {return *this;}
+		virtual void Update(SentinelBase* node,SentinelBase* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
+		virtual SentinelBase* remove(SentinelBase* root,SentinelBase* pfound){return TreeBase::remove(root,pfound);}
+		virtual SentinelBase* erase(SentinelBase* root,SentinelBase* found){return RbBase::erase(root,found);}
+		virtual operator SentinelBase& () {return *this;}
 	};
 
 
@@ -656,7 +666,7 @@ namespace TreeObjects
 	{
 		RbSetBase(const KT _key) : BstBase<KT>(_key) {}
 
-		TreeBase* insert(TreeBase* root,TreeBase* node,char d=0)
+		SentinelBase* insert(SentinelBase* root,SentinelBase* node,char d=0)
 		{
 			root=BstBase<KT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
@@ -664,19 +674,19 @@ namespace TreeObjects
 			return this->RedAndBlackInsert(root,node);
 		}
 		
-		virtual TreeBase* red(TreeBase* n) = 0;
-		virtual TreeBase* black(TreeBase* n) = 0;
-		virtual const COLOR color(TreeBase* n) const = 0;
+		virtual SentinelBase* red(SentinelBase* n) = 0;
+		virtual SentinelBase* black(SentinelBase* n) = 0;
+		virtual const COLOR color(SentinelBase* n) const = 0;
 
-		virtual const bool isleaf(TreeBase* node) const {return BstBase<KT>::isleaf(node);}
-		virtual TreeBase* RotateLeft(TreeBase* root, TreeBase* node) 
+		virtual const bool isleaf(SentinelBase* node) const {return BstBase<KT>::isleaf(node);}
+		virtual SentinelBase* RotateLeft(SentinelBase* root, SentinelBase* node) 
 			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
-		virtual TreeBase* RotateRight(TreeBase* root, TreeBase* node) 
+		virtual SentinelBase* RotateRight(SentinelBase* root, SentinelBase* node) 
 			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
-		virtual void Update(TreeBase* node,TreeBase* pnode,bool erasing=false) { }
-		virtual TreeBase* remove(TreeBase* root,TreeBase* pfound){return TreeBase::remove(root,pfound);}
-		virtual TreeBase* erase(TreeBase* root,TreeBase* found){return RbBase::erase(root,found);}
-		virtual operator TreeBase& () {return *this;}
+		virtual void Update(SentinelBase* node,SentinelBase* pnode,bool erasing=false) { }
+		virtual SentinelBase* remove(SentinelBase* root,SentinelBase* pfound){return SentinelBase::remove(root,pfound);}
+		virtual SentinelBase* erase(SentinelBase* root,SentinelBase* found){return RbBase::erase(root,found);}
+		virtual operator SentinelBase& () {return *this;}
 	};
 
 	template <typename KT,typename VT>
@@ -687,21 +697,21 @@ namespace TreeObjects
 		RbMap(const KT _key) : TB(_key) {}
 		RbMap(const KT _key,const VT _data) : TB(_key,_data) {}
 
-		virtual TreeBase* red(TreeBase* n) 
+		virtual SentinelBase* red(SentinelBase* n) 
 		{ 
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Red();
 			return n;
 		}
-		virtual TreeBase* black(TreeBase* n) 
+		virtual SentinelBase* black(SentinelBase* n) 
 		{ 
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
 			return n;
 		}
-		virtual const RbBase::COLOR color(TreeBase* n) const
+		virtual const RbBase::COLOR color(SentinelBase* n) const
 		{
 			if (!n) return RbBase::NONE; 
 			TB& nd(static_cast<TB&>(*n)); 
@@ -714,21 +724,21 @@ namespace TreeObjects
 	{
 		typedef RbSetBase<KT> TB;
 		RbSet(const KT _key) : TB(_key) {}
-		virtual TreeBase* red(TreeBase* n) 
+		virtual SentinelBase* red(SentinelBase* n) 
 		{ 
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Red();
 			return n;
 		}
-		virtual TreeBase* black(TreeBase* n) 
+		virtual SentinelBase* black(SentinelBase* n) 
 		{ 
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
 			return n;
 		}
-		virtual const RbBase::COLOR color(TreeBase* n) const
+		virtual const RbBase::COLOR color(SentinelBase* n) const
 		{
 			if (!n) return RbBase::NONE; 
 			TB& nd(static_cast<TB&>(*n)); 

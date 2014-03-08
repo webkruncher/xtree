@@ -37,7 +37,7 @@ using namespace TreeDisplay;
 namespace TreeObjects
 {
 	template <>
-		void Bst<double,TreeNode<double> >::Update(TreeBase* node,TreeBase* pnode,bool erasing)
+		void Bst<double,TreeNode<double> >::Update(SentinelBase* node,SentinelBase* pnode,bool erasing)
 	{
 			typedef double KT;
 			typedef TreeNode<KT> VT ;
@@ -47,7 +47,7 @@ namespace TreeObjects
 	}
 
 	template <>
-		void Bst<int,TreeNode<int> >::Update(TreeBase* node,TreeBase* pnode,bool erasing)
+		void Bst<int,TreeNode<int> >::Update(SentinelBase* node,SentinelBase* pnode,bool erasing)
 	{
 			typedef int KT;
 			typedef TreeNode<KT> VT ;
@@ -57,7 +57,7 @@ namespace TreeObjects
 	}
 
 	template <>
-		void Bst<string,TreeNode<string> >::Update(TreeBase* node,TreeBase* pnode,bool erasing)
+		void Bst<string,TreeNode<string> >::Update(SentinelBase* node,SentinelBase* pnode,bool erasing)
 	{
 			typedef string KT;
 			typedef TreeNode<KT> VT ;
@@ -67,7 +67,7 @@ namespace TreeObjects
 	}
 
 
-	template <> TreeBase* RbMap<int,TreeNode<int> >::red(TreeBase* n)
+	template <> SentinelBase* RbMap<int,TreeNode<int> >::red(SentinelBase* n)
 	{
 		if (!n) return n; 
 		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
@@ -76,7 +76,7 @@ namespace TreeObjects
 		return n;
 	}
 
-	template <> TreeBase* RbMap<int,TreeNode<int> >::black(TreeBase* n)
+	template <> SentinelBase* RbMap<int,TreeNode<int> >::black(SentinelBase* n)
 	{
 		if (!n) return n; 
 		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
@@ -85,7 +85,7 @@ namespace TreeObjects
 		return n;
 	}
 
-	template <> TreeBase* RbMap<double,TreeNode<double> >::red(TreeBase* n)
+	template <> SentinelBase* RbMap<double,TreeNode<double> >::red(SentinelBase* n)
 	{
 		if (!n) return n; 
 		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
@@ -94,7 +94,7 @@ namespace TreeObjects
 		return n;
 	}
 
-	template <> TreeBase* RbMap<double,TreeNode<double> >::black(TreeBase* n)
+	template <> SentinelBase* RbMap<double,TreeNode<double> >::black(SentinelBase* n)
 	{
 		if (!n) return n; 
 		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
@@ -103,7 +103,7 @@ namespace TreeObjects
 		return n;
 	}
 
-	template <> TreeBase* RbMap<string,TreeNode<string> >::red(TreeBase* n)
+	template <> SentinelBase* RbMap<string,TreeNode<string> >::red(SentinelBase* n)
 	{
 		if (!n) return n; 
 		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
@@ -112,7 +112,7 @@ namespace TreeObjects
 		return n;
 	}
 
-	template <> TreeBase* RbMap<string,TreeNode<string> >::black(TreeBase* n)
+	template <> SentinelBase* RbMap<string,TreeNode<string> >::black(SentinelBase* n)
 	{
 		if (!n) return n; 
 		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
@@ -216,7 +216,7 @@ namespace TreeDisplay
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
 				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
-				TreeBase* newroot(nk.erase(root,removal));
+				SentinelBase* newroot(nk.erase(root,removal));
 				removal=NULL;
 
 				//if (newroot==root) cout<<"Root node is unchanged"<<endl; cout.flush();
@@ -292,12 +292,12 @@ namespace TreeDisplay
 					if (!removing)
 					{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
-						TreeBase* n(generate(next.second,tn));
+						SentinelBase* n(generate(next.second,tn));
 						if (!root) waitfor=updateloop+10;
 						if (!root) root=n;  
 							else 
 						{
-							TreeBase* nr(root->insert(root,n));
+							SentinelBase* nr(root->insert(root,n));
 							if (nr) 
 							{
 								//if (root!=nr) cout<<"The root node rotated"<<endl;

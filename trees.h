@@ -50,12 +50,12 @@ namespace TreeDisplay
 			XFillRectangle(display,bitmap,gc,0,0,ScreenWidth,ScreenHeight);
 			if (root) draw(invalid,*root,bitmap); 
 		}
-		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
+		virtual SentinelBase* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
 		virtual void update() { UpdateTree(); }
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
 		bool stop,removing;
-		virtual bool CheckIntegrity(TreeBase* root) { return TreeIntegrity::BstIntegrity<KT>(root,used); }
+		virtual bool CheckIntegrity(SentinelBase* root) { return TreeIntegrity::BstIntegrity<KT>(root,used); }
 		private:
 		void UpdateTree();
 		void Deletions();
@@ -65,10 +65,10 @@ namespace TreeDisplay
 		int flipcounter;
 		set<KT> used;
 		unsigned long updateloop,waitfor;
-		TreeBase* root,*removal;
+		SentinelBase* root,*removal;
 		Invalid invalid;
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
-		void traverse(TreeBase& n)
+		void traverse(SentinelBase& n)
 		{
 			movement=false;
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
@@ -78,7 +78,7 @@ namespace TreeDisplay
 			if (n.Left()) traverse(*n.Left());
 			if (n.Right()) traverse(*n.Right());
 		}
-		void draw(Invalid& invalid,TreeBase& n,Pixmap& bitmap)
+		void draw(Invalid& invalid,SentinelBase& n,Pixmap& bitmap)
 		{
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
@@ -98,20 +98,20 @@ namespace TreeDisplay
 		typedef TreeNode<KT> VT ;
 		RbMapCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: TreeCanvas<KT>(_display,_window,_gc,_ScreenWidth,_ScreenHeight) {}
-		virtual TreeBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbMap<KT,VT>(key,treenode); }
-		virtual bool CheckIntegrity(TreeBase* root)
+		virtual SentinelBase* generate(KT& key,TreeNode<KT>& treenode) { return new RbMap<KT,VT>(key,treenode); }
+		virtual bool CheckIntegrity(SentinelBase* root)
 		{
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;
 			return TreeIntegrity::RedBlackIntegrity<KT>(root,*this);
 		}
-		void clear(TreeBase& node,string name)
+		void clear(SentinelBase& node,string name)
 		{
 			RbMapBase<KT,VT>& rb(static_cast<RbMapBase<KT,VT>&>(node));
 			VT& data(rb.Data());
 			map<string,string>::iterator it(data.find(name));
 			if (it!=data.end()) data.erase(it);
 		}
-		void message(TreeBase& node,string name,string value) 
+		void message(SentinelBase& node,string name,string value) 
 		{
 			RbMapBase<KT,VT>& rb(static_cast<RbMapBase<KT,VT>&>(node));
 			VT& data(rb.Data());

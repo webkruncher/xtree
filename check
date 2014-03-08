@@ -1,0 +1,4 @@
+
+make tester
+cat random.10000.txt | tester 
+./iterators
