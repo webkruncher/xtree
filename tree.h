@@ -264,10 +264,13 @@ namespace TreeObjects
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(TreeBase::remove(root,found));
 			found->SetLeft(NULL); found->SetRight(NULL);
-			if (!root->isnul(found)) Update(found,found->Parent(),true); 
-			if (!root->isnul(p)) Update(p,found); 
-			if (!root->isnul(l)) Update(l,found); 
-			if (!root->isnul(r)) Update(r,found); 
+			if (newroot)
+			{
+				if (!newroot->isnul(found)) Update(found,found->Parent(),true); 
+				if (!newroot->isnul(p)) Update(p,found); 
+				if (!newroot->isnul(l)) Update(l,found); 
+				if (!newroot->isnul(r)) Update(r,found); 
+			}
 			delete found;
 			return newroot;
 		}
@@ -427,7 +430,7 @@ namespace TreeObjects
 				y->Left()->SetParent(y);
 			}
 		}
-		//if (root->isnil()) return NULL;
+		if (root->isnil()) return NULL;
 		return root;
 	}
 
@@ -593,10 +596,13 @@ namespace TreeObjects
 			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(RbBase::remove(root,found));
-			if (!root->isnul(found)) Update(found,p,true); 
+			if (newroot)
+			{
+				if (!root->isnul(found)) Update(found,p,true); 
+				if (!root->isnul(newroot)) Update(newroot,newroot); 
+				if (!root->isnul(l)) Update(l,p); if (!root->isnul(r)) Update(r,p);
+			}
 			found->SetLeft(NULL); found->SetRight(NULL);
-			if (!root->isnul(newroot)) Update(newroot,newroot); 
-			if (!root->isnul(l)) Update(l,p); if (!root->isnul(r)) Update(r,p);
 			delete found;
 			return newroot;
 		}

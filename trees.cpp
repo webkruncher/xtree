@@ -258,9 +258,12 @@ namespace TreeDisplay
 
 				if (newroot!=root) 
 				{
-					//cout<<"Root node is different"<<endl;
-					root=newroot;
-					if (root) root->SetParent(this);
+					//cout<<"Root node is different"<<endl;	
+					if (newroot and !newroot->isnil())
+					{
+						root=newroot;
+						if (root) root->SetParent(this);
+					} else root=NULL;
 				}
 				if (!root)	
 				{

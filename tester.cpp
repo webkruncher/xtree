@@ -73,6 +73,8 @@ template <typename T>
 	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
 	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
+	for (long j=0;j<size;j++) Insert(items,numbers[j]);
+	for (long j=0;j<size;j++) Erase(items,numbers[j]);
 }
 
 void TestTreeSet(const long* numbers,const long size)
