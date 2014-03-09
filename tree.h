@@ -27,9 +27,6 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
-#include <iostream>
-using namespace std;
-
 namespace TreeObjects
 {
 	#define BREAKPOINT asm ("int $0X03") ; 
@@ -454,7 +451,7 @@ namespace TreeObjects
 
 	struct RbBase 
 	{
-		enum COLOR {NONE=0,RED=10,BLACK=20} ;
+		enum COLOR {RED=10,BLACK=20} ;
 		const COLOR Red() const {return RED;}
 		const COLOR Black() const {return BLACK;}
 		virtual Trunk* red(Trunk* n) = 0;
@@ -543,7 +540,8 @@ namespace TreeObjects
 
 		Trunk* RedAndBlackInsert(Trunk* root, Trunk* node)
 		{
-			black(root); red(node);
+			black(root); 
+			red(node);
 			while ( color(node->Parent()) == RED ) 
 			{
 				if ( node->Parent() == node->Parent()->Parent()->Left() ) 
@@ -658,6 +656,7 @@ namespace TreeObjects
 	{
 		RbMapBase(Trunk& _sentinel,const KT _key) : Bst<KT,VT>(_sentinel,_key) {}
 		RbMapBase(Trunk& _sentinel,const KT _key,const VT _data) : Bst<KT,VT>(_sentinel,_key,_data) {}
+		virtual void DisplayColor(const unsigned long ) {}
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
@@ -687,6 +686,7 @@ namespace TreeObjects
 		struct RbSetBase : public BstBase<KT>, RbBase
 	{
 		RbSetBase(Trunk& _sentinel,const KT _key) : BstBase<KT>(_sentinel,_key) {}
+		virtual void DisplayColor(const unsigned long ) {}
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
@@ -718,6 +718,7 @@ namespace TreeObjects
 
 		RbMap(Trunk& _sentinel,const KT _key) : TB(_sentinel,_key) {}
 		RbMap(Trunk& _sentinel,const KT _key,const VT _data) : TB(_sentinel,_key,_data) {}
+		void DisplayColor(const unsigned long ) {}
 
 		virtual Trunk* red(Trunk* n) 
 		{ 
@@ -726,6 +727,7 @@ namespace TreeObjects
 			nd.clr=this->Red();
 			if (!n->Left()) n->SetLeft(this->GetNil());
 			if (!n->Right()) n->SetRight(this->GetNil());
+			nd.DisplayColor(0X800000);
 			this->Update(n,n->Parent());
 			return n;
 		}
@@ -736,6 +738,7 @@ namespace TreeObjects
 			nd.clr=this->Black();
 			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
 			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			nd.DisplayColor(0X000000);
 			this->Update(n,n->Parent());
 			return n;
 		}

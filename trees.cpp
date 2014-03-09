@@ -69,84 +69,9 @@ namespace TreeObjects
 			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
 
+	template <> void RbMap<int,TreeNode<int> >::DisplayColor(const unsigned long color)
+		{ Data()(color); }
 
-	template <> Trunk* RbMap<int,TreeNode<int> >::red(Trunk* n)
-	{
-		if (!n) return n; 
-		if (n->isnil()) return n; 
-		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
-		nd.clr=RED;
-		nd.data(0X800000); 
-			if (!n->Left()) n->SetLeft(this->GetNil());
-			if (!n->Right()) n->SetRight(this->GetNil());
-			this->Update(n,n->Parent());
-		return n;
-	}
-
-	template <> Trunk* RbMap<int,TreeNode<int> >::black(Trunk* n)
-	{
-		if (!n) return n; 
-		if (n->isnil()) return n; 
-		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
-		nd.clr=BLACK;
-		nd.data(0X00000); 
-			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
-			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
-			this->Update(n,n->Parent());
-		return n;
-	}
-
-	template <> Trunk* RbMap<double,TreeNode<double> >::red(Trunk* n)
-	{
-		if (!n) return n; 
-		if (n->isnil()) return n; 
-		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
-		nd.clr=RED;
-		nd.data(0X800000); 
-			if (!n->Left()) n->SetLeft(this->GetNil());
-			if (!n->Right()) n->SetRight(this->GetNil());
-			this->Update(n,n->Parent());
-		return n;
-	}
-
-	template <> Trunk* RbMap<double,TreeNode<double> >::black(Trunk* n)
-	{
-		if (!n) return n; 
-		if (n->isnil()) return n; 
-		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
-		nd.clr=BLACK;
-		nd.data(0X00000); 
-			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
-			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
-			this->Update(n,n->Parent());
-		return n;
-	}
-
-	template <> Trunk* RbMap<string,TreeNode<string> >::red(Trunk* n)
-	{
-		if (!n) return n; 
-		if (n->isnil()) return n; 
-		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
-		nd.clr=RED;
-		nd.data(0X800000); 
-			if (!n->Left()) n->SetLeft(this->GetNil());
-			if (!n->Right()) n->SetRight(this->GetNil());
-			this->Update(n,n->Parent());
-		return n;
-	}
-
-	template <> Trunk* RbMap<string,TreeNode<string> >::black(Trunk* n)
-	{
-		if (!n) return n; 
-		if (n->isnil()) return n; 
-		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
-		nd.clr=BLACK;
-		nd.data(0X00000); 
-			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
-			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
-			this->Update(n,n->Parent());
-		return n;
-	}
 }
 
 namespace TreeDisplay
