@@ -65,9 +65,13 @@ void Erase(TreeObjects::Set<long>& items,const long number) { items.erase(number
 template <typename T>
 	void Test(T& items,const long* numbers,const long size) 
 { 
+	//cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Insert(items,numbers[j]);
+	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
+	//cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
+	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
 }
 
@@ -166,12 +170,14 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 {
 	timespec t1,t2;
 	double StlTime,TreeObjectsTime;
+	//cerr<<"Testing TreeObjects with "<<N<<" numbers"<<endl;
 
 	clock_gettime(CLOCK_MONOTONIC,&t1);
 	TestTreeSet(numbers,N);
 	clock_gettime(CLOCK_MONOTONIC,&t2);
 	TreeObjectsTime=timedifference(t2,t1);
 
+	//cerr<<"Testing STL with "<<N<<" numbers"<<endl;
 	clock_gettime(CLOCK_MONOTONIC,&t1);
 	TestStlSet(numbers,N);
 	clock_gettime(CLOCK_MONOTONIC,&t2);
@@ -180,6 +186,7 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 	ret.TREEOBJECTS=TreeObjectsTime;
 	ret.STLOBJECTS=StlTime;
 
+	//cerr<<"IntegrityCheck: "<<N<<" numbers"<<endl;
 	if (!IntegrityCheck(numbers,N))
 		std::cout<<"Integrity check failed"<<std::endl;
 
@@ -213,6 +220,7 @@ int main(int,char**)
 	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
 	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
 
+
 	Times alltimes;
 	for (int t=0;t<T;t++) alltimes.push_back(TestBoth(numbers,N));	
 	free(numbers);
@@ -235,6 +243,7 @@ int main(int,char**)
 	cout<<"Testing with "<<N<<" random generated numbers, average times after "<<T<<" iterations:"<<endl;
 	cout<<setw(14)<<right<<"STL:"<<setprecision(3)<<setw(10)<<fixed<<Averages.STLOBJECTS<<" seconds"<<endl;
 	cout<<setw(14)<<right<<"TreeObjects:"<<setprecision(3)<<setw(10)<<fixed<<Averages.TREEOBJECTS<<" seconds"<<endl;
+	cout.flush();
 	string resulttext;
 	if (Averages.STLOBJECTS>Averages.TREEOBJECTS) resulttext="The Tree Objects set was ";
 	else resulttext="The std::set was ";

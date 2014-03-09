@@ -260,12 +260,14 @@ namespace TreeObjects
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
-			if (!found) return root;
+			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(TreeBase::remove(root,found));
-			found->SetLeft(newroot->GetNil()); found->SetRight(newroot->GetNil());
-			Update(found,found->Parent(),true); 
-			Update(p,found); Update(l,found); Update(r,found);
+			found->SetLeft(NULL); found->SetRight(NULL);
+			if (!root->isnul(found)) Update(found,found->Parent(),true); 
+			if (!root->isnul(p)) Update(p,found); 
+			if (!root->isnul(l)) Update(l,found); 
+			if (!root->isnul(r)) Update(r,found); 
 			delete found;
 			return newroot;
 		}
@@ -466,10 +468,10 @@ namespace TreeObjects
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			if (!node) return root;
-			while ( (node!=root) and (color(node) == BLACK) ) 
+			if (root->isnul(node)) return root;
+			while ( (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
 			{
-				if (!node->Parent()) continue;
+				if (root->isnul(node->Parent())) continue;
 				if ( node == node->Parent()->Left() ) 
 				{
 					Trunk* other(node->Parent()->Right());
@@ -480,7 +482,7 @@ namespace TreeObjects
 						root=this->RotateLeft(root,node->Parent());
 						other=node->Parent()->Right();
 					}
-					if (!other) {node=node->Parent();continue;}
+					if (root->isnul(other)) {node=node->Parent();continue;}
 					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )
 					{
 						red(other);
@@ -500,7 +502,7 @@ namespace TreeObjects
 						node=root;
 					}
 				} 
-				if (!node->Parent()) continue;
+				if (root->isnul(node->Parent())) continue;
 				if ( node == node->Parent()->Right() ) 
 				{
 					Trunk* other(node->Parent()->Left());
@@ -511,7 +513,7 @@ namespace TreeObjects
 						root=this->RotateRight(root,node->Parent());
 						other=node->Parent()->Left();
 					}
-					if (!other) {node=node->Parent();continue;}
+					if (root->isnul(other)) {node=node->Parent();continue;}
 					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )
 					{
 						red(other);
@@ -580,14 +582,6 @@ namespace TreeObjects
 					}
 				}
 			}
-			if (color(node)==RED)
-			{
-				//if (!node->Left()) node->SetLeft(node->GetNil());
-				//if (!node->Right()) node->SetRight(node->GetNil());
-			} else {
-				//if (!root->isnul(node->Left())) if (node->Left()->isnil()) node->SetLeft(NULL);
-				//if (!root->isnul(node->Right())) if (node->Right()->isnil()) node->SetRight(NULL);
-			}
 			return black(root);
 		}
 
@@ -596,13 +590,13 @@ namespace TreeObjects
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
-			if (!found) return root;
+			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(RbBase::remove(root,found));
-			Update(found,p,true); 
-			found->SetLeft(root->GetNil()); found->SetRight(root->GetNil()); 
-			if (newroot) Update(newroot,newroot); 
-			if (l) Update(l,p); if (r) Update(r,p);
+			if (!root->isnul(found)) Update(found,p,true); 
+			found->SetLeft(NULL); found->SetRight(NULL);
+			if (!root->isnul(newroot)) Update(newroot,newroot); 
+			if (!root->isnul(l)) Update(l,p); if (!root->isnul(r)) Update(r,p);
 			delete found;
 			return newroot;
 		}
@@ -741,7 +735,7 @@ namespace TreeObjects
 		}
 		virtual const RbBase::COLOR color(Trunk* n) const
 		{
-			if (!n) return RbBase::NONE; 
+			if (!n) return RbBase::BLACK; 
 			TB& nd(static_cast<TB&>(*n)); 
 			return nd.clr;
 		}
@@ -774,7 +768,7 @@ namespace TreeObjects
 		}
 		virtual const RbBase::COLOR color(Trunk* n) const
 		{
-			if (!n) return RbBase::NONE; 
+			if (!n) return RbBase::BLACK; 
 			TB& nd(static_cast<TB&>(*n)); 
 			return nd.clr;
 		}
