@@ -69,8 +69,9 @@ namespace TreeObjects
 			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
 
-	template <> void RbMap<int,TreeNode<int> >::DisplayColor(const unsigned long color)
-		{ Data()(color); }
+	template <> void RbMap<int,TreeNode<int> >::DisplayColor(const unsigned long color) { Data()(color); }
+	template <> void RbMap<double,TreeNode<double> >::DisplayColor(const unsigned long color) { Data()(color); }
+	template <> void RbMap<string,TreeNode<string> >::DisplayColor(const unsigned long color) { Data()(color); }
 
 }
 
