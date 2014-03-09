@@ -121,6 +121,7 @@ namespace TreeIntegrity
 	template<typename KT>
 		inline bool BstIntegrity(Trunk* root,set<KT>& used)
 	{
+			bool ok(true);
 			if (!root) return true;
 			if (root->isnil()) return true;
 			BstBase<KT>& rk(static_cast<BstBase<KT>&>(*root));
@@ -128,21 +129,24 @@ namespace TreeIntegrity
 			KT minvalue(rk.minValue(root));
 			KT rootvalue(rk);
 			bool isbst(root->isBST(root));
-			//cout<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
-			//cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
-			//cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
-			//cout<<"isBST:"<<boolalpha<<isbst;
-			//cout<<"; Used: Min:"<<*used.begin();
-			//cout<<", Max:"<<*used.rbegin()<<endl;
-			//cout.flush();
-			if (minvalue!=(*used.begin())) {cout<<("Min check failed")<<endl; return false;}
-			if (maxvalue!=(*used.rbegin())) {cout<<("Max check failed")<<endl; return false;}
-			if (!isbst) {cout<<("isBST failed")<<endl; return false;}
+			if (minvalue!=(*used.begin())) {cout<<("Min check failed")<<endl; ok= false;}
+			if (maxvalue!=(*used.rbegin())) {cout<<("Max check failed")<<endl; ok= false;}
+			if (!isbst) {cout<<("isBST failed")<<endl; ok= false;}
 			long ttl(root->countnodes());
-			if (ttl!=used.size()) {cout<<("Wrong number of nodes counted")<<endl; return false;}
-			//cout<<" Total:"<<ttl<<" == "<<used.size()<<endl;
-			bool ok(true);
-			TestPredecessorsAndSuccessors<KT>(root,root,used,ok);
+			if (ttl!=used.size()) ok=false;
+			if (ok) TestPredecessorsAndSuccessors<KT>(root,root,used,ok);
+			if (!ok) 
+			{
+				cout<<("Wrong number of nodes counted")<<endl; 
+				cout<<" Total:"<<ttl<<" != "<<used.size()<<endl;
+				cout<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
+				cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
+				cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
+				cout<<"isBST:"<<boolalpha<<isbst;
+				cout<<"; Used: Min:"<<*used.begin();
+				cout<<", Max:"<<*used.rbegin()<<endl;
+				cout.flush();
+			}
 			return ok;
 	}
 
