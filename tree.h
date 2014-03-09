@@ -27,8 +27,13 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+#include <iostream>
+using namespace std;
+
 namespace TreeObjects
 {
+	#define BREAKPOINT asm ("int $0X03") ; 
+
 	#ifndef NULL
 	#define NULL 0
 	#endif
@@ -36,7 +41,13 @@ namespace TreeObjects
 	struct TreeBase;
 	struct Trunk
 	{
-		virtual bool isnil() { return false;}
+		virtual const bool isnil()  = 0;
+		const bool isnul(Trunk* node)  
+		{
+			if (!node) return true;
+			if (node->isnil()) return true;
+			return false;	
+		}
 		virtual bool operator<(const Trunk&) {return false;}
 		virtual bool operator==(const Trunk&) {return false;}
 		virtual Trunk* insert(Trunk* root,Trunk*,char d=0) {return NULL;}
@@ -47,60 +58,67 @@ namespace TreeObjects
 		virtual Trunk* Predecessor(){return NULL;}
 		virtual Trunk* Successor(){return NULL;}
 		virtual const bool isleaf(Trunk* node) const {return false;}
-		virtual const bool isnul(Trunk* node) const {return true;}
 		virtual long countnodes() {return 0;}
-		virtual Trunk* RotateLeft(Trunk* root, Trunk* node){return NULL;}
-		virtual Trunk* RotateRight(Trunk* root, Trunk* node){return NULL;}
-		virtual Trunk* remove(Trunk* root,Trunk* pfound) {return NULL;}
-		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v){return NULL;}
+		virtual Trunk* RotateLeft(Trunk* root, Trunk* node){return root;}
+		virtual Trunk* RotateRight(Trunk* root, Trunk* node){return root;}
+		virtual Trunk* remove(Trunk* root,Trunk* pfound) {return root;}
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v){return root;}
 		virtual Trunk* Parent() = 0;
 		virtual void SetParent(Trunk* p) = 0;
 		virtual Trunk* Left() = 0;
 		virtual void SetLeft(Trunk* l) = 0;
 		virtual Trunk* Right() = 0;
 		virtual void SetRight(Trunk* r) = 0;
+		virtual Trunk* GetNil() = 0;
 	};
 
 
 	struct TreeBase : Trunk
 	{
-		TreeBase() : left(NULL),right(NULL),parent(NULL) {}
-		TreeBase(const TreeBase& a) : parent(a.parent), left(a.left), right(a.right) {}
-		virtual ~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
-		virtual bool operator<(const Trunk&) = 0;
-		virtual bool operator==(const Trunk&) = 0;
-		virtual Trunk* insert(Trunk* root,Trunk*,char d=0) = 0;
-		virtual bool isBST(Trunk* node) = 0;
-		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) = 0;
+		TreeBase(Trunk& _sentinel) : sentinel(_sentinel),left(NULL),right(NULL),parent(NULL) {}
+		~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
+		bool operator<(const Trunk&) = 0;
+		bool operator==(const Trunk&) = 0;
+		Trunk* insert(Trunk* root,Trunk*,char d=0) = 0;
+		bool isBST(Trunk* node) = 0;
+		void Update(Trunk* node,Trunk* pnode,bool erasing=false) = 0;
 		Trunk* LeftMost();
 		Trunk* RightMost();
 		Trunk* Predecessor();
 		Trunk* Successor();
 		const bool isleaf(Trunk* node) const;
-		const bool isnul(Trunk* node) const;
+		virtual const bool isnil() {return false;}
 		long countnodes() ; 
 		Trunk* RotateLeft(Trunk* root, Trunk* node);
 		Trunk* RotateRight(Trunk* root, Trunk* node);
 		Trunk* remove(Trunk* root,Trunk* pfound) = 0;
 		Trunk* transplant(Trunk* root,Trunk* u,Trunk* v);
-		virtual Trunk* Parent(){return parent;}
-		virtual void SetParent(Trunk* p){parent=p;}
-		virtual Trunk* Left(){return left;}
-		virtual void SetLeft(Trunk* l){left=l;}
-		virtual Trunk* Right(){return right;}
-		virtual void SetRight(Trunk* r){right=r;}
-		private: Trunk *parent,*left,*right;
+		Trunk* Parent(){return parent;}
+		void SetParent(Trunk* p) { parent=p; }
+		Trunk* Left(){return left;}
+		void SetLeft(Trunk* l){left=l;}
+		Trunk* Right(){return right;}
+		void SetRight(Trunk* r){right=r;}
+		//virtual Trunk* GetNil() {return NULL;}
+		virtual Trunk* GetNil() {return &sentinel;}
+		private: Trunk& sentinel; Trunk *parent,*left,*right;
+		TreeBase& operator=(const TreeBase&){parent=NULL;left=NULL;right=NULL;} 
+		TreeBase(const TreeBase& a) : sentinel(a.sentinel), parent(a.parent), left(a.left), right(a.right) {}
 	};
 
 	struct Sentinel : Trunk
 	{
-		virtual bool isnil() {return true;}
-		virtual void SetParent(Trunk*){}
-		virtual Trunk* Left(){return NULL;}
-		virtual void SetLeft(Trunk*){}
-		virtual Trunk* Right(){return NULL;}
-		virtual void SetRight(Trunk*){}
+		virtual const bool isnil() { return true; }
+		Trunk* Parent(){return NULL;}
+		void SetParent(Trunk*){}
+		Trunk* Left(){return NULL;}
+		void SetLeft(Trunk*){}
+		Trunk* Right(){return NULL;}
+		void SetRight(Trunk*){}
+		//virtual Trunk* GetNil() {return NULL;}
+		virtual Trunk* GetNil() {return this;}
 	};
+
 
 	inline Trunk* TreeBase::LeftMost()
 	{
@@ -121,7 +139,7 @@ namespace TreeObjects
 		if (!isnul(Left())) return Left()->RightMost();
 		Trunk* y(Parent());
 		Trunk* x(this);
-		while ((!isnul(y->Parent())) and x==y->Left()) { x=y; y=y->Parent(); }
+		while ((!isnul(y->Parent())) and (!y->Left()->isnil()) and x==y->Left()) { x=y; y=y->Parent(); }
 		return y;
 	}
 
@@ -130,10 +148,9 @@ namespace TreeObjects
 		if (!isnul(Right())) return Right()->LeftMost();
 		Trunk* y(Parent());
 		Trunk* x(this);
-		while ((!isnul(y->Parent())) and x==y->Right()) { x=y; y=y->Parent(); }
+		while ((!isnul(y->Parent())) and (!y->Left()->isnil())  and x==y->Right()) { x=y; y=y->Parent(); }
 		return y;
 	}
-
 
 	inline const bool TreeBase::isleaf(Trunk* node) const
 	{
@@ -146,18 +163,10 @@ namespace TreeObjects
 			return true; else return false;	
 	}
 
-	inline const bool TreeBase::isnul(Trunk* node) const
-	{
-		if (!node) return true;
-		if (node->isnil()) return true;
-		return false;	
-	}
-
-
 	inline long TreeBase::countnodes()  
 	{
-		long leftnodes(0); if (Left()) leftnodes=Left()->countnodes();
-		long rightnodes(0); if (Right()) rightnodes=Right()->countnodes();
+		long leftnodes(0); if (!isnul(Left())) leftnodes=Left()->countnodes();
+		long rightnodes(0); if (!isnul(Right())) rightnodes=Right()->countnodes();
 		return (leftnodes+rightnodes+1);
 	}
 
@@ -175,7 +184,7 @@ namespace TreeObjects
 			else node->Parent()->SetRight(other);
 		other->SetLeft(node);
 		node->SetParent(other);
-		root->SetParent(NULL);
+		root->SetParent(GetNil());
 		return root;
 	}
 
@@ -193,38 +202,35 @@ namespace TreeObjects
 			else node->Parent()->SetLeft(other);
 		other->SetRight(node);
 		node->SetParent(other);
-		root->SetParent(NULL);
+		root->SetParent(GetNil());
 		return root;
 	}
-
-
-
 
 	template <typename KT>
 		struct BstBase : public TreeBase
 	{
-		BstBase(const KT _key) : key(_key) {}
+		BstBase(Trunk& _sentinel,const KT _key) : TreeBase(_sentinel),key(_key) {}
 		KT minValue(Trunk* node) 
 		{
 			Trunk* current(node);
-			while (current->Left()!=NULL) current=current->Left();
+			while (!isnul(current->Left())) current=current->Left();
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*current));
 			return(nd.key);
 		}
 		KT maxValue(Trunk* node) 
 		{
 			Trunk* current = node;
-			while (current->Right() != NULL) current = current->Right();
+			while (!isnul(current->Right())) current = current->Right();
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*current));
 			return(nd.key);
 		}
 
 		virtual bool isBST(Trunk* node) 
 		{
-			if (!node) return(true);
+			if (isnul(node)) return(true);
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*node));
-			if (node->Left()!=NULL && maxValue(node->Left()) > nd.key) return(false);
-			if (node->Right()!=NULL && minValue(node->Right()) <= nd.key) return(false);
+			if ((!isnul(node->Left())) && maxValue(node->Left()) > nd.key) return(false);
+			if ((!isnul(node->Right())) && minValue(node->Right()) <= nd.key) return(false);
 			if (!isBST(node->Left()) || !isBST(node->Right())) return(false);
 			return(true);
 		}
@@ -235,13 +241,13 @@ namespace TreeObjects
 			if (nd==what) return this;
 			if (nd<what)
 			{
-				if (Right())
+				if (!isnul(Right()))
 				{
 					BstBase<KT>& ld(static_cast<BstBase<KT>&>(*Right()));
 					return ld.find(what);
 				}
 			} else {
-				if (Left())
+				if (!isnul(Left()))
 				{
 					BstBase<KT>& rd(static_cast<BstBase<KT>&>(*Left()));
 					return rd.find(what);
@@ -257,7 +263,7 @@ namespace TreeObjects
 			if (!found) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(TreeBase::remove(root,found));
-			found->SetLeft(NULL); found->SetRight(NULL);
+			found->SetLeft(newroot->GetNil()); found->SetRight(newroot->GetNil());
 			Update(found,found->Parent(),true); 
 			Update(p,found); Update(l,found); Update(r,found);
 			delete found;
@@ -269,17 +275,22 @@ namespace TreeObjects
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
 			node->SetParent(this);
+			if (!d)
+			{
+				node->SetLeft(this->GetNil());
+				node->SetRight(this->GetNil());
+			}
 			Update(node,this);
 			if ((*node)<(*this))
 			{
-				if (this->Left()) 
+				if (!this->isnul(this->Left())) 
 				{
 					return this->Left()->insert(root,node,d+1);
 				} else { 
 					this->SetLeft(node);
 				}
 			} else {
-				if (this->Right()) 
+				if (!this->isnul(this->Right()))
 				{
 					return this->Right()->insert(root,node,d+1);
 				} else { 
@@ -348,6 +359,7 @@ namespace TreeObjects
 		void Invalidate()
 		{
 			root=Root();
+			if (!root) return;
 			begin=root->LeftMost();
 			end=root->RightMost();
 		}
@@ -365,8 +377,9 @@ namespace TreeObjects
 		Trunk *root,*begin,*end;
 		Trunk* Root()
 		{
+			if (!node) NULL;
 			Trunk* current(node);
-			while (current->Parent()) current=current->Parent();
+			while (current and current->Parent() and (!current->Parent()->isnil()) ) current=current->Parent();
 			return current;
 		}
 		Trunk* node;
@@ -375,7 +388,7 @@ namespace TreeObjects
 	inline Trunk* TreeBase::transplant(Trunk* root,Trunk* u,Trunk* v)
 	{
 		Trunk* ret(root);
-		if (u->Parent()==NULL)
+		if (root->isnul(u->Parent()))
 		{
 			ret=v;
 		} else {
@@ -386,17 +399,17 @@ namespace TreeObjects
 				u->Parent()->SetRight(v);
 			}
 		}
-		if (v!=NULL) v->SetParent(u->Parent());
+		if (!root->isnul(v)) v->SetParent(u->Parent());
 		return ret;
 	}
 
 	inline Trunk* TreeBase::remove(Trunk* root,Trunk* pfound)
 	{
-		if (pfound->Left()==NULL)
+		if (isnul(pfound->Left()))
 		{
 			root=transplant(root,pfound,pfound->Right());
 		} else {
-			if (pfound->Right()==NULL)
+			if (isnul(pfound->Right()))
 			{
 				root=transplant(root,pfound,pfound->Left());
 			} else {
@@ -412,6 +425,7 @@ namespace TreeObjects
 				y->Left()->SetParent(y);
 			}
 		}
+		//if (root->isnil()) return NULL;
 		return root;
 	}
 
@@ -419,8 +433,8 @@ namespace TreeObjects
 	template <typename KT,typename VT>
 		struct Bst : public BstBase<KT>
 	{
-		Bst(const KT _key) : BstBase<KT>(_key) {}
-		Bst(const KT _key,const VT _data) : BstBase<KT>(_key), data(_data) {}
+		Bst(Trunk& _sentinel,const KT _key) : BstBase<KT>(_sentinel,_key) {}
+		Bst(Trunk& _sentinel,const KT _key,const VT _data) : BstBase<KT>(_sentinel,_key), data(_data) {}
 		VT& Data(){return data;}
 		protected:
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
@@ -448,7 +462,7 @@ namespace TreeObjects
 		virtual operator Trunk& () = 0;
 		virtual Trunk* remove(Trunk* root,Trunk* pfound); 
 
-		void Rotator(Trunk* node) {Update(node,node->Parent());}
+		void Rotator(Trunk* node) {}//Update(node,node->Parent());}
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
@@ -566,6 +580,14 @@ namespace TreeObjects
 					}
 				}
 			}
+			if (color(node)==RED)
+			{
+				//if (!node->Left()) node->SetLeft(node->GetNil());
+				//if (!node->Right()) node->SetRight(node->GetNil());
+			} else {
+				//if (!root->isnul(node->Left())) if (node->Left()->isnil()) node->SetLeft(NULL);
+				//if (!root->isnul(node->Right())) if (node->Right()->isnil()) node->SetRight(NULL);
+			}
 			return black(root);
 		}
 
@@ -578,7 +600,7 @@ namespace TreeObjects
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(RbBase::remove(root,found));
 			Update(found,p,true); 
-			found->SetLeft(NULL); found->SetRight(NULL); 
+			found->SetLeft(root->GetNil()); found->SetRight(root->GetNil()); 
 			if (newroot) Update(newroot,newroot); 
 			if (l) Update(l,p); if (r) Update(r,p);
 			delete found;
@@ -593,7 +615,7 @@ namespace TreeObjects
 		Trunk* Y(pfound);
 		Trunk* X(NULL);
 		char Ycolor(this->color(Y));
-		if (pfound->Left()==NULL)
+		if (root->isnul(pfound->Left()))
 		{
 			if (pfound->Right())	
 			{
@@ -603,7 +625,7 @@ namespace TreeObjects
 			X=pfound->Right();
 			root=me.transplant(root,pfound,pfound->Right());
 		} else {
-			if (pfound->Right()==NULL)
+			if (root->isnul(pfound->Right()))
 			{
 				if (pfound->Left()) Y=(pfound->Left()->RightMost());
 				else Y=pfound->RightMost();
@@ -634,8 +656,8 @@ namespace TreeObjects
 	template <typename KT,typename VT>
 		struct RbMapBase : public Bst<KT,VT>, RbBase
 	{
-		RbMapBase(const KT _key) : Bst<KT,VT>(_key) {}
-		RbMapBase(const KT _key,const VT _data) : Bst<KT,VT>(_key,_data) {}
+		RbMapBase(Trunk& _sentinel,const KT _key) : Bst<KT,VT>(_sentinel,_key) {}
+		RbMapBase(Trunk& _sentinel,const KT _key,const VT _data) : Bst<KT,VT>(_sentinel,_key,_data) {}
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
@@ -664,7 +686,7 @@ namespace TreeObjects
 	template <typename KT>
 		struct RbSetBase : public BstBase<KT>, RbBase
 	{
-		RbSetBase(const KT _key) : BstBase<KT>(_key) {}
+		RbSetBase(Trunk& _sentinel,const KT _key) : BstBase<KT>(_sentinel,_key) {}
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
@@ -694,14 +716,17 @@ namespace TreeObjects
 	{
 		typedef RbMapBase<KT,VT> TB;
 
-		RbMap(const KT _key) : TB(_key) {}
-		RbMap(const KT _key,const VT _data) : TB(_key,_data) {}
+		RbMap(Trunk& _sentinel,const KT _key) : TB(_sentinel,_key) {}
+		RbMap(Trunk& _sentinel,const KT _key,const VT _data) : TB(_sentinel,_key,_data) {}
 
 		virtual Trunk* red(Trunk* n) 
 		{ 
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Red();
+			if (!n->Left()) n->SetLeft(this->GetNil());
+			if (!n->Right()) n->SetRight(this->GetNil());
+			this->Update(n,n->Parent());
 			return n;
 		}
 		virtual Trunk* black(Trunk* n) 
@@ -709,6 +734,9 @@ namespace TreeObjects
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
+			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
+			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			this->Update(n,n->Parent());
 			return n;
 		}
 		virtual const RbBase::COLOR color(Trunk* n) const
@@ -723,12 +751,15 @@ namespace TreeObjects
 		struct RbSet : public RbSetBase<KT>
 	{
 		typedef RbSetBase<KT> TB;
-		RbSet(const KT _key) : TB(_key) {}
+		RbSet(Trunk& _sentinel,const KT _key) : TB(_sentinel,_key) {}
 		virtual Trunk* red(Trunk* n) 
 		{ 
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Red();
+			if (!n->Left()) n->SetLeft(this->GetNil());
+			if (!n->Right()) n->SetRight(this->GetNil());
+			this->Update(n,n->Parent());
 			return n;
 		}
 		virtual Trunk* black(Trunk* n) 
@@ -736,6 +767,9 @@ namespace TreeObjects
 			if (!n) return n; 
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
+			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
+			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			this->Update(n,n->Parent());
 			return n;
 		}
 		virtual const RbBase::COLOR color(Trunk* n) const

@@ -30,9 +30,8 @@
 
 namespace TreeObjects
 {
-	// Wip - designed to resemble an stl map
 	template <typename KT,typename VT>
-		struct Map
+		struct Map : Sentinel
 	{
 		Map() : root(NULL) {}
 		virtual ~Map() {if (root) delete root;}
@@ -41,25 +40,32 @@ namespace TreeObjects
 			if (!root) return;
 			TreeBase* found(root->find(key));
 			if (found) root=static_cast<RbMap<KT,VT>*>(root->erase(root,found));
+			if (root) root->SetParent(this);
 		}
 		VT& operator[](const KT key)
 		{
-			if (!root) {root=new RbMap<KT,VT>(key); return root->Data();}
+			if (!root) 
+			{
+				root=new RbMap<KT,VT>(*this,key); 
+				if (root) root->SetParent(this);
+				return root->Data();
+			}
 			TreeBase* found(root->find(key));
 			if (found) return static_cast<RbMap<KT,VT>*>(found)->Data();
-			RbMap<KT,VT>* node(new RbMap<KT,VT>(key)); 
+			RbMap<KT,VT>* node(new RbMap<KT,VT>(*this,key)); 
 			root=static_cast<RbMap<KT,VT>*>(root->insert(root,node));
+			if (root) root->SetParent(this);
 			return node->Data();
 		}
 		void inorder(TreeBase* node=NULL)
 		{
-			if (node==NULL) node=root;
-			if (node->left) inorder(node->left);	
+			if (isnul(node)) node=root;
+			if (!isnul(node->left)) inorder(node->left);	
 			VT& data(static_cast<RbMap<KT,VT>*>(node)->Data());
 			const bool t(data);
-			if (node->right) inorder(node->right);	
+			if (!isnul(node->right)) inorder(node->right);	
 		}
-		bool isBST() { if (!root) return true; return root->isBST(root); }
+		bool isBST() { if (isnul(root)) return true; return root->isBST(root); }
 		private:
 		RbMap<KT,VT>* root;
 	};

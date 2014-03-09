@@ -12,7 +12,7 @@ update=`make -n | grep ^g++ | wc -l | tr -d ' '`
 [[ $update != 0 ]] && rm tester
 make tester
 make 
-3./trees -string -redblack 2>/dev/null
+#./trees -string -redblack 2>/dev/null
 #./trees -int -bst 2>/dev/null
 ./trees -int -redblack 2>/dev/null
 #./trees -int -bst 2>/dev/null

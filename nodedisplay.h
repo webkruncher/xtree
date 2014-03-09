@@ -30,7 +30,13 @@
 namespace TreeDisplay
 {
 	inline int DepthFinder(Trunk& tb,int d=0)
-		{ if (tb.Parent()) d=DepthFinder(*tb.Parent(),d+1); return d; }
+	{ 
+		if (tb.isnil()) return d;
+		if (!tb.Parent()) return d;
+		if (tb.Parent()->isnil()) return d;
+		d=DepthFinder(*tb.Parent(),d+1); 
+		return d; 
+	}
 
 	struct XPoints : vector<XPoint>
 	{
@@ -100,14 +106,14 @@ namespace TreeDisplay
 		void operator()(KT _k,Trunk& node,Trunk* parent,bool erasing=false)
 		{
 			k=_k;
-			iterator niltxt(find("nil"));
+			iterator niltxt(find("n"));
 			if (niltxt!=end()) erase(niltxt);
 			if ((!parent) or (parent->isnil()) ) 
 			{
 				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
 				Text(k,k);
-				if (parent and parent->isnil()) NodeBase::operator[]("nil")="parent";
+				if (node.isnul(parent)) NodeBase::operator[]("n")="P";
 				parented=false;
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
@@ -146,9 +152,9 @@ namespace TreeDisplay
 					motion(x,y);
 					Text(k,pk);
 				}
-				if (node.Left() and node.Left()->isnil()) NodeBase::operator[]("nil")+="l ";
-				if (node.Right() and node.Right()->isnil()) NodeBase::operator[]("nil")+="r";
 			}
+			if (node.Left()) if (node.Left()->isnil()) NodeBase::operator[]("n")+="l";
+			if (node.Right()) if (node.Right()->isnil()) NodeBase::operator[]("n")+="r";
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 			{ NodeBase::operator()(invalid,window,display,gc,bitmap); }

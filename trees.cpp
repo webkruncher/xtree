@@ -42,6 +42,7 @@ namespace TreeObjects
 			typedef double KT;
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
+			if (node->isnil()) return; if (pnode->isnil()) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
@@ -52,6 +53,7 @@ namespace TreeObjects
 			typedef int KT;
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
+			if (node->isnil()) return; if (pnode->isnil()) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.data(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
@@ -62,6 +64,7 @@ namespace TreeObjects
 			typedef string KT;
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
+			if (node->isnil()) return; if (pnode->isnil()) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
@@ -70,54 +73,78 @@ namespace TreeObjects
 	template <> Trunk* RbMap<int,TreeNode<int> >::red(Trunk* n)
 	{
 		if (!n) return n; 
+		if (n->isnil()) return n; 
 		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
 		nd.clr=RED;
 		nd.data(0X800000); 
+			if (!n->Left()) n->SetLeft(this->GetNil());
+			if (!n->Right()) n->SetRight(this->GetNil());
+			this->Update(n,n->Parent());
 		return n;
 	}
 
 	template <> Trunk* RbMap<int,TreeNode<int> >::black(Trunk* n)
 	{
 		if (!n) return n; 
+		if (n->isnil()) return n; 
 		RbMap<int,TreeNode<int> >& nd(static_cast<RbMap<int,TreeNode<int> >&>(*n)); 
 		nd.clr=BLACK;
 		nd.data(0X00000); 
+			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
+			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			this->Update(n,n->Parent());
 		return n;
 	}
 
 	template <> Trunk* RbMap<double,TreeNode<double> >::red(Trunk* n)
 	{
 		if (!n) return n; 
+		if (n->isnil()) return n; 
 		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
 		nd.clr=RED;
 		nd.data(0X800000); 
+			if (!n->Left()) n->SetLeft(this->GetNil());
+			if (!n->Right()) n->SetRight(this->GetNil());
+			this->Update(n,n->Parent());
 		return n;
 	}
 
 	template <> Trunk* RbMap<double,TreeNode<double> >::black(Trunk* n)
 	{
 		if (!n) return n; 
+		if (n->isnil()) return n; 
 		RbMap<double,TreeNode<double> >& nd(static_cast<RbMap<double,TreeNode<double> >&>(*n)); 
 		nd.clr=BLACK;
 		nd.data(0X00000); 
+			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
+			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			this->Update(n,n->Parent());
 		return n;
 	}
 
 	template <> Trunk* RbMap<string,TreeNode<string> >::red(Trunk* n)
 	{
 		if (!n) return n; 
+		if (n->isnil()) return n; 
 		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
 		nd.clr=RED;
 		nd.data(0X800000); 
+			if (!n->Left()) n->SetLeft(this->GetNil());
+			if (!n->Right()) n->SetRight(this->GetNil());
+			this->Update(n,n->Parent());
 		return n;
 	}
 
 	template <> Trunk* RbMap<string,TreeNode<string> >::black(Trunk* n)
 	{
 		if (!n) return n; 
+		if (n->isnil()) return n; 
 		RbMap<string,TreeNode<string> >& nd(static_cast<RbMap<string,TreeNode<string> >&>(*n)); 
 		nd.clr=BLACK;
 		nd.data(0X00000); 
+			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
+			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			this->Update(n,n->Parent());
 		return n;
 	}
 }
@@ -233,6 +260,7 @@ namespace TreeDisplay
 				{
 					//cout<<"Root node is different"<<endl;
 					root=newroot;
+					if (root) root->SetParent(this);
 				}
 				if (!root)	
 				{
@@ -294,14 +322,17 @@ namespace TreeDisplay
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						Trunk* n(generate(next.second,tn));
 						if (!root) waitfor=updateloop+10;
-						if (!root) root=n;  
-							else 
+						if (!root) 
 						{
+							root=n;  
+							if (root) root->SetParent(this);
+						}	else  {
 							Trunk* nr(root->insert(root,n));
 							if (nr) 
 							{
 								//if (root!=nr) cout<<"The root node rotated"<<endl;
 								root=nr;
+								if (root) root->SetParent(this);
 							} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
 					} else {
@@ -343,7 +374,7 @@ namespace TreeDisplay
 			Deletions();
 			Additions();
 
-			if (!root) {movement=false; removing=false; stop=false;}
+			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
 			if (!(updateloop%flipcounter))
 			{
@@ -362,7 +393,7 @@ namespace TreeDisplay
 			Deletions();
 			Additions();
 
-			if (!root) {movement=false; removing=false; stop=false;}
+			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
 			if (!(updateloop%flipcounter))
 			{

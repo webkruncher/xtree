@@ -36,7 +36,7 @@ struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>:
 namespace TreeDisplay
 {
 	template<typename KT>
-		struct TreeCanvas : Canvas
+		struct TreeCanvas : Canvas, Sentinel
 	{
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
@@ -50,7 +50,10 @@ namespace TreeDisplay
 			XFillRectangle(display,bitmap,gc,0,0,ScreenWidth,ScreenHeight);
 			if (root) draw(invalid,*root,bitmap); 
 		}
-		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) { return new Bst<KT,VT>(key,treenode); }
+		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
+		{ 
+			return new Bst<KT,VT>(static_cast<Sentinel&>(*this),key,treenode); 
+		}
 		virtual void update() { UpdateTree(); }
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
@@ -70,23 +73,25 @@ namespace TreeDisplay
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
 		void traverse(Trunk& n)
 		{
+			if (n.isnil()) return;
 			movement=false;
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk.Data());
 			data(key,nk,nk.Parent());
-			if (n.Left()) traverse(*n.Left());
-			if (n.Right()) traverse(*n.Right());
+			if (!isnul(n.Left())) traverse(*n.Left());
+			if (!isnul(n.Right())) traverse(*n.Right());
 		}
 		void draw(Invalid& invalid,Trunk& n,Pixmap& bitmap)
 		{
+			if (n.isnil()) return;
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk.Data());
 			data(invalid,window,display,gc,bitmap);
 			if (data.Moved()) movement=true;
-			if (n.Left()) draw(invalid,*n.Left(),bitmap);
-			if (n.Right()) draw(invalid,*n.Right(),bitmap);
+			if (!n.isnul(n.Left())) draw(invalid,*n.Left(),bitmap);
+			if (!n.isnul(n.Right())) draw(invalid,*n.Right(),bitmap);
 		}
 
 	};
@@ -98,7 +103,10 @@ namespace TreeDisplay
 		typedef TreeNode<KT> VT ;
 		RbMapCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: TreeCanvas<KT>(_display,_window,_gc,_ScreenWidth,_ScreenHeight) {}
-		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) { return new RbMap<KT,VT>(key,treenode); }
+		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
+		{ 
+			return new RbMap<KT,VT>(static_cast<Sentinel&>(*this),key,treenode); 
+		}
 		virtual bool CheckIntegrity(Trunk* root)
 		{
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;

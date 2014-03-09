@@ -40,10 +40,12 @@ namespace TreeIntegrity
 	template<typename KT,typename VT> 
 		inline void PrintInOrder(Trunk* node)
 	{
-		if (node->Left()) PrintInOrder<KT,VT>(node->Left());
+		if (!node) return;
+		if (node->isnil()) return;
+		if (!node->isnul(node->Left())) PrintInOrder<KT,VT>(node->Left());
 		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
-		if (node->Right()) PrintInOrder<KT,VT>(node->Right());
+		if (!node->isnul(node->Right())) PrintInOrder<KT,VT>(node->Right());
 	}	
 
 	template<typename KT>
@@ -106,19 +108,21 @@ namespace TreeIntegrity
 	template<typename KT>
 		inline void TestPredecessorsAndSuccessors(Trunk* root,Trunk* node,set<KT>& used,bool& ok)
 	{
-		if (node->Left()) TestPredecessorsAndSuccessors<KT>(root,node->Left(),used,ok);
-		if (node) 
+		if (!node) return;
+		if (node->isnul(node->Left())) TestPredecessorsAndSuccessors<KT>(root,node->Left(),used,ok);
+		if (!node->isnil()) 
 		{
 			TestPredecessor<KT>(root,node,used,ok);
 			TestSuccessor<KT>(root,node,used,ok);
 		}
-		if (node->Right()) TestPredecessorsAndSuccessors<KT>(root,node->Right(),used,ok);
+		if (node->isnul(node->Right())) TestPredecessorsAndSuccessors<KT>(root,node->Right(),used,ok);
 	}	
 
 	template<typename KT>
 		inline bool BstIntegrity(Trunk* root,set<KT>& used)
 	{
 			if (!root) return true;
+			if (root->isnil()) return true;
 			BstBase<KT>& rk(static_cast<BstBase<KT>&>(*root));
 			KT maxvalue(rk.maxValue(root));
 			KT minvalue(rk.minValue(root));
@@ -159,6 +163,7 @@ namespace TreeIntegrity
 			bool ok;
 			int PostOrder(Trunk& node)
 			{
+				if (node.isnil()) return 0;
 				RbBase* prbc(dynamic_cast<RbBase*>(&node));
 				if (!prbc) {cout<<"Error in dynamic cast"<<endl;return 0;}
 				RbBase& rbc(*prbc);
