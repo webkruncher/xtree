@@ -1,52 +1,52 @@
-Starting tests at Sat Mar  8 22:40:25 EST 2014
+Starting tests at Sun Mar  9 11:09:12 EDT 2014
 
 Testing with 10,000 random generated numbers, average times after 20 iterations:
-          STL:     0.183 seconds
-  TreeObjects:     0.356 seconds
-The std::set was 48.506% faster
+          STL:     0.278 seconds
+  TreeObjects:     0.919 seconds
+The std::set was 69.769% faster
 
 Testing with 20,000 random generated numbers, average times after 20 iterations:
-          STL:     0.319 seconds
-  TreeObjects:     0.666 seconds
-The std::set was 52.169% faster
+          STL:     0.560 seconds
+  TreeObjects:     0.886 seconds
+The std::set was 36.866% faster
 
 Testing with 30,000 random generated numbers, average times after 20 iterations:
-          STL:     0.580 seconds
-  TreeObjects:     0.804 seconds
-The std::set was 27.764% faster
+          STL:     0.695 seconds
+  TreeObjects:     0.999 seconds
+The std::set was 30.461% faster
 
 Testing with 40,000 random generated numbers, average times after 20 iterations:
-          STL:     0.645 seconds
-  TreeObjects:     0.934 seconds
-The std::set was 30.885% faster
+          STL:     0.865 seconds
+  TreeObjects:     1.505 seconds
+The std::set was 42.493% faster
 
 Testing with 50,000 random generated numbers, average times after 20 iterations:
-          STL:     0.752 seconds
-  TreeObjects:     0.986 seconds
-The std::set was 23.734% faster
+          STL:     0.972 seconds
+  TreeObjects:     1.686 seconds
+The std::set was 42.378% faster
 
 Testing with 60,000 random generated numbers, average times after 20 iterations:
-          STL:     0.859 seconds
-  TreeObjects:     1.021 seconds
-The std::set was 15.899% faster
+          STL:     1.001 seconds
+  TreeObjects:     1.936 seconds
+The std::set was 48.299% faster
 
 Testing with 70,000 random generated numbers, average times after 20 iterations:
-          STL:     0.895 seconds
-  TreeObjects:     1.314 seconds
-The std::set was 31.878% faster
+          STL:     1.261 seconds
+  TreeObjects:     1.984 seconds
+The std::set was 36.439% faster
 
 Testing with 80,000 random generated numbers, average times after 20 iterations:
-          STL:     0.944 seconds
-  TreeObjects:     1.464 seconds
-The std::set was 35.496% faster
+          STL:     1.414 seconds
+  TreeObjects:     2.112 seconds
+The std::set was 33.038% faster
 
 Testing with 90,000 random generated numbers, average times after 20 iterations:
-          STL:     1.033 seconds
-  TreeObjects:     2.935 seconds
-The std::set was 64.811% faster
+          STL:     1.827 seconds
+  TreeObjects:     2.790 seconds
+The std::set was 34.517% faster
 
 Testing with 100,000 random generated numbers, average times after 20 iterations:
-          STL:     1.001 seconds
-  TreeObjects:     1.684 seconds
-The std::set was 40.597% faster
+          STL:     1.861 seconds
+  TreeObjects:     2.644 seconds
+The std::set was 29.616% faster
 

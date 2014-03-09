@@ -34,7 +34,10 @@ namespace TreeObjects
 		struct Map : Sentinel
 	{
 		Map() : root(NULL) {}
-		virtual ~Map() {if (root) delete root;}
+		virtual ~Map() 
+		{
+			if ((root) and (!root->isnil()) ) delete root;
+		}
 		void erase(const KT key)
 		{
 			if (!root) return;

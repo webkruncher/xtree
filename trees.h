@@ -43,7 +43,10 @@ namespace TreeDisplay
 			: window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
 				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) { }
-		virtual ~TreeCanvas() {if (root) delete root;}
+		virtual ~TreeCanvas() 
+		{
+			if ((root) and (!root->isnil()) ) delete root;
+		}
 		virtual void operator()(Pixmap& bitmap) 
 		{   
 			XSetForeground(display,gc,0X777777);

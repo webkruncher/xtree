@@ -73,7 +73,7 @@ namespace TreeObjects
 	struct TreeBase : Trunk
 	{
 		TreeBase(Trunk& _sentinel) : sentinel(_sentinel),left(NULL),right(NULL),parent(NULL) {}
-		~TreeBase() {if (left) delete left; if (right) delete right; left=NULL; right=NULL;}
+		~TreeBase() {if (left) if (left!=&sentinel) delete left; if (right) if (right!=&sentinel) delete right; left=NULL; right=NULL;}
 		bool operator<(const Trunk&) = 0;
 		bool operator==(const Trunk&) = 0;
 		Trunk* insert(Trunk* root,Trunk*,char d=0) = 0;
@@ -235,6 +235,7 @@ namespace TreeObjects
 		virtual BstBase<KT>* find(const KT what)
 		{
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
+if (nd.isnil()) throw "Found a nil node"; // temporary
 			if (nd==what) return this;
 			if (nd<what)
 			{

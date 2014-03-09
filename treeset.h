@@ -34,7 +34,10 @@ namespace TreeObjects
 		struct Set : Sentinel
 	{
 		Set() : root(NULL) {}
-		virtual ~Set() {if (root) delete root;}
+		virtual ~Set() 
+		{
+			if ((root) and (!root->isnil()) ) delete root;
+		}
 		void erase(const KT key)
 		{
 			if (!root) return;
