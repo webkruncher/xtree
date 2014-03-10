@@ -51,7 +51,7 @@ namespace TreeDisplay
 		{   
 			XSetForeground(display,gc,0X777777);
 			XFillRectangle(display,bitmap,gc,0,0,ScreenWidth,ScreenHeight);
-			if (root) draw(invalid,*root,bitmap); 
+			if ((root) and (!root->isnil())) draw(invalid,*root,bitmap); 
 		}
 		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
 		{ 

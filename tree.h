@@ -27,6 +27,10 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+
+			#include <iostream>
+			using namespace std;
+
 namespace TreeObjects
 {
 	#define BREAKPOINT asm ("int $0X03") ; 
@@ -258,6 +262,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
+cout<<"-"; cout.flush();
 			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(TreeBase::remove(root,found));
@@ -276,6 +281,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
+cout<<"i"; cout.flush();
 			if ((*node)==(*this)) {delete node; return NULL;}
 			node->SetParent(this);
 			if (!d)
@@ -592,6 +598,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
+cout<<"*"; cout.flush();
 			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(RbBase::remove(root,found));
@@ -728,6 +735,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			nd.clr=this->Red();
 			if (!n->Left()) n->SetLeft(this->GetNil());
 			if (!n->Right()) n->SetRight(this->GetNil());
+			if (n->isnil()) return n;
 			nd.DisplayColor(0X800000);
 			this->Update(n,n->Parent());
 			return n;
@@ -739,6 +747,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			nd.clr=this->Black();
 			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
 			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			if (n->isnil()) return n;
 			nd.DisplayColor(0X000000);
 			this->Update(n,n->Parent());
 			return n;
@@ -763,6 +772,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			nd.clr=this->Red();
 			if (!n->Left()) n->SetLeft(this->GetNil());
 			if (!n->Right()) n->SetRight(this->GetNil());
+			if (n->isnil()) return n;
 			this->Update(n,n->Parent());
 			return n;
 		}
@@ -773,6 +783,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			nd.clr=this->Black();
 			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
 			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			if (n->isnil()) return n;
 			this->Update(n,n->Parent());
 			return n;
 		}

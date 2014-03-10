@@ -106,6 +106,7 @@ namespace TreeDisplay
 		void operator()(KT _k,Trunk& node,Trunk* parent,bool erasing=false)
 		{
 			k=_k;
+//cout<<"|"<<k<<"|";
 			iterator niltxt(find("n"));
 			if (niltxt!=end()) erase(niltxt);
 			if ((!parent) or (parent->isnil()) ) 
@@ -130,7 +131,7 @@ namespace TreeDisplay
 				if (k<pk) y=py+(CH*3);
 				else y=py+(CH*3)-CH;
 				double x;
-				if (parent->Parent())
+				if (parent->Parent() and !node.isnul(parent->Parent()))
 				{
 					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->Parent()));
 					TreeNode<KT>& gpn(grandparentnode.Data());

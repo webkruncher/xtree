@@ -40,6 +40,9 @@ namespace TreeDisplay
 		//#define GHOSTS
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
+//cout<<"."; cout.flush();
+//moved=false; Removed=true;
+//return;
 			if (coverlastlin)
 			{
 				XSetForeground(display,gc,0X777777);

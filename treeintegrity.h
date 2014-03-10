@@ -121,6 +121,7 @@ namespace TreeIntegrity
 	template<typename KT>
 		inline bool BstIntegrity(Trunk* root,set<KT>& used)
 	{
+return true;
 			bool ok(true);
 			if (!root) return true;
 			if (root->isnil()) return true;
@@ -135,10 +136,8 @@ namespace TreeIntegrity
 			long ttl(root->countnodes());
 			if (ttl!=used.size()) ok=false;
 			if (ok) TestPredecessorsAndSuccessors<KT>(root,root,used,ok);
-			if (!ok) 
 			{
-				cout<<("Wrong number of nodes counted")<<endl; 
-				cout<<" Total:"<<ttl<<" != "<<used.size()<<endl;
+				cout<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
 				cout<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
 				cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
 				cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
@@ -220,7 +219,9 @@ namespace TreeIntegrity
 	template<typename KT>
 		inline bool RedBlackIntegrity(Trunk* root,IntegrityAdvisor& advisor)
 	{
+return true;
 		if (!root) return true;
+		if (root->isnil()) return true;
 		Trunk& rk(static_cast<Trunk&>(*root));
 		Trunk* leftmost(root->LeftMost());
 		Trunk* rightmost(root->RightMost());

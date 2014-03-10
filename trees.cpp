@@ -169,9 +169,11 @@ namespace TreeDisplay
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
 				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
+//const KT& kk(nk);
+//cout<<"d"<<kk;
 				Trunk* newroot(nk.erase(root,removal));
 				removal=NULL;
-
+#if 0
 				//if (newroot==root) cout<<"Root node is unchanged"<<endl; cout.flush();
 				if (!newroot) ;//cout<<"The tree is now empty, the root is NULL"<<endl; 
 					else if (newroot!=root)
@@ -181,7 +183,7 @@ namespace TreeDisplay
 						const KT& rootkey(nk);
 						//cout<<"The new root node is "<<rootkey<<endl;
 					}
-
+#endif
 				if (newroot!=root) 
 				{
 					//cout<<"Root node is different"<<endl;	
@@ -191,7 +193,7 @@ namespace TreeDisplay
 						if (root) root->SetParent(this);
 					} else root=NULL;
 				}
-				if (!root)	
+				if ((!root)	or (root->isnil()))
 				{
 					//cout<<"clear"<<endl; cout.flush();
 					movement=false; removing=false; used.clear();stop=false;
@@ -200,7 +202,7 @@ namespace TreeDisplay
 				//if (root) cout<<"The tree now has "<<root->countnodes()<<" nodes"<<endl; cout.flush();
 
 				//if (root) cout<<"Integrity check..."<<endl; cout.flush();
-				if (root) 
+				if ((root) and (!root->isnil()))
 					if (!CheckIntegrity(root)) 
 				{
 					if (used.size()<40)
@@ -249,9 +251,10 @@ namespace TreeDisplay
 					if (!removing)
 					{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+//cout<<"A"<<next.second;
 						Trunk* n(generate(next.second,tn));
-						if (!root) waitfor=updateloop+10;
-						if (!root) 
+						if ((!root) or (root->isnil()) ) waitfor=updateloop+10;
+						if ((!root)or (root->isnil()) )  
 						{
 							root=n;  
 							if (root) root->SetParent(this);
@@ -265,11 +268,12 @@ namespace TreeDisplay
 							} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
 					} else {
-						if (root) 
+						if ((root) or (root->isnil()))
 						{
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
-							//cout<<"Erase:"<<next.second<<endl;
+							//cout<<endl<<"Erase:"<<next.second<<endl;
 							removal=nk.find(next.second);
+							//cout<<"R:"<<hex<<removal<<endl;
 						}
 					}
 						if (!removal)
@@ -293,41 +297,23 @@ namespace TreeDisplay
 	}
 
 
-	template <> void TreeCanvas<string>::UpdateTree()
-	{
-			//if (root) if (!((updateloop)%MOST)) 
-			//if (root) traverse(*root);
-			if (!(updateloop%20))if (root) traverse(*root);
-			updateloop++;
-
-			Deletions();
-			Additions();
-
-			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
-			if (!flipcounter) flipcounter=((rand()%1000)+100);
-			if (!(updateloop%flipcounter))
-			{
-				flipcounter=((rand()%100)+100);
-				if (root) removing=!removing;
-			}
-	}
-
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
 			//if (root) if (!((updateloop)%MOST)) 
-			if (!(updateloop%20))if (root) traverse(*root);
+			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
 			updateloop++;
 
 			Deletions();
 			Additions();
+			if (removal) return;
 
 			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
 			if (!(updateloop%flipcounter))
 			{
 				flipcounter=((rand()%1000)+100);
-				if (root) removing=!removing;
+				if ( (root) or (!root->isnil()) ) removing=!removing;
 			}
 	}
 
