@@ -470,10 +470,8 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			if (root->isnul(node)) return root;
-			while ( (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
+			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
-				if (root->isnul(node->Parent())) continue;
 				if ( node == node->Parent()->Left() ) 
 				{
 					Trunk* other(node->Parent()->Right());
@@ -484,7 +482,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 						root=this->RotateLeft(root,node->Parent());
 						other=node->Parent()->Right();
 					}
-					if (root->isnul(other)) {node=node->Parent();continue;}
 					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )
 					{
 						red(other);
@@ -504,7 +501,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 						node=root;
 					}
 				} 
-				if (root->isnul(node->Parent())) continue;
 				if ( node == node->Parent()->Right() ) 
 				{
 					Trunk* other(node->Parent()->Left());
@@ -515,7 +511,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 						root=this->RotateRight(root,node->Parent());
 						other=node->Parent()->Left();
 					}
-					if (root->isnul(other)) {node=node->Parent();continue;}
 					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )
 					{
 						red(other);
