@@ -28,9 +28,6 @@
 #define DIGITAL_ARBORIST_H
 
 
-			#include <iostream>
-			using namespace std;
-
 namespace TreeObjects
 {
 	#define BREAKPOINT asm ("int $0X03") ; 
@@ -262,7 +259,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
-cout<<"-"; cout.flush();
 			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(TreeBase::remove(root,found));
@@ -281,7 +277,6 @@ cout<<"-"; cout.flush();
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
-cout<<"i"; cout.flush();
 			if ((*node)==(*this)) {delete node; return NULL;}
 			node->SetParent(this);
 			if (!d)
@@ -598,7 +593,6 @@ cout<<"i"; cout.flush();
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
-cout<<"*"; cout.flush();
 			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(RbBase::remove(root,found));

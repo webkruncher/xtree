@@ -38,7 +38,6 @@ namespace TreeDisplay
 		}
 		pair<double,double> next(double tx,double ty)
 		{
-//return pair<double,double>(1,1);
 			double distx(x-tx);
 			double disty(y-ty);
 			double direction(atan2(disty, distx));
