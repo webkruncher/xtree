@@ -108,7 +108,7 @@ struct Advisor : TreeIntegrity::IntegrityAdvisor
 	{
 		RbSetBase<long>& rb(static_cast<RbSetBase<long>&>(node));
 		const long& key(rb);
-		//cout<<key<<" "<<name<<":"<<value<<endl;
+		cerr<<key<<" "<<name<<":"<<value<<endl;
 	} 
 } Violations;
 

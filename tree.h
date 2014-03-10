@@ -403,7 +403,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 				u->Parent()->SetRight(v);
 			}
 		}
-		if (!root->isnul(v)) v->SetParent(u->Parent());
+		if (v) v->SetParent(u->Parent());
 		return ret;
 	}
 
@@ -665,6 +665,9 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			root=Bst<KT,VT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
+			RbMapBase<KT,VT>& nd(static_cast<RbMapBase<KT,VT>&>(*node));
+			nd.SetLeft(root->GetNil());
+			nd.SetRight(root->GetNil());
 			return this->RedAndBlackInsert(root,node);
 		}
 		
@@ -749,6 +752,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 		virtual const RbBase::COLOR color(Trunk* n) const
 		{
 			if (!n) return RbBase::BLACK; 
+			if (n->isnil()) return RbBase::BLACK;
 			TB& nd(static_cast<TB&>(*n)); 
 			return nd.clr;
 		}
@@ -784,6 +788,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 		virtual const RbBase::COLOR color(Trunk* n) const
 		{
 			if (!n) return RbBase::BLACK; 
+			if (n->isnil()) return RbBase::BLACK;
 			TB& nd(static_cast<TB&>(*n)); 
 			return nd.clr;
 		}
