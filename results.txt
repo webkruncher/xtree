@@ -1,2 +1,9 @@
-Starting tests at Mon Mar 10 09:42:32 EDT 2014
+Starting tests at Mon Mar 10 10:18:56 EDT 2014
 
+Testing with 10,000 random generated numbers, average times after 20 iterations:
+          STL:     0.239 seconds
+  TreeObjects:     0.566 seconds
+The std::set was 57.777% faster
+
+Test failed
+Test failed

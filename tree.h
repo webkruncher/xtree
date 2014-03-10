@@ -107,7 +107,7 @@ namespace TreeObjects
 	struct Sentinel : Trunk
 	{
 		virtual const bool isnil() { return true; }
-		Trunk* Parent(){return NULL;}
+		Trunk* Parent(){return this;}
 		void SetParent(Trunk*){}
 		Trunk* Left(){return NULL;}
 		void SetLeft(Trunk*){}
@@ -470,7 +470,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			while ( (node!=root) and (color(node) == BLACK) ) 
+			while ( (node) and (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
 			{
 				if ( node == node->Parent()->Left() ) 
 				{
@@ -723,6 +723,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 		virtual Trunk* red(Trunk* n) 
 		{ 
 			if (!n) return n; 
+			if (n->isnil()) return n;
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Red();
 			if (!n->Left()) n->SetLeft(this->GetNil());
@@ -735,10 +736,13 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 		virtual Trunk* black(Trunk* n) 
 		{ 
 			if (!n) return n; 
+			if (n->isnil()) return n;
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
-			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
-			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			//if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
+			//if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			if (!n->Left()) n->SetLeft(this->GetNil());
+			if (!n->Right()) n->SetRight(this->GetNil());
 			if (n->isnil()) return n;
 			nd.DisplayColor(0X000000);
 			this->Update(n,n->Parent());
@@ -761,6 +765,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 		virtual Trunk* red(Trunk* n) 
 		{ 
 			if (!n) return n; 
+			if (n->isnil()) return n;
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Red();
 			if (!n->Left()) n->SetLeft(this->GetNil());
@@ -772,10 +777,13 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 		virtual Trunk* black(Trunk* n) 
 		{ 
 			if (!n) return n; 
+			if (n->isnil()) return n;
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
-			if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
-			if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			//if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
+			//if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
+			if (!n->Left()) n->SetLeft(this->GetNil());
+			if (!n->Right()) n->SetRight(this->GetNil());
 			if (n->isnil()) return n;
 			this->Update(n,n->Parent());
 			return n;
