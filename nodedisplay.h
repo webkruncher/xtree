@@ -54,11 +54,29 @@ namespace TreeDisplay
 		mutable XPoint* xpoints;
 	};
 
+	struct LastLines : deque<pair<pair<double,double>,pair<double,double> > >
+	{
+		void operator()(const double lsx,const double lsy, const double lpx, const double lpy)
+		{
+			pair<double,double> ls(lsx,lsy);
+			pair<double,double> lp(lpx,lpy);
+			pair<pair<double,double>,pair<double,double> > p(ls,lp);
+			push_back(p);
+		}
+		
+		operator pair<pair<double,double>,pair<double,double> > ()
+		{
+			pair<pair<double,double>,pair<double,double> > p(back());
+			pop_back();
+			return p; 
+		}
+	};
+
 	struct NodeBase : map<string,string>
 	{
-		NodeBase() : SW(0),SH(0),X(0),Y(0),PX(0),PY(0),parented(false),coverlastlin(false),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
-		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),PX(0),PY(0),parented(false),coverlastlin(false),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
-		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),PX(a.PX),PY(a.PY),X(a.X),Y(a.Y),parented(false),coverlastlin(false),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
+		NodeBase() : SW(0),SH(0),X(0),Y(0),PX(0),PY(0),parented(false),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
+		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),PX(0),PY(0),parented(false),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
+		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),PX(a.PX),PY(a.PY),X(a.X),Y(a.Y),parented(false),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
 		const bool Moved() const {return moved;}
 		bool undisplay()
 		{
@@ -72,8 +90,9 @@ namespace TreeDisplay
 		Motion motion;
 		string text;
 		const int SW,SH;
-		double X,Y,PX,PY,LSX,LSY,LPX,LPY;
-		bool parented,coverlastlin;
+		double X,Y,PX,PY;
+		LastLines lpsxy;
+		bool parented;
 		unsigned long color;
 		int CW,CH;
 		int DCW,DCH;
@@ -107,14 +126,14 @@ namespace TreeDisplay
 		{
 			k=_k;
 //cout<<"|"<<k<<"|";
-			iterator niltxt(find("n"));
-			if (niltxt!=end()) erase(niltxt);
+			//iterator niltxt(find("n"));
+			//if (niltxt!=end()) erase(niltxt);
 			if ((!parent) or (parent->isnil()) ) 
 			{
 				double x=(SW/2)-(CW/2); double y=(CH*3);
 				motion(x,y);
 				Text(k,k);
-				if (node.isnul(parent)) NodeBase::operator[]("n")="P";
+				//if (node.isnul(parent)) NodeBase::operator[]("n")="P";
 				parented=false;
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
@@ -154,8 +173,8 @@ namespace TreeDisplay
 					Text(k,pk);
 				}
 			}
-			if (node.Left()) if (node.Left()->isnil()) NodeBase::operator[]("n")+="l";
-			if (node.Right()) if (node.Right()->isnil()) NodeBase::operator[]("n")+="r";
+			//if (node.Left()) if (node.Left()->isnil()) NodeBase::operator[]("n")+="l";
+			//if (node.Right()) if (node.Right()->isnil()) NodeBase::operator[]("n")+="r";
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 			{ NodeBase::operator()(invalid,window,display,gc,bitmap); }

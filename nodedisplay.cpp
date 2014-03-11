@@ -40,14 +40,11 @@ namespace TreeDisplay
 		//#define GHOSTS
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
-//cout<<"."; cout.flush();
-//moved=false; Removed=true;
-//return;
-			if (coverlastlin)
+			XSetForeground(display,gc,0X777777);
+			while(!lpsxy.empty())
 			{
-				XSetForeground(display,gc,0X777777);
-				XDrawLine(display,bitmap,gc,LSX,LSY,LPX,LPY);
-				coverlastlin=false;
+				pair<pair<double,double>,pair<double,double> > p(lpsxy);
+				XDrawLine(display,bitmap,gc,p.first.first,p.first.second,p.second.first,p.second.second);
 			}
 			SetFont(display,gc);
 			//invalid.SetTrace(true);
@@ -113,13 +110,11 @@ namespace TreeDisplay
 					stringstream ss; ss<<it->first<<" : "<<it->second;
 					XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,ss.str().c_str(),ss.str().size());
 				}
-				if (parented)
+				if ( (parented) and (!Remove) ) 
 				{
 					XSetForeground(display,gc,0XAAAACC);
 					XDrawLine(display,bitmap,gc,X,Y,PX,PY);
-					LSX=X; LSY=Y;
-					LPX=PX; LPY=PY;
-					coverlastlin=true;
+					lpsxy(X,Y,PX,PY);
 				}
 			}
 		}

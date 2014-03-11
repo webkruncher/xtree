@@ -155,11 +155,7 @@ namespace TreeIntegrity
 			struct Visitor
 		{
 			Visitor(Trunk& _rk,IntegrityAdvisor& _advisor) : rk(_rk),advisor(_advisor),ok(true) {}
-			operator bool () 
-			{ 
-				PostOrder(rk);
-				return ok; 
-			}
+			operator bool () { PostOrder(rk); return ok; }
 			private:
 			Trunk& rk;
 			IntegrityAdvisor& advisor;
@@ -200,11 +196,11 @@ namespace TreeIntegrity
 					if (rbc.color(&node)==RbBase::BLACK) 
 						advisor.message(node,"d",ss.str());
 				}
-				if (rbc.color(&node)==RbBase::RED) 
+				if (!node.isnil() and rbc.color(&node)==RbBase::RED) 
 				{
 					bool leftisred(false),rightisred(false);
-					if (rb.Right()) if (rbc.color(rb.Right())==RbBase::RED) rightisred=true;
-					if (rb.Left()) if (rbc.color(rb.Left())==RbBase::RED) leftisred=true;
+					if (!node.isnul(rb.Right())) if (rbc.color(rb.Right())==RbBase::RED) rightisred=true;
+					if (!node.isnul(rb.Left())) if (rbc.color(rb.Left())==RbBase::RED) leftisred=true;
 					stringstream ss;
 					if (leftisred) ss<<"L";
 					if (rightisred) ss<<"R";

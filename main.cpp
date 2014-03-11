@@ -251,7 +251,9 @@ int main(int argc,char** argv)
 		delete pcanvas;
 	}
 	catch(runtime_error& e){except<<"runtime error:"<<e.what();}
+	catch(exception& e){except<<"runtime error:"<<e.what();}
 	catch(string& e){except<<"exception: "<<e;}
+	catch(char* e){except<<"exception: "<<e;}
 	catch(...){except<<"unknown error";}
 	if (!except.str().empty()) cout<<except.str()<<endl;
 
@@ -260,4 +262,6 @@ int main(int argc,char** argv)
 	XCloseDisplay(display);
 	return 0;
 }
+
+
 

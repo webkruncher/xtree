@@ -30,8 +30,6 @@
 
 namespace TreeObjects
 {
-	#define BREAKPOINT asm ("int $0X03") ; 
-
 	#ifndef NULL
 	#define NULL 0
 	#endif
@@ -97,7 +95,6 @@ namespace TreeObjects
 		void SetLeft(Trunk* l){left=l;}
 		Trunk* Right(){return right;}
 		void SetRight(Trunk* r){right=r;}
-		//virtual Trunk* GetNil() {return NULL;}
 		virtual Trunk* GetNil() {return &sentinel;}
 		private: Trunk& sentinel; Trunk *parent,*left,*right;
 		TreeBase& operator=(const TreeBase&){parent=NULL;left=NULL;right=NULL;} 
@@ -113,7 +110,6 @@ namespace TreeObjects
 		void SetLeft(Trunk*){}
 		Trunk* Right(){return NULL;}
 		void SetRight(Trunk*){}
-		//virtual Trunk* GetNil() {return NULL;}
 		virtual Trunk* GetNil() {return this;}
 	};
 
@@ -236,7 +232,6 @@ namespace TreeObjects
 		virtual BstBase<KT>* find(const KT what)
 		{
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
-if (nd.isnil()) throw "Found a nil node"; // temporary
 			if (nd==what) return this;
 			if (nd<what)
 			{
@@ -274,7 +269,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			return newroot;
 		}
 
-
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
@@ -303,6 +297,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			}
 			return root;
 		}
+
 		virtual bool operator<(const Trunk& _b) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
@@ -466,7 +461,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 		virtual operator Trunk& () = 0;
 		virtual Trunk* remove(Trunk* root,Trunk* pfound); 
 
-		void Rotator(Trunk* node) {}//Update(node,node->Parent());}
+		void Rotator(Trunk* node) {Update(node,node->Parent());}
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
@@ -583,9 +578,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			return black(root);
 		}
 
-
-
-
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
 			if (root->isnul(found)) return root;
@@ -601,7 +593,7 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			delete found;
 			return newroot;
 		}
-		COLOR clr; // color enum
+		COLOR clr;
 	};
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
@@ -739,8 +731,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			if (n->isnil()) return n;
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
-			//if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
-			//if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
 			if (!n->Left()) n->SetLeft(this->GetNil());
 			if (!n->Right()) n->SetRight(this->GetNil());
 			if (n->isnil()) return n;
@@ -780,8 +770,6 @@ if (nd.isnil()) throw "Found a nil node"; // temporary
 			if (n->isnil()) return n;
 			TB& nd(static_cast<TB&>(*n)); 
 			nd.clr=this->Black();
-			//if (n->Left() and (n->Left()->isnil())) n->SetLeft(NULL);
-			//if (n->Right() and (n->Right()->isnil())) n->SetRight(NULL);
 			if (!n->Left()) n->SetLeft(this->GetNil());
 			if (!n->Right()) n->SetRight(this->GetNil());
 			if (n->isnil()) return n;
