@@ -110,9 +110,8 @@ namespace TreeDisplay
 					stringstream ss; ss<<it->first<<" : "<<it->second;
 					XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,ss.str().c_str(),ss.str().size());
 				}
-				if ( (parented) and (!Remove) ) 
 				{
-					XSetForeground(display,gc,0XAAAACC);
+					XSetForeground(display,gc,(Remove or (!parented) ) ? 0X777777 : 0XAAAACC);
 					XDrawLine(display,bitmap,gc,X,Y,PX,PY);
 					lpsxy(X,Y,PX,PY);
 				}
