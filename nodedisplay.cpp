@@ -41,9 +41,9 @@ namespace TreeDisplay
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
 			XSetForeground(display,gc,0X777777);
-			while(!lpsxy.empty())
+			while(!linecovers.empty())
 			{
-				pair<pair<double,double>,pair<double,double> > p(lpsxy);
+				pointpairs p(linecovers);
 				XDrawLine(display,bitmap,gc,p.first.first,p.first.second,p.second.first,p.second.second);
 			}
 			SetFont(display,gc);
@@ -113,7 +113,7 @@ namespace TreeDisplay
 				{
 					XSetForeground(display,gc,(Remove or (!parented) ) ? 0X777777 : 0XAAAACC);
 					XDrawLine(display,bitmap,gc,X,Y,PX,PY);
-					lpsxy(X,Y,PX,PY);
+					linecovers(X,Y,PX,PY);
 				}
 			}
 		}

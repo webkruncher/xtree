@@ -54,13 +54,14 @@ namespace TreeDisplay
 		mutable XPoint* xpoints;
 	};
 
-	struct LastLines : deque<pair<pair<double,double>,pair<double,double> > >
+	typedef pair<pair<double,double>,pair<double,double> > pointpairs;
+	struct LastLines : deque<pointpairs>
 	{
 		void operator()(const double lsx,const double lsy, const double lpx, const double lpy)
 		{
 			pair<double,double> ls(lsx,lsy);
 			pair<double,double> lp(lpx,lpy);
-			pair<pair<double,double>,pair<double,double> > p(ls,lp);
+			pointpairs p(ls,lp);
 			push_back(p);
 		}
 		
@@ -91,7 +92,7 @@ namespace TreeDisplay
 		string text;
 		const int SW,SH;
 		double X,Y,PX,PY;
-		LastLines lpsxy;
+		LastLines linecovers;
 		bool parented;
 		unsigned long color;
 		int CW,CH;
@@ -125,7 +126,6 @@ namespace TreeDisplay
 		void operator()(KT _k,Trunk& node,Trunk* parent,bool erasing=false)
 		{
 			k=_k;
-//cout<<"|"<<k<<"|";
 			//iterator niltxt(find("n"));
 			//if (niltxt!=end()) erase(niltxt);
 			if ((!parent) or (parent->isnil()) ) 
@@ -158,7 +158,6 @@ namespace TreeDisplay
 					double gpx(gpn.X);
 					double dx(gpn.X-pn.X);
 					dx/=2; //dx*=1; // 1/2 of the difference between parent and grand-parent
-					//if (dx<0) dx*=-1;
 					if (k<pk) x=px-dx; else x=px+dx; 
 
 					int depth(DepthFinder(node)+3);
