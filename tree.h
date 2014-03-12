@@ -229,7 +229,7 @@ namespace TreeObjects
 			return(true);
 		}
 
-		virtual BstBase<KT>* find(const KT what)
+		virtual BstBase<KT>* find(const KT& what)
 		{
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
 			if (nd==what) return this;
@@ -298,18 +298,18 @@ namespace TreeObjects
 			return root;
 		}
 
-		virtual bool operator<(const Trunk& _b) 
+		virtual bool operator<(const Trunk& that) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
-			Trunk& __b(const_cast<Trunk&>(_b));
-			const BstBase<KT>& b(static_cast<BstBase<KT>&>(__b));
+			Trunk& other(const_cast<Trunk&>(that));
+			const BstBase<KT>& b(static_cast<BstBase<KT>&>(other));
 			return a.key<b.key; 
 		}
-		virtual bool operator==(const Trunk& _b) 
+		virtual bool operator==(const Trunk& that) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
-			Trunk& __b(const_cast<Trunk&>(_b));
-			const BstBase<KT>& b(static_cast<BstBase<KT>&>(__b));
+			Trunk& other(const_cast<Trunk&>(that));
+			const BstBase<KT>& b(static_cast<BstBase<KT>&>(other));
 			return a.key==b.key; 
 		}
 		virtual bool operator<(const KT& b) 
@@ -594,6 +594,8 @@ namespace TreeObjects
 			return newroot;
 		}
 		COLOR clr;
+
+
 	};
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
@@ -725,6 +727,7 @@ namespace TreeObjects
 			this->Update(n,n->Parent());
 			return n;
 		}
+
 		virtual Trunk* black(Trunk* n) 
 		{ 
 			if (!n) return n; 
@@ -738,6 +741,7 @@ namespace TreeObjects
 			this->Update(n,n->Parent());
 			return n;
 		}
+
 		virtual const RbBase::COLOR color(Trunk* n) const
 		{
 			if (!n) return RbBase::BLACK; 

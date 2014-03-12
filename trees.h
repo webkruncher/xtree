@@ -45,6 +45,7 @@ namespace TreeDisplay
 				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) { }
 		virtual ~TreeCanvas() 
 		{
+			if ((root) and (root->isnil())) throw string("Root is NIL");
 			if ((root) and (!root->isnil()) ) delete root;
 		}
 		virtual void operator()(Pixmap& bitmap) 

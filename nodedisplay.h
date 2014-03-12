@@ -98,7 +98,7 @@ namespace TreeDisplay
 		int CW,CH;
 		int DCW,DCH;
 		private:
-		XPoints lastpoints;
+		//XPoints lastpoints;
 		bool Remove,Removed;
 		int Removing;
 		XFontStruct* font_info;

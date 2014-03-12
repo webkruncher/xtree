@@ -135,16 +135,16 @@ namespace TreeIntegrity
 			long ttl(root->countnodes());
 			if (ttl!=used.size()) ok=false;
 			if (ok) TestPredecessorsAndSuccessors<KT>(root,root,used,ok);
-			if (!ok)
+			//if (!ok)
 			{
-				cout<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
-				cout<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
-				cout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
-				cout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
-				cout<<"isBST:"<<boolalpha<<isbst;
-				cout<<"; Used: Min:"<<*used.begin();
-				cout<<", Max:"<<*used.rbegin()<<endl;
-				cout.flush();
+				cerr<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
+				cerr<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
+				cerr<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
+				cerr<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
+				cerr<<"isBST:"<<boolalpha<<isbst;
+				cerr<<"; Used: Min:"<<*used.begin();
+				cerr<<", Max:"<<*used.rbegin()<<endl;
+				cerr.flush();
 			}
 			return ok;
 	}

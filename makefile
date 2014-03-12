@@ -16,6 +16,9 @@ trees: main.o trees.o nodedisplay.o
 tester: tester.cpp tree.h treemap.h treeset.h treeintegrity.h
 	g++ -I. tester.cpp -o tester -g
 
+stress: stress.cpp tree.h treemap.h treeset.h 
+	g++ -I. stress.cpp -o stress -g
+
 iterators: iterators.cpp tree.h treemap.h treeset.h 
 	g++ -I. iterators.cpp -o iterators -g
 
@@ -31,6 +34,7 @@ trees.o: trees.cpp $(INCS)
 clean:
 	-rm iterators
 	-rm tester
+	-rm stress
 	-rm trees
 	-rm *.o
 	-rm *.rpo

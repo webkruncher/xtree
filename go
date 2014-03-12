@@ -12,13 +12,17 @@ update=`make -n | grep ^g++ | wc -l | tr -d ' '`
 [[ $update != 0 ]] && rm tester
 make tester
 make 
+echo "Starting trees at `date`" > trees.out
+#./stress
 #./trees -string -redblack 2>/dev/null
 #./trees -int -bst 2>/dev/null
-./trees -int -redblack 2>/dev/null
+./trees -int -redblack 2>trees.err 1>>trees.out
 #./trees -int -bst 2>/dev/null
 #./trees -double -redblack 2>/dev/null
 #./trees -double -bst 2>/dev/null
 #./trees 2>/dev/null
 #startx ./trees
+
+echo "Done with trees at `date`" >> trees.out
 
 

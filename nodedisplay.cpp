@@ -98,7 +98,7 @@ namespace TreeDisplay
 				#endif
 				XSetForeground(display,gc,0XFFFFFF);
 				XPoint& points(iv); XPoint* pt=&points;
-				for (int j=0;j<4;j++,pt++) lastpoints.push_back(*pt);
+				//for (int j=0;j<4;j++,pt++) lastpoints.push_back(*pt);
 				XSetForeground(display,gc,color);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 				XSetForeground(display,gc,0XFFFFFF);
