@@ -161,7 +161,34 @@ namespace Utilities
 } // Utilities
 
 
-
+TreeJournal::Journal* OpenJournal(Utilities::CmdLine& cmdline)
+{
+	TreeJournal::Journal* J(NULL);
+	if (cmdline.exists("-i")) J=new TreeJournal::Journal(cmdline["-i"],ios_base::in);
+	if (cmdline.exists("-o")) J=new TreeJournal::Journal(cmdline["-o"],ios_base::out);
+	if (!J) J=new TreeJournal::Journal;
+	TreeJournal::Journal& journal(*J);
+	if (journal==ios_base::out)
+	{
+		if (cmdline.find("-bst")!=cmdline.end()) {journal<<"bst"<<endl;}
+		if (cmdline.find("-redblack")!=cmdline.end()) {journal<<"redblack"<<endl;}
+	}
+	if (journal==ios_base::in)
+	{
+		cmdline.clear();
+		string treetype; getline(journal,treetype);
+		char keytype; journal.read(&keytype,1); journal.putback(keytype);
+		cout<<"TreeType:"<<treetype<<endl;
+		cout<<"KeyType:"<<keytype<<endl;
+		treetype.insert(0,"-");
+		cmdline[treetype]="";
+		if (keytype=='I') cmdline["-int"]="";
+		if (keytype=='D') cmdline["-double"]="";
+		if (keytype=='S') cmdline["-string"]="";
+		cout<<"Reading journal:"<<endl<<cmdline<<endl;
+	}
+	return J;
+}
 
 int main(int argc,char** argv)
 {
@@ -231,9 +258,8 @@ int main(int argc,char** argv)
 			cmdline["-int"]="";
 			cmdline["-redblack"]="";
 		}
-		if (cmdline.exists("-i")) journal.reset(new TreeJournal::Journal(cmdline["-i"],ios_base::in));
-		if (cmdline.exists("-o")) journal.reset(new TreeJournal::Journal(cmdline["-o"],ios_base::out));
-		if (!journal.get()) journal.reset(new TreeJournal::Journal);
+		journal.reset(OpenJournal(cmdline));
+
 		if (cmdline.find("-int")!=cmdline.end())
 		{
 			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<int>(*journal.get(),display,window,gc,displayarea.width, displayarea.height);
