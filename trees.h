@@ -40,10 +40,10 @@ namespace TreeDisplay
 		struct TreeCanvas : Canvas, Sentinel
 	{
 		typedef TreeNode<KT> VT ;
-		TreeCanvas(TreeJournal::Journal& _journal,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: journal(_journal), window(_window), 
+		TreeCanvas(TreeJournal::Journal& _journal,ostream& _out,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: journal(_journal), out(_out), window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
-				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) 
+				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) , ignorestop(_ignorestop)
 					{ if (journal==ios_base::in) journal>>entry; }
 		virtual ~TreeCanvas() 
 		{
@@ -63,21 +63,24 @@ namespace TreeDisplay
 		virtual void update() { UpdateTree(); }
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
+		bool ignorestop;
 		TreeJournal::Journal& journal;
+		ostream& out;
 		TreeJournal::Entry<KT> entry;
 		bool stop,removing;
 		virtual bool CheckIntegrity(Trunk* root) 
-			{ if (!TreeIntegrity::BstIntegrity<KT>(root,used)) return this->IntegrityReport(root); return true;}
+			{ if (!TreeIntegrity::BstIntegrity<KT>(out,root,used)) return this->IntegrityReport(root); return true;}
 		virtual bool IntegrityReport(Trunk* root) 
 		{
-			cout<<"Integrity check failed:"<<endl;
+			out<<"Integrity check failed:"<<endl;
 			if (used.size()<20)
 			{
-				cout<<"Used:"; for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) cout<<(*it)<<" ";	
-				cout<<endl<<" Bst:"; TreeIntegrity::PrintInOrder<KT,VT>(root);
-				cout<<endl;
+				out<<"Used:"; for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) out<<(*it)<<" ";	
+				out<<endl<<" Bst:"; 
+				TreeIntegrity::PrintInOrder<KT,VT>(out,root);
+				out<<endl;
 			}
-			cout.flush();
+			out.flush();
 			return false;
 		}
 		private:
@@ -122,8 +125,8 @@ namespace TreeDisplay
 		struct RbMapCanvas : TreeCanvas<KT>, TreeIntegrity::IntegrityAdvisor
 	{
 		typedef TreeNode<KT> VT ;
-		RbMapCanvas(TreeJournal::Journal& _journal,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: TreeCanvas<KT>(_journal,_display,_window,_gc,_ScreenWidth,_ScreenHeight) {}
+		RbMapCanvas(TreeJournal::Journal& _journal,ostream& _out,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: TreeCanvas<KT>(_journal,_out,_ignorestop,_display,_window,_gc,_ScreenWidth,_ScreenHeight),out(_out) {}
 		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
 		{ 
 			return new RbMap<KT,VT>(static_cast<Sentinel&>(*this),key,treenode); 
@@ -131,7 +134,7 @@ namespace TreeDisplay
 		virtual bool CheckIntegrity(Trunk* root)
 		{
 			if (!TreeCanvas<KT>::CheckIntegrity(root)) return this->IntegrityReport(root);;
-			if (!TreeIntegrity::RedBlackIntegrity<KT>(root,*this)) return this->IntegrityReport(root);
+			if (!TreeIntegrity::RedBlackIntegrity<KT>(out,root,*this)) return this->IntegrityReport(root);
 			return true;
 		}
 		void clear(Trunk& node,string name)
@@ -147,6 +150,7 @@ namespace TreeDisplay
 			VT& data(rb.Data());
 			data[name]=value;
 		}
+		private: ostream& out;
 	};
 } // TreeDisplay
 

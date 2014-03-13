@@ -222,7 +222,7 @@ namespace TreeDisplay
 							{
 								root=nr;
 								if (root) root->SetParent(this);
-							} else cout<<next.second<<" is a duplicate and was deleted"<<endl;
+							} //else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
 					} else {
 						if ((root) or (root->isnil()))
@@ -239,6 +239,7 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
+			if (ignorestop) stop=false;
 			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
 			updateloop++;
 

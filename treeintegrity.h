@@ -38,18 +38,18 @@ namespace TreeIntegrity
 	};
 
 	template<typename KT,typename VT> 
-		inline void PrintInOrder(Trunk* node)
+		inline void PrintInOrder(ostream& out,Trunk* node)
 	{
 		if (!node) return;
 		if (node->isnil()) return;
-		if (!node->isnul(node->Left())) PrintInOrder<KT,VT>(node->Left());
+		if (!node->isnul(node->Left())) PrintInOrder<KT,VT>(out,node->Left());
 		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
-		const KT& v(rk); //cout<<v<<" ";
-		if (!node->isnul(node->Right())) PrintInOrder<KT,VT>(node->Right());
+		const KT& v(rk); //out<<v<<" ";
+		if (!node->isnul(node->Right())) PrintInOrder<KT,VT>(out,node->Right());
 	}	
 
 	template<typename KT>
-		inline void TestSuccessor(Trunk* root,Trunk* node,set<KT>& used,bool& ok)
+		inline void TestSuccessor(ostream& out,Trunk* root,Trunk* node,set<KT>& used,bool& ok)
 	{
 		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
@@ -72,13 +72,13 @@ namespace TreeIntegrity
 		const KT& upv(*fit);
 		if (pv!=upv)
 		{
-			cout<<"Successor test failed for "<<v<<":"<<pv<<"!="<<upv<<endl;
+			out<<"Successor test failed for "<<v<<":"<<pv<<"!="<<upv<<endl;
 			ok=false;
 		}
 	}
 
 	template<typename KT>
-		inline void TestPredecessor(Trunk* root,Trunk* node,set<KT>& used,bool& ok)
+		inline void TestPredecessor(ostream& out,Trunk* root,Trunk* node,set<KT>& used,bool& ok)
 	{
 		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 		const KT& v(rk); //cout<<v<<" ";
@@ -88,7 +88,7 @@ namespace TreeIntegrity
 		if (node==minimum) 
 		{
 			if (it==used.begin()) return; 
-			cout<<"Leftmost node is not used.begin()"<<endl;
+			out<<"Leftmost node is not used.begin()"<<endl;
 			ok=false;
 			return;
 		}
@@ -99,27 +99,27 @@ namespace TreeIntegrity
 		const KT& upv(*it);
 		if (pv!=upv)
 		{
-			cout<<"Predecessor test failed for "<<v<<":"<<pv<<"!="<<upv<<endl;
+			out<<"Predecessor test failed for "<<v<<":"<<pv<<"!="<<upv<<endl;
 			ok=false;
 		}
 		
 	}
 
 	template<typename KT>
-		inline void TestPredecessorsAndSuccessors(Trunk* root,Trunk* node,set<KT>& used,bool& ok)
+		inline void TestPredecessorsAndSuccessors(ostream& out,Trunk* root,Trunk* node,set<KT>& used,bool& ok)
 	{
 		if (!node) return;
-		if (node->isnul(node->Left())) TestPredecessorsAndSuccessors<KT>(root,node->Left(),used,ok);
+		if (node->isnul(node->Left())) TestPredecessorsAndSuccessors<KT>(out,root,node->Left(),used,ok);
 		if (!node->isnil()) 
 		{
-			TestPredecessor<KT>(root,node,used,ok);
-			TestSuccessor<KT>(root,node,used,ok);
+			TestPredecessor<KT>(out,root,node,used,ok);
+			TestSuccessor<KT>(out,root,node,used,ok);
 		}
-		if (node->isnul(node->Right())) TestPredecessorsAndSuccessors<KT>(root,node->Right(),used,ok);
+		if (node->isnul(node->Right())) TestPredecessorsAndSuccessors<KT>(out,root,node->Right(),used,ok);
 	}	
 
 	template<typename KT>
-		inline bool BstIntegrity(Trunk* root,set<KT>& used)
+		inline bool BstIntegrity(ostream& out,Trunk* root,set<KT>& used)
 	{
 			bool ok(true);
 			if (!root) return true;
@@ -129,12 +129,12 @@ namespace TreeIntegrity
 			KT minvalue(rk.minValue(root));
 			KT rootvalue(rk);
 			bool isbst(root->isBST(root));
-			if (minvalue!=(*used.begin())) {cout<<("Min check failed")<<endl; ok= false;}
-			if (maxvalue!=(*used.rbegin())) {cout<<("Max check failed")<<endl; ok= false;}
-			if (!isbst) {cout<<("isBST failed")<<endl; ok= false;}
+			if (minvalue!=(*used.begin())) {out<<("Min check failed")<<endl; ok= false;}
+			if (maxvalue!=(*used.rbegin())) {out<<("Max check failed")<<endl; ok= false;}
+			if (!isbst) {out<<("isBST failed")<<endl; ok= false;}
 			long ttl(root->countnodes());
 			if (ttl!=used.size()) ok=false;
-			if (ok) TestPredecessorsAndSuccessors<KT>(root,root,used,ok);
+			if (ok) TestPredecessorsAndSuccessors<KT>(out,root,root,used,ok);
 			if (!ok)
 			{
 				cerr<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
@@ -154,9 +154,10 @@ namespace TreeIntegrity
 		template<typename KT>
 			struct Visitor
 		{
-			Visitor(Trunk& _rk,IntegrityAdvisor& _advisor) : rk(_rk),advisor(_advisor),ok(true) {}
+			Visitor(ostream& _out,Trunk& _rk,IntegrityAdvisor& _advisor) : out(_out), rk(_rk),advisor(_advisor),ok(true) {}
 			operator bool () { PostOrder(rk); return ok; }
 			private:
+			ostream& out;
 			Trunk& rk;
 			IntegrityAdvisor& advisor;
 			bool ok;
@@ -164,7 +165,7 @@ namespace TreeIntegrity
 			{
 				if (node.isnil()) return 0;
 				RbBase* prbc(dynamic_cast<RbBase*>(&node));
-				if (!prbc) {cout<<"Error in dynamic cast"<<endl;return 0;}
+				if (!prbc) {out<<"Error in dynamic cast"<<endl;return 0;}
 				RbBase& rbc(*prbc);
 				int ld(0),rd(0);	
 				if (node.Parent())
@@ -181,7 +182,7 @@ namespace TreeIntegrity
 			{
 				BstBase<KT>& rb(static_cast<BstBase<KT>&>(node));
 				RbBase* prbc(dynamic_cast<RbBase*>(&node));
-				if (!prbc) {cout<<"This is not an RbBase node"<<endl; return;}
+				if (!prbc) {out<<"This is not an RbBase node"<<endl; return;}
 				RbBase& rbc(*prbc);
 				const KT& key(rb);
 				advisor.clear(node,"d");
@@ -213,15 +214,15 @@ namespace TreeIntegrity
 	} // RedBlackCheck
 
 	template<typename KT>
-		inline bool RedBlackIntegrity(Trunk* root,IntegrityAdvisor& advisor)
+		inline bool RedBlackIntegrity(ostream& out,Trunk* root,IntegrityAdvisor& advisor)
 	{
 		if (!root) return true;
 		if (root->isnil()) return true;
 		Trunk& rk(static_cast<Trunk&>(*root));
 		Trunk* leftmost(root->LeftMost());
 		Trunk* rightmost(root->RightMost());
-		RedBlackCheck::Visitor<KT> visitor(rk,advisor);
-		if (!visitor) {cout<<"Red Black check failed"<<endl; return false;}
+		RedBlackCheck::Visitor<KT> visitor(out,rk,advisor);
+		if (!visitor) {out<<"Red Black check failed"<<endl; return false;}
 		return true;
 		//return visitor;
 	}

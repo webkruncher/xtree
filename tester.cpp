@@ -115,8 +115,8 @@ struct Advisor : TreeIntegrity::IntegrityAdvisor
 template <typename KT>
 	bool IntegrityCheck(TreeObjects::Trunk* root,std::set<KT>& used)
 {
-	if (!TreeIntegrity::BstIntegrity<KT>(root,used)) return false;
-	if (!TreeIntegrity::RedBlackIntegrity<KT>(root,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<KT>(cout,root,used)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<KT>(cout,root,Violations)) return false;
 	return true;
 }
 
@@ -132,32 +132,32 @@ template <typename T>
 			Insert(items,numbers[j]);
 			Insert(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
 	//cout<<"Erasing "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=0;j<size/2;j++) 
 	{
 		Erase(items,numbers[j]);
 		Erase(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
 	//cout<<"Inserting "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=size/2;j>=0;j--) 
 	{
 		Insert(items,numbers[j]);
 		Insert(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
 	//cout<<"Erasing "<<dec<<(size)<<" numbers"<<endl;
 	for (long j=0;j<size;j++) 
 	{
 		Erase(items,numbers[j]);
 		Erase(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
 	return true;
 }
 
