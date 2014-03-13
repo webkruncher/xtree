@@ -31,6 +31,7 @@ using namespace TreeObjects;
 #include <trees.h>
 using namespace TreeDisplay;
 #include <math.h>
+#include <journal.h>
 
 namespace Utilities
 {

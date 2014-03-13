@@ -135,7 +135,7 @@ namespace TreeIntegrity
 			long ttl(root->countnodes());
 			if (ttl!=used.size()) ok=false;
 			if (ok) TestPredecessorsAndSuccessors<KT>(root,root,used,ok);
-			//if (!ok)
+			if (!ok)
 			{
 				cerr<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
 				cerr<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
@@ -206,7 +206,7 @@ namespace TreeIntegrity
 					if (rightisred) ss<<"R";
 					if (!ss.str().empty()) 
 						advisor.message(node,"c",ss.str());
-					//if (leftisred or rightisred) ok=false;
+					if (leftisred or rightisred) ok=false;
 				}
 			}
 		}; 
