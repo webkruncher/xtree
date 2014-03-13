@@ -33,16 +33,18 @@ struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>:
 #include "motivation.h"
 #include "nodedisplay.h"
 #include "treeintegrity.h"
+#include "journal.h"
 namespace TreeDisplay
 {
 	template<typename KT>
 		struct TreeCanvas : Canvas, Sentinel
 	{
 		typedef TreeNode<KT> VT ;
-		TreeCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: window(_window), 
+		TreeCanvas(TreeJournal::Journal& _journal,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: journal(_journal), window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
-				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) { }
+				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) 
+					{ if (journal==ios_base::in) journal>>entry; }
 		virtual ~TreeCanvas() 
 		{
 			if ((root) and (root->isnil())) throw string("Root is NIL");
@@ -61,6 +63,8 @@ namespace TreeDisplay
 		virtual void update() { UpdateTree(); }
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
+		TreeJournal::Journal& journal;
+		TreeJournal::Entry<KT> entry;
 		bool stop,removing;
 		virtual bool CheckIntegrity(Trunk* root) { return TreeIntegrity::BstIntegrity<KT>(root,used); }
 		private:
@@ -105,8 +109,8 @@ namespace TreeDisplay
 		struct RbMapCanvas : TreeCanvas<KT>, TreeIntegrity::IntegrityAdvisor
 	{
 		typedef TreeNode<KT> VT ;
-		RbMapCanvas(Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: TreeCanvas<KT>(_display,_window,_gc,_ScreenWidth,_ScreenHeight) {}
+		RbMapCanvas(TreeJournal::Journal& _journal,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: TreeCanvas<KT>(_journal,_display,_window,_gc,_ScreenWidth,_ScreenHeight) {}
 		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
 		{ 
 			return new RbMap<KT,VT>(static_cast<Sentinel&>(*this),key,treenode); 

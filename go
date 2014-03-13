@@ -14,9 +14,9 @@ make tester
 make 
 echo "Starting trees at `date`" > trees.out
 #./stress
-#./trees -string -redblack 2>/dev/null
+./trees -i journal -string -redblack 2>/dev/null
 #./trees -int -bst 2>/dev/null
-./trees -int -redblack 2>trees.err 1>>trees.out
+#./trees -i journal -int -redblack 2>trees.err 1>>trees.out
 #./trees -int -bst 2>/dev/null
 #./trees -double -redblack 2>/dev/null
 #./trees -double -bst 2>/dev/null

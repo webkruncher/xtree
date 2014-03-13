@@ -224,28 +224,32 @@ int main(int argc,char** argv)
 	stringstream except;
 	try
 	{
+		auto_ptr<TreeJournal::Journal> journal;
 		Canvas* pcanvas(NULL);
 		if (cmdline.empty())
 		{
 			cmdline["-int"]="";
 			cmdline["-redblack"]="";
 		}
+		if (cmdline.exists("-i")) journal.reset(new TreeJournal::Journal(cmdline["-i"],ios_base::in));
+		if (cmdline.exists("-o")) journal.reset(new TreeJournal::Journal(cmdline["-o"],ios_base::out));
+		if (!journal.get()) journal.reset(new TreeJournal::Journal);
 		if (cmdline.find("-int")!=cmdline.end())
 		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<int>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<int>(*journal.get(),display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<int>(*journal.get(),display,window,gc,displayarea.width, displayarea.height);
 		}
 		if (cmdline.find("-double")!=cmdline.end())
 		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<double>(*journal.get(),display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(*journal.get(),display,window,gc,displayarea.width, displayarea.height);
 		}
 		if (cmdline.find("-string")!=cmdline.end())
 		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<string>(display,window,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<string>(display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<string>(*journal.get(),display,window,gc,displayarea.width, displayarea.height);
+			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<string>(*journal.get(),display,window,gc,displayarea.width, displayarea.height);
 		}
-		if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int or -double");
+		if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int, -double or -string");
 		Canvas& canvas(*pcanvas);
 		Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
 		program(argc,argv);

@@ -6,10 +6,12 @@ using namespace std;
 
 namespace TreeJournal
 {
+	struct Journal;
 	struct journalbuf : streambuf
 	{
 		#define BUFFER_SIZE 4096
 	public:
+		journalbuf() : mode(static_cast<ios_base::openmode>(NULL)), obuffer(NULL),ibuffer(NULL) {}
 		journalbuf(const string _name,const ios_base::openmode _mode) : name(_name), mode(_mode), obuffer(NULL),ibuffer(NULL)
 		{
 			if (mode&ios_base::in) in.open(name.c_str());
@@ -18,7 +20,16 @@ namespace TreeJournal
 			obuffer=(char*)malloc(BUFFER_SIZE+6);setp(obuffer,obuffer+(BUFFER_SIZE-1));
 		}
 		virtual ~journalbuf() {sync(); if (obuffer) free(obuffer); if (ibuffer) free(ibuffer);if (out.is_open()) out.close(); if (in.is_open()) in.close();}
+		operator const ios_base::openmode () const {return mode;}
 	protected:
+		friend struct Journal;
+		virtual int sync(){if (flushout()==EOF) return -1;			return 0;}
+		virtual void close() const
+		{
+			if (mode==ios_base::out) out.close();
+			if (mode==ios_base::in) in.close();
+			mode=static_cast<ios_base::openmode>(NULL);
+		}
 		virtual int underflow()
 		{
 			if (gptr() < egptr()) return *gptr();
@@ -35,7 +46,6 @@ namespace TreeJournal
 			if (flushout()==EOF) {return EOF;}
 			return c;
 		}
-		virtual int sync(){if (flushout()==EOF) return -1;			return 0;}
 		virtual int read(char* dest,size_t size)
 		{
 			memset(dest,0,size);
@@ -57,18 +67,24 @@ namespace TreeJournal
 			return size;
 		}
 		const string name;
-		const ios_base::openmode mode;
+		mutable ios_base::openmode mode;
 		char* ibuffer,*obuffer;
-		ofstream out;
-		ifstream in;
-		long bread;
+		mutable ofstream out;
+		mutable ifstream in;
 	};
 
 
 	struct Journal : iostream
 	{
+		Journal() {}
 		Journal(const string _name,const ios_base::openmode _mode) 
 			: sbuf(_name,_mode), iostream(&sbuf) {}
+		operator const ios_base::openmode () const {return sbuf;}
+		virtual void close()
+		{
+			sbuf.sync();
+			sbuf.close();
+		}
 	private:
 		journalbuf sbuf;		
 	};
@@ -106,6 +122,7 @@ namespace TreeJournal
 		friend Journal& operator>>(Journal&,Entry&);
 		Journal& operator>>(Journal& j)
 		{
+			Entry<KT>& me(*this);
 			j.read((char*)&T,sizeof(char));
 			cout<<"Type:"<<T<<endl;
 			unsigned long L; j.read((char*)&L,sizeof(L));
@@ -121,6 +138,7 @@ namespace TreeJournal
 					KT k; 
 					if (T=='S') getline(j,reinterpret_cast<string&>(k));
 					else j.read((char*)&k,sizeof(k));
+					if (addordelete=='+') me+=k; else me-=k;
 					cout<<k<<endl;
 				}
 			}
@@ -128,6 +146,19 @@ namespace TreeJournal
 		}
 		char T;
 		public:
+
+		operator const bool () const {return !this->empty();}
+		operator pair<bool,KT> ()
+		{
+			if (this->empty()) throw string("Empty journal");
+			Paragraph<KT>& current(this->front());
+			const bool addordelete(current.first);
+			const KT key(current.second.front());
+			current.second.pop_front();
+			if (current.second.empty()) this->pop_front();
+			return make_pair<bool,KT>(addordelete,key);
+		}
+
 		void operator+=(int);
 		void operator-=(int);
 		void operator+=(double);

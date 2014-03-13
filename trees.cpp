@@ -148,8 +148,10 @@ namespace TreeDisplay
 			if (removal)
 			{
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
+				const KT& key(nk);
 				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
+				if (journal==ios_base::out) entry-=key;
 				Trunk* newroot(nk.erase(root,removal));
 				removal=NULL;
 				if (newroot!=root) 
@@ -189,12 +191,30 @@ namespace TreeDisplay
 			{
 				waitfor=0;
 				movement=true;
-				pair<bool,KT> next(Next(MOST));
+
+				bool ReadingJournal(false);
+
+				if (journal==ios_base::in)  
+				{
+					ReadingJournal=entry;
+					if (!ReadingJournal) return; // Journal is finished
+				}
+
+				pair<bool,KT> next((ReadingJournal)?entry:Next(MOST));
+				if (ReadingJournal)
+				{
+					if (next.first)
+						used.insert(next.second);
+					else used.erase(used.find(next.second));
+				}
+
+				cout<<((next.first)?"Adding":"Removing")<<" "<<next.second<<endl;
 				if (next.first)
 				{
 					if (!removing)
 					{
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
+						if (journal==ios_base::out) entry+=next.second;
 						Trunk* n(generate(next.second,tn));
 						if ((!root) or (root->isnil()) ) waitfor=updateloop+10;
 						if ((!root)or (root->isnil()) )  
@@ -244,6 +264,9 @@ namespace TreeDisplay
 
 			Deletions();
 			Additions();
+
+			if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
+
 			if (removal) return;
 
 			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
