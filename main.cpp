@@ -24,6 +24,7 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
 #include "x11grid.h"
 using namespace X11Methods;
 #include <treemap.h>
@@ -192,76 +193,80 @@ TreeJournal::Journal* OpenJournal(Utilities::CmdLine& cmdline)
 
 int main(int argc,char** argv)
 {
-	Utilities::CmdLine cmdline(argc,argv,"trees");
-	
-	KeyMap keys;
-	XSizeHints displayarea;
-	Display *display;
-	display = XOpenDisplay (getenv ("DISPLAY"));
-	int screen(DefaultScreen(display));
-	const unsigned long background(0X777777);
-	const unsigned long foreground(0X777777);
-
-	displayarea.x = 000;
-	displayarea.y = 000;
-	Utilities::GetScreenSize(display,displayarea.width,displayarea.height);
-	displayarea.flags = PPosition | PSize;
-
-
-	XSetWindowAttributes attributes;
+	Display *display(XOpenDisplay(getenv("DISPLAY")));
 	Window window,parent(0);
 	GC gc;
-	unsigned int Class(CopyFromParent);
-	int depth(CopyFromParent);
-	unsigned int border(0);
-	unsigned long valuemask(CopyFromParent);
-	if (!cmdline.exists("-root"))
-	{
-		window=XCreateSimpleWindow(display,DefaultRootWindow(display), 
-			displayarea.x,displayarea.y,displayarea.width,displayarea.height,5,foreground,background);
-		gc=(XCreateGC(display,window,0,0));
-		XSetBackground(display,gc,background);
-		XSetForeground(display,gc,foreground);
-		XSelectInput(display,window,ButtonPressMask|KeyPressMask|ExposureMask);
-		XMapRaised(display,window);
-	} else {
-		long long int wid(0);
-		if (cmdline.exists("-window-id"))
-		{
-			string sswid(cmdline["-window-id"]); sswid.erase(0,2);
-			char* pEnd; wid = strtoll ((char*)sswid.c_str(), &pEnd, 16);
-		}
-			parent=wid; 
-			if (parent)
-				window=XCreateWindow(display, parent,
-					displayarea.x,displayarea.y, displayarea.width,displayarea.height, 
-					border, depth, Class, CopyFromParent, valuemask, &attributes);
-			else window=Utilities::ScreenRoot(DefaultScreenOfDisplay(display));
-			gc=XCreateGC(display,window,0,0);
-			if (wid) XMapRaised(display,window);
-	}
-
-
-	XSetForeground(display,gc,foreground);
-	XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
-
-	ofstream dump;
-	bool IgnoreStop=false;
-	ostream* pout(&cout);
-	if (cmdline.exists("-root"))
-	{
-		dump.open("/dev/null");
-		pout=&dump;
-		IgnoreStop=true;
-	}
-	ostream& out(*pout);
-
-	if (cmdline.exists("-root")) cmdline.erase("-root");
-	if (cmdline.exists("-window-id")) cmdline.erase("-window-id");
-
 	stringstream except;
 	try
 	{
+		//{
+		//	time_t t(time(0));
+		//	ofstream out("/home/jmt/tmp.txt",ios::app);
+		//	out<<"trees "; for (int j=1;j<argc;j++) out<<argv[j]<<" "; out<<endl;
+		//	out<<asctime(localtime(&t));
+		//}
+		Utilities::CmdLine cmdline(argc,argv,"trees");
+		
+		KeyMap keys;
+		XSizeHints displayarea;
+		int screen(DefaultScreen(display));
+		const unsigned long background(0X777777);
+		const unsigned long foreground(0X777777);
+
+		displayarea.x = 000;
+		displayarea.y = 000;
+		Utilities::GetScreenSize(display,displayarea.width,displayarea.height);
+		displayarea.flags = PPosition | PSize;
+
+
+		XSetWindowAttributes attributes;
+		unsigned int Class(CopyFromParent);
+		int depth(CopyFromParent);
+		unsigned int border(0);
+		unsigned long valuemask(CopyFromParent);
+		if (!cmdline.exists("-root"))
+		{
+			window=XCreateSimpleWindow(display,DefaultRootWindow(display), 
+				displayarea.x,displayarea.y,displayarea.width,displayarea.height,5,foreground,background);
+			gc=(XCreateGC(display,window,0,0));
+			XSetBackground(display,gc,background);
+			XSetForeground(display,gc,foreground);
+			XSelectInput(display,window,ButtonPressMask|KeyPressMask|ExposureMask);
+			XMapRaised(display,window);
+		} else {
+			long long int wid(0);
+			if (cmdline.exists("-window-id"))
+			{
+				string sswid(cmdline["-window-id"]); sswid.erase(0,2);
+				char* pEnd; wid = strtoll ((char*)sswid.c_str(), &pEnd, 16);
+			}
+				parent=wid; 
+				if (parent)
+					window=XCreateWindow(display, parent,
+						displayarea.x,displayarea.y, displayarea.width,displayarea.height, 
+						border, depth, Class, CopyFromParent, valuemask, &attributes);
+				else window=Utilities::ScreenRoot(DefaultScreenOfDisplay(display));
+				gc=XCreateGC(display,window,0,0);
+				if (wid) XMapRaised(display,window);
+		}
+
+		XSetForeground(display,gc,foreground);
+		XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
+
+		ofstream dump;
+		bool IgnoreStop=false;
+		ostream* pout(&cout);
+		if (cmdline.exists("-root"))
+		{
+			dump.open("/dev/null");
+			pout=&dump;
+			IgnoreStop=true;
+		}
+		ostream& out(*pout);
+
+		if (cmdline.exists("-root")) cmdline.erase("-root");
+		if (cmdline.exists("-window-id")) cmdline.erase("-window-id");
+
 		auto_ptr<TreeJournal::Journal> journal;
 		Canvas* pcanvas(NULL);
 		if (cmdline.empty())
@@ -305,6 +310,4 @@ int main(int argc,char** argv)
 	XCloseDisplay(display);
 	return 0;
 }
-
-
 

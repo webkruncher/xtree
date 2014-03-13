@@ -59,5 +59,5 @@ namespace TreeDisplay
 		private: double x,y;
 	};
 } //namespace TreeDisplay
-#endif MOTIVATION_H
+#endif //MOTIVATION_H
 

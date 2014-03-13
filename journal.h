@@ -16,8 +16,11 @@ namespace TreeJournal
 		{
 			if (mode&ios_base::in) in.open(name.c_str());
 			if (mode&ios_base::out) out.open(name.c_str());
-			ibuffer=(char*)malloc(BUFFER_SIZE+6);setg(ibuffer+4,ibuffer+4,ibuffer+4);
-			obuffer=(char*)malloc(BUFFER_SIZE+6);setp(obuffer,obuffer+(BUFFER_SIZE-1));
+			if (!name.empty())
+			{
+				ibuffer=(char*)malloc(BUFFER_SIZE+6);setg(ibuffer+4,ibuffer+4,ibuffer+4);
+				obuffer=(char*)malloc(BUFFER_SIZE+6);setp(obuffer,obuffer+(BUFFER_SIZE-1));
+			}
 		}
 		virtual ~journalbuf() {sync(); if (obuffer) free(obuffer); if (ibuffer) free(ibuffer);if (out.is_open()) out.close(); if (in.is_open()) in.close();}
 		operator const ios_base::openmode () const 

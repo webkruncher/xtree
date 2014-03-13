@@ -105,7 +105,8 @@ namespace TreeDisplay
 		void SetFont(Display* display,GC& gc)
 		{
 			if (font_info) return;
-			char* font_name = "*-courier-*-8-*";
+			//const char* font_name = "*-courier-*-8-*";
+			const char* font_name = "*-helvetica-*-10-*";
 			font_info = XLoadQueryFont(display, font_name);
 			if (!font_info) 
 			{
@@ -190,7 +191,7 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> inline void TreeNode<int>::BoxSize() { CW=20; CH=10; }
+	template <> inline void TreeNode<int>::BoxSize() { CW=20; CH=12; }
 
 	template <> inline void TreeNode<double>::Text(double k,double pk,string txt)
 	{
@@ -199,14 +200,14 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> inline void TreeNode<double>::BoxSize() { CW=40; CH=10; }
+	template <> inline void TreeNode<double>::BoxSize() { CW=40; CH=12; }
 	template <> inline void TreeNode<string>::Text(string k,string pk,string txt)
 	{
 		stringstream ss;
 		ss<<k; if (!txt.empty()) ss<<" "<<txt;
 		text=ss.str();
 	}
-	template <> inline void TreeNode<string>::BoxSize() { CW=40; CH=10; }
+	template <> inline void TreeNode<string>::BoxSize() { CW=40; CH=12; }
 } //namespace TreeDisplay
 
 #endif // NODE_DISPLAY_H
