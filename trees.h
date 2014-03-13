@@ -66,7 +66,20 @@ namespace TreeDisplay
 		TreeJournal::Journal& journal;
 		TreeJournal::Entry<KT> entry;
 		bool stop,removing;
-		virtual bool CheckIntegrity(Trunk* root) { return TreeIntegrity::BstIntegrity<KT>(root,used); }
+		virtual bool CheckIntegrity(Trunk* root) 
+			{ if (!TreeIntegrity::BstIntegrity<KT>(root,used)) return this->IntegrityReport(root); return true;}
+		virtual bool IntegrityReport(Trunk* root) 
+		{
+			cout<<"Integrity check failed:"<<endl;
+			if (used.size()<20)
+			{
+				cout<<"Used:"; for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) cout<<(*it)<<" ";	
+				cout<<endl<<" Bst:"; TreeIntegrity::PrintInOrder<KT,VT>(root);
+				cout<<endl;
+			}
+			cout.flush();
+			return false;
+		}
 		private:
 		void UpdateTree();
 		void Deletions();
@@ -117,8 +130,9 @@ namespace TreeDisplay
 		}
 		virtual bool CheckIntegrity(Trunk* root)
 		{
-			if (!TreeCanvas<KT>::CheckIntegrity(root)) return false;
-			return TreeIntegrity::RedBlackIntegrity<KT>(root,*this);
+			if (!TreeCanvas<KT>::CheckIntegrity(root)) return this->IntegrityReport(root);;
+			if (!TreeIntegrity::RedBlackIntegrity<KT>(root,*this)) return this->IntegrityReport(root);
+			return true;
 		}
 		void clear(Trunk& node,string name)
 		{

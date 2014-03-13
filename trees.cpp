@@ -163,23 +163,7 @@ namespace TreeDisplay
 					} else root=NULL;
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
-
-				if ((root) and (!root->isnil()))
-					if (!CheckIntegrity(root)) 
-				{
-					if (used.size()<40)
-					{
-						cout<<"Integrity check failed:"<<endl;
-						cout<<"Used: ";
-						for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
-							cout<<" "<<(*it);	
-						cout<<endl<<" Bst:";
-						TreeIntegrity::PrintInOrder<KT,VT>(root);
-						cout<<endl;
-						cout.flush();
-					}
-					stop=true;
-				}
+				if ((root) and (!root->isnil())) if (!CheckIntegrity(root)) stop=true;
 			}
 	}
 
@@ -197,18 +181,26 @@ namespace TreeDisplay
 				if (journal==ios_base::in)  
 				{
 					ReadingJournal=entry;
-					if (!ReadingJournal) return; // Journal is finished
+					if (!ReadingJournal) 
+					{
+						if (!CheckIntegrity(root)) stop=true;
+						return; // Journal is finished
+					}
 				}
 
 				pair<bool,KT> next((ReadingJournal)?entry:Next(MOST));
 				if (ReadingJournal)
 				{
-					if (next.first)
-						used.insert(next.second);
-					else used.erase(used.find(next.second));
+					cout<<((next.first)?"Adding":"Removing")<<" "<<next.second<<endl;
+					if (!next.first) {removing=true; next.first=true;}
+					if (removing) 
+					{
+						typename set<KT>::iterator it(used.find(next.second));
+						if (it!=used.end()) used.erase(it);
+					} else used.insert(next.second);
 				}
 
-				cout<<((next.first)?"Adding":"Removing")<<" "<<next.second<<endl;
+
 				if (next.first)
 				{
 					if (!removing)
@@ -236,22 +228,7 @@ namespace TreeDisplay
 							removal=nk.find(next.second);
 						}
 					}
-						if (!removal)
-							if (!CheckIntegrity(root)) 
-						{
-							if (used.size()<20)
-							{
-								cout<<"Integrity check failed:"<<endl;
-								cout<<"Used:";
-								for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) 
-									cout<<(*it)<<" ";	
-								cout<<endl<<" Bst:";
-								TreeIntegrity::PrintInOrder<KT,VT>(root);
-								cout<<endl;
-								cout.flush();
-							}
-							stop=true;
-						}
+					if (!removal) if (!CheckIntegrity(root)) stop=true;
 				} 
 			}
 	}
@@ -268,6 +245,7 @@ namespace TreeDisplay
 			if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
 
 			if (removal) return;
+			if (journal==ios_base::in) return;
 
 			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
@@ -278,4 +256,5 @@ namespace TreeDisplay
 			}
 	}
 } // TreeDisplay
+
 

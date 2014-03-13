@@ -20,14 +20,19 @@ namespace TreeJournal
 			obuffer=(char*)malloc(BUFFER_SIZE+6);setp(obuffer,obuffer+(BUFFER_SIZE-1));
 		}
 		virtual ~journalbuf() {sync(); if (obuffer) free(obuffer); if (ibuffer) free(ibuffer);if (out.is_open()) out.close(); if (in.is_open()) in.close();}
-		operator const ios_base::openmode () const {return mode;}
+		operator const ios_base::openmode () const 
+		{
+			if (mode&ios_base::in) return ios_base::in;
+			if (mode&ios_base::out) return ios_base::out;
+			return mode;
+		}
 	protected:
 		friend struct Journal;
 		virtual int sync(){if (flushout()==EOF) return -1;			return 0;}
 		virtual void close() const
 		{
-			if (mode==ios_base::out) out.close();
-			if (mode==ios_base::in) in.close();
+			if (mode|ios_base::out) out.close();
+			if (mode|ios_base::in) in.close();
 			mode=static_cast<ios_base::openmode>(NULL);
 		}
 		virtual int underflow()
