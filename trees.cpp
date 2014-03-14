@@ -36,6 +36,23 @@ using namespace TreeDisplay;
 
 namespace TreeObjects
 {
+	bool Bugger(false);
+	
+	template <> 
+		void Bst<string,TreeNode<string> >::BugCheck()
+	{
+		if (key=="Val") Bugger=true; else Bugger=false;
+	}
+
+	template <> 
+		void Bst<string,TreeNode<string> >::Bug(Trunk& _what,string msg)
+	{
+		if (!Bugger) return;
+		Bst<string,TreeNode<string> >& what(static_cast<Bst<string,TreeNode<string> >& >(_what));
+		const string& thatkey(what);
+		cout<<key<<" "<<msg<<" "<<thatkey<<endl;
+	}
+
 	template <>
 		void Bst<double,TreeNode<double> >::Update(Trunk* node,Trunk* pnode,bool erasing)
 	{
@@ -195,7 +212,7 @@ namespace TreeDisplay
 				pair<bool,KT> next((ReadingJournal)?entry:Next(MOST));
 				if (ReadingJournal)
 				{
-					cout<<((next.first)?"Adding":"Removing")<<" "<<next.second<<endl;
+					//cout<<((next.first)?"Adding":"Removing")<<" "<<next.second<<endl;
 					if (!next.first) {removing=true; next.first=true;}
 					if (removing) 
 					{

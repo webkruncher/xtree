@@ -276,6 +276,7 @@ int main(int argc,char** argv)
 			pout=&dump;
 			IgnoreStop=true;
 		}
+		if (cmdline.exists("-dont-stop")) IgnoreStop=true;
 		ostream& out(*pout);
 
 		if (cmdline.exists("-root")) cmdline.erase("-root");

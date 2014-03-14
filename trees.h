@@ -43,7 +43,7 @@ namespace TreeDisplay
 		TreeCanvas(TreeJournal::Journal& _journal,ostream& _out,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: journal(_journal), out(_out), window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
-				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) , ignorestop(_ignorestop)
+				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) , ignorestop(_ignorestop), reported(false)
 					{ if (journal==ios_base::in) journal>>entry; }
 		virtual ~TreeCanvas() 
 		{
@@ -63,6 +63,7 @@ namespace TreeDisplay
 		virtual void update() { UpdateTree(); }
 		virtual operator InvalidBase& () {return invalid;}
 		protected:
+		bool reported;
 		bool ignorestop;
 		TreeJournal::Journal& journal;
 		ostream& out;
@@ -72,6 +73,8 @@ namespace TreeDisplay
 			{ if (!TreeIntegrity::BstIntegrity<KT>(out,root,used)) return this->IntegrityReport(root); return true;}
 		virtual bool IntegrityReport(Trunk* root) 
 		{
+			if (reported) return false;
+			reported=true;
 			out<<"Integrity check failed:"<<endl;
 			if (used.size()<20)
 			{

@@ -132,22 +132,22 @@ namespace TreeJournal
 		{
 			Entry<KT>& me(*this);
 			j.read((char*)&T,sizeof(char));
-			cout<<"Type:"<<T<<endl;
+			//cout<<"Type:"<<T<<endl;
 			unsigned long L; j.read((char*)&L,sizeof(L));
-			cout<<L<<" paragraphs"<<endl;
+			//cout<<L<<" paragraphs"<<endl;
 			while (L--)
 			{
 				unsigned long l; j.read((char*)&l,sizeof(l));
-				cout<<"l:"<<l<<endl;
+				//cout<<"l:"<<l<<endl;
 				char addordelete; j.read((char*)&addordelete,sizeof(char));
-				cout<<addordelete<<endl;
+				//cout<<addordelete<<endl;
 				while (l--)
 				{
 					KT k; 
 					if (T=='S') getline(j,reinterpret_cast<string&>(k));
 					else j.read((char*)&k,sizeof(k));
 					if (addordelete=='+') me+=k; else me-=k;
-					cout<<k<<endl;
+					//cout<<k<<endl;
 				}
 			}
 			return j;

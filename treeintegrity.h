@@ -44,7 +44,7 @@ namespace TreeIntegrity
 		if (node->isnil()) return;
 		if (!node->isnul(node->Left())) PrintInOrder<KT,VT>(out,node->Left());
 		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
-		const KT& v(rk); //out<<v<<" ";
+		const KT& v(rk); out<<v<<" ";
 		if (!node->isnul(node->Right())) PrintInOrder<KT,VT>(out,node->Right());
 	}	
 
@@ -222,7 +222,8 @@ namespace TreeIntegrity
 		Trunk* leftmost(root->LeftMost());
 		Trunk* rightmost(root->RightMost());
 		RedBlackCheck::Visitor<KT> visitor(out,rk,advisor);
-		if (!visitor) {out<<"Red Black check failed"<<endl; return false;}
+		//if (!visitor) {out<<"Red Black check failed"<<endl; return false;}
+		if (!visitor) {return false;}
 		return true;
 		//return visitor;
 	}
