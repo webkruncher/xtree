@@ -28,6 +28,7 @@
 #define DIGITAL_ARBORIST_SETS_H
 #include <tree.h>
 
+
 namespace TreeObjects
 {
 	template <typename KT>

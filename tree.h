@@ -701,6 +701,9 @@ namespace TreeObjects
 			root=BstBase<KT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
+			RbSetBase<KT>& nd(static_cast<RbSetBase<KT>&>(*node));
+			nd.SetLeft(root->GetNil());
+			nd.SetRight(root->GetNil());
 			return this->RedAndBlackInsert(root,node);
 		}
 		

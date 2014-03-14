@@ -1,2 +1,2 @@
-run < random.10000.txt
+run < random.5.txt
 bt
