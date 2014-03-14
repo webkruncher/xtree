@@ -43,7 +43,8 @@ namespace TreeObjects
 			if (!root) return;
 			if (root->isnil()) return;
 			TreeBase* found(root->find(key));
-			if (found) if (!root->isnul(found)) root=static_cast<RbSet<KT>*>(root->erase(root,found));
+			if (found) if (!root->isnul(found)) 
+					root=static_cast<RbSet<KT>*>(root->erase(root,found));
 			if (root) root->SetParent(this);
 		}
 		void insert(const KT key)

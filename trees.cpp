@@ -41,7 +41,9 @@ namespace TreeObjects
 	template <> 
 		void Bst<string,TreeNode<string> >::BugCheck()
 	{
-		if (key=="Otto") Bugger=true; else Bugger=false;
+		//cout<<"?"<<key<<endl;
+		if (key=="Rob") {Bugger=true; return;} 
+		Bugger=false;
 	}
 
 	template <> 
@@ -50,7 +52,7 @@ namespace TreeObjects
 		if (!Bugger) return;
 		Bst<string,TreeNode<string> >& what(static_cast<Bst<string,TreeNode<string> >& >(_what));
 		const string& thatkey(what);
-		cout<<key<<" "<<msg<<" "<<thatkey<<endl;
+		cout<<key<<" "<<msg<<" "<<thatkey<<endl; cout.flush();
 	}
 
 	template <>
@@ -172,6 +174,7 @@ namespace TreeDisplay
 				const KT& key(nk);
 				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
+				removing=NULL;
 				if (journal==ios_base::out) entry-=key;
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
 				Trunk* newroot(rr.erase(root,removal));
@@ -181,10 +184,14 @@ namespace TreeDisplay
 					if (newroot and !newroot->isnil())
 					{
 						root=newroot;
-						Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
-						const KT& newkey(nk);
-						cout<<"Root is now "<<newkey<<endl;
-						if (root) root->SetParent(this);
+						if (root) 
+						{
+							cout<<"Setting new root"<<endl; cout.flush();
+							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
+							const KT& newkey(nk);
+							cout<<"Root is now "<<newkey<<endl;
+							root->SetParent(this);
+						} else cout<<"Root is now null"<<endl;
 					} else root=NULL;
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
@@ -253,7 +260,7 @@ namespace TreeDisplay
 							} //else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
 					} else {
-						if ((root) or (root->isnil()))
+						if ((root) and (!root->isnil()))
 						{
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
 							removal=nk.find(next.second);

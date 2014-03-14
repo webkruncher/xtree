@@ -444,7 +444,10 @@ namespace TreeObjects
 		protected:
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
 		VT data;	
-		virtual Trunk* remove(Trunk* root,Trunk* pfound) { return TreeBase::remove(root,pfound); }
+		virtual Trunk* remove(Trunk* root,Trunk* pfound) 
+		{ 
+			return TreeBase::remove(root,pfound); 
+		}
 	};
 
 
@@ -469,9 +472,11 @@ namespace TreeObjects
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			Bug(*node,"Rebalancing");
+			if (node) Bug(*node,"Rebalancing");
 			while ( (node) and (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
 			{
+				if (node) Bug(*node,"check");
+				else Bug(*this,"Node is null");
 				if ( node == node->Parent()->Left() ) 
 				{
 					Trunk* other(node->Parent()->Right());
@@ -607,8 +612,22 @@ namespace TreeObjects
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
 	{
-		pfound->BugCheck();
-		Bug(*pfound,"Removing");
+		if (pfound)
+		{
+			pfound->BugCheck();
+			Bug(*pfound,"Removing");
+		}
+		if (root==pfound)
+		{
+			cout<<"Removing the root node"<<endl; cout.flush();
+			if (root->isnul(pfound->Left()) and root->isnul(pfound->Right()))
+			{
+				cout<<"The root node is empty"<<endl; cout.flush();
+				pfound->SetLeft(NULL);
+				pfound->SetRight(NULL);
+				return NULL;
+			}
+		}
 		Trunk& me(static_cast<Trunk&>(*this));
 		Trunk* Y(pfound);
 		Trunk* X(NULL);
@@ -646,8 +665,8 @@ namespace TreeObjects
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
-		//if (Ycolor==BLACK) 
-		return RedAndBlackDelete(root,X);
+		if (Ycolor==BLACK) 
+			if ((root) and (X)) return RedAndBlackDelete(root,X);
 		return root;
 	}
 

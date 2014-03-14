@@ -43,7 +43,8 @@ namespace TreeObjects
 			if (!root) return;
 			if (root->isnil()) return;
 			TreeBase* found(root->find(key));
-			if (found) if (root->isnul(found)) root=static_cast<RbMap<KT,VT>*>(root->erase(root,found));
+			if (found) if (!root->isnul(found)) 
+				root=static_cast<RbMap<KT,VT>*>(root->erase(root,found));
 			if (root) root->SetParent(this);
 		}
 		VT& operator[](const KT key)
