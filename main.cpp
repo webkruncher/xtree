@@ -191,6 +191,26 @@ TreeJournal::Journal* OpenJournal(Utilities::CmdLine& cmdline)
 	return J;
 }
 
+Canvas* CreateCanvas(Utilities::CmdLine& cmdline,TreeJournal::Journal& journal,ostream& out,const bool IgnoreStop,Display* display,Window& window,GC& gc,const int width, const int height)
+{
+	if (cmdline.find("-int")!=cmdline.end())
+	{
+		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<int>(journal,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<int>(journal,out,IgnoreStop,display,window,gc,width, height);
+	}
+	if (cmdline.find("-double")!=cmdline.end())
+	{
+		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<double>(journal,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<double>(journal,out,IgnoreStop,display,window,gc,width, height);
+	}
+	if (cmdline.find("-string")!=cmdline.end())
+	{
+		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<string>(journal,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<string>(journal,out,IgnoreStop,display,window,gc,width, height);
+	}
+	throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int, -double or -string");
+}
+
 int main(int argc,char** argv)
 {
 	Display *display(XOpenDisplay(getenv("DISPLAY")));
@@ -250,7 +270,7 @@ int main(int argc,char** argv)
 		ofstream dump;
 		bool IgnoreStop=false;
 		ostream* pout(&cout);
-		if (cmdline.exists("-root"))
+		if (cmdline.exists("-window-id"))
 		{
 			dump.open("/dev/null");
 			pout=&dump;
@@ -262,35 +282,17 @@ int main(int argc,char** argv)
 		if (cmdline.exists("-window-id")) cmdline.erase("-window-id");
 
 		auto_ptr<TreeJournal::Journal> journal;
-		Canvas* pcanvas(NULL);
 		if (cmdline.empty())
 		{
 			cmdline["-int"]="";
 			cmdline["-redblack"]="";
 		}
 		journal.reset(OpenJournal(cmdline));
-
-
-		if (cmdline.find("-int")!=cmdline.end())
-		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<int>(*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<int>(*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height);
-		}
-		if (cmdline.find("-double")!=cmdline.end())
-		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<double>(*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<double>(*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height);
-		}
-		if (cmdline.find("-string")!=cmdline.end())
-		{
-			if (!pcanvas) if (cmdline.find("-redblack")!=cmdline.end()) pcanvas=new RbMapCanvas<string>(*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height);
-			if (!pcanvas) if (cmdline.find("-bst")!=cmdline.end()) pcanvas=new TreeCanvas<string>(*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height);
-		}
-		if (!pcanvas) throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int, -double or -string");
-		Canvas& canvas(*pcanvas);
+		auto_ptr<Canvas> pcanvas;
+		pcanvas.reset(CreateCanvas(cmdline,*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height));
+		Canvas& canvas(*pcanvas.get());
 		Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
 		program(argc,argv);
-		delete pcanvas;
 	}
 	catch(runtime_error& e){except<<"runtime error:"<<e.what();}
 	catch(exception& e){except<<"runtime error:"<<e.what();}
