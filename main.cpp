@@ -199,12 +199,6 @@ int main(int argc,char** argv)
 	stringstream except;
 	try
 	{
-		//{
-		//	time_t t(time(0));
-		//	ofstream out("/home/jmt/tmp.txt",ios::app);
-		//	out<<"trees "; for (int j=1;j<argc;j++) out<<argv[j]<<" "; out<<endl;
-		//	out<<asctime(localtime(&t));
-		//}
 		Utilities::CmdLine cmdline(argc,argv,"trees");
 		
 		KeyMap keys;

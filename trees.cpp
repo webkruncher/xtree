@@ -86,6 +86,7 @@ namespace TreeDisplay
 		{
 			Strings& m(*this);
 			ifstream names("names.txt");
+			if (names.fail()) return;
 			while (!names.eof())
 			{
 				string name; getline(names,name);
