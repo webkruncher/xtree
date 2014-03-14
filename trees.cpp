@@ -168,12 +168,12 @@ namespace TreeDisplay
 						root=newroot;
 						if (root) 
 						{
-							cout<<"Setting new root"<<endl; cout.flush();
+							//cout<<"Setting new root"<<endl; cout.flush();
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
 							const KT& newkey(nk);
-							cout<<"Root is now "<<newkey<<endl;
+							//cout<<"Root is now "<<newkey<<endl;
 							root->SetParent(this);
-						} else cout<<"Root is now null"<<endl;
+						} //else cout<<"Root is now null"<<endl;
 					} else root=NULL;
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
@@ -235,7 +235,7 @@ namespace TreeDisplay
 								{
 									Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*nr));
 									const KT& newkey(nk);
-									cout<<"Root is now "<<newkey<<endl;
+									//cout<<"Root is now "<<newkey<<endl;
 									root=nr;
 									if (root) root->SetParent(this);
 								}
