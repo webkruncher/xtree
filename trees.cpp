@@ -41,7 +41,7 @@ namespace TreeObjects
 	template <> 
 		void Bst<string,TreeNode<string> >::BugCheck()
 	{
-		if (key=="Val") Bugger=true; else Bugger=false;
+		if (key=="Otto") Bugger=true; else Bugger=false;
 	}
 
 	template <> 
@@ -173,13 +173,17 @@ namespace TreeDisplay
 				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
 				if (journal==ios_base::out) entry-=key;
-				Trunk* newroot(nk.erase(root,removal));
+				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
+				Trunk* newroot(rr.erase(root,removal));
 				removal=NULL;
 				if (newroot!=root) 
 				{
 					if (newroot and !newroot->isnil())
 					{
 						root=newroot;
+						Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
+						const KT& newkey(nk);
+						cout<<"Root is now "<<newkey<<endl;
 						if (root) root->SetParent(this);
 					} else root=NULL;
 				}
@@ -238,8 +242,14 @@ namespace TreeDisplay
 							Trunk* nr(root->insert(root,n));
 							if (nr) 
 							{
-								root=nr;
-								if (root) root->SetParent(this);
+								if (nr!=root)
+								{
+									Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*nr));
+									const KT& newkey(nk);
+									cout<<"Root is now "<<newkey<<endl;
+									root=nr;
+									if (root) root->SetParent(this);
+								}
 							} //else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
 					} else {

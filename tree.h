@@ -27,10 +27,6 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
-
-			#include <iostream>
-			using namespace std;
-
 namespace TreeObjects
 {
 	#ifndef NULL
@@ -432,7 +428,7 @@ namespace TreeObjects
 				y->Left()->SetParent(y);
 			}
 		}
-		if (root->isnil()) return NULL;
+		if (isnul(root)) return NULL;
 		return root;
 	}
 
@@ -448,10 +444,7 @@ namespace TreeObjects
 		protected:
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
 		VT data;	
-		virtual Trunk* remove(Trunk* root,Trunk* pfound)
-		{
-			return TreeBase::remove(root,pfound);
-		}
+		virtual Trunk* remove(Trunk* root,Trunk* pfound) { return TreeBase::remove(root,pfound); }
 	};
 
 
@@ -470,12 +463,13 @@ namespace TreeObjects
 		virtual void BugCheck(){}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) = 0;
 		virtual operator Trunk& () = 0;
-		virtual Trunk* remove(Trunk* root,Trunk* pfound); 
+		virtual Trunk* remove(Trunk* root,Trunk* pfound) ;
 
 		void Rotator(Trunk* node) {Update(node,node->Parent());}
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
+			Bug(*node,"Rebalancing");
 			while ( (node) and (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
 			{
 				if ( node == node->Parent()->Left() ) 
@@ -592,8 +586,7 @@ namespace TreeObjects
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
 			if (!found) return root;
-			BugCheck();
-			Bug(*this,"RbBase::erase");
+			Bug(*found,"RbBase::erase");
 			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(remove(root,found));
@@ -614,6 +607,7 @@ namespace TreeObjects
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
 	{
+		pfound->BugCheck();
 		Bug(*pfound,"Removing");
 		Trunk& me(static_cast<Trunk&>(*this));
 		Trunk* Y(pfound);
@@ -652,7 +646,8 @@ namespace TreeObjects
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
-		if (Ycolor==BLACK) return RedAndBlackDelete(root,X);
+		//if (Ycolor==BLACK) 
+		return RedAndBlackDelete(root,X);
 		return root;
 	}
 
@@ -686,10 +681,10 @@ namespace TreeObjects
 			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
 		virtual void BugCheck(){Bst<KT,VT>::BugCheck();}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
-		virtual Trunk* remove(Trunk* root,Trunk* pfound)
+		virtual Trunk* remove(Trunk* root,Trunk* pfound)  
 		{
 			Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(*pfound));
-			return TreeBase::remove(root,pfound);
+			return RbBase::remove(root,pfound);
 		}
 		virtual void Bug(Trunk& what,string msg) { Bst<KT,VT>::Bug(what,msg); }
 		virtual Trunk* erase(Trunk* root,Trunk* found){return RbBase::erase(root,found);}

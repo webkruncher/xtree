@@ -7,8 +7,8 @@ INCS=nodedisplay.h trees.h tree.h treemap.h treeset.h treeintegrity.h motivation
 FNIT=-fno-implicit-templates
 FREPO=-frepo
 
-LINKSETTINGS= $(FREPO) -I. $(LIB) $(INC) -w 
-COMPILESETTINGS= $(FNIT) $(FREPO) -c -I. $(LIB) $(INC) -w 
+LINKSETTINGS= $(FREPO) -I. $(LIB) $(INC) -w -g
+COMPILESETTINGS= $(FNIT) $(FREPO) -c -I. $(LIB) $(INC) -w -g
 
 trees: main.o trees.o nodedisplay.o
 	g++ $(LINKSETTINGS)  main.o trees.o nodedisplay.o -o trees 
