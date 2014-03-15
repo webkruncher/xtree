@@ -192,10 +192,10 @@ namespace TreeIntegrity
 				if (diff>2)  
 				{
 					//ok=false;
-					stringstream ss;
-					ss<<lc<<","<<rc;
-					if (rbc.color(&node)==RbBase::BLACK) 
-						advisor.message(node,"d",ss.str());
+					//stringstream ss;
+					//ss<<lc<<","<<rc;
+					//if (rbc.color(&node)==RbBase::BLACK) 
+					//	advisor.message(node,"d",ss.str());
 				}
 				if (!node.isnil() and rbc.color(&node)==RbBase::RED) 
 				{

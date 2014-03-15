@@ -156,7 +156,6 @@ namespace TreeDisplay
 				const KT& key(nk);
 				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
-				removing=NULL;
 				if (journal==ios_base::out) entry-=key;
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
 				Trunk* newroot(rr.erase(root,removal));
@@ -265,7 +264,7 @@ namespace TreeDisplay
 
 			if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
 
-			if (removal) return;
+			//if (removal) return;
 			if (journal==ios_base::in) return;
 
 			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
