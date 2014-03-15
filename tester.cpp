@@ -57,24 +57,26 @@ struct Punk: public std::numpunct<char>
 	virtual std::string do_grouping() const {return "\03";}
 };
 
-void Insert(std::set<long>& items,const long number) { items.insert(number); }
-void Erase(std::set<long>& items,const long number) { items.erase(number);}
-void Insert(TreeObjects::Set<long>& items,const long number) { items.insert(number);}
-void Erase(TreeObjects::Set<long>& items,const long number) { items.erase(number);}
+
+void Insert(std::set<long>& items,const long number) {  items.insert(number); }
+void Erase(std::set<long>& items,const long number) {  items.erase(number);}
+void Insert(TreeObjects::Set<long>& items,const long number) {  items.insert(number);}
+void Erase(TreeObjects::Set<long>& items,const long number) {  items.erase(number);}
 
 template <typename T>
 	void Test(T& items,const long* numbers,const long size) 
 { 
-	//cerr<<"Inserts:"<<endl; cerr.flush();
+	cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Insert(items,numbers[j]);
-	//cerr<<"Deletes:"<<endl; cerr.flush();
+	cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
-	//cerr<<"Inserts:"<<endl; cerr.flush();
+	cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
-	//cerr<<"Deletes:"<<endl; cerr.flush();
+	cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
 	for (long j=0;j<size;j++) Insert(items,numbers[j]);
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
+	cerr<<"Done"<<endl;
 }
 
 void TestTreeSet(const long* numbers,const long size)
@@ -189,8 +191,7 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 	ret.STLOBJECTS=StlTime;
 
 	//cerr<<"IntegrityCheck: "<<N<<" numbers"<<endl;
-	if (!IntegrityCheck(numbers,N))
-		std::cout<<"Integrity check failed"<<std::endl;
+	if (!IntegrityCheck(numbers,N)) std::cout<<"Integrity check failed"<<std::endl;
 
 	return ret;
 }
@@ -215,42 +216,49 @@ struct Times : std::vector<std::pair<double,double> >
 
 int main(int,char**)
 {
-	char hash(0);
-	long N(0),T(20);
-	fscanf(stdin,"%c%ld",&hash,&N);
-	if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
-	long* numbers=(long*)malloc(sizeof(long)*N); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
-	{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
+	stringstream except;
+	try
+	{
+		char hash(0);
+		long N(0),T(20);
+		fscanf(stdin,"%c%ld",&hash,&N);
+		if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
+		long* numbers=(long*)malloc((sizeof(long)*N)); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
+		{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
 
 
-	Times alltimes;
-	for (int t=0;t<T;t++) alltimes.push_back(TestBoth(numbers,N));	
-	free(numbers);
+		Times alltimes;
+		for (int t=0;t<T;t++) 
+			alltimes.push_back(TestBoth(numbers,N));	
+		free(numbers);
 
+		Punk punk; cout.imbue(locale(cout.getloc(), &punk));
+		std::pair<double,double> Averages(alltimes);
 
+		double much;
 
-	Punk punk; cout.imbue(locale(cout.getloc(), &punk));
-	std::pair<double,double> Averages(alltimes);
+		if (Averages.TREEOBJECTS>Averages.STLOBJECTS) 
+				much=(100-((Averages.STLOBJECTS/Averages.TREEOBJECTS)*100));
+		else
+				much=(100-((Averages.TREEOBJECTS/Averages.STLOBJECTS)*100));
 
-
-	double much;
-
-	if (Averages.TREEOBJECTS>Averages.STLOBJECTS) 
-			much=(100-((Averages.STLOBJECTS/Averages.TREEOBJECTS)*100));
-	else
-			much=(100-((Averages.TREEOBJECTS/Averages.STLOBJECTS)*100));
-
-	Averages.first/=1e9; Averages.second/=1e9;
-	
-	cout<<"Testing with "<<N<<" random generated numbers, average times after "<<T<<" iterations:"<<endl;
-	cout<<setw(14)<<right<<"STL:"<<setprecision(3)<<setw(10)<<fixed<<Averages.STLOBJECTS<<" seconds"<<endl;
-	cout<<setw(14)<<right<<"TreeObjects:"<<setprecision(3)<<setw(10)<<fixed<<Averages.TREEOBJECTS<<" seconds"<<endl;
-	cout.flush();
-	string resulttext;
-	if (Averages.STLOBJECTS>Averages.TREEOBJECTS) resulttext="The Tree Objects set was ";
-	else resulttext="The std::set was ";
-	cout<<resulttext<<setprecision(3)<<fixed<<much<<"% faster"<<endl<<endl;
-	
+		Averages.first/=1e9; Averages.second/=1e9;
+		
+		cout<<"Testing with "<<N<<" random generated numbers, average times after "<<T<<" iterations:"<<endl;
+		cout<<setw(14)<<right<<"STL:"<<setprecision(3)<<setw(10)<<fixed<<Averages.STLOBJECTS<<" seconds"<<endl;
+		cout<<setw(14)<<right<<"TreeObjects:"<<setprecision(3)<<setw(10)<<fixed<<Averages.TREEOBJECTS<<" seconds"<<endl;
+		cout.flush();
+		string resulttext;
+		if (Averages.STLOBJECTS>Averages.TREEOBJECTS) resulttext="The Tree Objects set was ";
+		else resulttext="The std::set was ";
+		cout<<resulttext<<setprecision(3)<<fixed<<much<<"% faster"<<endl<<endl;
+	}
+	catch(runtime_error& e) {except<<"Runtime error:"<<e.what()<<endl;}
+	catch(exception& e) {except<<"Exception:"<<e.what()<<endl;}
+	catch(string& e) {except<<"Exception:"<<e<<endl;}
+	catch(char& e) {except<<"Exception:"<<e<<endl;}
+	catch(...) {except<<"Unknown Exception"<<endl;}
+	if (!except.str().empty()) cerr<<except.str();
 	return 0;
 }
 

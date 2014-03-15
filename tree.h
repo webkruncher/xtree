@@ -265,7 +265,7 @@ namespace TreeObjects
 				if (!newroot->isnul(l)) Update(l,found); 
 				if (!newroot->isnul(r)) Update(r,found); 
 			}
-			delete found;
+			if (found!=found->GetNil()) if (found!=root) delete found;
 			return newroot;
 		}
 
@@ -590,12 +590,10 @@ namespace TreeObjects
 				if (!root->isnul(l)) Update(l,p); if (!root->isnul(r)) Update(r,p);
 			}
 			found->SetLeft(NULL); found->SetRight(NULL);
-			delete found;
+			if (found!=found->GetNil()) if (found!=root) delete found;
 			return newroot;
 		}
 		COLOR clr;
-
-
 	};
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)

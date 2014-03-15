@@ -36,6 +36,26 @@ using namespace TreeDisplay;
 
 namespace Utilities
 {
+	void* NoDpmsThread(void*) 
+	{
+		while (1)
+		{
+			string what("xset dpms off");
+			FILE* fp = popen((char*)what.c_str(),"r");
+			if (fp == NULL) return 0;
+			while (1)
+			{
+				char buf[514];
+				memset(buf,0,513);
+				int l = fread(buf,1,512,fp);
+				if (l <= 0) break;
+			}
+			pclose(fp);
+			sleep(60);
+		}
+	}
+	inline void NoDpms() { pthread_t t; pthread_create(&t,0,NoDpmsThread,NULL); }
+
 	inline void GetScreenSize(Display* display,int& width, int& height)
 	{
 		 Screen* pscr(DefaultScreenOfDisplay(display));
@@ -277,6 +297,7 @@ int main(int argc,char** argv)
 			IgnoreStop=true;
 		}
 		if (cmdline.exists("-dont-stop")) IgnoreStop=true;
+		if (cmdline.exists("-no-dpms")) Utilities::NoDpms();
 		ostream& out(*pout);
 
 		if (cmdline.exists("-root")) cmdline.erase("-root");

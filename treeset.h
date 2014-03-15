@@ -45,8 +45,17 @@ namespace TreeObjects
 			if (root->isnil()) return;
 			TreeBase* found(root->find(key));
 			if (found) if (!root->isnul(found)) 
-					root=static_cast<RbSet<KT>*>(root->erase(root,found));
-			if (root) root->SetParent(this);
+			{
+					TreeBase* newroot(static_cast<RbSet<KT>*>(root->erase(root,found)));
+					if (newroot!=root) 
+					{
+						if (newroot and !newroot->isnil())
+						{
+							root=static_cast<RbSet<KT>*>(newroot);
+							if (root) root->SetParent(this);
+						}
+					}
+			}
 		}
 		void insert(const KT key)
 		{
@@ -59,8 +68,15 @@ namespace TreeObjects
 			TreeBase* found(root->find(key));
 			if (found) return ;
 			RbSet<KT>* node(new RbSet<KT>(static_cast<Sentinel&>(*this),key)); 
-			root=static_cast<RbSet<KT>*>(root->insert(root,node));
-			if (root) root->SetParent(this);
+			TreeBase* newroot(static_cast<RbSet<KT>*>(root->insert(root,node)));
+			if ((newroot) and (!newroot->isnil()) )
+			{
+				if (newroot!=root)
+				{
+					root=static_cast<RbSet<KT>*>(newroot);
+					root->SetParent(this);
+				}
+			}
 		}
 		void inorder(TreeBase* node=NULL)
 		{

@@ -1,2 +1,30 @@
-Starting tests at Fri Mar 14 12:15:33 EDT 2014
+Starting tests at Fri Mar 14 17:11:35 EDT 2014
 
+Min check failed
+Max check failed
+Integrity check failed
+Min check failed
+Max check failed
+Integrity check failed
+Min check failed
+Max check failed
+Integrity check failed
+Min check failed
+Max check failed
+Integrity check failed
+Min check failed
+Max check failed
+Integrity check failed
+Min check failed
+Max check failed
+Integrity check failed
+Min check failed
+Max check failed
+Integrity check failed
+Min check failed
+Max check failed
+Integrity check failed
+Test failed
+Test failed
+Test failed
+Test failed
