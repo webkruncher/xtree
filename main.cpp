@@ -36,25 +36,37 @@ using namespace TreeDisplay;
 
 namespace Utilities
 {
-	void* NoDpmsThread(void*) 
+	inline string runpipe(string what)
 	{
+		stringstream ssret;
+		string ret; 
+		char * line = NULL;	
+		size_t len = 0;	ssize_t bread;
+		FILE* fp = popen((char*)what.c_str(),"r");
+		if (fp == NULL) {return "cannot open pipe";}
 		while (1)
 		{
-			string what("xset dpms off");
-			FILE* fp = popen((char*)what.c_str(),"r");
-			if (fp == NULL) return 0;
-			while (1)
-			{
-				char buf[514];
-				memset(buf,0,513);
-				int l = fread(buf,1,512,fp);
-				if (l <= 0) break;
-			}
-			pclose(fp);
-			sleep(60);
+			char buf[514];
+			memset(buf,0,513);
+			int l = fread(buf,1,512,fp);
+			if (l > 0) ret+=buf;
+			else break;
 		}
+		pclose(fp);
+		return ret;
 	}
-	inline void NoDpms() { pthread_t t; pthread_create(&t,0,NoDpmsThread,NULL); }
+
+void* ssup(void*) 
+{
+	while (true)
+	{
+		runpipe("xset dpms force on");
+		runpipe("xset s off");
+		runpipe("xset s noblank");
+		sleep(60);
+	}
+}
+	inline void NoDpms() { pthread_t t; pthread_create(&t,0,ssup,NULL); }
 
 	inline void GetScreenSize(Display* display,int& width, int& height)
 	{
