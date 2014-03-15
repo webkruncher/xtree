@@ -33,8 +33,6 @@ namespace TreeObjects
 	#define NULL 0
 	#endif
 
-	extern bool Bugger;
-
 	struct TreeBase;
 	struct Trunk
 	{
@@ -50,7 +48,7 @@ namespace TreeObjects
 		virtual Trunk* insert(Trunk* root,Trunk*,char d=0) {return NULL;}
 		virtual bool isBST(Trunk* node) {return false;}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) {}
-		virtual void BugCheck(){}
+		virtual void Hook(){}
 		virtual Trunk* LeftMost(){return NULL;}
 		virtual Trunk* RightMost(){return NULL;}
 		virtual Trunk* Predecessor(){return NULL;}
@@ -80,7 +78,7 @@ namespace TreeObjects
 		Trunk* insert(Trunk* root,Trunk*,char d=0) = 0;
 		bool isBST(Trunk* node) = 0;
 		void Update(Trunk* node,Trunk* pnode,bool erasing=false) = 0;
-		virtual void BugCheck()=0;
+		virtual void Hook()=0;
 		Trunk* LeftMost();
 		Trunk* RightMost();
 		Trunk* Predecessor();
@@ -254,7 +252,7 @@ namespace TreeObjects
 		}
 
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
-		virtual void BugCheck(){}
+		virtual void Hook(){}
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
@@ -439,8 +437,8 @@ namespace TreeObjects
 		Bst(Trunk& _sentinel,const KT _key) : BstBase<KT>(_sentinel,_key) {}
 		Bst(Trunk& _sentinel,const KT _key,const VT _data) : BstBase<KT>(_sentinel,_key), data(_data) {}
 		VT& Data(){return data;}
-		virtual void BugCheck(){}
-		virtual void Bug(Trunk&,string){}
+		virtual void Hook(){}
+		virtual void HookMsg(Trunk&,string){}
 		protected:
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
 		VT data;	
@@ -453,7 +451,7 @@ namespace TreeObjects
 
 	struct RbBase 
 	{
-		virtual void Bug(Trunk&,string) = 0;
+		virtual void HookMsg(Trunk&,string) = 0;
 		enum COLOR {RED=10,BLACK=20} ;
 		const COLOR Red() const {return RED;}
 		const COLOR Black() const {return BLACK;}
@@ -463,7 +461,7 @@ namespace TreeObjects
 		virtual Trunk* RotateLeft(Trunk* root, Trunk* node) = 0;
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node) = 0;
 		virtual const COLOR color(Trunk* n) const = 0;
-		virtual void BugCheck(){}
+		virtual void Hook(){}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) = 0;
 		virtual operator Trunk& () = 0;
 		virtual Trunk* remove(Trunk* root,Trunk* pfound) ;
@@ -472,11 +470,11 @@ namespace TreeObjects
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			if (node) Bug(*node,"Rebalancing");
+			if (!root->isnul(node)) HookMsg(*node,"Rebalancing");
 			while ( (node) and (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
 			{
-				if (node) Bug(*node,"check");
-				else Bug(*this,"Node is null");
+				if (!root->isnul(node)) HookMsg(*node,"check");
+				else HookMsg(*this,"Node is null");
 				if ( node == node->Parent()->Left() ) 
 				{
 					Trunk* other(node->Parent()->Right());
@@ -591,7 +589,7 @@ namespace TreeObjects
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
 			if (!found) return root;
-			Bug(*found,"RbBase::erase");
+			HookMsg(*found,"RbBase::erase");
 			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(remove(root,found));
@@ -612,8 +610,8 @@ namespace TreeObjects
 	{
 		if (pfound)
 		{
-			pfound->BugCheck();
-			Bug(*pfound,"Removing");
+			pfound->Hook();
+			HookMsg(*pfound,"Removing");
 		}
 		if (root==pfound)
 		{
@@ -694,14 +692,14 @@ namespace TreeObjects
 			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node) 
 			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
-		virtual void BugCheck(){Bst<KT,VT>::BugCheck();}
+		virtual void Hook(){Bst<KT,VT>::Hook();}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
 		virtual Trunk* remove(Trunk* root,Trunk* pfound)  
 		{
 			Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(*pfound));
 			return RbBase::remove(root,pfound);
 		}
-		virtual void Bug(Trunk& what,string msg) { Bst<KT,VT>::Bug(what,msg); }
+		virtual void HookMsg(Trunk& what,string msg) { Bst<KT,VT>::HookMsg(what,msg); }
 		virtual Trunk* erase(Trunk* root,Trunk* found){return RbBase::erase(root,found);}
 		virtual operator Trunk& () {return *this;}
 	};

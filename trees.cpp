@@ -36,20 +36,20 @@ using namespace TreeDisplay;
 
 namespace TreeObjects
 {
-	bool Bugger(false);
+	bool HookMsgger(false);
 	
 	template <> 
-		void Bst<string,TreeNode<string> >::BugCheck()
+		void Bst<string,TreeNode<string> >::Hook()
 	{
 		cout<<"?"<<key<<endl;
-		if (key=="Rob") {Bugger=true; return;} 
-		Bugger=false;
+		if (key=="Iva") {HookMsgger=true; return;} 
+		HookMsgger=false;
 	}
 
 	template <> 
-		void Bst<string,TreeNode<string> >::Bug(Trunk& _what,string msg)
+		void Bst<string,TreeNode<string> >::HookMsg(Trunk& _what,string msg)
 	{
-		if (!Bugger) return;
+		if (!HookMsgger) return;
 		Bst<string,TreeNode<string> >& what(static_cast<Bst<string,TreeNode<string> >& >(_what));
 		const string& thatkey(what);
 		cout<<key<<" "<<msg<<" "<<thatkey<<endl; cout.flush();
