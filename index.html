@@ -27,7 +27,7 @@
           <li><a href="https://github.com/webkruncher/xtree">View On <strong>GitHub</strong></a></li>
         </ul>
 				<div>
-					<!--img src="bkg.png" -->
+					<img src="bkg.png" />
 				</div>
       </header>
       <section>
@@ -54,11 +54,13 @@
 					The tester.cpp source is used to test the add and delete throughput against the stl set.  
 				</p>
 				<p>
-					It doesn't look like this tree is really balancing correctly.  I tried to make this work without implementing
-					NIL nodes.  I'm hoping that I can find a way to keep from violating the red black rules by implicit NIL nodes,
-					but maybe that's the problem.  If I can't find a way to keep the tree balanced, the next step will probably involve
-					adding the sentinel, and incorporating the use of doubly black, and red-black nodes..
+					It doesn't look like this tree is really balancing correctly.  The delete fixup is not working right.
 				</p>
+				<p>
+					Recent changes to the node display methods rendered the tree incorrectly.  This caused some confusion, but
+					the tree itself was actually in the right order.  The only problem now is the delete.
+				</p>
+
 
       </section>
       <footer>
