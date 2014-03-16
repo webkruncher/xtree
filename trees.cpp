@@ -32,29 +32,38 @@ using namespace TreeObjects;
 using namespace TreeDisplay;
 #include <math.h>
 
-#define MOST 75
+#define MOST 20
 
 namespace TreeObjects
 {
 	bool HookMsgger(false);
+	#define BREAKPOINT asm ("int $0X03") ;
 	
 	template <> 
 		void Bst<string,TreeNode<string> >::Hook()
 	{
-		cout<<"?"<<key<<endl;
-		if (key=="Iva") {HookMsgger=true; return;} 
+		//cout<<"?"<<key<<endl;
+		if (key=="Avis") {HookMsgger=true; return;} 
+		if (key=="Cary") {HookMsgger=true; return;} 
 		HookMsgger=false;
 	}
 
 	template <> 
-		void Bst<string,TreeNode<string> >::HookMsg(Trunk& _what,string msg)
+		void Bst<string,TreeNode<string> >::HookMsg(Trunk& _what,string msg,Trunk* other)
 	{
 		if (!HookMsgger) return;
 		Bst<string,TreeNode<string> >& what(static_cast<Bst<string,TreeNode<string> >& >(_what));
 		const string& thatkey(what);
-		cout<<key<<" "<<msg<<" "<<thatkey<<endl; cout.flush();
+		cout<<key<<" "<<msg<<" "<<thatkey;
+		if (other)
+		{
+			Bst<string,TreeNode<string> >& otherwhat(static_cast<Bst<string,TreeNode<string> >& >(*other));
+			const string& otherkey(otherwhat);
+			cout<<" "<<otherkey;
+		}
+		cout<<endl; cout.flush();
+		//BREAKPOINT;
 	}
-
 
 	template <>
 		void Bst<double,TreeNode<double> >::Update(Trunk* node,Trunk* pnode,bool erasing)
@@ -230,10 +239,9 @@ namespace TreeDisplay
 						typename set<KT>::iterator it(used.find(next.second));
 						if (it!=used.end()) used.erase(it);
 					} else used.insert(next.second);
-				}
+				} else if (!next.first) removing=true;
 
-
-				if (next.first)
+				//if (next.first)
 				{
 					if (!removing)
 					{
@@ -241,6 +249,7 @@ namespace TreeDisplay
 						if (journal==ios_base::out) entry+=next.second;
 						Trunk* n(generate(next.second,tn));
 						if ((!root) or (root->isnil()) ) waitfor=updateloop+10;
+						else waitfor=updateloop+20;
 						if ((!root)or (root->isnil()) )  
 						{
 							root=n;  
@@ -259,6 +268,7 @@ namespace TreeDisplay
 								}
 							} //else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
+						if (!CheckIntegrity(root)) stop=true;
 					} else {
 						if ((root) and (!root->isnil()))
 						{
@@ -266,20 +276,20 @@ namespace TreeDisplay
 							removal=nk.find(next.second);
 						}
 					}
-					if (!removal) if (!CheckIntegrity(root)) stop=true;
-				} 
-			}
+				}
+			} 
 	}
 
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
-			if (ignorestop) stop=false;
 			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
 			updateloop++;
 
 			Deletions();
 			Additions();
+			if (ignorestop) stop=false;
+
 
 			if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
 

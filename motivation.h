@@ -51,7 +51,7 @@ namespace TreeDisplay
 
 			if (distance<4) return make_pair<double,double>(0,0);
 
-			double force(distance/4);
+			double force(distance/14);
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);

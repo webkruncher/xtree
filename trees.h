@@ -54,6 +54,7 @@ namespace TreeDisplay
 		{   
 			XSetForeground(display,gc,0X777777);
 			XFillRectangle(display,bitmap,gc,0,0,ScreenWidth,ScreenHeight);
+			movement=false;
 			if ((root) and (!root->isnil())) draw(invalid,*root,bitmap); 
 		}
 		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
@@ -101,7 +102,6 @@ namespace TreeDisplay
 		void traverse(Trunk& n)
 		{
 			if (n.isnil()) return;
-			movement=false;
 			Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(n));
 			const KT& key(nk);
 			VT& data(nk.Data());

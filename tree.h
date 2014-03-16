@@ -27,6 +27,9 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+		#include <iostream>
+		using namespace std;
+
 namespace TreeObjects
 {
 	#ifndef NULL
@@ -89,7 +92,7 @@ namespace TreeObjects
 		Trunk* RotateLeft(Trunk* root, Trunk* node);
 		Trunk* RotateRight(Trunk* root, Trunk* node);
 		Trunk* remove(Trunk* root,Trunk* pfound) = 0;
-		Trunk* transplant(Trunk* root,Trunk* u,Trunk* v);
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v);
 		Trunk* Parent(){return parent;}
 		void SetParent(Trunk* p) { parent=p; }
 		Trunk* Left(){return left;}
@@ -97,6 +100,7 @@ namespace TreeObjects
 		Trunk* Right(){return right;}
 		void SetRight(Trunk* r){right=r;}
 		virtual Trunk* GetNil() {return &sentinel;}
+		virtual void HookMsg(Trunk&,string,Trunk* other=NULL){}
 		private: Trunk& sentinel; Trunk *parent,*left,*right;
 		TreeBase& operator=(const TreeBase&){parent=NULL;left=NULL;right=NULL;} 
 		TreeBase(const TreeBase& a) : sentinel(a.sentinel), parent(a.parent), left(a.left), right(a.right) {}
@@ -328,6 +332,7 @@ namespace TreeObjects
 		virtual const bool isleaf(Trunk* node) const {return TreeBase::isleaf(node);}
 		virtual Trunk* RotateLeft(Trunk* root, Trunk* node)
 		{
+			this->HookMsg(*node,"RotateLeft");
 			Trunk* newroot(TreeBase::RotateLeft(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
@@ -335,6 +340,7 @@ namespace TreeObjects
 
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node)
 		{
+			this->HookMsg(*node,"RotateRight");
 			Trunk* newroot(TreeBase::RotateRight(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
@@ -438,7 +444,7 @@ namespace TreeObjects
 		Bst(Trunk& _sentinel,const KT _key,const VT _data) : BstBase<KT>(_sentinel,_key), data(_data) {}
 		VT& Data(){return data;}
 		virtual void Hook(){}
-		virtual void HookMsg(Trunk&,string){}
+		virtual void HookMsg(Trunk&,string,Trunk* other=NULL){}
 		protected:
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
 		VT data;	
@@ -451,7 +457,7 @@ namespace TreeObjects
 
 	struct RbBase 
 	{
-		virtual void HookMsg(Trunk&,string) = 0;
+		virtual void HookMsg(Trunk&,string,Trunk* other=NULL) = 0;
 		enum COLOR {RED=10,BLACK=20} ;
 		const COLOR Red() const {return RED;}
 		const COLOR Black() const {return BLACK;}
@@ -465,15 +471,42 @@ namespace TreeObjects
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) = 0;
 		virtual operator Trunk& () = 0;
 		virtual Trunk* remove(Trunk* root,Trunk* pfound) ;
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v)
+		{
+			this->HookMsg(*u,"transplant",v);
+			Trunk* ret(root);
+			if (root->isnul(u->Parent()))
+			{
+				ret=v;
+			} else {
+				if (u==u->Parent()->Left())
+				{
+					u->Parent()->SetLeft(v);
+				} else {
+					u->Parent()->SetRight(v);
+				}
+			}
+			if (v) v->SetParent(u->Parent());
+			return ret;
+		}
+
 
 		void Rotator(Trunk* node) {Update(node,node->Parent());}
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			if (!root->isnul(node)) HookMsg(*node,"Rebalancing");
-			while ( (node) and (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
+			int n(0);
+			HookMsg(*node,"Fixup");
+			//if (!node->isnil()) 
+			//else {cout<<"This node is nil"<<endl; black(node); return black(root);}
+			//while ( (node) and (node!=root) and (!node->isnil()) and (color(node) == BLACK) ) 
+			while ( (node!=root) and (color(node) == BLACK ) )
 			{
-				if (!root->isnul(node)) HookMsg(*node,"check");
+				if (!node) {cout<<"No Node"<<endl; break;}
+				if (node->isnil()) {cout<<"Node is nil"<<endl; break;}
+				//if (node==root) {cout<<"Node is root"<<endl; break;}
+				if ((n++)>3) cout<<n<<"!"; cout.flush();
+				if (!node->isnil()) HookMsg(*node,"Rebalancing");
 				else HookMsg(*this,"Node is null");
 				if ( node == node->Parent()->Left() ) 
 				{
@@ -606,61 +639,45 @@ namespace TreeObjects
 		COLOR clr;
 	};
 
-	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
+	inline Trunk* RbBase::remove(Trunk* root,Trunk* z)
 	{
-		if (pfound)
+		if (z)
 		{
-			pfound->Hook();
-			HookMsg(*pfound,"Removing");
-		}
-		if (root==pfound)
-		{
-			if (root->isnul(pfound->Left()) and root->isnul(pfound->Right()))
-			{
-				pfound->SetLeft(NULL);
-				pfound->SetRight(NULL);
-				return NULL;
-			}
+			z->Hook();
+			HookMsg(*z,"Removing");
 		}
 		Trunk& me(static_cast<Trunk&>(*this));
-		Trunk* Y(pfound);
+		Trunk* Y(z);
 		Trunk* X(NULL);
 		char Ycolor(this->color(Y));
-		if (root->isnul(pfound->Left()))
+		if (z->Left()->isnil())
 		{
-			if (pfound->Right())	
-			{
-				Y=(pfound->Right()->LeftMost());
-				Ycolor=(this->color(Y));
-			}
-			X=pfound->Right();
-			root=me.transplant(root,pfound,pfound->Right());
+			X=z->Right();
+			root=me.transplant(root,z,z->Right());
 		} else {
-			if (root->isnul(pfound->Right()))
+			if (z->Right()->isnil())
 			{
-				if (pfound->Left()) Y=(pfound->Left()->RightMost());
-				else Y=pfound->RightMost();
-				Ycolor=(this->color(Y));
-				X=pfound->Left();
-				root=me.transplant(root,pfound,pfound->Left());
+				X=z->Left();
+				root=me.transplant(root,z,z->Left());
 			} else {
-				Y=(pfound->Right()->LeftMost());
+				Y=(z->Right()->LeftMost());
 				Ycolor=(this->color(Y));
 				X=Y->Right();
-				if (Y->Parent()!=pfound)
+				if (Y->Parent()==z)
 				{
+					X->SetParent(Y);
+				} else {
 					root=me.transplant(root,Y,Y->Right());
-					Y->SetRight(pfound->Right());
+					Y->SetRight(z->Right());
 					Y->Right()->SetParent(Y);
 				}
-				root=me.transplant(root,pfound,Y);
-				Y->SetLeft(pfound->Left());
+				root=me.transplant(root,z,Y);
+				Y->SetLeft(z->Left());
 				Y->Left()->SetParent(Y);
-				if (color(pfound)==BLACK) black(Y); else red(Y);
+				if (this->color(z)==BLACK) black(Y); red(Y);
 			}
 		}
-		//if (Ycolor==BLACK) 
-			if ((root) and (X)) return RedAndBlackDelete(root,X);
+		if (Ycolor==BLACK) return RedAndBlackDelete(root,X);
 		return root;
 	}
 
@@ -674,6 +691,8 @@ namespace TreeObjects
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
+			if (node) node->Hook();
+			if (node) HookMsg(*node,"Inserting");
 			root=Bst<KT,VT>::insert(root,node,d+1);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
@@ -692,6 +711,8 @@ namespace TreeObjects
 			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node) 
 			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v)
+			{ return RbBase::transplant(root,u,v);}
 		virtual void Hook(){Bst<KT,VT>::Hook();}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
 		virtual Trunk* remove(Trunk* root,Trunk* pfound)  
@@ -699,7 +720,7 @@ namespace TreeObjects
 			Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(*pfound));
 			return RbBase::remove(root,pfound);
 		}
-		virtual void HookMsg(Trunk& what,string msg) { Bst<KT,VT>::HookMsg(what,msg); }
+		virtual void HookMsg(Trunk& what,string msg,Trunk* other=NULL) { Bst<KT,VT>::HookMsg(what,msg,other); }
 		virtual Trunk* erase(Trunk* root,Trunk* found){return RbBase::erase(root,found);}
 		virtual operator Trunk& () {return *this;}
 	};
@@ -731,11 +752,14 @@ namespace TreeObjects
 			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node) 
 			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v)
+			{ return RbBase::transplant(root,u,v);}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
 		virtual Trunk* remove(Trunk* root,Trunk* pfound)
 		{
 			return Trunk::remove(root,pfound);
 		}
+		virtual void HookMsg(Trunk& what,string msg,Trunk* other=NULL) { }
 		virtual Trunk* erase(Trunk* root,Trunk* found){return RbBase::erase(root,found);}
 		virtual operator Trunk& () {return *this;}
 	};
