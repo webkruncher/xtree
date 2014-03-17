@@ -187,7 +187,7 @@ namespace TreeDisplay
 				if (!valuenode.undisplay()) return;
 				if (journal==ios_base::out) entry-=key;
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
-				cout<<"-"<<key<<endl;
+				//cout<<"-"<<key<<endl;
 				Trunk* newroot(rr.erase(root,removal));
 				removal=NULL;
 				if (newroot!=root) 
@@ -288,19 +288,24 @@ namespace TreeDisplay
 		void TreeCanvas<KT>::UpdateTree()
 	{
 			
+			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
+			updateloop++;
 			if (!ignorestop) 
 			{
 				if (stop) return;
-						if (!removal) if (!CheckIntegrity(root)) {stop=true; return;}
+						if (!removal) if (!CheckIntegrity(root)) 
+						{
+							stop=true; 
+							if (journal==ios_base::out) {journal<<entry; journal.close();}
+							return;
+						}
 			}
-			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
-			updateloop++;
 
 			Deletions();
 			Additions();
 
 
-			if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
+			//if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
 
 			//if (removal) return;
 			if (journal==ios_base::in) return;
