@@ -66,9 +66,11 @@ namespace TreeDisplay
 					if (Removing<=0X77) 
 					{
 						Removed=true;
+						moved=false;
 						XSetForeground(display,gc,0X777777);
 					} else {
 						unsigned long color((Removing<<0) | (Removing<<8) | (Removing));
+						moved=true;
 						XSetForeground(display,gc,color);
 					}
 					XPoint& points(iv);

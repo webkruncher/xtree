@@ -124,6 +124,11 @@ namespace TreeIntegrity
 			bool ok(true);
 			if (!root) return true;
 			if (root->isnil()) return true;
+			if (used.empty()) 
+			{
+				cout<<"This tree should be empty!"<<endl;
+				return false;
+			}
 			BstBase<KT>& rk(static_cast<BstBase<KT>&>(*root));
 			KT maxvalue(rk.maxValue(root));
 			KT minvalue(rk.minValue(root));

@@ -36,6 +36,7 @@ using namespace TreeDisplay;
 
 namespace TreeObjects
 {
+#if 0
 	bool HookMsgger(false);
 	#define BREAKPOINT asm ("int $0X03") ;
 	
@@ -64,7 +65,7 @@ namespace TreeObjects
 		cout<<endl; cout.flush();
 		//BREAKPOINT;
 	}
-
+#endif
 	template <>
 		void Bst<double,TreeNode<double> >::Update(Trunk* node,Trunk* pnode,bool erasing)
 	{
@@ -186,6 +187,7 @@ namespace TreeDisplay
 				if (!valuenode.undisplay()) return;
 				if (journal==ios_base::out) entry-=key;
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
+				cout<<"-"<<key<<endl;
 				Trunk* newroot(rr.erase(root,removal));
 				removal=NULL;
 				if (newroot!=root) 
@@ -204,16 +206,19 @@ namespace TreeDisplay
 					} else root=NULL;
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
-				if ((root) and (!root->isnil())) if (!CheckIntegrity(root)) stop=true;
-			}
+				//if ((root) and (!root->isnil())) if (!CheckIntegrity(root)) stop=true;
+			} 
 	}
 
 	template <typename KT>
 		void TreeCanvas<KT>::Additions()
 	{
+			if (removal) return;
+//cout<<"a:"<<boolalpha<<movement<<":"<<stop<<".";
 			if ((!waitfor) or (updateloop>waitfor) )
 				if ((!movement) and (!stop))
 			{
+//cout<<"+";
 				waitfor=0;
 				movement=true;
 
@@ -224,7 +229,7 @@ namespace TreeDisplay
 					ReadingJournal=entry;
 					if (!ReadingJournal) 
 					{
-						if (!CheckIntegrity(root)) stop=true;
+						//if (!CheckIntegrity(root)) stop=true;
 						return; // Journal is finished
 					}
 				}
@@ -241,7 +246,7 @@ namespace TreeDisplay
 					} else used.insert(next.second);
 				} else if (!next.first) removing=true;
 
-				//if (next.first)
+				if (next.first)
 				{
 					if (!removing)
 					{
@@ -268,7 +273,6 @@ namespace TreeDisplay
 								}
 							} //else cout<<next.second<<" is a duplicate and was deleted"<<endl;
 						}
-						if (!CheckIntegrity(root)) stop=true;
 					} else {
 						if ((root) and (!root->isnil()))
 						{
@@ -283,12 +287,17 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
+			
+			if (!ignorestop) 
+			{
+				if (stop) return;
+						if (!removal) if (!CheckIntegrity(root)) {stop=true; return;}
+			}
 			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
 			updateloop++;
 
 			Deletions();
 			Additions();
-			if (ignorestop) stop=false;
 
 
 			if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
