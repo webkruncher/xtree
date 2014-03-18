@@ -10,7 +10,7 @@ popd
 update=`make -n | grep ^g++ | wc -l | tr -d ' '`
 [[ $update != 0 ]] && rm trees
 [[ $update != 0 ]] && rm tester
-make tester
+#make tester
 make 
 echo "Starting trees at `date`" > trees.out
 #./stress

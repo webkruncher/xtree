@@ -44,7 +44,10 @@ namespace TreeDisplay
 			: journal(_journal), out(_out), window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
 				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) , ignorestop(_ignorestop), reported(false)
-					{ if (journal==ios_base::in) journal>>entry; }
+		{ 
+			msgbuffer.reset(new stringstream);
+			if (journal==ios_base::in) journal>>entry; 
+		}
 		virtual ~TreeCanvas() 
 		{
 			if ((root) and (root->isnil())) throw string("Root is NIL");
@@ -88,6 +91,7 @@ namespace TreeDisplay
 			return false;
 		}
 		private:
+		auto_ptr<stringstream> msgbuffer;
 		void UpdateTree();
 		void Deletions();
 		void Additions();
@@ -119,6 +123,35 @@ namespace TreeDisplay
 			if (data.Moved()) movement=true;
 			if (!n.isnul(n.Left())) draw(invalid,*n.Left(),bitmap);
 			if (!n.isnul(n.Right())) draw(invalid,*n.Right(),bitmap);
+		}
+
+		virtual Trunk& operator<<(const Trunk& a) 
+		{
+			Trunk& n(const_cast<Trunk&>(a));
+			if (n.isnil()) {(*msgbuffer.get())<<"NIL "; return *this;}
+			Bst<KT,VT>& bst(static_cast<Bst<KT,VT>&>(n));
+			const KT& key(bst);
+			(*msgbuffer.get())<<key<<" ";
+			return *this;
+		}
+
+		virtual Trunk& operator<<(const string& a)
+		{
+			(*msgbuffer.get())<<a<<" ";
+			return *this;
+		}
+
+		virtual Trunk& operator<<(const int a)
+		{
+			(*msgbuffer.get())<<"["<<a<<"] ";
+			return *this;
+		}
+
+		virtual Trunk& entt()
+		{
+			if (!(*msgbuffer.get()).str().empty()) cout<<(*msgbuffer.get()).str()<<endl;cout.flush();
+			msgbuffer.reset(new stringstream);
+			return *this;
 		}
 
 	};
