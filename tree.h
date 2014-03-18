@@ -34,9 +34,6 @@ namespace TreeObjects
 	#endif
 
 
-	#define Msg (*this->GetNil())
-	struct Trunk;
-	#define msg(aa,bb,txt,C) if (aa) Msg<<(static_cast<Trunk&>(*aa)); if (bb) Msg<<(static_cast<Trunk&>(*bb)); const string m(txt); Msg.operator<<(m); if (C) Msg.operator<<(C);
 
 	struct Trunk
 	{
@@ -70,7 +67,7 @@ namespace TreeObjects
 		virtual void SetRight(Trunk* r) = 0;
 		virtual Trunk* GetNil() = 0;
 		virtual Trunk& operator<<(const Trunk& a) {return *this;}
-		virtual Trunk& operator<<(const string& a){return *this;}
+		virtual Trunk& operator<<(const char* a){return *this;}
 		virtual Trunk& operator<<(const int a){return *this;}
 		virtual Trunk& Begin(){return *this;}
 		virtual Trunk& Insrt(){return *this;}
@@ -78,9 +75,11 @@ namespace TreeObjects
 		virtual Trunk& Rotlft(){return *this;}
 		virtual Trunk& Rotrgt(){return *this;}
 		virtual Trunk& Trnsp(){return *this;}
+		virtual Trunk& DblRedFix(){return *this;}
+		virtual Trunk& operator()(char*,int){return *this;}
 	};
+
 	inline Trunk& operator<<(Trunk& t,Trunk& a)					{return t.operator<<(a);}
-	inline Trunk& operator<<(Trunk& t,const string& a)	{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,const char* a)		{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,int a)						{return t.operator<<(a);}
 	inline Trunk& begin(Trunk& t)												{return t.Begin();}
@@ -89,7 +88,9 @@ namespace TreeObjects
 	inline Trunk& rotlft(Trunk& t)											{return t.Rotlft();}
 	inline Trunk& rotrgt(Trunk& t)											{return t.Rotrgt();}
 	inline Trunk& trnsp(Trunk& t)												{return t.Trnsp();}
+	inline Trunk& dblredfix(Trunk& t)										{return t.DblRedFix();}
 	inline Trunk& operator<<(Trunk& t,Trunk& (*pf)(Trunk&) ){return (*pf)(t);}
+	#define Msg (*this->GetNil())
 
 	struct TreeBase : Trunk
 	{
@@ -195,10 +196,15 @@ namespace TreeObjects
 		node->SetRight(other->Left());
 		if ( !isnul(other->Left()) ) other->Left()->SetParent(node);
 		other->SetParent(node->Parent());
-		if ( isnul(node->Parent()) ) root = other;
-		else 
+		if ( isnul(node->Parent()) ) 
+		{
+			Msg(__FILE__,__LINE__);
+			root = other;
+		} else {
+			Msg(__FILE__,__LINE__);
 			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);
 			else node->Parent()->SetRight(other);
+		}
 		other->SetLeft(node);
 		node->SetParent(other);
 		root->SetParent(GetNil());
@@ -214,10 +220,15 @@ namespace TreeObjects
 		node->SetLeft(other->Right());
 		if ( !isnul(other->Right()) ) other->Right()->SetParent(node);
 		other->SetParent(node->Parent());
-		if ( isnul(node->Parent()) ) root = other;
-		else 
+		if ( isnul(node->Parent()) ) 
+		{
+			Msg(__FILE__,__LINE__);
+			root = other;
+		} else  {
+			Msg(__FILE__,__LINE__);
 			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);
 			else node->Parent()->SetLeft(other);
+		}
 		other->SetRight(node);
 		node->SetParent(other);
 		root->SetParent(GetNil());
@@ -414,12 +425,15 @@ namespace TreeObjects
 		Trunk* ret(root);
 		if (root->isnul(u->Parent()))
 		{
+			Msg(__FILE__,__LINE__);
 			ret=v;
 		} else {
 			if (u==u->Parent()->Left())
 			{
+				Msg(__FILE__,__LINE__);
 				u->Parent()->SetLeft(v);
 			} else {
+				Msg(__FILE__,__LINE__);
 				u->Parent()->SetRight(v);
 			}
 		}
@@ -490,11 +504,11 @@ namespace TreeObjects
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			msg(node,node,"Fixup",0);
+			Msg(__FILE__,__LINE__);
 			int n(0);
 			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
-				msg(node,node,"black",n++);
+				Msg(__FILE__,__LINE__);
 				if (!node) return black(root);
 				if (node->isnil()) {node=node->Parent(); continue;}
 				if ( node == node->Parent()->Left() ) 
@@ -632,17 +646,17 @@ namespace TreeObjects
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
 	{
 		Msg<<begin;
-		if (pfound) Msg<<erse<<(*pfound);
+		if (pfound) Msg<<erse<<(*pfound); 
 		Trunk& me(static_cast<Trunk&>(*this));
 		Trunk* Y(pfound);
 		Trunk* X(NULL);
 		char Ycolor(this->color(Y));
 		if (root->isnul(pfound->Left()))
 		{
-			msg(pfound,pfound,"left is nul",0);
+			Msg(__FILE__,__LINE__);
 			if (!root->isnul(pfound->Right()))	
 			{
-				msg(pfound,pfound->Right(),"right is not nul",0);
+				Msg(__FILE__,__LINE__);
 				Y=(pfound->Right()->LeftMost());
 				Ycolor=(this->color(Y));
 			}
@@ -651,23 +665,23 @@ namespace TreeObjects
 		} else {
 			if (root->isnul(pfound->Right()))
 			{
-				msg(pfound,pfound,"right is nul",0);
+				Msg(__FILE__,__LINE__);
 				if (!root->isnul(pfound->Left())) 
 				{
-					msg(pfound,pfound->Left(),"left is not nul",0);
+					Msg(__FILE__,__LINE__);
 					Y=(pfound->Left()->RightMost());
 				} else Y=pfound->RightMost();
 				Ycolor=(this->color(Y));
 				X=pfound->Left();
 				root=me.transplant(root,pfound,pfound->Left());
 			} else {
-				msg(pfound,pfound->Right(),"right is not nul",0);
+				Msg(__FILE__,__LINE__);
 				Y=(pfound->Right()->LeftMost());
 				Ycolor=(this->color(Y));
 				X=Y->Right();
 				if (Y->Parent()!=pfound)
 				{
-					msg(pfound,Y->Parent(),"Y->Parent != found",0);
+					Msg(__FILE__,__LINE__);
 					root=me.transplant(root,Y,Y->Right());
 					Y->SetRight(pfound->Right());
 					Y->Right()->SetParent(Y);
@@ -678,6 +692,12 @@ namespace TreeObjects
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
+		if (Y) 
+			if (this->isleaf(Y) and (this->color(Y->Parent())==RED)) 
+			{
+				Msg<<dblredfix<<(*Y)<<(*Y->Parent());
+				this->black(Y); Ycolor=BLACK;
+			}	
 		if (Ycolor==BLACK) 
 			if ((root) and (X)) return RedAndBlackDelete(root,X);
 		return root;

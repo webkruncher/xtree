@@ -32,7 +32,7 @@ using namespace TreeObjects;
 using namespace TreeDisplay;
 #include <math.h>
 
-#define MOST 150
+#define MOST 300
 
 namespace TreeObjects
 {

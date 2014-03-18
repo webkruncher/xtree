@@ -153,7 +153,7 @@ namespace TreeDisplay
 			return *this;
 		}
 
-		virtual Trunk& Erst()
+		virtual Trunk& Erse()
 		{
 			(*msgbuffer.get())<<"Erase:";
 			return *this;
@@ -171,16 +171,28 @@ namespace TreeDisplay
 			return *this;
 		}
 
+		virtual Trunk& DblRedFix()
+		{
+			(*msgbuffer.get())<<"* ";
+			return *this;
+		}
+
 		virtual Trunk& Trnsp()
 		{
 			(*msgbuffer.get())<<"<> ";
 			return *this;
 		}
 
+		virtual Trunk& operator()(string file,int line)
+		{
+			if (file=="./tree.h") file="T:"; else file+=":";
+			(*msgbuffer.get())<<file<<line<<"; ";
+			return *this;
+		}
 
 		virtual Trunk& Begin()
 		{
-			if (!(*msgbuffer.get()).str().empty()) cout<<(*msgbuffer.get()).str()<<endl;cout.flush();
+			if (!(*msgbuffer.get()).str().empty()) out<<(*msgbuffer.get()).str()<<endl;out.flush();
 			msgbuffer.reset(new stringstream);
 			return *this;
 		}
