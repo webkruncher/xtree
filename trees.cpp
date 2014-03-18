@@ -36,36 +36,6 @@ using namespace TreeDisplay;
 
 namespace TreeObjects
 {
-#if 0
-	bool HookMsgger(false);
-	#define BREAKPOINT asm ("int $0X03") ;
-	
-	template <> 
-		void Bst<string,TreeNode<string> >::Hook()
-	{
-		//cout<<"?"<<key<<endl;
-		if (key=="Avis") {HookMsgger=true; return;} 
-		if (key=="Cary") {HookMsgger=true; return;} 
-		HookMsgger=false;
-	}
-
-	template <> 
-		void Bst<string,TreeNode<string> >::HookMsg(Trunk& _what,string msg,Trunk* other)
-	{
-		if (!HookMsgger) return;
-		Bst<string,TreeNode<string> >& what(static_cast<Bst<string,TreeNode<string> >& >(_what));
-		const string& thatkey(what);
-		cout<<key<<" "<<msg<<" "<<thatkey;
-		if (other)
-		{
-			Bst<string,TreeNode<string> >& otherwhat(static_cast<Bst<string,TreeNode<string> >& >(*other));
-			const string& otherkey(otherwhat);
-			cout<<" "<<otherkey;
-		}
-		cout<<endl; cout.flush();
-		//BREAKPOINT;
-	}
-#endif
 	template <>
 		void Bst<double,TreeNode<double> >::Update(Trunk* node,Trunk* pnode,bool erasing)
 	{
@@ -187,7 +157,6 @@ namespace TreeDisplay
 				if (!valuenode.undisplay()) return;
 				if (journal==ios_base::out) entry-=key;
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
-				//cout<<"-"<<key<<endl;
 				Trunk* newroot(rr.erase(root,removal));
 				removal=NULL;
 				if (newroot!=root) 
@@ -197,16 +166,13 @@ namespace TreeDisplay
 						root=newroot;
 						if (root) 
 						{
-							//cout<<"Setting new root"<<endl; cout.flush();
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*newroot));
 							const KT& newkey(nk);
-							//cout<<"Root is now "<<newkey<<endl;
 							root->SetParent(this);
-						} //else cout<<"Root is now null"<<endl;
+						}
 					} else root=NULL;
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
-				//if ((root) and (!root->isnil())) if (!CheckIntegrity(root)) stop=true;
 			} 
 	}
 
@@ -214,11 +180,9 @@ namespace TreeDisplay
 		void TreeCanvas<KT>::Additions()
 	{
 			if (removal) return;
-//cout<<"a:"<<boolalpha<<movement<<":"<<stop<<".";
 			if ((!waitfor) or (updateloop>waitfor) )
 				if ((!movement) and (!stop))
 			{
-//cout<<"+";
 				waitfor=0;
 				movement=true;
 
@@ -237,7 +201,6 @@ namespace TreeDisplay
 				pair<bool,KT> next((ReadingJournal)?entry:Next(MOST));
 				if (ReadingJournal)
 				{
-					//cout<<((next.first)?"Adding":"Removing")<<" "<<next.second<<endl;
 					if (!next.first) {removing=true; next.first=true;}
 					if (removing) 
 					{
@@ -267,11 +230,10 @@ namespace TreeDisplay
 								{
 									Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*nr));
 									const KT& newkey(nk);
-									//cout<<"Root is now "<<newkey<<endl;
 									root=nr;
 									if (root) root->SetParent(this);
 								}
-							} //else cout<<next.second<<" is a duplicate and was deleted"<<endl;
+							}
 						}
 					} else {
 						if ((root) and (!root->isnil()))
@@ -305,7 +267,6 @@ namespace TreeDisplay
 			Additions();
 
 
-			//if ( (stop) and (journal==ios_base::out)) {journal<<entry; journal.close();}
 
 			//if (removal) return;
 			if (journal==ios_base::in) return;

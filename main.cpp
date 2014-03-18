@@ -270,6 +270,19 @@ int main(int argc,char** argv)
 		int depth(CopyFromParent);
 		unsigned int border(0);
 		unsigned long valuemask(CopyFromParent);
+
+		ofstream dump;
+		bool IgnoreStop=false;
+		ostream* pout(NULL);
+		if (cmdline.exists("-root"))
+		{
+			cout.rdbuf(0);
+			dump.open("/dev/null");
+			pout=&dump;
+			IgnoreStop=true;
+		} else pout=&cout;
+
+
 		if (!cmdline.exists("-root"))
 		{
 			window=XCreateSimpleWindow(display,DefaultRootWindow(display), 
@@ -299,15 +312,6 @@ int main(int argc,char** argv)
 		XSetForeground(display,gc,foreground);
 		XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
 
-		ofstream dump;
-		bool IgnoreStop=false;
-		ostream* pout(&cout);
-		if (cmdline.exists("-window-id"))
-		{
-			dump.open("/dev/null");
-			pout=&dump;
-			IgnoreStop=true;
-		}
 		if (cmdline.exists("-dont-stop")) IgnoreStop=true;
 		if (cmdline.exists("-no-dpms")) Utilities::NoDpms();
 		ostream& out(*pout);

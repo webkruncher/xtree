@@ -31,6 +31,9 @@ main.o: main.cpp $(INCS)
 trees.o: trees.cpp $(INCS)
 	g++ $(COMPILESETTINGS) trees.cpp -o trees.o
 
+install: trees
+	sudo ./install.sh
+
 clean:
 	-rm iterators
 	-rm tester
