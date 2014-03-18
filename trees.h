@@ -171,6 +171,13 @@ namespace TreeDisplay
 			return *this;
 		}
 
+		virtual Trunk& Trnsp()
+		{
+			(*msgbuffer.get())<<"<> ";
+			return *this;
+		}
+
+
 		virtual Trunk& Begin()
 		{
 			if (!(*msgbuffer.get()).str().empty()) cout<<(*msgbuffer.get()).str()<<endl;cout.flush();

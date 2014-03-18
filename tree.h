@@ -77,6 +77,7 @@ namespace TreeObjects
 		virtual Trunk& Erse(){return *this;}
 		virtual Trunk& Rotlft(){return *this;}
 		virtual Trunk& Rotrgt(){return *this;}
+		virtual Trunk& Trnsp(){return *this;}
 	};
 	inline Trunk& operator<<(Trunk& t,Trunk& a)					{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,const string& a)	{return t.operator<<(a);}
@@ -87,6 +88,7 @@ namespace TreeObjects
 	inline Trunk& erse(Trunk& t)												{return t.Erse();}
 	inline Trunk& rotlft(Trunk& t)											{return t.Rotlft();}
 	inline Trunk& rotrgt(Trunk& t)											{return t.Rotrgt();}
+	inline Trunk& trnsp(Trunk& t)												{return t.Trnsp();}
 	inline Trunk& operator<<(Trunk& t,Trunk& (*pf)(Trunk&) ){return (*pf)(t);}
 
 	struct TreeBase : Trunk
@@ -348,7 +350,6 @@ namespace TreeObjects
 		virtual const bool isleaf(Trunk* node) const {return TreeBase::isleaf(node);}
 		virtual Trunk* RotateLeft(Trunk* root, Trunk* node)
 		{
-			//if (node) msg(node,node->Right(),"RotateLeft",0);
 			Trunk* newroot(TreeBase::RotateLeft(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
@@ -356,7 +357,6 @@ namespace TreeObjects
 
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node)
 		{
-			//if (node) msg(node,node->Left(),"RotateRight",0);
 			Trunk* newroot(TreeBase::RotateRight(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
@@ -410,7 +410,7 @@ namespace TreeObjects
 
 	inline Trunk* TreeBase::transplant(Trunk* root,Trunk* u,Trunk* v)
 	{
-		msg(u,v,"transplant",0);
+		if (u and v) Msg<<(*u)<<trnsp<<(*v);
 		Trunk* ret(root);
 		if (root->isnul(u->Parent()))
 		{
