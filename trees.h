@@ -147,7 +147,31 @@ namespace TreeDisplay
 			return *this;
 		}
 
-		virtual Trunk& entt()
+		virtual Trunk& Insrt()
+		{
+			(*msgbuffer.get())<<"Insert:";
+			return *this;
+		}
+
+		virtual Trunk& Erst()
+		{
+			(*msgbuffer.get())<<"Erase:";
+			return *this;
+		}
+
+		virtual Trunk& Rotlft()
+		{
+			(*msgbuffer.get())<<"<< ";
+			return *this;
+		}
+
+		virtual Trunk& Rotrgt()
+		{
+			(*msgbuffer.get())<<">> ";
+			return *this;
+		}
+
+		virtual Trunk& Begin()
 		{
 			if (!(*msgbuffer.get()).str().empty()) cout<<(*msgbuffer.get()).str()<<endl;cout.flush();
 			msgbuffer.reset(new stringstream);

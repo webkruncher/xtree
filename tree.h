@@ -33,11 +33,11 @@ namespace TreeObjects
 	#define NULL 0
 	#endif
 
-	#define Msg (*this->GetNil())
+
+	#define Msg static_cast<Trunk&>((*this->GetNil()))
 	struct Trunk;
 	#define msg(aa,bb,txt,C) if (aa) Msg<<(static_cast<Trunk&>(*aa)); if (bb) Msg<<(static_cast<Trunk&>(*bb)); const string m(txt); Msg.operator<<(m); if (C) Msg.operator<<(C);
 
-	struct TreeBase;
 	struct Trunk
 	{
 		virtual const bool isnil()  = 0;
@@ -72,14 +72,22 @@ namespace TreeObjects
 		virtual Trunk& operator<<(const Trunk& a) {return *this;}
 		virtual Trunk& operator<<(const string& a){return *this;}
 		virtual Trunk& operator<<(const int a){return *this;}
-		virtual Trunk& entt(){return *this;}
+		virtual Trunk& Begin(){return *this;}
+		virtual Trunk& Insrt(){return *this;}
+		virtual Trunk& Erse(){return *this;}
+		virtual Trunk& Rotlft(){return *this;}
+		virtual Trunk& Rotrgt(){return *this;}
 	};
 	inline Trunk& operator<<(Trunk& t,Trunk& a)					{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,const string& a)	{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,const char* a)		{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,int a)						{return t.operator<<(a);}
-	inline Trunk& entt(Trunk& t)												{return t.entt();}
-	inline Trunk& operator<<(Trunk& t,Trunk& (*pf)(Trunk&) ){return t.entt();}
+	inline Trunk& begin(Trunk& t)												{return t.Begin();}
+	inline Trunk& insrt(Trunk& t)												{return t.Insrt();}
+	inline Trunk& erse(Trunk& t)												{return t.Erse();}
+	inline Trunk& rotlft(Trunk& t)											{return t.Rotlft();}
+	inline Trunk& rotrgt(Trunk& t)											{return t.Rotrgt();}
+	inline Trunk& operator<<(Trunk& t,Trunk& (*pf)(Trunk&) ){return (*pf)(t);}
 
 	struct TreeBase : Trunk
 	{
@@ -181,6 +189,7 @@ namespace TreeObjects
 		if (!node) return root;
 		Trunk* other(node->Right());
 		if (!other) return root;
+		Msg<<(*node)<<rotlft<<(*other);
 		node->SetRight(other->Left());
 		if ( !isnul(other->Left()) ) other->Left()->SetParent(node);
 		other->SetParent(node->Parent());
@@ -199,6 +208,7 @@ namespace TreeObjects
 		if (!node) return root;
 		Trunk* other(node->Left());
 		if (!other) return root;
+		Msg<<(*node)<<rotrgt<<(*other);
 		node->SetLeft(other->Right());
 		if ( !isnul(other->Right()) ) other->Right()->SetParent(node);
 		other->SetParent(node->Parent());
@@ -338,7 +348,7 @@ namespace TreeObjects
 		virtual const bool isleaf(Trunk* node) const {return TreeBase::isleaf(node);}
 		virtual Trunk* RotateLeft(Trunk* root, Trunk* node)
 		{
-			if (node) msg(node,node->Right(),"RotateLeft",0);
+			//if (node) msg(node,node->Right(),"RotateLeft",0);
 			Trunk* newroot(TreeBase::RotateLeft(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
@@ -346,7 +356,7 @@ namespace TreeObjects
 
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node)
 		{
-			if (node) msg(node,node->Left(),"RotateRight",0);
+			//if (node) msg(node,node->Left(),"RotateRight",0);
 			Trunk* newroot(TreeBase::RotateRight(root,node));
 			this->Update(node,this->Parent()); 
 			return newroot;
@@ -621,8 +631,9 @@ namespace TreeObjects
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
 	{
-		Msg<<entt;
-		msg(pfound,pfound,"remove",0);
+		Msg<<begin;
+		//msg(pfound,pfound,"remove",0);
+		if (pfound) Msg<<erse<<(*pfound);
 		Trunk& me(static_cast<Trunk&>(*this));
 		Trunk* Y(pfound);
 		Trunk* X(NULL);
@@ -683,8 +694,8 @@ namespace TreeObjects
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
-			Msg<<entt;
-			if (node) {Msg<<"Insert:"<<(*node); Msg.operator<<((int)d);}
+			if (node) {Msg<<begin<<insrt<<(*node); Msg.operator<<((int)d);}
+			//if (node) {Msg<<"Insert:"<<(*node); Msg.operator<<((int)d);}
 			root=Bst<KT,VT>::insert(root,node,d);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
