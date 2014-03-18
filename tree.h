@@ -34,7 +34,7 @@ namespace TreeObjects
 	#endif
 
 
-	#define Msg static_cast<Trunk&>((*this->GetNil()))
+	#define Msg (*this->GetNil())
 	struct Trunk;
 	#define msg(aa,bb,txt,C) if (aa) Msg<<(static_cast<Trunk&>(*aa)); if (bb) Msg<<(static_cast<Trunk&>(*bb)); const string m(txt); Msg.operator<<(m); if (C) Msg.operator<<(C);
 
@@ -632,7 +632,6 @@ namespace TreeObjects
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
 	{
 		Msg<<begin;
-		//msg(pfound,pfound,"remove",0);
 		if (pfound) Msg<<erse<<(*pfound);
 		Trunk& me(static_cast<Trunk&>(*this));
 		Trunk* Y(pfound);
