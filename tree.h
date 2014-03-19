@@ -91,6 +91,7 @@ namespace TreeObjects
 	inline Trunk& dblredfix(Trunk& t)										{return t.DblRedFix();}
 	inline Trunk& operator<<(Trunk& t,Trunk& (*pf)(Trunk&) ){return (*pf)(t);}
 	#define Msg (*this->GetNil())
+	#define Trace Msg(__FILE__,__LINE__);
 
 	struct TreeBase : Trunk
 	{
@@ -198,10 +199,10 @@ namespace TreeObjects
 		other->SetParent(node->Parent());
 		if ( isnul(node->Parent()) ) 
 		{
-			Msg(__FILE__,__LINE__);
+			Trace
 			root = other;
 		} else {
-			Msg(__FILE__,__LINE__);
+			Trace
 			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);
 			else node->Parent()->SetRight(other);
 		}
@@ -222,10 +223,10 @@ namespace TreeObjects
 		other->SetParent(node->Parent());
 		if ( isnul(node->Parent()) ) 
 		{
-			Msg(__FILE__,__LINE__);
+			Trace
 			root = other;
 		} else  {
-			Msg(__FILE__,__LINE__);
+			Trace
 			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);
 			else node->Parent()->SetLeft(other);
 		}
@@ -425,15 +426,15 @@ namespace TreeObjects
 		Trunk* ret(root);
 		if (root->isnul(u->Parent()))
 		{
-			Msg(__FILE__,__LINE__);
+			Trace
 			ret=v;
 		} else {
 			if (u==u->Parent()->Left())
 			{
-				Msg(__FILE__,__LINE__);
+				Trace
 				u->Parent()->SetLeft(v);
 			} else {
-				Msg(__FILE__,__LINE__);
+				Trace
 				u->Parent()->SetRight(v);
 			}
 		}
@@ -504,11 +505,11 @@ namespace TreeObjects
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			Msg(__FILE__,__LINE__);
+			Trace
 			int n(0);
 			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
-				Msg(__FILE__,__LINE__);
+				Trace
 				if (!node) return black(root);
 				if (node->isnil()) {node=node->Parent(); continue;}
 				if ( node == node->Parent()->Left() ) 
@@ -653,10 +654,10 @@ namespace TreeObjects
 		char Ycolor(this->color(Y));
 		if (root->isnul(pfound->Left()))
 		{
-			Msg(__FILE__,__LINE__);
+			Trace
 			if (!root->isnul(pfound->Right()))	
 			{
-				Msg(__FILE__,__LINE__);
+				Trace
 				Y=(pfound->Right()->LeftMost());
 				Ycolor=(this->color(Y));
 			}
@@ -665,23 +666,23 @@ namespace TreeObjects
 		} else {
 			if (root->isnul(pfound->Right()))
 			{
-				Msg(__FILE__,__LINE__);
+				Trace
 				if (!root->isnul(pfound->Left())) 
 				{
-					Msg(__FILE__,__LINE__);
+					Trace
 					Y=(pfound->Left()->RightMost());
 				} else Y=pfound->RightMost();
 				Ycolor=(this->color(Y));
 				X=pfound->Left();
 				root=me.transplant(root,pfound,pfound->Left());
 			} else {
-				Msg(__FILE__,__LINE__);
+				Trace
 				Y=(pfound->Right()->LeftMost());
 				Ycolor=(this->color(Y));
 				X=Y->Right();
 				if (Y->Parent()!=pfound)
 				{
-					Msg(__FILE__,__LINE__);
+					Trace
 					root=me.transplant(root,Y,Y->Right());
 					Y->SetRight(pfound->Right());
 					Y->Right()->SetParent(Y);
@@ -692,14 +693,8 @@ namespace TreeObjects
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
-		if (Y) 
-			if (this->isleaf(Y) and (this->color(Y->Parent())==RED)) 
-			{
-				Msg<<dblredfix<<(*Y)<<(*Y->Parent());
-				this->black(Y); Ycolor=BLACK;
-			}	
-		if (Ycolor==BLACK) 
-			if ((root) and (X)) return RedAndBlackDelete(root,X);
+				if (Ycolor==BLACK) 
+					if ((root) and (X)) return RedAndBlackDelete(root,X);
 		return root;
 	}
 
@@ -714,7 +709,7 @@ namespace TreeObjects
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
 			if (node) {Msg<<begin<<insrt<<(*node); Msg.operator<<((int)d);}
-			//if (node) {Msg<<"Insert:"<<(*node); Msg.operator<<((int)d);}
+			Trace
 			root=Bst<KT,VT>::insert(root,node,d);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);

@@ -34,8 +34,28 @@ struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>:
 #include "nodedisplay.h"
 #include "treeintegrity.h"
 #include "journal.h"
+#include <sys/stat.h>
 namespace TreeDisplay
 {
+	struct TreeSource : private vector<string>
+	{
+		TreeSource() : blank("----") {}	
+		const string& operator()(int line)
+		{
+			if (empty()) Load();
+			if (line>size()) return blank;
+			return (*this)[line];
+		}
+		private:
+		void Load()
+		{
+			ifstream in("tree.h");
+			if (in.fail()) return;
+			while (!in.eof()) {string line; getline(in,line); push_back(line);}
+		}
+		const string blank;
+	};
+
 	template<typename KT>
 		struct TreeCanvas : Canvas, Sentinel
 	{
@@ -103,6 +123,7 @@ namespace TreeDisplay
 		Trunk* root,*removal;
 		Invalid invalid;
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
+		TreeSource treesource;
 		void traverse(Trunk& n)
 		{
 			if (n.isnil()) return;
@@ -183,21 +204,23 @@ namespace TreeDisplay
 			return *this;
 		}
 
-		virtual Trunk& operator()(string file,int line)
+		virtual Trunk& operator()(char* _file,int line)
 		{
-			if (file=="./tree.h") file="T:"; else file+=":";
-			(*msgbuffer.get())<<file<<line<<"; ";
+			if (!_file) return *this;
+			struct stat sb;
+			if (!stat("tree.h",&sb)==0) return *this;
+			string file(_file);
+			if (file=="./tree.h") (*msgbuffer.get())<<endl<<line<<treesource(line)<<endl;
+			else (*msgbuffer.get())<<file<<line<<"; ";
 			return *this;
 		}
 
 		virtual Trunk& Begin()
 		{
-			//if (ignorestop) { msgbuffer.reset(new stringstream); return *this;}
 			if (!(*msgbuffer.get()).str().empty()) tout<<(*msgbuffer.get()).str()<<endl;tout.flush();
 			msgbuffer.reset(new stringstream);
 			return *this;
 		}
-
 	};
 
 
