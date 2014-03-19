@@ -34,6 +34,7 @@ using namespace TreeDisplay;
 
 #define MOST 300
 
+#define BREAKPOINT asm ("int $0X03") ;
 namespace TreeObjects
 {
 	template <>

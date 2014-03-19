@@ -107,6 +107,8 @@ namespace TreeDisplay
 				TreeIntegrity::PrintInOrder<KT,VT>(tout,root);
 				tout<<endl;
 			}
+			if (!(*msgbuffer.get()).str().empty()) tout<<(*msgbuffer.get()).str()<<endl;tout.flush();
+			msgbuffer.reset(new stringstream);
 			tout.flush();
 			return false;
 		}
