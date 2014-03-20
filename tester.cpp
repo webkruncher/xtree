@@ -48,15 +48,12 @@ using namespace TreeObjects;
 #define TREEOBJECTS first
 #define STLOBJECTS second
 
-
-
 struct Punk: public std::numpunct<char>
 {
 	protected:
 	virtual char do_thousands_sep() const {return ',';}
 	virtual std::string do_grouping() const {return "\03";}
 };
-
 
 void Insert(std::set<long>& items,const long number) {  items.insert(number); }
 void Erase(std::set<long>& items,const long number) {  items.erase(number);}
@@ -110,7 +107,7 @@ struct Advisor : TreeIntegrity::IntegrityAdvisor
 	{
 		RbSetBase<long>& rb(static_cast<RbSetBase<long>&>(node));
 		const long& key(rb);
-		cerr<<key<<" "<<name<<":"<<value<<endl;
+		//cerr<<key<<" "<<name<<":"<<value<<endl;
 	} 
 } Violations;
 
@@ -219,6 +216,7 @@ int main(int,char**)
 	stringstream except;
 	try
 	{
+		
 		char hash(0);
 		long N(0),T(20);
 		fscanf(stdin,"%c%ld",&hash,&N);

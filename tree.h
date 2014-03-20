@@ -27,13 +27,12 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+
 namespace TreeObjects
 {
 	#ifndef NULL
 	#define NULL 0
 	#endif
-
-
 
 	struct Trunk
 	{
@@ -44,8 +43,8 @@ namespace TreeObjects
 			if (node->isnil()) return true;
 			return false;	
 		}
-		virtual bool operator<(const Trunk&) {return false;}
-		virtual bool operator==(const Trunk&) {return false;}
+		virtual bool operator<(const Trunk&) =0;//{return false;}
+		virtual bool operator==(const Trunk&) =0;//{return false;}
 		virtual Trunk* insert(Trunk* root,Trunk*,char d=0) {return NULL;}
 		virtual bool isBST(Trunk* node) {return false;}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) {}
@@ -127,6 +126,8 @@ namespace TreeObjects
 
 	struct Sentinel : Trunk
 	{
+		virtual bool operator<(const Trunk&) {return false;}
+		virtual bool operator==(const Trunk&){return false;}
 		virtual const bool isnil() { return true; }
 		Trunk* Parent(){return NULL;}
 		void SetParent(Trunk*){}
@@ -190,9 +191,9 @@ namespace TreeObjects
 
 	inline Trunk* TreeBase::RotateLeft(Trunk* root, Trunk* node)
 	{
-		if (!node) return root;
+		if (this->isnul(node)) return root;
 		Trunk* other(node->Right());
-		if (!other) return root;
+		if (this->isnul(other)) return root;
 		Msg<<(*node)<<rotlft<<(*other);
 		node->SetRight(other->Left());
 		if ( !isnul(other->Left()) ) other->Left()->SetParent(node);
@@ -209,14 +210,16 @@ namespace TreeObjects
 		other->SetLeft(node);
 		node->SetParent(other);
 		root->SetParent(GetNil());
+		Update(node,node->Parent());
+		Update(other,other->Parent());
 		return root;
 	}
 
 	inline Trunk* TreeBase::RotateRight(Trunk* root, Trunk* node)
 	{
-		if (!node) return root;
+		if (this->isnul(node)) return root;
 		Trunk* other(node->Left());
-		if (!other) return root;
+		if (this->isnul(other)) return root;
 		Msg<<(*node)<<rotrgt<<(*other);
 		node->SetLeft(other->Right());
 		if ( !isnul(other->Right()) ) other->Right()->SetParent(node);
@@ -233,6 +236,8 @@ namespace TreeObjects
 		other->SetRight(node);
 		node->SetParent(other);
 		root->SetParent(GetNil());
+		Update(node,node->Parent());
+		Update(other,other->Parent());
 		return root;
 	}
 
@@ -266,7 +271,7 @@ namespace TreeObjects
 		}
 
 		virtual BstBase<KT>* find(const KT& what)
-		{
+		{	
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
 			if (nd==what) return this;
 			if (nd<what)
@@ -291,13 +296,13 @@ namespace TreeObjects
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{	
 			if (root->isnul(found)) return root;
+			if (found->isnil()) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(remove(root,found));
 			found->SetLeft(NULL); found->SetRight(NULL);
 			if (newroot)
 			{
-				if (!newroot->isnul(found)) Update(found,found->Parent(),true); 
-				if (!newroot->isnul(p)) Update(p,found); 
+				if (!newroot->isnul(p)) Update(found,p); 
 				if (!newroot->isnul(l)) Update(l,found); 
 				if (!newroot->isnul(r)) Update(r,found); 
 			}
@@ -341,6 +346,7 @@ namespace TreeObjects
 			const BstBase<KT>& b(static_cast<BstBase<KT>&>(other));
 			return a.key<b.key; 
 		}
+
 		virtual bool operator==(const Trunk& that) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
@@ -348,18 +354,23 @@ namespace TreeObjects
 			const BstBase<KT>& b(static_cast<BstBase<KT>&>(other));
 			return a.key==b.key; 
 		}
+
 		virtual bool operator<(const KT& b) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
 			return a.key<b; 
 		}
+
 		virtual bool operator==(const KT& b) 
 		{ 
 			const BstBase<KT>& a(static_cast<BstBase<KT>&>(*this));
 			return a.key==b;
 		}
+
 		operator const KT& (){return key;}
+
 		virtual const bool isleaf(Trunk* node) const {return TreeBase::isleaf(node);}
+
 		virtual Trunk* RotateLeft(Trunk* root, Trunk* node)
 		{
 			Trunk* newroot(TreeBase::RotateLeft(root,node));
@@ -439,6 +450,8 @@ namespace TreeObjects
 			}
 		}
 		if (v) v->SetParent(u->Parent());
+		Update(u,u->Parent());
+		if (v) Update(v,v->Parent());
 		return ret;
 	}
 
@@ -627,8 +640,6 @@ namespace TreeObjects
 		{
 			Msg<<begin;
 			Trace
-			if (!found) return root;
-			if (root->isnul(found)) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(remove(root,found));
 			if (newroot)
@@ -768,7 +779,9 @@ namespace TreeObjects
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
 		virtual Trunk* remove(Trunk* root,Trunk* pfound)
 		{
-			return Trunk::remove(root,pfound);
+			BstBase<KT>& b(static_cast<BstBase<KT>&>(*pfound));
+			return BstBase<KT>::remove(root,pfound);
+			//return Trunk::remove(root,pfound);
 		}
 		virtual Trunk* erase(Trunk* root,Trunk* found){return RbBase::erase(root,found);}
 		virtual operator Trunk& () {return *this;}

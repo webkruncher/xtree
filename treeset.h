@@ -29,12 +29,24 @@
 #include <tree.h>
 
 
+
+//#include <sys/stat.h>
+//#include <vector>
+//#include <string>
+//#include <sstream>
+//#include <fstream>
+//#include <iostream>
+//using namespace std;
+
+
 namespace TreeObjects
 {
 	template <typename KT>
 		struct Set : Sentinel
 	{
-		Set() : root(NULL) {}
+		Set() : root(NULL) 
+		{
+		}
 		virtual ~Set() 
 		{
 			if ((root) and (!root->isnil()) ) delete root;
@@ -47,13 +59,14 @@ namespace TreeObjects
 			if (found) if (!root->isnul(found)) 
 			{
 					TreeBase* newroot(static_cast<RbSet<KT>*>(root->erase(root,found)));
-					if (newroot!=root) 
+					if ((!newroot) or (newroot->isnil())) root=NULL; 
+					else if (newroot!=root) 
 					{
 						if (newroot and !newroot->isnil())
 						{
 							root=static_cast<RbSet<KT>*>(newroot);
 							if (root) root->SetParent(this);
-						}
+						} 
 					}
 			}
 		}
@@ -78,13 +91,13 @@ namespace TreeObjects
 				}
 			}
 		}
-		void inorder(TreeBase* node=NULL)
+		void inorder(Trunk* node=NULL)
 		{
 			if (isnul(node)) node=root;
-			if (!isnul(node->left)) inorder(node->left);	
+			if (!isnul(node->Left())) inorder(node->Left());	
 			RbSet<KT>& item(static_cast<RbSet<KT>& >(*node)); 
-			const KT& key(item);
-			if (!isnul(node->right)) inorder(node->right);	
+			const KT& key(item); //cout<<"!"<<key<<"!";
+			if (!isnul(node->Right())) inorder(node->Right());	
 		}
 		operator BstBase<KT>* () const {return root;}
 		bool isBST() { if (isnul(root)) return true; return root->isBST(root); }

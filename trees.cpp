@@ -43,7 +43,7 @@ namespace TreeObjects
 			typedef double KT;
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
-			if (node->isnil()) return; if (pnode->isnil()) return;
+			if (node->isnil()) return; //if (pnode->isnil()) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
@@ -54,7 +54,7 @@ namespace TreeObjects
 			typedef int KT;
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
-			if (node->isnil()) return; if (pnode->isnil()) return;
+			if (node->isnil()) return; //if (pnode->isnil()) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.data(nd.key,(*pnode),pnode->Parent(),erasing);
 	}
@@ -65,7 +65,7 @@ namespace TreeObjects
 			typedef string KT;
 			typedef TreeNode<KT> VT ;
 			if (!node) return; if (!pnode) return;
-			if (node->isnil()) return; if (pnode->isnil()) return;
+			if (node->isnil()) return; //if (pnode->isnil()) return;
 			Bst<KT,VT>& nd(static_cast<Bst<KT,VT>&>(*node));
 			nd.Data()(nd.key,(*pnode),pnode->Parent(),erasing);
 	}

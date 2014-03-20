@@ -175,8 +175,6 @@ namespace TreeDisplay
 					Text(k,pk);
 				}
 			}
-			//if (node.Left()) if (node.Left()->isnil()) NodeBase::operator[]("n")+="l";
-			//if (node.Right()) if (node.Right()->isnil()) NodeBase::operator[]("n")+="r";
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 			{ NodeBase::operator()(invalid,window,display,gc,bitmap); }
