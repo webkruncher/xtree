@@ -264,7 +264,7 @@ namespace TreeDisplay
 			struct stat sb;
 			if (!stat("tree.h",&sb)==0) return *this;
 			string file(_file);
-			if (file=="./tree.h") (*msgbuffer.get())<<endl<<line<<treesource(line)<<endl;
+			if (file=="./tree.h") (*msgbuffer.get())<<endl<<line<<treesource(line);
 			else (*msgbuffer.get())<<file<<line<<"; ";
 			return *this;
 		}

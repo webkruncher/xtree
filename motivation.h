@@ -43,13 +43,12 @@ namespace TreeDisplay
 			double direction(atan2(disty, distx));
 			double distance(sqrt( (distx * distx) + (disty * disty) ) );
 
-			if (distance<4)
+			if (distance<1)
 			{
 				if (empty()) return make_pair<double,double>(0,0);
 				{ x=back().first; y=back().second; pop_back(); }
 			}
-
-			if (distance<4) return make_pair<double,double>(0,0);
+			if ( (distance<1) and (empty()) ) return make_pair<double,double>(0,0);
 
 			double force(distance/4);
 			const double dx(force*cos(direction));

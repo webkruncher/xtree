@@ -705,7 +705,7 @@ namespace TreeObjects
 				if (color(pfound)==BLACK) black(Y); else red(Y);
 			}
 		}
-		if (Ycolor==BLACK) 
+		//if (Ycolor==BLACK) 
 			if ((root) and (X)) return RedAndBlackDelete(root,X);
 		Trace
 		return root;
