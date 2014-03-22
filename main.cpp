@@ -253,7 +253,8 @@ int main(int argc,char** argv)
 	{
 		Utilities::CmdLine cmdline(argc,argv,"trees");
 
-		string trapname=cmdline["-trap"];
+		string trapname;
+		if (cmdline.exists("-trap")) trapname=cmdline["-trap"];
 		
 		KeyMap keys;
 		XSizeHints displayarea;
