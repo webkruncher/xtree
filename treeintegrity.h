@@ -232,6 +232,30 @@ namespace TreeIntegrity
 		return true;
 		//return visitor;
 	}
+
+
+	template<typename KT>
+		inline void Describe(Trunk* root,ostream& tout)
+	{
+			if (!root) {cout<<"The root is null"<<endl; return;}
+			if (root->isnil()) {cout<<"The root is nil"<<endl; return;}
+			BstBase<KT>& rk(static_cast<BstBase<KT>&>(*root));
+			KT maxvalue(rk.maxValue(root));
+			KT minvalue(rk.minValue(root));
+			KT rootvalue(rk);
+			bool isbst(root->isBST(root));
+			if (!isbst) {tout<<("isBST failed")<<endl; return;}
+			long ttl(root->countnodes());
+			//if (ok) TestPredecessorsAndSuccessors<KT>(tout,root,root,used,ok);
+			cerr<<"Total Nodes:"<<ttl<<endl;
+			cerr<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
+			cerr<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
+			cerr<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
+			cerr<<"isBST:"<<boolalpha<<isbst;
+	}
+
+
+
 } //TreeIntegrity
 #endif // TREE_INTEGRITY
 

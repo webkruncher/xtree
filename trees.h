@@ -37,6 +37,26 @@ struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>:
 #include <sys/stat.h>
 namespace TreeDisplay
 {
+
+	enum CurrentActions {NoAction=100,Inserting,Erasing} ;
+
+	struct Trap
+	{
+		Trap(const string _fname,ostream& _tout,bool& _stop,bool& _movement) : fname(_fname),tout(_tout), state(Running),loaded(false),stop(_stop),movement(_movement) {}
+		void stepper(string msg);
+		void Load();
+		private: 
+		const string fname; bool loaded;
+		bool& stop;
+		bool& movement;
+		ostream& tout;
+		string cmd;
+		virtual void Read(string) =0;
+		protected:
+		enum States {Running,Stepping,Next} state;
+		virtual void Describe() = 0;
+	};
+
 	struct TreeSource : private vector<string>
 	{
 		TreeSource() : blank("----") {}	
@@ -57,12 +77,23 @@ namespace TreeDisplay
 	};
 
 	template<typename KT>
-		struct TreeCanvas : Canvas, Sentinel
+		struct Trapper : Trap
+	{
+		Trapper(const string _trapname,ostream& _tout,bool& _stop,bool& _movement) : Trap(_trapname,_tout,_stop,_movement) {}
+		void trap(const CurrentActions,const KT&){}
+		private:
+		set<KT> InsertBreakPoints,EraseBreakPoints;
+		virtual void Read(string){} 
+	};
+
+	template<typename KT>
+		struct TreeCanvas : Canvas, Sentinel, Trapper<KT>
 	{
 		typedef TreeNode<KT> VT ;
-		TreeCanvas(TreeJournal::Journal& _journal,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+		TreeCanvas(TreeJournal::Journal& _journal,const string _trapname,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: journal(_journal), tout(_tout), window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
+				Trapper<KT>(_trapname,_tout,stop,movement),
 				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) , ignorestop(_ignorestop), reported(false)
 		{ 
 			msgbuffer.reset(new stringstream);
@@ -113,6 +144,7 @@ namespace TreeDisplay
 			return false;
 		}
 		private:
+		virtual void Describe() { TreeIntegrity::Describe<KT>(root,tout); }
 		auto_ptr<stringstream> msgbuffer;
 		void UpdateTree();
 		void Deletions();
@@ -125,6 +157,7 @@ namespace TreeDisplay
 		Trunk* root,*removal;
 		Invalid invalid;
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
+		CurrentActions CurrentAction;
 		TreeSource treesource;
 		void traverse(Trunk& n)
 		{
@@ -150,59 +183,78 @@ namespace TreeDisplay
 
 		virtual Trunk& operator<<(const Trunk& a) 
 		{
+			stringstream ssmsg; ssmsg;
 			Trunk& n(const_cast<Trunk&>(a));
-			if (n.isnil()) {(*msgbuffer.get())<<"NIL "; return *this;}
-			Bst<KT,VT>& bst(static_cast<Bst<KT,VT>&>(n));
-			const KT& key(bst);
-			(*msgbuffer.get())<<key<<" ";
+			if (n.isnil()) 
+			{
+				(*msgbuffer.get())<<"NIL "; 
+				ssmsg<<"NIL ";
+			} else {
+				Bst<KT,VT>& bst(static_cast<Bst<KT,VT>&>(n));
+				const KT& key(bst);
+				(*msgbuffer.get())<<key<<" ";
+				ssmsg<<key<<" ";
+				trap(CurrentAction,key);
+			}
+			this->stepper(ssmsg.str().c_str());
 			return *this;
 		}
 
 		virtual Trunk& operator<<(const string& a)
 		{
 			(*msgbuffer.get())<<a<<" ";
+			this->stepper("Message");
 			return *this;
 		}
 
 		virtual Trunk& operator<<(const int a)
 		{
 			(*msgbuffer.get())<<"["<<a<<"] ";
+			this->stepper("Number");
 			return *this;
 		}
 
 		virtual Trunk& Insrt()
 		{
 			(*msgbuffer.get())<<"Insert:";
+			CurrentAction=Inserting;
+			this->stepper("Inserting");
 			return *this;
 		}
 
 		virtual Trunk& Erse()
 		{
 			(*msgbuffer.get())<<"Erase:";
+			CurrentAction=Erasing;
+			this->stepper("Erasing");
 			return *this;
 		}
 
 		virtual Trunk& Rotlft()
 		{
 			(*msgbuffer.get())<<"<< ";
+			this->stepper("RotateLeft");
 			return *this;
 		}
 
 		virtual Trunk& Rotrgt()
 		{
 			(*msgbuffer.get())<<">> ";
+			this->stepper("RotateRight");
 			return *this;
 		}
 
 		virtual Trunk& DblRedFix()
 		{
 			(*msgbuffer.get())<<"* ";
+			this->stepper("Kludge");
 			return *this;
 		}
 
 		virtual Trunk& Trnsp()
 		{
 			(*msgbuffer.get())<<"<> ";
+			this->stepper("Transplant");
 			return *this;
 		}
 
@@ -219,7 +271,8 @@ namespace TreeDisplay
 
 		virtual Trunk& Begin()
 		{
-			if (!(*msgbuffer.get()).str().empty()) tout<<(*msgbuffer.get()).str()<<endl;tout.flush();
+			if (!(*msgbuffer.get()).str().empty()) tout<<"Last actions:"<<endl<<(*msgbuffer.get()).str()<<endl;tout.flush();
+			this->stepper("Begin");
 			msgbuffer.reset(new stringstream);
 			return *this;
 		}
@@ -230,8 +283,8 @@ namespace TreeDisplay
 		struct RbMapCanvas : TreeCanvas<KT>, TreeIntegrity::IntegrityAdvisor
 	{
 		typedef TreeNode<KT> VT ;
-		RbMapCanvas(TreeJournal::Journal& _journal,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: TreeCanvas<KT>(_journal,_tout,_ignorestop,_display,_window,_gc,_ScreenWidth,_ScreenHeight),tout(_tout) {}
+		RbMapCanvas(TreeJournal::Journal& _journal,const string _trapname,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: TreeCanvas<KT>(_journal,_trapname,_tout,_ignorestop,_display,_window,_gc,_ScreenWidth,_ScreenHeight),tout(_tout) {}
 		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
 		{ 
 			return new RbMap<KT,VT>(static_cast<Sentinel&>(*this),key,treenode); 

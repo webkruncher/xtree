@@ -223,22 +223,22 @@ TreeJournal::Journal* OpenJournal(Utilities::CmdLine& cmdline)
 	return J;
 }
 
-Canvas* CreateCanvas(Utilities::CmdLine& cmdline,TreeJournal::Journal& journal,ostream& out,const bool IgnoreStop,Display* display,Window& window,GC& gc,const int width, const int height)
+Canvas* CreateCanvas(Utilities::CmdLine& cmdline,const string trapname,TreeJournal::Journal& journal,ostream& out,const bool IgnoreStop,Display* display,Window& window,GC& gc,const int width, const int height)
 {
 	if (cmdline.find("-int")!=cmdline.end())
 	{
-		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<int>(journal,out,IgnoreStop,display,window,gc,width, height);
-		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<int>(journal,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<int>(journal,trapname,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<int>(journal,trapname,out,IgnoreStop,display,window,gc,width, height);
 	}
 	if (cmdline.find("-double")!=cmdline.end())
 	{
-		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<double>(journal,out,IgnoreStop,display,window,gc,width, height);
-		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<double>(journal,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<double>(journal,trapname,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<double>(journal,trapname,out,IgnoreStop,display,window,gc,width, height);
 	}
 	if (cmdline.find("-string")!=cmdline.end())
 	{
-		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<string>(journal,out,IgnoreStop,display,window,gc,width, height);
-		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<string>(journal,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-redblack")!=cmdline.end()) return new RbMapCanvas<string>(journal,trapname,out,IgnoreStop,display,window,gc,width, height);
+		if (cmdline.find("-bst")!=cmdline.end()) return new TreeCanvas<string>(journal,trapname,out,IgnoreStop,display,window,gc,width, height);
 	}
 	throw string("What type of tree do you want to run?  Options are currently -bst and -redblack, and specify a key type as -int, -double or -string");
 }
@@ -252,6 +252,8 @@ int main(int argc,char** argv)
 	try
 	{
 		Utilities::CmdLine cmdline(argc,argv,"trees");
+
+		string trapname=cmdline["-trap"];
 		
 		KeyMap keys;
 		XSizeHints displayarea;
@@ -327,7 +329,7 @@ int main(int argc,char** argv)
 		}
 		journal.reset(OpenJournal(cmdline));
 		auto_ptr<Canvas> pcanvas;
-		pcanvas.reset(CreateCanvas(cmdline,*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height));
+		pcanvas.reset(CreateCanvas(cmdline,trapname,*journal.get(),out,IgnoreStop,display,window,gc,displayarea.width, displayarea.height));
 		Canvas& canvas(*pcanvas.get());
 		Program program(screen,display,window,gc,NULL,canvas,keys,displayarea.width,displayarea.height);
 		program(argc,argv);

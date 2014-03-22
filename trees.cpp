@@ -31,8 +31,64 @@ using namespace TreeObjects;
 #include <trees.h>
 using namespace TreeDisplay;
 #include <math.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define MOST 300
+
+namespace TreeDisplay
+{
+	void Trap::Load()
+	{
+		if (loaded) return;
+		loaded=true;
+		if (fname.empty()) return;
+		struct stat sb;
+		if (stat(fname.c_str(),&sb)) return;
+		ifstream in(fname.c_str());
+		if (in.fail()) return;
+		while (!in.eof()) { string line; getline(in,line); if (!line.empty()) Read(line); }
+	}
+
+	template <>
+		void Trapper<string>::Read(string line)
+	{
+		if (line.size()<2) return;
+		if (line[0]=='i') { line.erase(0,2); InsertBreakPoints.insert(line); }
+		if (line[0]=='e') { line.erase(0,2); EraseBreakPoints.insert(line); }
+	}
+
+	template <>
+		void Trapper<string>::trap(const CurrentActions action,const string& key)
+	{
+		Load();
+		if (state==Next) return;
+		if (action==Inserting)	if (InsertBreakPoints.find(key)!=InsertBreakPoints.end()) state=Stepping;
+		if (action==Erasing)		if (EraseBreakPoints.find(key)!=EraseBreakPoints.end()) state=Stepping;
+	}
+
+	void Trap::stepper(string msg)
+	{
+		if (state==Running) return;
+		if ((state==Next) and (msg!="Begin") and (!msg.empty()) ) return;
+		if ((state==Next) and (stop)) 
+		{
+			if (!movement) { stop=false;}
+			else {tout<<"-"; tout.flush(); return;}
+		}
+		if (msg.empty()) { return; }
+		tout<<msg<<endl; 
+		Describe(); tout<<">";
+		string check;
+		getline(cin,check); if (check=="") return;
+		cmd=check;
+		if ((cmd=="r") or (cmd=="run")) state=Running;
+		if ((cmd=="n") or (cmd=="next")) {state=Next; stop=true;}
+		if ((cmd=="s") or (cmd=="step")) state=Stepping;
+	}
+
+} // TreeDisplay
 
 #define BREAKPOINT asm ("int $0X03") ;
 namespace TreeObjects
@@ -171,7 +227,10 @@ namespace TreeDisplay
 							const KT& newkey(nk);
 							root->SetParent(this);
 						}
-					} else root=NULL;
+					} else {
+						root=NULL;
+						tout<<"The tree is now empty"<<endl;
+					}
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
 			} 
@@ -250,7 +309,7 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
-			
+			this->stepper("");
 			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
 			updateloop++;
 			if (!ignorestop) 
