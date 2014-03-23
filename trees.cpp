@@ -251,6 +251,7 @@ namespace TreeDisplay
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
 				Trunk* newroot(rr.erase(root,removal));
 				removal=NULL;
+				if (journal==ios_base::in)  removing=false;
 				if (newroot!=root) 
 				{
 					if (newroot and !newroot->isnil())
@@ -276,6 +277,7 @@ namespace TreeDisplay
 		void TreeCanvas<KT>::Additions()
 	{
 			if (removal) return;
+			if ( (journal==ios_base::in)  and (removing) ) return;
 			if ((!waitfor) or (updateloop>waitfor) )
 				if ((!movement) and (!stop))
 			{
@@ -299,6 +301,7 @@ namespace TreeDisplay
 				pair<bool,KT> next((ReadingJournal)?entry:Next(MOST));
 				if (ReadingJournal)
 				{
+					if (next.first) tout<<"Add:"<<next.second<<endl; else tout<<"Delete:"<<next.second<<endl;
 					if (!next.first) {removing=true; next.first=true;}
 					if (removing) 
 					{
