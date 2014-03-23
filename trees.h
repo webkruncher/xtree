@@ -279,7 +279,7 @@ namespace TreeDisplay
 		{
 			if (!Msg.str().empty()) 
 			{
-				stringstream sso; sso<<"Done:"<<endl<<Msg.str()<<endl;
+				stringstream sso; sso<<endl<<Msg.str()<<"done."<<endl;
 				tout<<deblank(sso.str());
 				tout.flush();
 			}
