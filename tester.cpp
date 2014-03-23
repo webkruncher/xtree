@@ -107,56 +107,48 @@ struct Advisor : TreeIntegrity::IntegrityAdvisor
 	{
 		RbSetBase<long>& rb(static_cast<RbSetBase<long>&>(node));
 		const long& key(rb);
-		//cerr<<key<<" "<<name<<":"<<value<<endl;
+		cerr<<key<<" "<<name<<":"<<value<<endl;
 	} 
 } Violations;
-
-template <typename KT>
-	bool IntegrityCheck(TreeObjects::Trunk* root,std::set<KT>& used)
-{
-	if (!TreeIntegrity::BstIntegrity<KT>(cout,root,used)) return false;
-	if (!TreeIntegrity::RedBlackIntegrity<KT>(cout,root,Violations)) return false;
-	return true;
-}
 
 template <typename T>
 	bool Check(T& items,const long* numbers,const long size) 
 { 
 	using namespace std;
-	//cout<<"Checking "<<dec<<size<<" numbers"<<endl;
+	cout<<"Checking "<<dec<<size<<" numbers"<<endl;
 	set<long> checkitems;
-	//cout<<"Inserting "<<dec<<size<<" numbers"<<endl;
+	cout<<"Inserting "<<dec<<size<<" numbers"<<endl;
 	for (long j=0;j<size;j++) 
 	{
 			Insert(items,numbers[j]);
 			Insert(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
-	//cout<<"Erasing "<<dec<<(size/2)<<" numbers"<<endl;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) {cout<<"Red black violations after first inserts"<<endl; return false;}
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) {cout<<"Bst violations after first inserts"<<endl; return false;}
+	cout<<"Erasing "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=0;j<size/2;j++) 
 	{
 		Erase(items,numbers[j]);
 		Erase(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
-	//cout<<"Inserting "<<dec<<(size/2)<<" numbers"<<endl;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) {cout<<"Red black violations after first deletes"<<endl; return false;}
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) {cout<<"Bst violations after first deletes"<<endl; return false;}
+	cout<<"Inserting "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=size/2;j>=0;j--) 
 	{
 		Insert(items,numbers[j]);
 		Insert(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
-	//cout<<"Erasing "<<dec<<(size)<<" numbers"<<endl;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) {cout<<"Red black violations after second inserts"<<endl; return false;}
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) {cout<<"Bst violations after second inserts"<<endl; return false;}
+	cout<<"Erasing "<<dec<<(size)<<" numbers"<<endl;
 	for (long j=0;j<size;j++) 
 	{
 		Erase(items,numbers[j]);
 		Erase(checkitems,numbers[j]);
 	}
-	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) return false;
-	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) return false;
+	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) {cout<<"Red black violations after second deletes"<<endl; return false;}
+	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) {cout<<"Bst violations after second deletes"<<endl; return false;}
 	return true;
 }
 

@@ -1,8 +1,1052 @@
-Starting tests at Sun Mar 23 12:43:54 EDT 2014
+Starting tests at Sun Mar 23 16:49:01 EDT 2014
 
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
 Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
 Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
 Integrity check failed
-Test failed
-Test failed
-Test failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 10000 numbers
+Inserting 10000 numbers
+Erasing 5000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 10,000 random generated numbers, average times after 20 iterations:
+          STL:     0.645 seconds
+  TreeObjects:     0.831 seconds
+The std::set was 22.383% faster
+
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 20000 numbers
+Inserting 20000 numbers
+Erasing 10000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 20,000 random generated numbers, average times after 20 iterations:
+          STL:     0.813 seconds
+  TreeObjects:     1.246 seconds
+The std::set was 34.737% faster
+
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 30000 numbers
+Inserting 30000 numbers
+Erasing 15000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 30,000 random generated numbers, average times after 20 iterations:
+          STL:     1.042 seconds
+  TreeObjects:     1.849 seconds
+The std::set was 43.609% faster
+
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 40000 numbers
+Inserting 40000 numbers
+Erasing 20000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 40,000 random generated numbers, average times after 20 iterations:
+          STL:     1.505 seconds
+  TreeObjects:     2.336 seconds
+The std::set was 35.585% faster
+
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 50000 numbers
+Inserting 50000 numbers
+Erasing 25000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 50,000 random generated numbers, average times after 20 iterations:
+          STL:     1.663 seconds
+  TreeObjects:     2.752 seconds
+The std::set was 39.568% faster
+
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 60000 numbers
+Inserting 60000 numbers
+Erasing 30000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 60,000 random generated numbers, average times after 20 iterations:
+          STL:     1.952 seconds
+  TreeObjects:     3.219 seconds
+The std::set was 39.359% faster
+
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 70000 numbers
+Inserting 70000 numbers
+Erasing 35000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 70,000 random generated numbers, average times after 20 iterations:
+          STL:     2.262 seconds
+  TreeObjects:     3.324 seconds
+The std::set was 31.960% faster
+
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 80000 numbers
+Inserting 80000 numbers
+Erasing 40000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 80,000 random generated numbers, average times after 20 iterations:
+          STL:     2.545 seconds
+  TreeObjects:     3.731 seconds
+The std::set was 31.787% faster
+
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 90000 numbers
+Inserting 90000 numbers
+Erasing 45000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 90,000 random generated numbers, average times after 20 iterations:
+          STL:     2.735 seconds
+  TreeObjects:     4.175 seconds
+The std::set was 34.485% faster
+
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Checking 100000 numbers
+Inserting 100000 numbers
+Erasing 50000 numbers
+Red black violations after first deletes
+Integrity check failed
+Testing with 100,000 random generated numbers, average times after 20 iterations:
+          STL:     2.977 seconds
+  TreeObjects:     4.167 seconds
+The std::set was 28.560% faster
+

@@ -244,13 +244,6 @@ namespace TreeDisplay
 			return *this;
 		}
 
-		virtual Trunk& DblRedFix()
-		{
-			Msg<<"! ";
-			this->stepper("Kludge");
-			return *this;
-		}
-
 		virtual Trunk& Trnsp()
 		{
 			Msg<<"<> ";

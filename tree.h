@@ -75,7 +75,6 @@ namespace TreeObjects
 		virtual Trunk& Rotlft(){return *this;}
 		virtual Trunk& Rotrgt(){return *this;}
 		virtual Trunk& Trnsp(){return *this;}
-		virtual Trunk& DblRedFix(){return *this;}
 		virtual Trunk& operator()(char*,int){return *this;}
 	};
 
@@ -89,10 +88,9 @@ namespace TreeObjects
 	inline Trunk& rotlft(Trunk& t)											{return t.Rotlft();}
 	inline Trunk& rotrgt(Trunk& t)											{return t.Rotrgt();}
 	inline Trunk& trnsp(Trunk& t)												{return t.Trnsp();}
-	inline Trunk& dblredfix(Trunk& t)										{return t.DblRedFix();}
 	inline Trunk& operator<<(Trunk& t,Trunk& (*pf)(Trunk&) ){return (*pf)(t);}
 	#define Msg (*this->GetNil())
-	#define Trace Msg(__FILE__,__LINE__);
+	#define Trace Msg((char*)__FILE__,__LINE__);
 
 	struct TreeBase : Trunk
 	{
@@ -439,7 +437,7 @@ namespace TreeObjects
 	{
 		if (u and v) Msg<<(*u)<<trnsp<<(*v);
 		Trunk* ret(root);
-		if (root->isnul(u->Parent()))
+		if (u->Parent()->isnil())
 		{
 			Trace
 			ret=v;
@@ -484,7 +482,6 @@ namespace TreeObjects
 		if (isnul(root)) return NULL;
 		return root;
 	}
-
 
 	template <typename KT,typename VT>
 		struct Bst : public BstBase<KT>
@@ -706,7 +703,6 @@ namespace TreeObjects
 				root=me.transplant(root,pfound,Y);							// 17
 				Y->SetLeft(pfound->Left());											// 18
 				Y->Left()->SetParent(Y);												// 19
-				//if (color(pfound)==BLACK) black(Y); else red(Y);// 20
 				CopyColor(pfound,Y);														// 20
 			}
 		}
@@ -789,7 +785,6 @@ namespace TreeObjects
 		{
 			BstBase<KT>& b(static_cast<BstBase<KT>&>(*pfound));
 			return BstBase<KT>::remove(root,pfound);
-			//return Trunk::remove(root,pfound);
 		}
 		virtual Trunk* erase(Trunk* root,Trunk* found){return RbBase::erase(root,found);}
 		virtual operator Trunk& () {return *this;}
