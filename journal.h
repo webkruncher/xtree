@@ -154,6 +154,7 @@ namespace TreeJournal
 		}
 		char T;
 		public:
+		void clear() { deque<Paragraph<KT> >::clear(); }
 
 		operator const bool () const {return !this->empty();}
 		operator pair<bool,KT> ()

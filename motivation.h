@@ -30,24 +30,22 @@ namespace TreeDisplay
 {
 	struct Motion : private deque<pair<double,double> >
 	{
-		Motion(const double _x,const double _y) : x(_x),y(_y) {}
+		Motion(const double _x,const double _y) : x(_x),y(_y),ldist(0) {}
 		void operator()(double x,double y)
 		{
 			pair<double,double> now(x,y);;
 			if (now!=front()) push_front(now);
 		}
+
 		pair<double,double> next(double tx,double ty)
 		{
+			if  ((ldist<4) and (!empty()) )
+				{ x=back().first; y=back().second; pop_back(); } 
 
 			double distx(x-tx);
 			double disty(y-ty);
 			double direction(atan2(disty, distx));
 			double distance(sqrt( (distx * distx) + (disty * disty) ) );
-
-			if  ((distance<4) and (!empty()) )
-			{
-				x=back().first; y=back().second; pop_back();
-			} 
 
 			if (distance<1) return make_pair<double,double>(0,0);
 
@@ -56,7 +54,7 @@ namespace TreeDisplay
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);
 		}
-		private: double x,y; 
+		private: double x,y,ldist; 
 	};
 } //namespace TreeDisplay
 #endif //MOTIVATION_H

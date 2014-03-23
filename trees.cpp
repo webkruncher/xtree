@@ -229,8 +229,8 @@ namespace TreeDisplay
 						}
 					} else {
 						root=NULL;
-						tout<<"The tree is now empty"<<endl;
-						if (journal==ios_base::out) journal.clear();
+						tout<<"The tree is now empty, clearing journal entries."<<endl;
+						if (journal==ios_base::out) entry.clear();
 					}
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
@@ -254,7 +254,9 @@ namespace TreeDisplay
 					ReadingJournal=entry;
 					if (!ReadingJournal) 
 					{
-						//if (!CheckIntegrity(root)) stop=true;
+						tout<<"Journal is finished"<<endl;
+						CheckIntegrity(root);
+						stop=true;
 						return; // Journal is finished
 					}
 				}
