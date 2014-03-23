@@ -89,6 +89,12 @@ namespace TreeDisplay
 	template<typename KT>
 		struct TreeCanvas : Canvas, Sentinel, Trapper<KT>
 	{
+		stringstream& messg()
+		{ 
+			if (!msgbuffer.get()) msgbuffer.reset(new stringstream); 
+			return (*msgbuffer.get());
+		}
+		#define Msg messg()
 		typedef TreeNode<KT> VT ;
 		TreeCanvas(TreeJournal::Journal& _journal,const string _trapname,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: journal(_journal), tout(_tout), window(_window), 
@@ -96,7 +102,6 @@ namespace TreeDisplay
 				Trapper<KT>(_trapname,_tout,stop,movement),
 				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) , ignorestop(_ignorestop), reported(false)
 		{ 
-			msgbuffer.reset(new stringstream);
 			if (journal==ios_base::in) journal>>entry; 
 		}
 		virtual ~TreeCanvas() 
@@ -138,9 +143,7 @@ namespace TreeDisplay
 				TreeIntegrity::PrintInOrder<KT,VT>(tout,root);
 				tout<<endl;
 			}
-			if (!(*msgbuffer.get()).str().empty()) tout<<(*msgbuffer.get()).str()<<endl;tout.flush();
-			msgbuffer.reset(new stringstream);
-			tout.flush();
+			tout<<Msg.str()<<endl; tout.flush(); msgbuffer.reset(NULL);
 			return false;
 		}
 		private:
@@ -187,12 +190,12 @@ namespace TreeDisplay
 			Trunk& n(const_cast<Trunk&>(a));
 			if (n.isnil()) 
 			{
-				(*msgbuffer.get())<<"NIL "; 
+				Msg<<"NIL ";
 				ssmsg<<"NIL ";
 			} else {
 				Bst<KT,VT>& bst(static_cast<Bst<KT,VT>&>(n));
 				const KT& key(bst);
-				(*msgbuffer.get())<<key<<" ";
+				Msg<<key<<" ";
 				ssmsg<<key<<" ";
 				trap(CurrentAction,key);
 			}
@@ -202,21 +205,21 @@ namespace TreeDisplay
 
 		virtual Trunk& operator<<(const string& a)
 		{
-			(*msgbuffer.get())<<a<<" ";
+			Msg<<a<<" ";
 			this->stepper("Message");
 			return *this;
 		}
 
 		virtual Trunk& operator<<(const int a)
 		{
-			(*msgbuffer.get())<<"["<<a<<"] ";
+			Msg<<"["<<a<<"]";
 			this->stepper("Number");
 			return *this;
 		}
 
 		virtual Trunk& Insrt()
 		{
-			(*msgbuffer.get())<<"Insert:";
+			Msg<<"Insert:";
 			CurrentAction=Inserting;
 			this->stepper("Inserting");
 			return *this;
@@ -224,7 +227,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Erse()
 		{
-			(*msgbuffer.get())<<"Erase:";
+			Msg<<"Erase:";
 			CurrentAction=Erasing;
 			this->stepper("Erasing");
 			return *this;
@@ -232,28 +235,28 @@ namespace TreeDisplay
 
 		virtual Trunk& Rotlft()
 		{
-			(*msgbuffer.get())<<"<< ";
+			Msg<<"<< ";
 			this->stepper("RotateLeft");
 			return *this;
 		}
 
 		virtual Trunk& Rotrgt()
 		{
-			(*msgbuffer.get())<<">> ";
+			Msg<<">> ";
 			this->stepper("RotateRight");
 			return *this;
 		}
 
 		virtual Trunk& DblRedFix()
 		{
-			(*msgbuffer.get())<<"* ";
+			Msg<<"! ";
 			this->stepper("Kludge");
 			return *this;
 		}
 
 		virtual Trunk& Trnsp()
 		{
-			(*msgbuffer.get())<<"<> ";
+			Msg<<"<> ";
 			this->stepper("Transplant");
 			return *this;
 		}
@@ -264,16 +267,16 @@ namespace TreeDisplay
 			struct stat sb;
 			if (!stat("tree.h",&sb)==0) return *this;
 			string file(_file);
-			if (file=="./tree.h") (*msgbuffer.get())<<endl<<line<<treesource(line)<<endl;
-			else (*msgbuffer.get())<<file<<line<<"; ";
+			if (file=="./tree.h") Msg<<endl<<line<<treesource(line)<<endl;
+			else Msg<<file<<line<<"; ";
 			return *this;
 		}
 
 		virtual Trunk& Begin()
 		{
-			if (!(*msgbuffer.get()).str().empty()) tout<<"Last actions:"<<endl<<(*msgbuffer.get()).str()<<endl;tout.flush();
+			if (!Msg.str().empty()) tout<<"Last actions:"<<endl<<Msg.str()<<endl;tout.flush();
 			this->stepper("Begin");
-			msgbuffer.reset(new stringstream);
+			msgbuffer.reset(NULL);
 			return *this;
 		}
 	};

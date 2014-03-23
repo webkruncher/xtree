@@ -155,12 +155,7 @@ namespace TreeJournal
 		char T;
 		public:
 		void clear() { deque<Paragraph<KT> >::clear(); }
-
-		operator const bool () const 
-		{
-cout<<"There are "<<this->size()<<" paragraphs left"<<endl;
-			return !this->empty();
-		}
+		operator const bool () const { return !this->empty(); }
 		operator pair<bool,KT> ()
 		{
 			if (this->empty()) throw string("Empty journal");
