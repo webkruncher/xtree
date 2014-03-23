@@ -69,6 +69,7 @@ namespace TreeObjects
 		virtual Trunk& operator<<(const char* a){return *this;}
 		virtual Trunk& operator<<(const int a){return *this;}
 		virtual Trunk& Begin(){return *this;}
+		virtual Trunk& Finish(){return *this;}
 		virtual Trunk& Insrt(){return *this;}
 		virtual Trunk& Erse(){return *this;}
 		virtual Trunk& Rotlft(){return *this;}
@@ -82,6 +83,7 @@ namespace TreeObjects
 	inline Trunk& operator<<(Trunk& t,const char* a)		{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,int a)						{return t.operator<<(a);}
 	inline Trunk& begin(Trunk& t)												{return t.Begin();}
+	inline Trunk& finish(Trunk& t)											{return t.Finish();}
 	inline Trunk& insrt(Trunk& t)												{return t.Insrt();}
 	inline Trunk& erse(Trunk& t)												{return t.Erse();}
 	inline Trunk& rotlft(Trunk& t)											{return t.Rotlft();}
@@ -308,6 +310,7 @@ namespace TreeObjects
 				if (!newroot->isnul(r)) Update(r,found); 
 			}
 			delete found;
+			Msg<<finish;
 			return newroot;
 		}
 
@@ -492,10 +495,7 @@ namespace TreeObjects
 		protected:
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { }
 		VT data;	
-		virtual Trunk* remove(Trunk* root,Trunk* pfound) 
-		{ 
-			return TreeBase::remove(root,pfound); 
-		}
+		virtual Trunk* remove(Trunk* root,Trunk* pfound) { return TreeBase::remove(root,pfound); }
 	};
 
 
@@ -504,6 +504,7 @@ namespace TreeObjects
 		enum COLOR {RED=10,BLACK=20} ;
 		const COLOR Red() const {return RED;}
 		const COLOR Black() const {return BLACK;}
+		void CopyColor(Trunk* that,Trunk* target) { if (color(that)==BLACK) black(target); else red(target);}
 		virtual Trunk* red(Trunk* n) = 0;
 		virtual Trunk* black(Trunk* n) = 0;
 		virtual const bool isleaf(Trunk* node) const = 0;
@@ -527,9 +528,11 @@ namespace TreeObjects
 				if (node->isnil()) {node=node->Parent(); continue;}
 				if ( node == node->Parent()->Left() )																						// 2
 				{
+					Trace
 					Trunk* other(node->Parent()->Right());																				// 3
 					if ( color(other) == RED )																										// 4
 					{
+						Trace
 						black(other);																																// 5
 						red(node->Parent());																												// 6
 						root=this->RotateLeft(root,node->Parent());																	// 7
@@ -537,17 +540,21 @@ namespace TreeObjects
 					}
 					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )				// 9
 					{
+						Trace
 						red(other);																																	// 10
 						node=node->Parent();																												// 11
 					} else {
+						Trace
 						if (color(other->Right()) == BLACK)																					// 12
 						{
+							Trace
 							black(other->Left());																											// 13
 							red(other);																																// 14
 							root=this->RotateRight(root,other);																				// 15
 							other=node->Parent()->Right();																						// 16
 						}
-						if (color(node->Parent())==BLACK) black(other); else red(other);						// 17
+						Trace
+						CopyColor(node->Parent(),other);																						// 17
 						black(node->Parent());																											// 18
 						black(other->Right());																											// 19
 						root=this->RotateLeft(root,node->Parent());																	// 20
@@ -556,9 +563,11 @@ namespace TreeObjects
 				} 
 				if ( node == node->Parent()->Right() )																					// 2
 				{
+					Trace
 					Trunk* other(node->Parent()->Left());																					// 3
 					if ( color(other) == RED )																										// 4
 					{
+						Trace
 						black(other);																																// 5
 						red(node->Parent());																												// 6
 						root=this->RotateRight(root,node->Parent());																// 7
@@ -566,17 +575,21 @@ namespace TreeObjects
 					}
 					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )				// 9
 					{
+						Trace
 						red(other);																																	// 10
 						node=node->Parent();																												// 11
 					} else {
+						Trace
 						if (color(other->Left()) == BLACK)																					// 12
 						{
+							Trace
 							black(other->Right());																										// 13
 							red(other);																																// 14
 							root=this->RotateLeft(root,other);																				// 15
 							other=node->Parent()->Left();																							// 16
 						}
-						if (color(node->Parent())==BLACK) black(other); else red(other);						// 17
+						Trace
+						CopyColor(node->Parent(),other);																						// 17
 						black(node->Parent());																											// 18
 						black(other->Left());																												// 19
 						root=this->RotateRight(root,node->Parent());																// 20
@@ -584,6 +597,7 @@ namespace TreeObjects
 					}
 				} 
 			}
+			Trace
 			black(node);																																			// 23
 			return (root);
 		}
@@ -650,6 +664,7 @@ namespace TreeObjects
 			}
 			found->SetLeft(NULL); found->SetRight(NULL);
 			delete found;
+			Msg<<finish;
 			return newroot;
 		}
 		COLOR clr;
@@ -719,7 +734,9 @@ namespace TreeObjects
 			RbMapBase<KT,VT>& nd(static_cast<RbMapBase<KT,VT>&>(*node));
 			nd.SetLeft(root->GetNil());
 			nd.SetRight(root->GetNil());
-			return this->RedAndBlackInsert(root,node);
+			Trunk* ret(this->RedAndBlackInsert(root,node));
+			Msg<<finish;
+			return ret;
 		}
 		
 		virtual Trunk* red(Trunk* n) = 0;

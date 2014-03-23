@@ -271,13 +271,19 @@ namespace TreeDisplay
 
 		virtual Trunk& Begin()
 		{
+			this->stepper("Begin");
+			msgbuffer.reset(NULL);
+			return *this;
+		}
+		virtual Trunk& Finish()
+		{
 			if (!Msg.str().empty()) 
 			{
-				stringstream sso; sso<<"Last actions:"<<endl<<Msg.str()<<endl;
+				stringstream sso; sso<<"Done:"<<endl<<Msg.str()<<endl;
 				tout<<deblank(sso.str());
 				tout.flush();
 			}
-			this->stepper("Begin");
+			this->stepper("Finish");
 			msgbuffer.reset(NULL);
 			return *this;
 		}
