@@ -57,25 +57,6 @@ namespace TreeDisplay
 		virtual void Describe() = 0;
 	};
 
-	struct TreeSource : private vector<string>
-	{
-		TreeSource() : blank("----") {}	
-		const string& operator()(int line)
-		{
-			if (empty()) Load();
-			if (line>size()) return blank;
-			return (*this)[line];
-		}
-		private:
-		void Load()
-		{
-			ifstream in("tree.h");
-			if (in.fail()) return;
-			while (!in.eof()) {string line; getline(in,line); push_back(line);}
-		}
-		const string blank;
-	};
-
 	template<typename KT>
 		struct Trapper : Trap
 	{
@@ -84,6 +65,21 @@ namespace TreeDisplay
 		private:
 		set<KT> InsertBreakPoints,EraseBreakPoints;
 		virtual void Read(string){} 
+	};
+
+	struct TreeSource : private vector<string>
+	{
+		TreeSource() : blank("----") {}	
+		const string& operator()(int line);
+		private:
+		void Load()
+		{
+			ifstream in("tree.h");
+			if (in.fail()) return;
+			while (!in.eof()) {string line; getline(in,line); push_back(line);}
+		}
+		const string blank;
+		string txt;
 	};
 
 	template<typename KT>

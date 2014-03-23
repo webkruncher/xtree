@@ -88,6 +88,27 @@ namespace TreeDisplay
 		if ((cmd=="s") or (cmd=="step")) state=Stepping;
 	}
 
+	const string& TreeSource::operator()(int line)
+	{
+		if (empty()) Load();
+		if (line>size()) return blank;
+		txt=(*this)[line];
+		size_t ds(txt.find("//"));
+		if (ds==string::npos) return txt;
+		ds+=2;
+		string comment; comment.assign(txt,ds,txt.size()-ds);
+		ds-=2;
+		txt.erase(ds,txt.size()-ds);
+		size_t eol(txt.find_last_not_of(" \n"));
+		if (eol!=string::npos) txt.erase(eol,txt.size()-eol);
+		size_t son(comment.find_first_of("0123456789"));
+		if ( (son!=string::npos) and (son!=0) ) comment.erase(0,son);
+		size_t eon(comment.find_first_not_of("0123456789"));
+		if (eon!=string::npos) comment.erase(eon,comment.size()-eon);
+		stringstream ssc; ssc<<"("<<comment<<") ";
+		txt.insert(0,ssc.str().c_str());
+		return txt;
+	}
 } // TreeDisplay
 
 #define BREAKPOINT asm ("int $0X03") ;

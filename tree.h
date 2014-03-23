@@ -520,71 +520,71 @@ namespace TreeObjects
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
 			Trace
-			while ( (node!=root) and (color(node) == BLACK) ) 
+			while ( (node!=root) and (color(node) == BLACK) )																	// 1
 			{
 				Trace
 				if (!node) return black(root);
 				if (node->isnil()) {node=node->Parent(); continue;}
-				if ( node == node->Parent()->Left() ) 
+				if ( node == node->Parent()->Left() )																						// 2
 				{
-					Trunk* other(node->Parent()->Right());
-					if ( color(other) == RED ) 
+					Trunk* other(node->Parent()->Right());																				// 3
+					if ( color(other) == RED )																										// 4
 					{
-						black(other);
-						red(other->Parent());
-						root=this->RotateLeft(root,node->Parent());
-						other=node->Parent()->Right();
+						black(other);																																// 5
+						red(node->Parent());																												// 6
+						root=this->RotateLeft(root,node->Parent());																	// 7
+						other=node->Parent()->Right();																							// 8
 					}
-					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )
+					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )				// 9
 					{
-						red(other);
-						node=node->Parent();
+						red(other);																																	// 10
+						node=node->Parent();																												// 11
 					} else {
-						if (color(other->Right()) == BLACK) 
+						if (color(other->Right()) == BLACK)																					// 12
 						{
-							black(other->Left());
-							red(other);
-							root=this->RotateRight(root,other);
-							other=node->Parent()->Right();
+							black(other->Left());																											// 13
+							red(other);																																// 14
+							root=this->RotateRight(root,other);																				// 15
+							other=node->Parent()->Right();																						// 16
 						}
-						if (color(node->Parent())==BLACK) black(other); else red(other);
-						black(node->Parent());
-						black(other->Right());
-						root=this->RotateLeft(root,node->Parent());
-						node=root;
+						if (color(node->Parent())==BLACK) black(other); else red(other);						// 17
+						black(node->Parent());																											// 18
+						black(other->Right());																											// 19
+						root=this->RotateLeft(root,node->Parent());																	// 20
+						node=root;																																	// 21
 					}
 				} 
-				if ( node == node->Parent()->Right() ) 
+				if ( node == node->Parent()->Right() )																					// 2
 				{
-					Trunk* other(node->Parent()->Left());
-					if ( color(other) == RED ) 
+					Trunk* other(node->Parent()->Left());																					// 3
+					if ( color(other) == RED )																										// 4
 					{
-						black(other);
-						red(other->Parent());
-						root=this->RotateRight(root,node->Parent());
-						other=node->Parent()->Left();
+						black(other);																																// 5
+						red(node->Parent());																												// 6
+						root=this->RotateRight(root,node->Parent());																// 7
+						other=node->Parent()->Left();																								// 8
 					}
-					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )
+					if ( (color(other->Left())==BLACK) and (color(other->Right())==BLACK) )				// 9
 					{
-						red(other);
-						node=node->Parent();
+						red(other);																																	// 10
+						node=node->Parent();																												// 11
 					} else {
-						if (color(other->Left()) == BLACK) 
+						if (color(other->Left()) == BLACK)																					// 12
 						{
-							black(other->Right());
-							red(other);
-							root=this->RotateLeft(root,other);
-							other=node->Parent()->Left();
+							black(other->Right());																										// 13
+							red(other);																																// 14
+							root=this->RotateLeft(root,other);																				// 15
+							other=node->Parent()->Left();																							// 16
 						}
-						if (color(node->Parent())==BLACK) black(other); else red(other);
-						black(node->Parent());
-						black(other->Left());
-						root=this->RotateRight(root,node->Parent());
-						node=root;
+						if (color(node->Parent())==BLACK) black(other); else red(other);						// 17
+						black(node->Parent());																											// 18
+						black(other->Left());																												// 19
+						root=this->RotateRight(root,node->Parent());																// 20
+						node=root;																																	// 21
 					}
 				} 
 			}
-			black(node);
+			black(node);																																			// 23
 			return (root);
 		}
 
@@ -660,52 +660,42 @@ namespace TreeObjects
 		if (pfound) Msg<<erse<<(*pfound); 
 		Trace
 		Trunk& me(static_cast<Trunk&>(*this));
-		Trunk* Y(pfound);
+		Trunk* Y(pfound);																		// 1
 		Trunk* X(NULL);
-		char Ycolor(this->color(Y));
-		if (root->isnul(pfound->Left()))
+		char Ycolor(this->color(Y));												// 2
+		if (root->isnul(pfound->Left()))										// 3
 		{
 			Trace
-			if (!root->isnul(pfound->Right()))	
-			{
-				Trace
-				Y=(pfound->Right()->LeftMost());
-				Ycolor=(this->color(Y));
-			}
-			X=pfound->Right();
-			root=me.transplant(root,pfound,pfound->Right());
+			X=pfound->Right();																// 4
+			root=me.transplant(root,pfound,pfound->Right());	// 5
 		} else {
-			if (root->isnul(pfound->Right()))
+			if (root->isnul(pfound->Right()))									// 6
 			{
 				Trace
-				if (!root->isnul(pfound->Left())) 
-				{
-					Trace
-					Y=(pfound->Left()->RightMost());
-				} else Y=pfound->RightMost();
-				Ycolor=(this->color(Y));
-				X=pfound->Left();
-				root=me.transplant(root,pfound,pfound->Left());
+				X=pfound->Left();																// 7
+				root=me.transplant(root,pfound,pfound->Left());	// 8
 			} else {
 				Trace
-				Y=(pfound->Right()->LeftMost());
-				Ycolor=(this->color(Y));
-				X=Y->Right();
-				if (Y->Parent()!=pfound)
+				Y=(pfound->Right()->LeftMost());								// 9
+				Ycolor=(this->color(Y));												// 10
+				X=Y->Right();																		// 11
+				if (Y->Parent()==pfound)												// 12
 				{
 					Trace
-					root=me.transplant(root,Y,Y->Right());
-					Y->SetRight(pfound->Right());
-					Y->Right()->SetParent(Y);
+					X->SetParent(Y);															// 13
+				} else {
+					root=me.transplant(root,Y,Y->Right());				// 14
+					Y->SetRight(pfound->Right());									// 15
+					Y->Right()->SetParent(Y);											// 16
 				}
-				root=me.transplant(root,pfound,Y);
-				Y->SetLeft(pfound->Left());
-				Y->Left()->SetParent(Y);
-				if (color(pfound)==BLACK) black(Y); else red(Y);
+				root=me.transplant(root,pfound,Y);							// 17
+				Y->SetLeft(pfound->Left());											// 18
+				Y->Left()->SetParent(Y);												// 19
+				if (color(pfound)==BLACK) black(Y); else red(Y);// 20
 			}
 		}
-		//if (Ycolor==BLACK) 
-			if ((root) and (X)) return RedAndBlackDelete(root,X);
+		if (Ycolor==BLACK)																	// 21
+			if ((root) and (X)) return RedAndBlackDelete(root,X);//22
 		Trace
 		return root;
 	}
