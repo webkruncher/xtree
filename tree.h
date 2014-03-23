@@ -706,7 +706,8 @@ namespace TreeObjects
 				root=me.transplant(root,pfound,Y);							// 17
 				Y->SetLeft(pfound->Left());											// 18
 				Y->Left()->SetParent(Y);												// 19
-				if (color(pfound)==BLACK) black(Y); else red(Y);// 20
+				//if (color(pfound)==BLACK) black(Y); else red(Y);// 20
+				CopyColor(pfound,Y);														// 20
 			}
 		}
 		if (Ycolor==BLACK)																	// 21
