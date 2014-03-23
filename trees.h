@@ -38,6 +38,7 @@ struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>:
 namespace TreeDisplay
 {
 
+	string deblank(string);
 	enum CurrentActions {NoAction=100,Inserting,Erasing} ;
 
 	struct Trap
@@ -270,7 +271,12 @@ namespace TreeDisplay
 
 		virtual Trunk& Begin()
 		{
-			if (!Msg.str().empty()) tout<<"Last actions:"<<endl<<Msg.str()<<endl;tout.flush();
+			if (!Msg.str().empty()) 
+			{
+				stringstream sso; sso<<"Last actions:"<<endl<<Msg.str()<<endl;
+				tout<<deblank(sso.str());
+				tout.flush();
+			}
 			this->stepper("Begin");
 			msgbuffer.reset(NULL);
 			return *this;

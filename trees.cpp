@@ -109,6 +109,20 @@ namespace TreeDisplay
 		txt.insert(0,ssc.str().c_str());
 		return txt;
 	}
+
+	string deblank(string lines)
+	{
+		stringstream ss;
+		string ret;
+		ret=lines;
+		while (true)
+		{
+			size_t dbl(ret.find("\n\n"));
+			if (dbl==string::npos) break;
+			ret.erase(dbl,1);
+		}
+		return ret;
+	}
 } // TreeDisplay
 
 #define BREAKPOINT asm ("int $0X03") ;

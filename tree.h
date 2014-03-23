@@ -710,8 +710,9 @@ namespace TreeObjects
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
-			if (node) {Msg<<begin<<insrt<<(*node); Msg.operator<<((int)d);}
-			Trace
+			Msg<<begin;
+			//if (node) {Msg<<insrt<<(*node); Msg.operator<<((int)d);}
+			//Trace
 			root=Bst<KT,VT>::insert(root,node,d);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
