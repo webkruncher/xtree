@@ -295,6 +295,7 @@ namespace TreeObjects
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{	
+			Msg<<begin;
 			if (root->isnul(found)) return root;
 			if (found->isnil()) return root;
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
@@ -518,7 +519,6 @@ namespace TreeObjects
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
-			int n(0);
 			Trace
 			while ( (node!=root) and (color(node) == BLACK) ) 
 			{
@@ -653,13 +653,12 @@ namespace TreeObjects
 			return newroot;
 		}
 		COLOR clr;
-
-
 	};
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
 	{
 		if (pfound) Msg<<erse<<(*pfound); 
+		Trace
 		Trunk& me(static_cast<Trunk&>(*this));
 		Trunk* Y(pfound);
 		Trunk* X(NULL);
