@@ -56,16 +56,16 @@ namespace Utilities
 		return ret;
 	}
 
-void* ssup(void*) 
-{
-	while (true)
+	void* ssup(void*) 
 	{
-		runpipe("xset dpms force on");
-		runpipe("xset s off");
-		runpipe("xset s noblank");
-		sleep(60);
+		while (true)
+		{
+			runpipe("xset dpms force on");
+			runpipe("xset s off");
+			runpipe("xset s noblank");
+			sleep(60);
+		}
 	}
-}
 	inline void NoDpms() { pthread_t t; pthread_create(&t,0,ssup,NULL); }
 
 	inline void GetScreenSize(Display* display,int& width, int& height)
@@ -316,7 +316,7 @@ int main(int argc,char** argv)
 		XFillRectangle(display,window,gc, displayarea.x,displayarea.y, displayarea.width,displayarea.height);
 
 		if (cmdline.exists("-dont-stop")) IgnoreStop=true;
-		if (cmdline.exists("-no-dpms")) Utilities::NoDpms();
+		if (cmdline.exists("-no-dpms"))		Utilities::NoDpms();
 		ostream& out(*pout);
 
 		if (cmdline.exists("-root")) cmdline.erase("-root");

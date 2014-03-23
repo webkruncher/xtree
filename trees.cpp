@@ -230,6 +230,7 @@ namespace TreeDisplay
 					} else {
 						root=NULL;
 						tout<<"The tree is now empty"<<endl;
+						if (journal==ios_base::out) journal.clear();
 					}
 				}
 				if ((!root)	or (root->isnil())) { movement=false; removing=false; used.clear();stop=false; }
