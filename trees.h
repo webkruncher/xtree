@@ -193,12 +193,15 @@ namespace TreeDisplay
 			{
 				Msg<<"NIL ";
 				ssmsg<<"NIL ";
+				treexml.Key("NIL");
 			} else {
 				Bst<KT,VT>& bst(static_cast<Bst<KT,VT>&>(n));
 				const KT& key(bst);
 				Msg<<key<<" ";
 				ssmsg<<key<<" ";
 				trap(CurrentAction,key);
+				stringstream keyname; keyname<<key;
+				treexml.Key(keyname.str());
 			}
 			this->stepper(ssmsg.str().c_str());
 			return *this;
@@ -223,6 +226,7 @@ namespace TreeDisplay
 			Msg<<"Insert:";
 			CurrentAction=Inserting;
 			this->stepper("Inserting");
+			treexml.Insrt();
 			return *this;
 		}
 
@@ -231,6 +235,7 @@ namespace TreeDisplay
 			Msg<<"Erase:";
 			CurrentAction=Erasing;
 			this->stepper("Erasing");
+			treexml.Erse();
 			return *this;
 		}
 
@@ -252,6 +257,7 @@ namespace TreeDisplay
 		{
 			Msg<<"<> ";
 			this->stepper("Transplant");
+			treexml.Trnsp();
 			return *this;
 		}
 

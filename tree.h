@@ -194,7 +194,7 @@ namespace TreeObjects
 		if (this->isnul(node)) return root;
 		Trunk* other(node->Right());
 		if (this->isnul(other)) return root;
-		Msg<<(*node)<<rotlft<<(*other);
+		Msg<<rotlft<<(*node)<<(*other);
 		node->SetRight(other->Left());
 		if ( !isnul(other->Left()) ) other->Left()->SetParent(node);
 		other->SetParent(node->Parent());
@@ -220,7 +220,7 @@ namespace TreeObjects
 		if (this->isnul(node)) return root;
 		Trunk* other(node->Left());
 		if (this->isnul(other)) return root;
-		Msg<<(*node)<<rotrgt<<(*other);
+		Msg<<rotrgt<<(*node)<<(*other);
 		node->SetLeft(other->Right());
 		if ( !isnul(other->Right()) ) other->Right()->SetParent(node);
 		other->SetParent(node->Parent());
@@ -435,7 +435,7 @@ namespace TreeObjects
 
 	inline Trunk* TreeBase::transplant(Trunk* root,Trunk* u,Trunk* v)
 	{
-		if (u and v) Msg<<(*u)<<trnsp<<(*v);
+		if (u and v) Msg<<trnsp<<(*u)<<(*v);
 		Trunk* ret(root);
 		if (u->Parent()->isnil())
 		{
@@ -723,8 +723,8 @@ namespace TreeObjects
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
 			Msg<<begin;
-			//if (node) {Msg<<insrt<<(*node); Msg.operator<<((int)d);}
-			//Trace
+			if (node) {Msg<<insrt<<(*node); Msg.operator<<((int)d);}
+			Trace
 			root=Bst<KT,VT>::insert(root,node,d);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);

@@ -269,7 +269,6 @@ int main(int argc,char** argv)
 		Utilities::GetScreenSize(display,displayarea.width,displayarea.height);
 		displayarea.flags = PPosition | PSize;
 
-
 		XSetWindowAttributes attributes;
 		unsigned int Class(CopyFromParent);
 		int depth(CopyFromParent);

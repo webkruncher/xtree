@@ -83,12 +83,44 @@ namespace XmlTree
 		payload.Begin();	
 	}
 
+	void TreeXml::Insrt()
+	{
+		if (!xml) throw string("No xml");
+		Xml* xmltrunk(static_cast<Xml*>(xml));
+		Payload& payload(static_cast<Payload&>(*xmltrunk));
+		payload.Insrt();	
+	}
+
+	void TreeXml::Erse()
+	{
+		if (!xml) throw string("No xml");
+		Xml* xmltrunk(static_cast<Xml*>(xml));
+		Payload& payload(static_cast<Payload&>(*xmltrunk));
+		payload.Erse();	
+	}
+
+	void TreeXml::Trnsp()
+	{
+		if (!xml) throw string("No xml");
+		Xml* xmltrunk(static_cast<Xml*>(xml));
+		Payload& payload(static_cast<Payload&>(*xmltrunk));
+		payload.Trnsp();	
+	}
+
+	void TreeXml::Key(const string keyname)
+	{
+		if (!xml) throw string("No xml");
+		Xml* xmltrunk(static_cast<Xml*>(xml));
+		Payload& payload(static_cast<Payload&>(*xmltrunk));
+		payload.Key(keyname);	
+	}
+
 	void TreeXml::Finish()
 	{
 		if (!xml) throw string("No payload");
 		Xml* xmltrunk(static_cast<Xml*>(xml));
 		Payload& payload(static_cast<Payload&>(*xmltrunk));
-		//payload.Finish();	
+		payload.Finish();	
 	}
 
 	void Payload::Begin()
@@ -98,7 +130,6 @@ namespace XmlTree
 		current=rootitem->Begin(*this,rootitem);
 	}
 
-
 	Item* Item::Begin(Xml& _doc,XmlNode* parent)
 	{
 		Item* n(static_cast<Item*>(NewNode(_doc,parent,"Item")));
@@ -106,6 +137,66 @@ namespace XmlTree
 		return n;
 	}
 
+	void Payload::Finish()
+	{
+		if (!current) throw string("Payload did not begin");
+		Item& item(static_cast<Item&>(*current));
+		item.Finish();
+	}
 
+	void Payload::Insrt()
+	{
+		if (!current) throw string("Payload did not begin");
+		Item& item(static_cast<Item&>(*current));
+		item.Insrt();
+	}
+
+	void Item::Insrt()
+	{
+		attributes["insrt"]=XmlFamily::TextElement(Document,this,"true");
+	}
+
+	void Payload::Erse()
+	{
+		if (!current) throw string("Payload did not begin");
+		Item& item(static_cast<Item&>(*current));
+		item.Erse();
+	}
+
+	void Payload::Trnsp()
+	{
+		if (!current) throw string("Payload did not begin");
+		Item& item(static_cast<Item&>(*current));
+		item.Trnsp();
+	}
+
+	void Item::Erse()
+	{
+		attributes["erse"]=XmlFamily::TextElement(Document,this,"true");
+	}
+
+	void Item::Trnsp()
+	{
+		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"Transplant")));
+		appendChild(n);
+		LastAction=n;
+	}
+
+	void Payload::Key(const string keyname)
+	{
+		if (!current) throw string("Payload did not begin");
+		Item& item(static_cast<Item&>(*current));
+		item.Key(keyname);
+	}
+
+	void Item::Key(const string keyname)
+	{
+		if (LastAction)
+			{ LastAction->Key(keyname); return; }
+		string cd("<key><![CDATA[");
+		cd+=keyname; cd+="]]></key>";
+			textsegments[textsegments.size()]=
+				XmlFamily::TextElement(GetDoc(),this,cd);
+	}
 } // XmlTree
 

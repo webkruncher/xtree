@@ -46,6 +46,10 @@ namespace XmlTree
 		~TreeXml();
 		void Begin();
 		void Finish();
+		void Insrt();
+		void Erse();
+		void Key(const string keyname);
+		void Trnsp();
 		private:
 		void* xml;
 		friend ostream& operator<<(ostream&,TreeXml&);
@@ -68,8 +72,15 @@ namespace XmlTree
 		}
 		virtual ostream& operator<<(ostream& o) { XmlNode::operator<<(o); return o;}
 		virtual bool operator()(ostream& o) { return XmlNode::operator()(o); }
-		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name) {}
+		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name),LastAction(NULL) {}
 		Item* Begin(Xml& _doc,XmlNode* parent);
+		void Finish(){LastAction=NULL;}
+		void Insrt();
+		void Erse();
+		void Key(const string keyname);
+		void Trnsp();
+		private:
+		Item* LastAction;
 	};
 	inline ostream& operator<<(ostream& o,Item& xmlnode){return xmlnode.operator<<(o);}
 
@@ -80,6 +91,11 @@ namespace XmlTree
 		ostream& operator<<(ostream& o) { Xml::operator<<(o); return o;}
 		operator Item& () { if (!Root) throw string("No root node"); return static_cast<Item&>(*Root); }
 		void Begin();
+		void Finish();
+		void Insrt();
+		void Erse();
+		void Key(const string keyname);
+		void Trnsp();
 		private:
 		Item* current;
 	};
