@@ -28,11 +28,58 @@
 #ifndef TREE_XML_H
 #define TREE_XML_H
 
-struct TreeXml
+/*	This is the interface class that will be
+		instanciated in the user object.  It 
+		contains a void*.  This technique keeps the
+		user code agnostic of the exexml tools
+		and isolates the exexml tools from the user.
+		The treexml translation unit will cast this
+		pointer to an XmlFamily::Xml object, and
+		use it internally.
+*/
+
+namespace XmlTree
 {
-	void Begin(){}
-	void Finish(){}
-};
+	struct TreeXml
+	{
+		TreeXml() : root(NULL) {}
+		~TreeXml();
+		void Begin();
+		void Finish();
+		private:
+		void* root;
+	};
+
+	#ifdef TREEXML
+	// This area is for treexml objects only
+	// and not seen by the user code.
+
+	struct Item : XmlNode
+	{
+		friend struct Payload;
+		virtual XmlNodeBase* NewNode(Xml& _doc,XmlNodeBase* parent,stringtype name) 
+		{ 
+			XmlNodeBase* ret(NULL);
+			ret=new Item(_doc,parent,name); 
+			return ret;
+		}
+		virtual ostream& operator<<(ostream& o) { XmlNode::operator<<(o); return o;}
+		virtual bool operator()(ostream& o) { return XmlNode::operator()(o); }
+		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name) {}
+	};
+	inline ostream& operator<<(ostream& o,Item& xmlnode){return xmlnode.operator<<(o);}
+
+	struct Payload : Xml
+	{
+		virtual XmlNode* NewNode(Xml& _doc,stringtype name) { return new Item(_doc,NULL,name); }
+		ostream& operator<<(ostream& o) { Xml::operator<<(o); return o;}
+		operator Item& () { if (!Root) throw string("No root node"); return static_cast<Item&>(*Root); }
+	};
+	inline ostream& operator<<(ostream& o,Payload& xml){return xml.operator<<(o);}
+	
+	#endif //TREEXML
+
+} // XmlTree
 
 #endif // TREE_XML_H
 

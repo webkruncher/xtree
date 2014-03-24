@@ -52,5 +52,27 @@ typedef char chartype;
 typedef stringstream stringstreamtype;
 #include <exexml>
 using namespace XmlFamily;
+#define TREEXML
+#include "treexml.h"
+namespace XmlTree
+{
+	TreeXml::~TreeXml()
+	{
+		if (root)
+		{
+			Xml* xmlroot(static_cast<Xml*>(root));
+			delete xmlroot;
+		}
+	}
 
+	void TreeXml::Begin()
+	{
+		if (!root) root=new Xml;
+	}
+
+	void TreeXml::Finish()
+	{
+	}
+
+} // XmlTree
 

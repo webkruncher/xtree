@@ -160,7 +160,7 @@ namespace TreeDisplay
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
 		CurrentActions CurrentAction;
 		TreeSource treesource;
-		TreeXml treexml;
+		XmlTree::TreeXml treexml;
 		void traverse(Trunk& n)
 		{
 			if (n.isnil()) return;
