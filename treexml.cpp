@@ -75,60 +75,31 @@ namespace XmlTree
 		return o;
 	}
 
+	Payload& TreeXml::payload()
+	{
+		if (!xml) throw string("No xml");
+		Xml* xmltrunk(static_cast<Xml*>(xml));
+		Payload& payload(static_cast<Payload&>(*xmltrunk));
+		return payload;
+	}
+
 	void TreeXml::Begin()
 	{
 		if (!xml) xml=new Payload;
-		Xml* xmltrunk(static_cast<Xml*>(xml));
-		Payload& payload(static_cast<Payload&>(*xmltrunk));
-		payload.Begin();	
+		payload().Begin();
 	}
 
-	void TreeXml::Insrt()
-	{
-		if (!xml) throw string("No xml");
-		Xml* xmltrunk(static_cast<Xml*>(xml));
-		Payload& payload(static_cast<Payload&>(*xmltrunk));
-		payload.Insrt();	
-	}
+	void TreeXml::Key(const string keyname) { payload().Key(keyname); }
+	void TreeXml::Finish() { payload().Finish(); }
+	void TreeXml::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
+		{ payload().SourceTrace(fname,linendx,CLRSndx,sourcecode); }
 
-	void TreeXml::Erse()
-	{
-		if (!xml) throw string("No xml");
-		Xml* xmltrunk(static_cast<Xml*>(xml));
-		Payload& payload(static_cast<Payload&>(*xmltrunk));
-		payload.Erse();	
-	}
+	void TreeXml::Insrt() { payload().Insrt(); }
+	void TreeXml::Erse() { payload().Erse(); }
+	void TreeXml::Trnsp() { payload().Trnsp(); }
+	void TreeXml::Rotlft() { payload().Rotlft(); }
+	void TreeXml::Rotrgt() { payload().Rotrgt(); }
 
-	void TreeXml::Trnsp()
-	{
-		if (!xml) throw string("No xml");
-		Xml* xmltrunk(static_cast<Xml*>(xml));
-		Payload& payload(static_cast<Payload&>(*xmltrunk));
-		payload.Trnsp();	
-	}
-
-	void TreeXml::Key(const string keyname)
-	{
-		if (!xml) throw string("No xml");
-		Xml* xmltrunk(static_cast<Xml*>(xml));
-		Payload& payload(static_cast<Payload&>(*xmltrunk));
-		payload.Key(keyname);	
-	}
-
-	void TreeXml::Finish()
-	{
-		if (!xml) throw string("No payload");
-		Xml* xmltrunk(static_cast<Xml*>(xml));
-		Payload& payload(static_cast<Payload&>(*xmltrunk));
-		payload.Finish();	
-	}
-
-	void Payload::Begin()
-	{
-		if (!Root) Root=NewNode(*this,"Tree");
-		Item* rootitem(static_cast<Item*>(Root));
-		current=rootitem->Begin(*this,rootitem);
-	}
 
 	Item* Item::Begin(Xml& _doc,XmlNode* parent)
 	{
@@ -137,38 +108,13 @@ namespace XmlTree
 		return n;
 	}
 
-	void Payload::Finish()
-	{
-		if (!current) throw string("Payload did not begin");
-		Item& item(static_cast<Item&>(*current));
-		item.Finish();
-	}
 
-	void Payload::Insrt()
-	{
-		if (!current) throw string("Payload did not begin");
-		Item& item(static_cast<Item&>(*current));
-		item.Insrt();
-	}
 
 	void Item::Insrt()
 	{
 		attributes["insrt"]=XmlFamily::TextElement(Document,this,"true");
 	}
 
-	void Payload::Erse()
-	{
-		if (!current) throw string("Payload did not begin");
-		Item& item(static_cast<Item&>(*current));
-		item.Erse();
-	}
-
-	void Payload::Trnsp()
-	{
-		if (!current) throw string("Payload did not begin");
-		Item& item(static_cast<Item&>(*current));
-		item.Trnsp();
-	}
 
 	void Item::Erse()
 	{
@@ -182,21 +128,67 @@ namespace XmlTree
 		LastAction=n;
 	}
 
-	void Payload::Key(const string keyname)
+	void Item::Rotlft()
 	{
-		if (!current) throw string("Payload did not begin");
-		Item& item(static_cast<Item&>(*current));
-		item.Key(keyname);
+		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"RotateLeft")));
+		appendChild(n);
+		LastAction=n;
+	}
+
+	void Item::Rotrgt()
+	{
+		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"RotateRight")));
+		appendChild(n);
+		LastAction=n;
 	}
 
 	void Item::Key(const string keyname)
 	{
-		if (LastAction)
-			{ LastAction->Key(keyname); return; }
+		if (LastAction) { LastAction->Key(keyname); return; }
 		string cd("<key><![CDATA[");
 		cd+=keyname; cd+="]]></key>";
 			textsegments[textsegments.size()]=
 				XmlFamily::TextElement(GetDoc(),this,cd);
 	}
+
+	void Item::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
+	{
+		if (LastAction) { LastAction->SourceTrace(fname,linendx,CLRSndx,sourcecode); return; }
+		stringstream cd;
+		cd<<"<Source ";
+		if (CLRSndx!=-1) cd<<"clrs=\""<<CLRSndx<<"\" ";
+		if (linendx!=-1) cd<<"line=\""<<linendx<<"\" ";
+		cd<<"file=\""<<fname<<"\" ";
+		cd<<"><![CDATA[";
+		cd<<sourcecode; 
+		cd<<"]]></Source>";
+			textsegments[textsegments.size()]=
+				XmlFamily::TextElement(GetDoc(),this,cd.str());
+	}
+
+	Item& Payload::item()
+	{
+		if (!current) throw string("Payload did not begin");
+		return static_cast<Item&>(*current);
+	}
+
+	void Payload::Begin()
+	{
+		if (!Root) Root=NewNode(*this,"Tree");
+		Item* rootitem(static_cast<Item*>(Root));
+		current=rootitem->Begin(*this,rootitem);
+	}
+
+	void Payload::Finish() { item().Finish(); }
+	void Payload::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
+		{ item().SourceTrace(fname,linendx,CLRSndx,sourcecode); }
+	void Payload::Key(const string keyname) { item().Key(keyname); }
+	void Payload::Insrt() { item().Insrt(); }
+	void Payload::Erse() { item().Erse(); }
+	void Payload::Trnsp() { item().Trnsp(); }
+	void Payload::Rotlft() { item().Rotlft(); }
+	void Payload::Rotrgt() { item().Rotrgt(); }
+
+
 } // XmlTree
 

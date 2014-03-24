@@ -40,17 +40,22 @@
 
 namespace XmlTree
 {
+	struct Payload;
 	struct TreeXml
 	{
 		TreeXml() : xml(NULL) {}
 		~TreeXml();
 		void Begin();
 		void Finish();
+		void SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode);
 		void Insrt();
 		void Erse();
 		void Key(const string keyname);
 		void Trnsp();
+		void Rotlft();
+		void Rotrgt();
 		private:
+		Payload& payload();
 		void* xml;
 		friend ostream& operator<<(ostream&,TreeXml&);
 		ostream& operator<<(ostream& o);
@@ -75,10 +80,13 @@ namespace XmlTree
 		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name),LastAction(NULL) {}
 		Item* Begin(Xml& _doc,XmlNode* parent);
 		void Finish(){LastAction=NULL;}
+		void SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode);
 		void Insrt();
 		void Erse();
 		void Key(const string keyname);
 		void Trnsp();
+		void Rotlft();
+		void Rotrgt();
 		private:
 		Item* LastAction;
 	};
@@ -92,12 +100,16 @@ namespace XmlTree
 		operator Item& () { if (!Root) throw string("No root node"); return static_cast<Item&>(*Root); }
 		void Begin();
 		void Finish();
+		void SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode);
 		void Insrt();
 		void Erse();
 		void Key(const string keyname);
 		void Trnsp();
+		void Rotlft();
+		void Rotrgt();
 		private:
 		Item* current;
+		Item& item();
 	};
 	inline ostream& operator<<(ostream& o,Payload& xml){return xml.operator<<(o);}
 	
