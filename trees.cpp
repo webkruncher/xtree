@@ -91,6 +91,7 @@ namespace TreeDisplay
 	const string& TreeSource::operator()(int line)
 	{
 		if (empty()) Load();
+		ndx=-1;
 		if (line>size()) return blank;
 		txt=(*this)[line];
 		size_t ds(txt.find("//"));
@@ -105,6 +106,7 @@ namespace TreeDisplay
 		if ( (son!=string::npos) and (son!=0) ) comment.erase(0,son);
 		size_t eon(comment.find_first_not_of("0123456789"));
 		if (eon!=string::npos) comment.erase(eon,comment.size()-eon);
+		ndx=atoi((char*)comment.c_str());
 		stringstream ssc; ssc<<"("<<comment<<") ";
 		txt.insert(0,ssc.str().c_str());
 		return txt;

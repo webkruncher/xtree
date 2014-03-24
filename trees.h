@@ -35,9 +35,9 @@ struct Invalid : X11Methods::InvalidArea<Rect> { void insert(Rect r) {set<Rect>:
 #include "treeintegrity.h"
 #include "journal.h"
 #include <sys/stat.h>
+#include "treexml.h"
 namespace TreeDisplay
 {
-
 	string deblank(string);
 	enum CurrentActions {NoAction=100,Inserting,Erasing} ;
 
@@ -70,7 +70,7 @@ namespace TreeDisplay
 
 	struct TreeSource : private vector<string>
 	{
-		TreeSource() : blank("----") {}	
+		TreeSource() : blank("----"),ndx(-1) {}	
 		const string& operator()(int line);
 		private:
 		void Load()
@@ -81,6 +81,7 @@ namespace TreeDisplay
 		}
 		const string blank;
 		string txt;
+		int ndx;
 	};
 
 	template<typename KT>
@@ -159,6 +160,7 @@ namespace TreeDisplay
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
 		CurrentActions CurrentAction;
 		TreeSource treesource;
+		TreeXml treexml;
 		void traverse(Trunk& n)
 		{
 			if (n.isnil()) return;
@@ -266,6 +268,7 @@ namespace TreeDisplay
 		{
 			this->stepper("Begin");
 			msgbuffer.reset(NULL);
+			treexml.Begin();
 			return *this;
 		}
 		virtual Trunk& Finish()
@@ -278,6 +281,7 @@ namespace TreeDisplay
 			}
 			this->stepper("Finish");
 			msgbuffer.reset(NULL);
+			treexml.Finish();
 			return *this;
 		}
 	};

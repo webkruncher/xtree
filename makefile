@@ -1,6 +1,6 @@
 
 LIB=-L/usr/local/lib -L/usr/X11R6/lib -lX11 ../x11grid/x11grid.a
-INC=-I. -I /usr/X11R6/include -I /usr/local/include -I ../x11grid
+INC=-I. -I /usr/X11R6/include -I /usr/local/include -I ../x11grid -I ../exexml
 
 INCS=nodedisplay.h trees.h tree.h treemap.h treeset.h treeintegrity.h motivation.h journal.h
 
@@ -10,8 +10,8 @@ FREPO=-frepo
 LINKSETTINGS= $(FREPO) -I. -lpthread $(LIB) $(INC) -w -g
 COMPILESETTINGS= $(FNIT) $(FREPO) -c -I. $(LIB) $(INC) -w -g
 
-trees: main.o trees.o nodedisplay.o
-	g++ $(LINKSETTINGS)  main.o trees.o nodedisplay.o -o trees 
+trees: main.o trees.o nodedisplay.o treexml.o
+	g++ $(LINKSETTINGS)  main.o trees.o nodedisplay.o treexml.o -o trees 
 
 tester: tester.cpp tree.h treemap.h treeset.h treeintegrity.h
 	g++ -I. tester.cpp -o tester -g
@@ -28,8 +28,11 @@ nodedisplay.o: nodedisplay.cpp $(INCS)
 main.o: main.cpp $(INCS)
 	g++ $(COMPILESETTINGS) main.cpp -o main.o
 
-trees.o: trees.cpp $(INCS)
+trees.o: trees.cpp treexml.h $(INCS)
 	g++ $(COMPILESETTINGS) trees.cpp -o trees.o
+
+treexml.o: treexml.cpp treexml.h $(INCS)
+	g++ $(COMPILESETTINGS) treexml.cpp -o treexml.o
 
 install: trees
 	sudo ./install.sh
