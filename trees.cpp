@@ -296,6 +296,11 @@ namespace TreeDisplay
 						tout<<"Journal is finished"<<endl;
 						CheckIntegrity(root);
 						stop=true;
+							if (!xmloutname.empty())
+							{
+								ofstream xmlout((char*)xmloutname.c_str());
+								xmlout<<treexml;
+							}
 						return; // Journal is finished
 					}
 				}
@@ -362,6 +367,11 @@ namespace TreeDisplay
 						{
 							stop=true; 
 							if (journal==ios_base::out) {journal<<entry; journal.close();}
+							if (!xmloutname.empty())
+							{
+								ofstream xmlout((char*)xmloutname.c_str());
+								xmlout<<treexml;
+							}
 							return;
 						}
 			}

@@ -58,21 +58,54 @@ namespace XmlTree
 {
 	TreeXml::~TreeXml()
 	{
-		if (root)
+		if (xml)
 		{
-			Xml* xmlroot(static_cast<Xml*>(root));
-			delete xmlroot;
+			Xml* xmltrunk(static_cast<Xml*>(xml));
+			delete xmltrunk;
 		}
+	}
+
+	ostream& TreeXml::operator<<(ostream& o)
+	{
+		if (xml)
+		{
+			Xml* xmltrunk(static_cast<Xml*>(xml));
+			o<<(*xmltrunk);
+		}
+		return o;
 	}
 
 	void TreeXml::Begin()
 	{
-		if (!root) root=new Payload;
+		if (!xml) xml=new Payload;
+		Xml* xmltrunk(static_cast<Xml*>(xml));
+		Payload& payload(static_cast<Payload&>(*xmltrunk));
+		payload.Begin();	
 	}
 
 	void TreeXml::Finish()
 	{
+		if (!xml) throw string("No payload");
+		Xml* xmltrunk(static_cast<Xml*>(xml));
+		Payload& payload(static_cast<Payload&>(*xmltrunk));
+		//payload.Finish();	
 	}
+
+	void Payload::Begin()
+	{
+		if (!Root) Root=NewNode(*this,"Tree");
+		Item* rootitem(static_cast<Item*>(Root));
+		current=rootitem->Begin(*this,rootitem);
+	}
+
+
+	Item* Item::Begin(Xml& _doc,XmlNode* parent)
+	{
+		Item* n(static_cast<Item*>(NewNode(_doc,parent,"Item")));
+		appendChild(n);
+		return n;
+	}
+
 
 } // XmlTree
 

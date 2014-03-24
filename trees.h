@@ -94,10 +94,11 @@ namespace TreeDisplay
 		}
 		#define Msg messg()
 		typedef TreeNode<KT> VT ;
-		TreeCanvas(TreeJournal::Journal& _journal,const string _trapname,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+		TreeCanvas(TreeJournal::Journal& _journal,const string _trapname,const string _xmloutname,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
 			: journal(_journal), tout(_tout), window(_window), 
 				Canvas(_display,_gc,_ScreenWidth,_ScreenHeight),
 				Trapper<KT>(_trapname,_tout,stop,movement),
+				xmloutname(_xmloutname),
 				updateloop(0),root(NULL),movement(false),stop(false),waitfor(0),removing(false),removal(NULL),flipcounter(0) , ignorestop(_ignorestop), reported(false)
 		{ 
 			if (journal==ios_base::in) journal>>entry; 
@@ -161,6 +162,7 @@ namespace TreeDisplay
 		CurrentActions CurrentAction;
 		TreeSource treesource;
 		XmlTree::TreeXml treexml;
+		const string xmloutname;
 		void traverse(Trunk& n)
 		{
 			if (n.isnil()) return;
@@ -291,8 +293,8 @@ namespace TreeDisplay
 		struct RbMapCanvas : TreeCanvas<KT>, TreeIntegrity::IntegrityAdvisor
 	{
 		typedef TreeNode<KT> VT ;
-		RbMapCanvas(TreeJournal::Journal& _journal,const string _trapname,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
-			: TreeCanvas<KT>(_journal,_trapname,_tout,_ignorestop,_display,_window,_gc,_ScreenWidth,_ScreenHeight),tout(_tout) {}
+		RbMapCanvas(TreeJournal::Journal& _journal,const string _trapname,const string _xmloutname,ostream& _tout,bool _ignorestop,Display* _display,Window& _window,GC& _gc,const int _ScreenWidth, const int _ScreenHeight)
+			: TreeCanvas<KT>(_journal,_trapname,_xmloutname,_tout,_ignorestop,_display,_window,_gc,_ScreenWidth,_ScreenHeight),tout(_tout) {}
 		virtual Trunk* generate(KT& key,TreeNode<KT>& treenode) 
 		{ 
 			return new RbMap<KT,VT>(static_cast<Sentinel&>(*this),key,treenode); 

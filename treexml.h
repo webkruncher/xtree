@@ -42,13 +42,16 @@ namespace XmlTree
 {
 	struct TreeXml
 	{
-		TreeXml() : root(NULL) {}
+		TreeXml() : xml(NULL) {}
 		~TreeXml();
 		void Begin();
 		void Finish();
 		private:
-		void* root;
+		void* xml;
+		friend ostream& operator<<(ostream&,TreeXml&);
+		ostream& operator<<(ostream& o);
 	};
+	inline ostream& operator<<(ostream& o,TreeXml& t){return t.operator<<(o);}
 
 	#ifdef TREEXML
 	// This area is for treexml objects only
@@ -66,14 +69,19 @@ namespace XmlTree
 		virtual ostream& operator<<(ostream& o) { XmlNode::operator<<(o); return o;}
 		virtual bool operator()(ostream& o) { return XmlNode::operator()(o); }
 		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name) {}
+		Item* Begin(Xml& _doc,XmlNode* parent);
 	};
 	inline ostream& operator<<(ostream& o,Item& xmlnode){return xmlnode.operator<<(o);}
 
 	struct Payload : Xml
 	{
+		Payload() : current(NULL) {}
 		virtual XmlNode* NewNode(Xml& _doc,stringtype name) { return new Item(_doc,NULL,name); }
 		ostream& operator<<(ostream& o) { Xml::operator<<(o); return o;}
 		operator Item& () { if (!Root) throw string("No root node"); return static_cast<Item&>(*Root); }
+		void Begin();
+		private:
+		Item* current;
 	};
 	inline ostream& operator<<(ostream& o,Payload& xml){return xml.operator<<(o);}
 	
