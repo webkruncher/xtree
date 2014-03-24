@@ -67,7 +67,7 @@ namespace XmlTree
 
 	void TreeXml::Begin()
 	{
-		if (!root) root=new Xml;
+		if (!root) root=new Payload;
 	}
 
 	void TreeXml::Finish()
