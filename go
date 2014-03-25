@@ -14,7 +14,7 @@ update=`make -n | grep ^g++ | wc -l | tr -d ' '`
 make 
 echo "Starting trees at `date`" > trees.out
 #./stress
-./trees -string -redblack -o journal.string 
+./trees -string -redblack -o journal.string  -entrylimit 5
 #./trees  -o journal.string -string -redblack 2>/dev/null
 #./trees -int -bst 2>/dev/null
 #./trees -int -redblack 

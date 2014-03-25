@@ -153,8 +153,10 @@ namespace TreeJournal
 			return j;
 		}
 		char T;
+		int nitems;
 		public:
-		void clear() { deque<Paragraph<KT> >::clear(); }
+		const int NItems(){return nitems;}
+		void clear() { nitems=0;deque<Paragraph<KT> >::clear(); }
 		operator const bool () const { return !this->empty(); }
 		operator pair<bool,KT> ()
 		{
@@ -184,6 +186,7 @@ namespace TreeJournal
 
 	template <> inline void Entry<int>::operator+=(int j)
 	{
+		nitems++;
 		typedef int KT;
 		if (empty()) {Paragraph<KT> e(true); push_back(e);}
 		else if (!back().first) {Paragraph<KT> e(true); push_back(e);}
@@ -192,6 +195,7 @@ namespace TreeJournal
 
 	template <> inline void Entry<int>::operator-=(int j)
 	{
+		nitems++;
 		typedef int KT;
 		if (empty()) {Paragraph<KT> e(false); push_back(e);}
 		else if (back().first) {Paragraph<KT> e(false); push_back(e);}
@@ -207,6 +211,7 @@ namespace TreeJournal
 
 	template <> inline void Entry<double>::operator+=(double j)
 	{
+		nitems++;
 		typedef double KT;
 		if (empty()) {Paragraph<KT> e(true); push_back(e);}
 		else if (!back().first) {Paragraph<KT> e(true); push_back(e);}
@@ -215,6 +220,7 @@ namespace TreeJournal
 
 	template <> inline void Entry<double>::operator-=(double j)
 	{
+		nitems++;
 		typedef double KT;
 		if (empty()) {Paragraph<KT> e(false); push_back(e);}
 		else if (back().first) {Paragraph<KT> e(false); push_back(e);}
@@ -230,6 +236,7 @@ namespace TreeJournal
 
 	template <> inline void Entry<string>::operator+=(string j)
 	{
+		nitems++;
 		typedef string KT;
 		if (empty()) {Paragraph<KT> e(true); push_back(e);}
 		else if (!back().first) {Paragraph<KT> e(true); push_back(e);}
@@ -238,6 +245,7 @@ namespace TreeJournal
 
 	template <> inline void Entry<string>::operator-=(string j)
 	{
+		nitems++;
 		typedef string KT;
 		if (empty()) {Paragraph<KT> e(false); push_back(e);}
 		else if (back().first) {Paragraph<KT> e(false); push_back(e);}

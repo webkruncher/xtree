@@ -362,6 +362,20 @@ namespace TreeDisplay
 			this->stepper("");
 			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
 			updateloop++;
+			if ( (entrylimit) and (journal==ios_base::out) )
+			{
+					if (entry.NItems()>entrylimit) clearing=true;
+					if (clearing)
+					{
+						if (used.empty()) {entry.clear(); clearing=false;}
+							else
+						{
+							movement=false;
+							removing=true;
+						}
+					}
+			}
+
 			if (!ignorestop) 
 			{
 				if (stop) return;
@@ -385,6 +399,7 @@ namespace TreeDisplay
 
 			//if (removal) return;
 			if (journal==ios_base::in) return;
+			if (clearing) return;
 
 			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
