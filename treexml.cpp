@@ -91,6 +91,7 @@ namespace XmlTree
 
 	void TreeXml::Key(const string keyname) { payload().Key(keyname); }
 	void TreeXml::Number(const int a) { payload().Number(a); }
+	void TreeXml::Done() { payload().Done(); }
 	void TreeXml::Finish() { payload().Finish(); }
 	void TreeXml::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
 		{ payload().SourceTrace(fname,linendx,CLRSndx,sourcecode); }
@@ -135,6 +136,13 @@ namespace XmlTree
 	void Item::Trnsp()
 	{
 		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"Transplant")));
+		appendChild(n);
+		LastAction=n;
+	}
+
+	void Item::Done()
+	{
+		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"Done")));
 		appendChild(n);
 		LastAction=n;
 	}
@@ -200,6 +208,7 @@ namespace XmlTree
 	}
 
 	void Payload::Finish() { item().Finish(); }
+	void Payload::Done() { item().Done(); }
 	void Payload::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
 		{ item().SourceTrace(fname,linendx,CLRSndx,sourcecode); }
 	void Payload::Key(const string keyname) { item().Key(keyname); }

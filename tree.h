@@ -70,6 +70,7 @@ namespace TreeObjects
 		virtual Trunk& operator<<(const int a){return *this;}
 		virtual Trunk& Begin(){return *this;}
 		virtual Trunk& Finish(){return *this;}
+		virtual Trunk& Done(){return *this;}
 		virtual Trunk& Insrt(){return *this;}
 		virtual Trunk& Erse(){return *this;}
 		virtual Trunk& Rotlft(){return *this;}
@@ -82,6 +83,7 @@ namespace TreeObjects
 	inline Trunk& operator<<(Trunk& t,const char* a)		{return t.operator<<(a);}
 	inline Trunk& operator<<(Trunk& t,int a)						{return t.operator<<(a);}
 	inline Trunk& begin(Trunk& t)												{return t.Begin();}
+	inline Trunk& done(Trunk& t)												{return t.Done();}
 	inline Trunk& finish(Trunk& t)											{return t.Finish();}
 	inline Trunk& insrt(Trunk& t)												{return t.Insrt();}
 	inline Trunk& erse(Trunk& t)												{return t.Erse();}
@@ -308,7 +310,7 @@ namespace TreeObjects
 				if (!newroot->isnul(r)) Update(r,found); 
 			}
 			delete found;
-			Msg<<finish;
+			Msg<<done<<(*p)<<finish;
 			return newroot;
 		}
 
@@ -664,7 +666,7 @@ namespace TreeObjects
 			}
 			found->SetLeft(NULL); found->SetRight(NULL);
 			delete found;
-			Msg<<finish;
+			Msg<<done<<(*p)<<finish;
 			return newroot;
 		}
 		COLOR clr;
@@ -732,7 +734,7 @@ namespace TreeObjects
 			nd.SetLeft(root->GetNil());
 			nd.SetRight(root->GetNil());
 			Trunk* ret(this->RedAndBlackInsert(root,node));
-			Msg<<finish;
+			Msg<<done<<(*node)<<finish;
 			return ret;
 		}
 		

@@ -289,6 +289,15 @@ namespace TreeDisplay
 			treexml.Begin();
 			return *this;
 		}
+
+		virtual Trunk& Done()
+		{
+			Msg<<". ";
+			this->stepper("Done");
+			treexml.Done();
+			return *this;
+		}
+
 		virtual Trunk& Finish()
 		{
 			if (!Msg.str().empty()) 

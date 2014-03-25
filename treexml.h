@@ -41,11 +41,12 @@
 namespace XmlTree
 {
 	struct Payload;
-	struct TreeXml
+	struct TreeXml 
 	{
-		TreeXml() : xml(NULL) {}
+		TreeXml() : xml(NULL){}
 		~TreeXml();
 		void Begin();
+		void Done();
 		void Finish();
 		void SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode);
 		void Insrt();
@@ -79,6 +80,7 @@ namespace XmlTree
 		virtual bool operator()(ostream& o) { return XmlNode::operator()(o); }
 		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name),LastAction(NULL) {}
 		Item* Begin(Xml& _doc,XmlNode* parent);
+		void Done();
 		void Finish(){LastAction=NULL;}
 		void SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode);
 		void Insrt();
@@ -101,6 +103,7 @@ namespace XmlTree
 		ostream& operator<<(ostream& o) { Xml::operator<<(o); return o;}
 		operator Item& () { if (!Root) throw string("No root node"); return static_cast<Item&>(*Root); }
 		void Begin();
+		void Done();
 		void Finish();
 		void SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode);
 		void Insrt();
