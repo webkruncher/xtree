@@ -280,6 +280,7 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::Additions()
 	{
+			ajaxface<KT>& treexml(*this);;
 			if (removal) return;
 			if ( (journal==ios_base::in)  and (removing) ) return;
 			if ((!waitfor) or (updateloop>waitfor) )
@@ -359,6 +360,7 @@ namespace TreeDisplay
 	template <typename KT>
 		void TreeCanvas<KT>::UpdateTree()
 	{
+			ajaxface<KT>& treexml(*this);;
 			this->stepper("");
 			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
 			updateloop++;
@@ -409,6 +411,87 @@ namespace TreeDisplay
 				if ( (root) or (!root->isnil()) ) removing=!removing;
 			}
 	}
+
+	template<> const string ajaxface<string>::tokt(const string what) const { return what; }
+	template<> const int ajaxface<int>::tokt(const string what) const { if (what.empty()) return 0; return atoi(what.c_str()); }
+	template<> const double ajaxface<double>::tokt(const string what) const { if (what.empty()) return 0; return atof(what.c_str()); }
+
+	template<> const string ajaxface<string>::tostr(const string what) const { return what; }
+	template<> const string ajaxface<int>::tostr(const int what) const { stringstream ss; ss<<what; string ret; ret=ss.str().c_str(); return ret;}
+	template<> const string ajaxface<double>::tostr(const double what) const { stringstream ss; ss<<what; string ret; ret=ss.str().c_str(); return ret;}
+
+	template <typename KT>
+		const bool TreeCanvas<KT>::IsRoot(const KT what) const 
+	{
+		if (!root) return true;
+		BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+		BstBase<KT>* found(nk.find(what));
+		if (!found) return true;
+		BstBase<KT>* parent(static_cast<BstBase<KT>*>(found->Parent()));
+		if (root->isnul(parent)) return true;
+		return false;
+	}
+
+	template <typename KT>
+		const bool TreeCanvas<KT>::HasLeft(const KT what) const 
+	{
+		if (!root) return false;
+		BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+		BstBase<KT>* found(nk.find(what));
+		if (!found) return false;
+		BstBase<KT>* l(static_cast<BstBase<KT>*>(found->Left()));
+		if (root->isnul(l)) return false;
+		return true;
+	}
+
+	template <typename KT>
+		const bool TreeCanvas<KT>::HasRight(const KT what) const 
+	{
+		if (!root) return false;
+		BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+		BstBase<KT>* found(nk.find(what));
+		if (!found) return false;
+		BstBase<KT>* r(static_cast<BstBase<KT>*>(found->Right()));
+		if (root->isnul(r)) return false;
+		return true;
+	}
+
+	template <typename KT>
+		const KT TreeCanvas<KT>::ParentOf(const KT what) const
+		{
+			if (!root) throw string("No root");
+			BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+			BstBase<KT>* found(nk.find(what));
+			if (!found) throw string("Key not found");
+			BstBase<KT>* parent(static_cast<BstBase<KT>*>(found->Parent()));
+			if (root->isnul(parent)) throw string("Parent is null");
+			return (*parent);
+		}
+
+	template <typename KT>
+		const KT TreeCanvas<KT>::LeftOf(const KT what)  const
+		{
+			if (!root) throw string("No root");
+			BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+			BstBase<KT>* found(nk.find(what));
+			if (!found) throw string("Node not found");
+			BstBase<KT>* l(static_cast<BstBase<KT>*>(found->Left()));
+			if (root->isnul(l)) throw string("Node is nul");
+			return (*l);
+		}
+		
+	template <typename KT>
+		const KT TreeCanvas<KT>::RightOf(const KT what)  const
+		{
+			if (!root) throw string("No root");
+			BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+			BstBase<KT>* found(nk.find(what));
+			if (!found) throw string("Node not found");
+			BstBase<KT>* r(static_cast<BstBase<KT>*>(found->Right()));
+			if (root->isnul(r)) throw string("Node is nul");
+			return (*r);
+		}
+
 } // TreeDisplay
 
 

@@ -86,8 +86,53 @@ namespace TreeDisplay
 		int ndx;
 	};
 
+	template <typename KT>
+		struct ajaxface : XmlTree::TreeXml 
+	{
+		private:
+		const KT tokt(const string) const;
+		const string tostr(const KT) const;
+		const bool SIsRoot(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->IsRoot(kwhat);
+		}
+		const bool SHasLeft(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->HasLeft(kwhat);
+		}
+		const bool SHasRight(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->HasRight(kwhat);
+		}
+		const string SParentOf(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->tostr(this->ParentOf(kwhat));
+		}
+		const string SLeftOf(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->tostr(this->LeftOf(kwhat));
+		}
+		const string SRightOf(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->tostr(this->RightOf(kwhat));
+		}
+
+		virtual const bool IsRoot(const KT what) const = 0;
+		virtual const bool HasLeft(const KT what) const = 0;
+		virtual const bool HasRight(const KT what) const = 0;
+		virtual const KT ParentOf(const KT what) const = 0;
+		virtual const KT LeftOf(const KT what) const = 0;
+		virtual const KT RightOf(const KT what) const = 0;
+	};
+
 	template<typename KT>
-		struct TreeCanvas : Canvas, Sentinel, Trapper<KT>
+		struct TreeCanvas : Canvas, Sentinel, Trapper<KT>, ajaxface<KT>
 	{
 		stringstream& messg()
 		{ 
@@ -165,7 +210,7 @@ namespace TreeDisplay
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
 		CurrentActions CurrentAction;
 		TreeSource treesource;
-		XmlTree::TreeXml treexml;
+		//XmlTree::TreeXml treexml;
 		const string xmloutname;
 		void traverse(Trunk& n)
 		{
@@ -191,6 +236,7 @@ namespace TreeDisplay
 
 		virtual Trunk& operator<<(const Trunk& a) 
 		{
+			ajaxface<KT>& treexml(*this);;
 			stringstream ssmsg; ssmsg;
 			Trunk& n(const_cast<Trunk&>(a));
 			if (n.isnil()) 
@@ -220,6 +266,7 @@ namespace TreeDisplay
 
 		virtual Trunk& operator<<(const int a)
 		{
+			ajaxface<KT>& treexml(*this);;
 			Msg<<"["<<a<<"]";
 			this->stepper("Number");
 			treexml.Number(a);
@@ -228,6 +275,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Insrt()
 		{
+			ajaxface<KT>& treexml(*this);;
 			Msg<<"Insert:";
 			CurrentAction=Inserting;
 			this->stepper("Inserting");
@@ -237,6 +285,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Erse()
 		{
+			ajaxface<KT>& treexml(*this);;
 			Msg<<"Erase:";
 			CurrentAction=Erasing;
 			this->stepper("Erasing");
@@ -246,6 +295,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Rotlft()
 		{
+			ajaxface<KT>& treexml(*this);;
 			Msg<<"<< ";
 			this->stepper("RotateLeft");
 			treexml.Rotlft();
@@ -254,6 +304,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Rotrgt()
 		{
+			ajaxface<KT>& treexml(*this);;
 			Msg<<">> ";
 			this->stepper("RotateRight");
 			treexml.Rotrgt();
@@ -262,6 +313,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Trnsp()
 		{
+			ajaxface<KT>& treexml(*this);;
 			Msg<<"<> ";
 			this->stepper("Transplant");
 			treexml.Trnsp();
@@ -270,6 +322,7 @@ namespace TreeDisplay
 
 		virtual Trunk& operator()(char* _file,int line)
 		{
+			ajaxface<KT>& treexml(*this);;
 			if (!_file) return *this;
 			struct stat sb;
 			if (!stat("tree.h",&sb)==0) return *this;
@@ -284,6 +337,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Begin()
 		{
+			ajaxface<KT>& treexml(*this);;
 			this->stepper("Begin");
 			msgbuffer.reset(NULL);
 			treexml.Begin();
@@ -292,6 +346,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Done()
 		{
+			ajaxface<KT>& treexml(*this);;
 			Msg<<". ";
 			this->stepper("Done");
 			treexml.Done();
@@ -300,6 +355,7 @@ namespace TreeDisplay
 
 		virtual Trunk& Finish()
 		{
+			ajaxface<KT>& treexml(*this);;
 			if (!Msg.str().empty()) 
 			{
 				stringstream sso; sso<<endl<<Msg.str()<<"done."<<endl;
@@ -311,6 +367,12 @@ namespace TreeDisplay
 			treexml.Finish();
 			return *this;
 		}
+		const bool IsRoot(const KT what) const;
+		const bool HasLeft(const KT what) const;
+		const bool HasRight(const KT what) const;
+		const KT ParentOf(const KT what) const;
+		const KT LeftOf(const KT what)  const;
+		const KT RightOf(const KT what)  const;
 	};
 
 

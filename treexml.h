@@ -56,6 +56,12 @@ namespace XmlTree
 		void Rotlft();
 		void Rotrgt();
 		void Number(const int a);
+		virtual const bool SIsRoot(const string what) const = 0; 
+		virtual const bool SHasLeft(const string what) const = 0;
+		virtual const bool SHasRight(const string what) const = 0;
+		virtual const string SParentOf(const string what) const = 0; 
+		virtual const string SLeftOf(const string what) const = 0; 
+		virtual const string SRightOf(const string what) const = 0; 
 		private:
 		Payload& payload();
 		void* xml;
@@ -93,12 +99,13 @@ namespace XmlTree
 		virtual ostream& operator<<(ostream&);
 		private:
 		Item* LastAction;
+		operator const TreeXml& () ;
 	};
 	inline ostream& operator<<(ostream& o,Item& xmlnode){return xmlnode.operator<<(o);}
 
 	struct Payload : Xml
 	{
-		Payload() : current(NULL) {}
+		Payload(TreeXml& _treexml) : current(NULL),treexml(_treexml) {}
 		virtual XmlNode* NewNode(Xml& _doc,stringtype name) { return new Item(_doc,NULL,name); }
 		ostream& operator<<(ostream& o) { Xml::operator<<(o); return o;}
 		operator Item& () { if (!Root) throw string("No root node"); return static_cast<Item&>(*Root); }
@@ -113,9 +120,11 @@ namespace XmlTree
 		void Rotlft();
 		void Rotrgt();
 		void Number(const int a);
+		operator const TreeXml& (){return treexml;}
 		private:
 		Item* current;
 		Item& item();
+		TreeXml& treexml;
 	};
 	inline ostream& operator<<(ostream& o,Payload& xml){return xml.operator<<(o);}
 	

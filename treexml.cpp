@@ -85,7 +85,7 @@ namespace XmlTree
 
 	void TreeXml::Begin()
 	{
-		if (!xml) xml=new Payload;
+		if (!xml) xml=new Payload(*this);
 		payload().Begin();
 	}
 
@@ -102,6 +102,12 @@ namespace XmlTree
 	void TreeXml::Rotlft() { payload().Rotlft(); }
 	void TreeXml::Rotrgt() { payload().Rotrgt(); }
 
+	Item::operator const TreeXml& () 
+	{
+		Xml& doc(GetDoc());
+		Payload& payload(static_cast<Payload&>(doc));
+		return payload;
+	}
 
 	Item* Item::Begin(Xml& _doc,XmlNode* parent)
 	{
@@ -164,6 +170,7 @@ namespace XmlTree
 	void Item::Key(const string keyname)
 	{
 		if (LastAction) { LastAction->Key(keyname); return; }
+		const TreeXml& treexml(*this);
 		string cd("<key><![CDATA[");
 		cd+=keyname; cd+="]]></key>";
 			textsegments[textsegments.size()]=
