@@ -175,6 +175,13 @@ namespace XmlTree
 		cd+=keyname; cd+="]]></key>";
 			textsegments[textsegments.size()]=
 				XmlFamily::TextElement(GetDoc(),this,cd);
+
+		if (!treexml.SIsRoot(keyname))
+			cout<<keyname<<" has a parent named "<<treexml.SParentOf(keyname)<<endl;
+		if (treexml.SHasLeft(keyname))
+			cout<<keyname<<" has a left child named "<<treexml.SLeftOf(keyname)<<endl;
+		if (treexml.SHasRight(keyname))
+			cout<<keyname<<" has a right child named "<<treexml.SRightOf(keyname)<<endl;
 	}
 
 	void Item::Number(const int a)
