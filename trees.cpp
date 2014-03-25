@@ -92,10 +92,11 @@ namespace TreeDisplay
 	{
 		if (empty()) Load();
 		ndx=-1;
+		sourcecode="";
 		if (line>size()) return blank;
 		txt=(*this)[line];
 		size_t ds(txt.find("//"));
-		if (ds==string::npos) return txt;
+		if (ds==string::npos) {sourcecode=txt; return txt;}
 		ds+=2;
 		string comment; comment.assign(txt,ds,txt.size()-ds);
 		ds-=2;
@@ -107,6 +108,7 @@ namespace TreeDisplay
 		size_t eon(comment.find_first_not_of("0123456789"));
 		if (eon!=string::npos) comment.erase(eon,comment.size()-eon);
 		ndx=atoi((char*)comment.c_str());
+		sourcecode=txt;
 		stringstream ssc; ssc<<"("<<comment<<") ";
 		txt.insert(0,ssc.str().c_str());
 		return txt;

@@ -1,113 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="./trees.xslt"?>
+
 <Tree>	<Item 
 		insrt="true"
-	><key><![CDATA[Lee]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[XLee]]></key><Number>0</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Lan]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Lan]]></key>		<RotateRight><key><![CDATA[Roni]]></key><key><![CDATA[Lee]]></key><Source line="229" file="./tree.h" ><![CDATA[			root = other;]]></Source></RotateRight><Number>1</Number>	</Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Lan]]></key>		<RotateRight><key><![CDATA[Roni]]></key><key><![CDATA[Lee]]></key><Source line="229" file="./tree.h" ><![CDATA[			root = other;]]></Source></RotateRight><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source>	</Item>	<Item 
+	><key><![CDATA[Sima]]></key><Number>1</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Sima]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Vi]]></key>		<RotateLeft><key><![CDATA[Roni]]></key><key><![CDATA[Sima]]></key><Source line="206" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source></RotateLeft><Number>2</Number>	</Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Sima]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Love]]></key><Number>2</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Vi]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Ida]]></key><Number>1</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Vi]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Dale]]></key>		<RotateRight><key><![CDATA[Lan]]></key><key><![CDATA[Ida]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight><Number>2</Number>	</Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Vi]]></key>		<RotateLeft><key><![CDATA[Roni]]></key><key><![CDATA[Sima]]></key><Source line="206" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source></RotateLeft><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source>	</Item>	<Item 
+	><key><![CDATA[Nida]]></key>		<RotateLeft><key><![CDATA[Love]]></key><key><![CDATA[Nida]]></key><Source line="206" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source></RotateLeft><Number>3</Number>		<RotateRight><key><![CDATA[Roni]]></key><key><![CDATA[Nida]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight>	</Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Love]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Tad]]></key><Number>2</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Love]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Su]]></key>		<RotateRight><key><![CDATA[Vi]]></key><key><![CDATA[Tad]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight><Number>3</Number>	</Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Love]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Ryan]]></key>		<RotateRight><key><![CDATA[Sima]]></key><key><![CDATA[Nida]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight><Number>3</Number>		<RotateLeft><key><![CDATA[Lee]]></key><key><![CDATA[Nida]]></key><Source line="203" file="./tree.h" ><![CDATA[			root = other;]]></Source></RotateLeft>	</Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Ida]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Lon]]></key><Number>2</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Ida]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Barb]]></key><Number>3</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Dale]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Bret]]></key>		<RotateLeft><key><![CDATA[Barb]]></key><key><![CDATA[Bret]]></key><Source line="206" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source></RotateLeft><Number>4</Number>		<RotateRight><key><![CDATA[Dale]]></key><key><![CDATA[Bret]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight>	</Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Dale]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Jay]]></key><Number>3</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Dale]]></key>		<RotateRight><key><![CDATA[Lan]]></key><key><![CDATA[Ida]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source>	</Item>	<Item 
+	><key><![CDATA[Neil]]></key><Number>2</Number></Item>	<Item 
 		insrt="true"
-	><key><![CDATA[Nida]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Nida]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Nida]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Nida]]></key>		<RotateLeft><key><![CDATA[Love]]></key><key><![CDATA[Nida]]></key><Source line="206" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source></RotateLeft><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source>		<RotateRight><key><![CDATA[Roni]]></key><key><![CDATA[Nida]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight>	</Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Tad]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Tad]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Tad]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Su]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Su]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Su]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Su]]></key>		<RotateRight><key><![CDATA[Vi]]></key><key><![CDATA[Tad]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source>	</Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Ryan]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Ryan]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Ryan]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Ryan]]></key>		<RotateRight><key><![CDATA[Sima]]></key><key><![CDATA[Nida]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source>		<RotateLeft><key><![CDATA[Lee]]></key><key><![CDATA[Nida]]></key><Source line="203" file="./tree.h" ><![CDATA[			root = other;]]></Source></RotateLeft>	</Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Lon]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Lon]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Lon]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Barb]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Barb]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Barb]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Barb]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Bret]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Bret]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Bret]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Bret]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Bret]]></key>		<RotateLeft><key><![CDATA[Barb]]></key><key><![CDATA[Bret]]></key><Source line="206" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source></RotateLeft><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source>		<RotateRight><key><![CDATA[Dale]]></key><key><![CDATA[Bret]]></key><Source line="232" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source></RotateRight>	</Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Jay]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Jay]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Jay]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Jay]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Neil]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Neil]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Neil]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Neva]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Neva]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Neva]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
-		insrt="true"
-	><key><![CDATA[Neva]]></key><Source line="727" file="./tree.h" ><![CDATA[			root=Bst<KT,VT>::insert(root,node,d);]]></Source></Item>	<Item 
+	><key><![CDATA[Neva]]></key><Number>3</Number></Item>	<Item 
 		erse="true"
-	><Source line="653" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<Transplant><key><![CDATA[Barb]]></key><key><![CDATA[NIL]]></key><Source line="447" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source><Source line="711" file="./tree.h" ><![CDATA[		return root;]]></Source></Transplant><key><![CDATA[Barb]]></key><Source line="673" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source><Source clrs="4" line="680" file="./tree.h" ><![CDATA[(4) 			X=pfound->Right();															]]></Source>	</Item>	<Item 
+	><key><![CDATA[Barb]]></key>		<Transplant><key><![CDATA[Barb]]></key><key><![CDATA[NIL]]></key><Source line="449" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source><Source line="713" file="./tree.h" ><![CDATA[		return root;]]></Source></Transplant><Source line="656" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source><Source line="675" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source><Source clrs="4" line="682" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>	</Item>	<Item 
 		erse="true"
-	><Source line="653" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<Transplant><key><![CDATA[Jay]]></key><key><![CDATA[NIL]]></key><Source line="447" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source><Source line="711" file="./tree.h" ><![CDATA[		return root;]]></Source></Transplant><key><![CDATA[Jay]]></key><Source line="673" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source><Source clrs="4" line="680" file="./tree.h" ><![CDATA[(4) 			X=pfound->Right();															]]></Source>	</Item></Tree>
+	><key><![CDATA[Jay]]></key>		<Transplant><key><![CDATA[Jay]]></key><key><![CDATA[NIL]]></key><Source line="449" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source><Source line="713" file="./tree.h" ><![CDATA[		return root;]]></Source></Transplant><Source line="656" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source><Source line="675" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source><Source clrs="4" line="682" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>	</Item></Tree>

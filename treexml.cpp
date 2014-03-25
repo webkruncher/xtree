@@ -90,6 +90,7 @@ namespace XmlTree
 	}
 
 	void TreeXml::Key(const string keyname) { payload().Key(keyname); }
+	void TreeXml::Number(const int a) { payload().Number(a); }
 	void TreeXml::Finish() { payload().Finish(); }
 	void TreeXml::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
 		{ payload().SourceTrace(fname,linendx,CLRSndx,sourcecode); }
@@ -108,6 +109,16 @@ namespace XmlTree
 		return n;
 	}
 
+	ostream& Item::operator<<(ostream& o)
+	{
+		if (Name()=="Tree")
+		{
+			o<<"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"<<endl<<endl;
+			o<<"<?xml-stylesheet type=\"text/xsl\" href=\"./trees.xslt\"?>"<<endl<<endl;
+		}
+		if ( (children.empty()) and (textsegments.empty()) and (attributes.empty()) ) return o;
+		return XmlNode::operator<<(o);
+	}
 
 
 	void Item::Insrt()
@@ -151,6 +162,15 @@ namespace XmlTree
 				XmlFamily::TextElement(GetDoc(),this,cd);
 	}
 
+	void Item::Number(const int a)
+	{
+		if (LastAction) { LastAction->Number(a); return; }
+		stringstream cd;
+		cd<<"<Number>"<<a<<"</Number>";
+			textsegments[textsegments.size()]=
+				XmlFamily::TextElement(GetDoc(),this,cd.str());
+	}
+
 	void Item::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
 	{
 		if (LastAction) { LastAction->SourceTrace(fname,linendx,CLRSndx,sourcecode); return; }
@@ -183,6 +203,7 @@ namespace XmlTree
 	void Payload::SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode)
 		{ item().SourceTrace(fname,linendx,CLRSndx,sourcecode); }
 	void Payload::Key(const string keyname) { item().Key(keyname); }
+	void Payload::Number(const int a) { item().Number(a); }
 	void Payload::Insrt() { item().Insrt(); }
 	void Payload::Erse() { item().Erse(); }
 	void Payload::Trnsp() { item().Trnsp(); }

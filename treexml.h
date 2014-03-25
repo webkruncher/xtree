@@ -54,6 +54,7 @@ namespace XmlTree
 		void Trnsp();
 		void Rotlft();
 		void Rotrgt();
+		void Number(const int a);
 		private:
 		Payload& payload();
 		void* xml;
@@ -75,7 +76,6 @@ namespace XmlTree
 			ret=new Item(_doc,parent,name); 
 			return ret;
 		}
-		virtual ostream& operator<<(ostream& o) { XmlNode::operator<<(o); return o;}
 		virtual bool operator()(ostream& o) { return XmlNode::operator()(o); }
 		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name),LastAction(NULL) {}
 		Item* Begin(Xml& _doc,XmlNode* parent);
@@ -87,6 +87,8 @@ namespace XmlTree
 		void Trnsp();
 		void Rotlft();
 		void Rotrgt();
+		void Number(const int a);
+		virtual ostream& operator<<(ostream&);
 		private:
 		Item* LastAction;
 	};
@@ -107,6 +109,7 @@ namespace XmlTree
 		void Trnsp();
 		void Rotlft();
 		void Rotrgt();
+		void Number(const int a);
 		private:
 		Item* current;
 		Item& item();

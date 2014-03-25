@@ -73,6 +73,7 @@ namespace TreeDisplay
 		TreeSource() : blank("----"),ndx(-1) {}	
 		const string& operator()(int line);
 		const int Ndx(){return ndx;}
+		const string SourceCode(){return sourcecode;}
 		private:
 		void Load()
 		{
@@ -81,7 +82,7 @@ namespace TreeDisplay
 			while (!in.eof()) {string line; getline(in,line); push_back(line);}
 		}
 		const string blank;
-		string txt;
+		string txt,sourcecode;
 		int ndx;
 	};
 
@@ -219,6 +220,7 @@ namespace TreeDisplay
 		{
 			Msg<<"["<<a<<"]";
 			this->stepper("Number");
+			treexml.Number(a);
 			return *this;
 		}
 
@@ -274,7 +276,7 @@ namespace TreeDisplay
 			if (file=="./tree.h") treetxt=treesource(line);
 			if (!treetxt.empty()) Msg<<endl<<line<<treetxt<<endl;
 			else Msg<<file<<line<<"; ";
-			treexml.SourceTrace(file,line,treesource.Ndx(),treetxt);
+			treexml.SourceTrace(file,line,treesource.Ndx(),treesource.SourceCode());
 			return *this;
 		}
 

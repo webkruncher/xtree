@@ -1,0 +1,43 @@
+
+
+.nodeframe
+{
+	border:inset;
+}
+
+.Key
+{
+	border:outset;
+	font-size:0.8em;
+	color:black;
+	margin-left:8px;
+	display:inline;
+}
+
+.Number
+{
+	border:single;
+	font-size:0.6em;
+	color:navy;
+	margin-left:6px;
+	display:inline;
+	vertical-align:top;
+}
+
+.MainAction
+{
+	font-size:1.4em;
+	color:green;
+}
+
+.SubAction
+{
+	font-size:1.0em;
+	color:purple;
+}
+
+.source
+{
+	font-size:0.7em;
+	color:gray;
+}

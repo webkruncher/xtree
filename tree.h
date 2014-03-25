@@ -328,6 +328,7 @@ namespace TreeObjects
 				{
 					return this->Left()->insert(root,node,d+1);
 				} else { 
+					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 					this->SetLeft(node);
 				}
 			} else {
@@ -335,6 +336,7 @@ namespace TreeObjects
 				{
 					return this->Right()->insert(root,node,d+1);
 				} else { 
+					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 					this->SetRight(node);
 				}
 			}
@@ -650,6 +652,7 @@ namespace TreeObjects
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{
 			Msg<<begin;
+			if (found) {Msg<<erse<<(*found); }
 			Trace
 			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());
 			Trunk* newroot(remove(root,found));
@@ -669,7 +672,6 @@ namespace TreeObjects
 
 	inline Trunk* RbBase::remove(Trunk* root,Trunk* pfound)
 	{
-		if (pfound) Msg<<erse<<(*pfound); 
 		Trace
 		Trunk& me(static_cast<Trunk&>(*this));
 		Trunk* Y(pfound);																		// 1
@@ -723,8 +725,6 @@ namespace TreeObjects
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
 			Msg<<begin;
-			if (node) {Msg<<insrt<<(*node); Msg.operator<<((int)d);}
-			Trace
 			root=Bst<KT,VT>::insert(root,node,d);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
