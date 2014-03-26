@@ -214,6 +214,7 @@ namespace TreeObjects
 		root->SetParent(GetNil());
 		Update(node,node->Parent());
 		Update(other,other->Parent());
+		Msg<<done;
 		return root;
 	}
 
@@ -240,6 +241,7 @@ namespace TreeObjects
 		root->SetParent(GetNil());
 		Update(node,node->Parent());
 		Update(other,other->Parent());
+		Msg<<done;
 		return root;
 	}
 
@@ -330,16 +332,16 @@ namespace TreeObjects
 				{
 					return this->Left()->insert(root,node,d+1);
 				} else { 
-					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 					this->SetLeft(node);
+					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 				}
 			} else {
 				if (!this->isnul(this->Right()))
 				{
 					return this->Right()->insert(root,node,d+1);
 				} else { 
-					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 					this->SetRight(node);
+					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 				}
 			}
 			return root;
@@ -458,6 +460,7 @@ namespace TreeObjects
 		if (v) v->SetParent(u->Parent());
 		Update(u,u->Parent());
 		if (v) Update(v,v->Parent());
+		Msg<<done;
 		return ret;
 	}
 
@@ -713,6 +716,7 @@ namespace TreeObjects
 		if (Ycolor==BLACK)																	// 21
 			if ((root) and (X)) return RedAndBlackDelete(root,X);//22
 		Trace
+		Msg<<done;
 		return root;
 	}
 

@@ -2,11 +2,40 @@
 
 <xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:output method="html" encoding="UTF-8" indent="yes" />
+<xsl:output method="html" version="5.0" encoding="UTF-8" indent="yes" />
 
 
 <xsl:template match="key" >
 	<div class="Key"><xsl:value-of select="." /></div>
+</xsl:template>
+
+<xsl:template name="subnode" >
+		<div style="display:none" > 
+			<xsl:attribute name="tag"><xsl:value-of select="name()" /></xsl:attribute>
+			<xsl:attribute name="value"><xsl:value-of select="text()" /></xsl:attribute>
+			<xsl:attribute name="color"><xsl:value-of select="@color" /></xsl:attribute>
+			<xsl:attribute name="depth"><xsl:value-of select="@depth" /></xsl:attribute>
+				<xsl:value-of select="name()" />:<xsl:value-of select="text()" />
+			<xsl:for-each select="*" ><xsl:call-template name="subnode" /></xsl:for-each>
+		</div>
+</xsl:template>
+
+<xsl:template match="subtree" >
+		<xsl:variable name="id"><xsl:value-of select="generate-id()" /></xsl:variable>
+		<div style="display:none"> 
+			<xsl:attribute name="id">v_<xsl:value-of select="$id" /></xsl:attribute>
+			<xsl:attribute name="value"><xsl:value-of select="text()" /></xsl:attribute>
+			<xsl:attribute name="color"><xsl:value-of select="@color" /></xsl:attribute>
+			<xsl:attribute name="depth"><xsl:value-of select="@depth" /></xsl:attribute>
+				<br /><xsl:value-of select="text()" /><br />
+			<xsl:for-each select="*" ><xsl:call-template name="subnode" /></xsl:for-each>
+		</div>
+		<canvas width="800" height="200" style="border:1px solid #000000;">
+			<xsl:attribute name="id"><xsl:value-of select="$id" /></xsl:attribute>
+		</canvas>
+		<script>
+			setTimeout("LoadSubTree('<xsl:value-of select='$id' />',400,10,800,200)",300)
+		</script>
 </xsl:template>
 
 <xsl:template match="Number" >

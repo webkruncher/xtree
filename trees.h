@@ -112,6 +112,16 @@ namespace TreeDisplay
 			const KT kwhat(this->tokt(what));
 			return this->tostr(this->ParentOf(kwhat));
 		}
+		const int SDepthOf(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->DepthOf(kwhat);
+		}
+		const string SColorOf(const string what) const
+		{
+			const KT kwhat(this->tokt(what));
+			return this->ColorOf(kwhat);
+		}
 		const string SLeftOf(const string what) const
 		{
 			const KT kwhat(this->tokt(what));
@@ -127,6 +137,8 @@ namespace TreeDisplay
 		virtual const bool HasLeft(const KT what) const = 0;
 		virtual const bool HasRight(const KT what) const = 0;
 		virtual const KT ParentOf(const KT what) const = 0;
+		virtual const int DepthOf(const KT what) const = 0;
+		virtual const string ColorOf(const KT what) const = 0;
 		virtual const KT LeftOf(const KT what) const = 0;
 		virtual const KT RightOf(const KT what) const = 0;
 	};
@@ -371,6 +383,8 @@ namespace TreeDisplay
 		const bool HasLeft(const KT what) const;
 		const bool HasRight(const KT what) const;
 		const KT ParentOf(const KT what) const;
+		const int DepthOf(const KT what) const;
+		const string ColorOf(const KT what) const;
 		const KT LeftOf(const KT what)  const;
 		const KT RightOf(const KT what)  const;
 	};

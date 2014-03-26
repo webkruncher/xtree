@@ -102,17 +102,16 @@ namespace XmlTree
 	void TreeXml::Rotlft() { payload().Rotlft(); }
 	void TreeXml::Rotrgt() { payload().Rotrgt(); }
 
-	Item::operator const TreeXml& () 
-	{
-		Xml& doc(GetDoc());
-		Payload& payload(static_cast<Payload&>(doc));
-		return payload;
-	}
+	Item::operator Payload& () { Xml& doc(GetDoc()); return static_cast<Payload&>(doc); }
+	Item::operator const TreeXml& () { Payload& payload(*this); return payload; }
+	Item::operator SubTreePrinter& () { Payload& payload(*this); return payload;	}
 
 	Item* Item::Begin(Xml& _doc,XmlNode* parent)
 	{
 		Item* n(static_cast<Item*>(NewNode(_doc,parent,"Item")));
 		appendChild(n);
+		SubTreePrinter& stp(*this);
+		stp.clear();
 		return n;
 	}
 
@@ -124,19 +123,23 @@ namespace XmlTree
 			o<<"<?xml-stylesheet type=\"text/xsl\" href=\"./trees.xslt\"?>"<<endl<<endl;
 		}
 		if ( (children.empty()) and (textsegments.empty()) and (attributes.empty()) ) return o;
-		return XmlNode::operator<<(o);
+		return XmlNode::operator<<(o)<<endl;
 	}
 
 
 	void Item::Insrt()
 	{
 		attributes["insrt"]=XmlFamily::TextElement(Document,this,"true");
+		SubTreePrinter& stp(*this);
+		stp.Insrt();
 	}
 
 
 	void Item::Erse()
 	{
 		attributes["erse"]=XmlFamily::TextElement(Document,this,"true");
+		SubTreePrinter& stp(*this);
+		stp.Erse();
 	}
 
 	void Item::Trnsp()
@@ -144,6 +147,8 @@ namespace XmlTree
 		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"Transplant")));
 		appendChild(n);
 		LastAction=n;
+		SubTreePrinter& stp(*this);
+		stp.Trnsp();
 	}
 
 	void Item::Done()
@@ -151,6 +156,14 @@ namespace XmlTree
 		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"Done")));
 		appendChild(n);
 		LastAction=n;
+		SubTreePrinter& stp(*this);
+		stp.Done();
+	}
+	void Item::Finish()
+	{
+		SubTreePrinter& stp(*this);
+		stp.Finish();
+		LastAction=NULL;
 	}
 
 	void Item::Rotlft()
@@ -158,6 +171,8 @@ namespace XmlTree
 		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"RotateLeft")));
 		appendChild(n);
 		LastAction=n;
+		SubTreePrinter& stp(*this);
+		stp.Rotlft();
 	}
 
 	void Item::Rotrgt()
@@ -165,23 +180,28 @@ namespace XmlTree
 		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"RotateRight")));
 		appendChild(n);
 		LastAction=n;
+		SubTreePrinter& stp(*this);
+		stp.Rotrgt();
+	}
+
+	Item& Item::SubItem(string subname)
+	{
+		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,subname)));
+		appendChild(n);
+		return *n;
 	}
 
 	void Item::Key(const string keyname)
 	{
 		if (LastAction) { LastAction->Key(keyname); return; }
 		const TreeXml& treexml(*this);
-		string cd("<key><![CDATA[");
-		cd+=keyname; cd+="]]></key>";
-			textsegments[textsegments.size()]=
-				XmlFamily::TextElement(GetDoc(),this,cd);
+		Item& subitem(SubItem("key"));
 
-		if (!treexml.SIsRoot(keyname))
-			cout<<keyname<<" has a parent named "<<treexml.SParentOf(keyname)<<endl;
-		if (treexml.SHasLeft(keyname))
-			cout<<keyname<<" has a left child named "<<treexml.SLeftOf(keyname)<<endl;
-		if (treexml.SHasRight(keyname))
-			cout<<keyname<<" has a right child named "<<treexml.SRightOf(keyname)<<endl;
+		subitem.textsegments[subitem.textsegments.size()]=
+			XmlFamily::TextElement(GetDoc(),&subitem,keyname);
+
+		SubTreePrinter& stp(*this);
+		stp.Key(keyname,this);
 	}
 
 	void Item::Number(const int a)
@@ -233,6 +253,100 @@ namespace XmlTree
 	void Payload::Rotlft() { item().Rotlft(); }
 	void Payload::Rotrgt() { item().Rotrgt(); }
 
+	void SubTreePrinter::clear() 
+	{ 
+		current=NULL; recent.clear(); 
+		mainmode=None; submode=NoSub;
+	}
+
+	void SubTreePrinter::Insrt()
+	{
+		mainmode=Inserting;
+	}
+
+	void SubTreePrinter::Erse()
+	{
+		mainmode=Removing;
+	}
+
+	void SubTreePrinter::Trnsp()
+	{
+		submode=Transplanting;
+		Print();
+	}
+
+	void SubTreePrinter::Done()
+	{
+		Print();
+	}
+
+	void SubTreePrinter::Finish()
+	{
+		Print();
+	}
+
+	void SubTreePrinter::Rotlft()
+	{
+		submode=LeftRotating;
+		Print();
+	}
+
+	void SubTreePrinter::Rotrgt()
+	{
+		submode=RightRotating;
+		Print();
+	}
+
+	void SubTreePrinter::Key(const string keyname,XmlNode* node)
+	{
+		current=node;
+		recent.push_back(keyname);
+		while (recent.size()>2) recent.pop_front();
+		Print();
+	}
+
+	void AppendSubTree(XmlNode& node,const string disposition,const string keyname,TreeXml& xmltree,const int depth)
+	{
+		if (!depth) return;
+		Item& I(static_cast<Item&>(node));
+		Item& subitems(I.SubItem(disposition));
+		subitems=keyname;
+		const string color(xmltree.SColorOf(keyname));
+		subitems.attributes["color"]=XmlFamily::TextElement(node.GetDoc(),&subitems,color);
+		const int keydepth(xmltree.SDepthOf(keyname));
+		stringstream sd; sd<<keydepth; string sdepth; sdepth=sd.str().c_str();
+cout<<"Depth of "<<keyname<<" "<<keydepth<<endl;
+		subitems.attributes["depth"]=XmlFamily::TextElement(node.GetDoc(),&subitems,sdepth);
+		if (xmltree.SHasLeft(keyname))
+		{
+			const string sub(xmltree.SLeftOf(keyname));
+			AppendSubTree(subitems,"LeftTree",sub,xmltree,depth-1);
+		}
+		if (xmltree.SHasRight(keyname))
+		{
+			const string sub(xmltree.SRightOf(keyname));
+			AppendSubTree(subitems,"RightTree",sub,xmltree,depth-1);
+		}
+	}
+
+	void SubTreePrinter::Print()
+	{
+		if (!current) throw string("No current node");
+		if (recent.empty()) throw string("No recent nodes");
+		TreeXml& xmltree(payload);
+
+		for (int N=0;N<recent.size();N++)
+		{
+			if (N>1) return;
+			string me(recent[N]);
+			string parent,grandparent;
+			if (xmltree.SIsRoot(me)) {AppendSubTree(*current,"subtree",me,xmltree,5);return;}
+			parent=xmltree.SParentOf(me);
+			if (xmltree.SIsRoot(parent)) {AppendSubTree(*current,"subtree",parent,xmltree,6);return;}
+			grandparent=xmltree.SParentOf(parent);
+			AppendSubTree(*current,"subtree",grandparent,xmltree,7);
+		}
+	}
 
 } // XmlTree
 

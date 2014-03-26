@@ -427,9 +427,7 @@ namespace TreeDisplay
 		BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
 		BstBase<KT>* found(nk.find(what));
 		if (!found) return true;
-		BstBase<KT>* parent(static_cast<BstBase<KT>*>(found->Parent()));
-		if (root->isnul(parent)) return true;
-		return false;
+		return (root==found);
 	}
 
 	template <typename KT>
@@ -466,6 +464,39 @@ namespace TreeDisplay
 			BstBase<KT>* parent(static_cast<BstBase<KT>*>(found->Parent()));
 			if (root->isnul(parent)) throw string("Parent is null");
 			return (*parent);
+		}
+
+	template <typename KT>
+		const int TreeCanvas<KT>::DepthOf(const KT what) const
+		{
+			if (!root) throw string("No root");
+			BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+			Trunk* found(nk.find(what));
+			if (root->isnul(found)) return -1;
+			int ret(0);
+			while (!(root->isnul(found)) and (root!=found) )
+			{
+				if (ret>20) return -99999;
+				if (root->isnul(found)) return ret;
+				found=found->Parent();
+				if (!found) return ret;
+				ret++;
+			}
+			return ret;
+		}
+
+	template <typename KT>
+		const string TreeCanvas<KT>::ColorOf(const KT what) const
+		{
+			if (!root) throw string("No root");
+			BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+			BstBase<KT>* found(nk.find(what));
+			if (!found) return "white";
+			// USING RTTI
+			Bst<KT,VT>* bst(dynamic_cast<Bst<KT,VT>*>(found));
+			if (!bst) throw string("This is not a map node");
+			const unsigned long c(bst->Data().GetColor());
+			if (c&0XFF0000) return "red"; else return "black";
 		}
 
 	template <typename KT>

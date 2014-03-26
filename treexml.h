@@ -60,6 +60,8 @@ namespace XmlTree
 		virtual const bool SHasLeft(const string what) const = 0;
 		virtual const bool SHasRight(const string what) const = 0;
 		virtual const string SParentOf(const string what) const = 0; 
+		virtual const int SDepthOf(const string what) const = 0; 
+		virtual const string SColorOf(const string what) const = 0; 
 		virtual const string SLeftOf(const string what) const = 0; 
 		virtual const string SRightOf(const string what) const = 0; 
 		private:
@@ -74,6 +76,27 @@ namespace XmlTree
 	// This area is for treexml objects only
 	// and not seen by the user code.
 
+	struct SubTreePrinter
+	{
+		SubTreePrinter(Payload& _payload) : current(NULL), mainmode(None),submode(NoSub),payload(_payload) {}
+		void clear();
+		void Insrt();
+		void Erse();
+		void Trnsp();
+		void Done();
+		void Finish();
+		void Rotlft();
+		void Rotrgt();
+		void Key(const string keyname,XmlNode*);
+		private:
+		enum MainMode { None, Inserting, Removing } mainmode;
+		enum SubMode { NoSub, LeftRotating, RightRotating,Transplanting,FixupInsert,FixupDelete } submode;
+		Payload& payload;
+		XmlNode* current;
+		deque<string> recent;
+		void Print();
+	};
+
 	struct Item : XmlNode
 	{
 		friend struct Payload;
@@ -87,7 +110,7 @@ namespace XmlTree
 		Item(Xml& _doc,const XmlNodeBase* _parent,stringtype _name) : XmlNode(_doc,_parent,_name),LastAction(NULL) {}
 		Item* Begin(Xml& _doc,XmlNode* parent);
 		void Done();
-		void Finish(){LastAction=NULL;}
+		void Finish();
 		void SourceTrace(const string fname,const int linendx,const int CLRSndx,const string sourcecode);
 		void Insrt();
 		void Erse();
@@ -97,15 +120,19 @@ namespace XmlTree
 		void Rotrgt();
 		void Number(const int a);
 		virtual ostream& operator<<(ostream&);
+		Item& SubItem(string name);
+		void operator=(string what) { textsegments[textsegments.size()]=XmlFamily::TextElement(GetDoc(),this,what); }
 		private:
 		Item* LastAction;
 		operator const TreeXml& () ;
+		operator Payload& () ;
+		operator SubTreePrinter& () ;
 	};
 	inline ostream& operator<<(ostream& o,Item& xmlnode){return xmlnode.operator<<(o);}
 
 	struct Payload : Xml
 	{
-		Payload(TreeXml& _treexml) : current(NULL),treexml(_treexml) {}
+		Payload(TreeXml& _treexml) : current(NULL),treexml(_treexml),subtreeprinter(*this) {}
 		virtual XmlNode* NewNode(Xml& _doc,stringtype name) { return new Item(_doc,NULL,name); }
 		ostream& operator<<(ostream& o) { Xml::operator<<(o); return o;}
 		operator Item& () { if (!Root) throw string("No root node"); return static_cast<Item&>(*Root); }
@@ -120,13 +147,16 @@ namespace XmlTree
 		void Rotlft();
 		void Rotrgt();
 		void Number(const int a);
-		operator const TreeXml& (){return treexml;}
+		operator TreeXml& (){return treexml;}
+		operator SubTreePrinter& (){return subtreeprinter;}
 		private:
 		Item* current;
 		Item& item();
 		TreeXml& treexml;
+		SubTreePrinter subtreeprinter;
 	};
 	inline ostream& operator<<(ostream& o,Payload& xml){return xml.operator<<(o);}
+
 	
 	#endif //TREEXML
 

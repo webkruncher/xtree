@@ -86,6 +86,7 @@ namespace TreeDisplay
 			//cout<<"("<<dec<<Removing<<boolalpha<<Removed<<")";
 			return Removed;
 		}
+		const unsigned long GetColor() const {return color;}
 		protected: 
 		bool moved;
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap);
