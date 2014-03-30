@@ -2,7 +2,8 @@
 
 .nodeframe
 {
-	border:inset;
+	border:double;
+	margin-left:10px;
 }
 
 .Key
@@ -26,7 +27,7 @@
 
 .MainAction
 {
-	font-size:1.4em;
+	font-size:1.0em;
 	color:green;
 }
 

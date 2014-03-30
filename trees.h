@@ -47,6 +47,7 @@ namespace TreeDisplay
 		void stepper(string msg);
 		void Load();
 		private: 
+		virtual void Clear() = 0;
 		const string fname; bool loaded;
 		bool& stop;
 		bool& movement;
@@ -54,7 +55,7 @@ namespace TreeDisplay
 		string cmd;
 		virtual void Read(string) =0;
 		protected:
-		enum States {Running,Stepping,Next} state;
+		enum States {Running,Stepping,Next,Continuing} state;
 		virtual void Describe() = 0;
 	};
 
@@ -64,6 +65,10 @@ namespace TreeDisplay
 		Trapper(const string _trapname,ostream& _tout,bool& _stop,bool& _movement) : Trap(_trapname,_tout,_stop,_movement) {}
 		void trap(const CurrentActions,const KT&){}
 		private:
+		virtual void Clear()
+		{
+			InsertBreakPoints.clear();EraseBreakPoints.clear();
+		}
 		set<KT> InsertBreakPoints,EraseBreakPoints;
 		virtual void Read(string){} 
 	};

@@ -51,6 +51,14 @@ namespace TreeObjects
 		{
 			if ((root) and (!root->isnil()) ) delete root;
 		}
+		RbSet<KT>* find(const KT key)
+		{
+			if (!root) return NULL;
+			if (root->isnil()) return NULL;
+			TreeBase* found(root->find(key));
+			if (!found) return NULL;
+			return static_cast<RbSet<KT>*>(found);
+		}
 		void erase(const KT key)
 		{
 			if (!root) return;
@@ -96,7 +104,7 @@ namespace TreeObjects
 			if (isnul(node)) node=root;
 			if (!isnul(node->Left())) inorder(node->Left());	
 			RbSet<KT>& item(static_cast<RbSet<KT>& >(*node)); 
-			const KT& key(item); //cout<<"!"<<key<<"!";
+			const KT& key(item); cout<<"!"<<key<<"!";
 			if (!isnul(node->Right())) inorder(node->Right());	
 		}
 		operator BstBase<KT>* () const {return root;}

@@ -13,7 +13,9 @@
 				depth="1"
 			>Cira</LeftTree>
 		</subtree>
-		<Done>			<key>Cira</key>
+		<Item 
+			done="true"
+		>			<key>Cira</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -30,7 +32,7 @@
 					depth="1"
 				>Cira</LeftTree>
 			</subtree>
-		</Done>
+		</Item>
 		<subtree 
 			color="black"
 			depth="0"
@@ -55,20 +57,8 @@
 				>Eryn</RightTree>
 			</LeftTree>
 		</subtree>
-		<RotateLeft><Source line="208" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source>			<key>Cira</key>
-			<subtree 
-				color="black"
-				depth="0"
-			>Sean				<LeftTree 
-					color="red"
-					depth="1"
-				>Cira					<RightTree 
-						color="red"
-						depth="2"
-					>Eryn</RightTree>
-				</LeftTree>
-			</subtree>
-			<subtree 
+		<RotateLeft><Source clrs="2" line="202" file="./tree.h" ><![CDATA[		node->SetRight(other->Left());												]]></Source>			<key>Cira</key>
+<Source clrs="8" line="212" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() )								]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Sean				<LeftTree 
@@ -93,35 +83,12 @@
 					>Eryn</RightTree>
 				</LeftTree>
 			</subtree>
+			<key>Cira</key>
 			<subtree 
 				color="black"
 				depth="0"
 			>Sean				<LeftTree 
 					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="red"
-						depth="2"
-					>Cira</LeftTree>
-				</LeftTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Sean				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="red"
-						depth="2"
-					>Cira</LeftTree>
-				</LeftTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="0"
-			>Sean				<LeftTree 
-					color="black"
 					depth="1"
 				>Eryn					<LeftTree 
 						color="red"
@@ -154,8 +121,8 @@
 				>Eryn</RightTree>
 			</LeftTree>
 		</subtree>
-		<RotateRight><Source line="232" file="./tree.h" ><![CDATA[			root = other;]]></Source>			<key>Sean</key>
-			<subtree 
+		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Sean</key>
+<Source clrs="7" line="239" file="./tree.h" ><![CDATA[			root = other;																				]]></Source>			<subtree 
 				color="red"
 				depth="0"
 			>Sean				<LeftTree 
@@ -180,25 +147,28 @@
 					>Cira</LeftTree>
 				</LeftTree>
 			</subtree>
+			<key>Sean</key>
 			<subtree 
-				color="red"
-				depth="0"
-			>Sean</subtree>
+				color="white"
+				depth="-1"
+			>Eryn</subtree>
 			<subtree 
-				color="red"
-				depth="0"
-			>Sean</subtree>
+				color="white"
+				depth="-1"
+			>Eryn</subtree>
 		</RotateRight>
-		<Done>			<key>Eryn</key>
+		<Item 
+			done="true"
+		>			<key>Eryn</key>
 			<subtree 
-				color="white"
-				depth="-1"
-			>Eryn</subtree>
+				color="red"
+				depth="0"
+			>Sean</subtree>
 			<subtree 
-				color="white"
-				depth="-1"
-			>Eryn</subtree>
-		</Done>
+				color="red"
+				depth="0"
+			>Sean</subtree>
+		</Item>
 	</Item>
 	<Item 
 		insrt="true"
@@ -219,7 +189,9 @@
 				depth="1"
 			>Sean</RightTree>
 		</subtree>
-		<Done>			<key>Beau</key>
+		<Item 
+			done="true"
+		>			<key>Beau</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -252,39 +224,7 @@
 					depth="1"
 				>Sean</RightTree>
 			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Sean</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Sean</RightTree>
-			</subtree>
-		</Done>
+		</Item>
 		<subtree 
 			color="black"
 			depth="0"
@@ -325,7 +265,9 @@
 				>Maya</LeftTree>
 			</RightTree>
 		</subtree>
-		<Done>			<key>Maya</key>
+		<Item 
+			done="true"
+		>			<key>Maya</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -366,47 +308,7 @@
 					>Maya</LeftTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Sean					<LeftTree 
-						color="red"
-						depth="2"
-					>Maya</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Sean					<LeftTree 
-						color="red"
-						depth="2"
-					>Maya</LeftTree>
-				</RightTree>
-			</subtree>
-		</Done>
+		</Item>
 		<subtree 
 			color="black"
 			depth="0"
@@ -433,30 +335,30 @@
 	><Number>2</Number>		<key>Lupe</key>
 		<subtree 
 			color="black"
-			depth="1"
-		>Sean			<LeftTree 
-				color="red"
-				depth="2"
-			>Maya				<LeftTree 
-					color="black"
-					depth="3"
-				>Lupe</LeftTree>
+			depth="0"
+		>Eryn			<LeftTree 
+				color="black"
+				depth="1"
+			>Cira				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau</LeftTree>
 			</LeftTree>
-		</subtree>
-		<RotateRight><Source line="235" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source>			<key>Sean</key>
-			<subtree 
-				color="red"
+			<RightTree 
+				color="black"
 				depth="1"
 			>Sean				<LeftTree 
-					color="black"
+					color="red"
 					depth="2"
 				>Maya					<LeftTree 
-						color="red"
+						color="black"
 						depth="3"
 					>Lupe</LeftTree>
 				</LeftTree>
-			</subtree>
-			<subtree 
+			</RightTree>
+		</subtree>
+		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Sean</key>
+<Source clrs="8" line="242" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() )							]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Eryn				<LeftTree 
@@ -505,54 +407,7 @@
 					</LeftTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="red"
-						depth="2"
-					>Lupe</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Sean</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="red"
-						depth="2"
-					>Lupe</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Sean</RightTree>
-				</RightTree>
-			</subtree>
+			<key>Sean</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -603,18 +458,32 @@
 			</subtree>
 		</RotateRight>
 		<subtree 
-			color="red"
-			depth="1"
-		>Sean			<LeftTree 
+			color="black"
+			depth="0"
+		>Eryn			<LeftTree 
 				color="black"
-				depth="2"
-			>Maya				<LeftTree 
+				depth="1"
+			>Cira				<LeftTree 
 					color="red"
-					depth="3"
-				>Lupe</LeftTree>
+					depth="2"
+				>Beau</LeftTree>
 			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Sean				<LeftTree 
+					color="black"
+					depth="2"
+				>Maya					<LeftTree 
+						color="red"
+						depth="3"
+					>Lupe</LeftTree>
+				</LeftTree>
+			</RightTree>
 		</subtree>
-		<Done>			<key>Lupe</key>
+		<Item 
+			done="true"
+		>			<key>Lupe</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -663,234 +532,262 @@
 					>Sean</RightTree>
 				</RightTree>
 			</subtree>
-		</Done>
+		</Item>
 	</Item>
 	<Item 
 		insrt="true"
 	><Number>2</Number>		<key>Marc</key>
 		<subtree 
 			color="black"
-			depth="1"
-		>Maya			<LeftTree 
-				color="red"
-				depth="2"
-			>Lupe				<RightTree 
-					color="black"
-					depth="3"
-				>Marc</RightTree>
-			</LeftTree>
-			<RightTree 
-				color="red"
-				depth="2"
-			>Sean</RightTree>
-		</subtree>
-		<Done>			<key>Marc</key>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-		</Done>
-		<subtree 
-			color="red"
-			depth="1"
-		>Maya			<LeftTree 
+			depth="0"
+		>Eryn			<LeftTree 
 				color="black"
-				depth="2"
-			>Lupe				<RightTree 
+				depth="1"
+			>Cira				<LeftTree 
 					color="red"
-					depth="3"
-				>Marc</RightTree>
+					depth="2"
+				>Beau</LeftTree>
 			</LeftTree>
 			<RightTree 
 				color="black"
-				depth="2"
-			>Sean</RightTree>
+				depth="1"
+			>Maya				<LeftTree 
+					color="red"
+					depth="2"
+				>Lupe					<RightTree 
+						color="black"
+						depth="3"
+					>Marc</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
+		</subtree>
+		<Item 
+			done="true"
+		>			<key>Marc</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau</LeftTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Lupe						<RightTree 
+							color="red"
+							depth="3"
+						>Marc</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau</LeftTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Lupe						<RightTree 
+							color="red"
+							depth="3"
+						>Marc</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<subtree 
+			color="black"
+			depth="0"
+		>Eryn			<LeftTree 
+				color="black"
+				depth="1"
+			>Cira				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau</LeftTree>
+			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Lupe					<RightTree 
+						color="red"
+						depth="3"
+					>Marc</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
 		</subtree>
 	</Item>
 	<Item 
 		insrt="true"
 	><Number>2</Number>		<key>Gary</key>
 		<subtree 
-			color="red"
-			depth="1"
-		>Maya			<LeftTree 
+			color="black"
+			depth="0"
+		>Eryn			<LeftTree 
 				color="black"
-				depth="2"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
+				depth="1"
+			>Cira				<LeftTree 
 					color="red"
-					depth="3"
-				>Marc</RightTree>
+					depth="2"
+				>Beau</LeftTree>
 			</LeftTree>
 			<RightTree 
-				color="black"
-				depth="2"
-			>Sean</RightTree>
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Lupe					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Marc</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
 		</subtree>
-		<Done>			<key>Gary</key>
+		<Item 
+			done="true"
+		>			<key>Gary</key>
 			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Lupe					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Marc</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean</RightTree>
-			</subtree>
-		</Done>
-		<subtree 
-			color="red"
-			depth="1"
-		>Maya			<LeftTree 
 				color="black"
-				depth="2"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="3"
-				>Gary</LeftTree>
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau</LeftTree>
+				</LeftTree>
 				<RightTree 
 					color="red"
-					depth="3"
-				>Marc</RightTree>
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Lupe						<LeftTree 
+							color="red"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Marc</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau</LeftTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Lupe						<LeftTree 
+							color="red"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Marc</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<subtree 
+			color="black"
+			depth="0"
+		>Eryn			<LeftTree 
+				color="black"
+				depth="1"
+			>Cira				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau</LeftTree>
 			</LeftTree>
 			<RightTree 
-				color="black"
-				depth="2"
-			>Sean</RightTree>
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Lupe					<LeftTree 
+						color="red"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Marc</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
 		</subtree>
 	</Item>
 	<Item 
@@ -898,38 +795,42 @@
 	><Number>3</Number>		<key>Gina</key>
 		<subtree 
 			color="black"
-			depth="2"
-		>Lupe			<LeftTree 
-				color="red"
-				depth="3"
-			>Gary				<RightTree 
-					color="black"
-					depth="4"
-				>Gina</RightTree>
+			depth="0"
+		>Eryn			<LeftTree 
+				color="black"
+				depth="1"
+			>Cira				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau</LeftTree>
 			</LeftTree>
 			<RightTree 
 				color="red"
-				depth="3"
-			>Marc</RightTree>
-		</subtree>
-		<RotateRight><Source line="235" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source>			<key>Maya</key>
-			<subtree 
-				color="red"
-				depth="2"
-			>Lupe				<LeftTree 
+				depth="1"
+			>Maya				<LeftTree 
 					color="black"
-					depth="3"
-				>Gary					<RightTree 
+					depth="2"
+				>Lupe					<LeftTree 
 						color="red"
-						depth="4"
-					>Gina</RightTree>
+						depth="3"
+					>Gary						<RightTree 
+							color="black"
+							depth="4"
+						>Gina</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Marc</RightTree>
 				</LeftTree>
 				<RightTree 
 					color="black"
-					depth="3"
-				>Marc</RightTree>
-			</subtree>
-			<subtree 
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
+		</subtree>
+		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Maya</key>
+<Source clrs="8" line="242" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() )							]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Eryn				<LeftTree 
@@ -1002,6 +903,7 @@
 					>Sean</RightTree>
 				</RightTree>
 			</subtree>
+			<key>Maya</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -1015,78 +917,6 @@
 				</LeftTree>
 				<RightTree 
 					color="red"
-					depth="1"
-				>Lupe					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary						<RightTree 
-							color="red"
-							depth="3"
-						>Gina</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Maya						<LeftTree 
-							color="black"
-							depth="3"
-						>Marc</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Sean</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Lupe					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary						<RightTree 
-							color="red"
-							depth="3"
-						>Gina</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Maya						<LeftTree 
-							color="black"
-							depth="3"
-						>Marc</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Sean</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
 					depth="1"
 				>Lupe					<LeftTree 
 						color="black"
@@ -1148,23 +978,43 @@
 			</subtree>
 		</RotateRight>
 		<subtree 
-			color="red"
-			depth="2"
-		>Lupe			<LeftTree 
+			color="black"
+			depth="0"
+		>Eryn			<LeftTree 
 				color="black"
-				depth="3"
-			>Gary				<RightTree 
+				depth="1"
+			>Cira				<LeftTree 
 					color="red"
-					depth="4"
-				>Gina</RightTree>
+					depth="2"
+				>Beau</LeftTree>
 			</LeftTree>
 			<RightTree 
-				color="black"
-				depth="3"
-			>Marc</RightTree>
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="red"
+					depth="2"
+				>Lupe					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary						<RightTree 
+							color="red"
+							depth="4"
+						>Gina</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Marc</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
 		</subtree>
-		<RotateLeft><Source line="205" file="./tree.h" ><![CDATA[			root = other;]]></Source>			<key>Eryn</key>
-			<subtree 
+		<RotateLeft><Source clrs="2" line="202" file="./tree.h" ><![CDATA[		node->SetRight(other->Left());												]]></Source>			<key>Eryn</key>
+<Source clrs="7" line="209" file="./tree.h" ><![CDATA[			root = other;																				]]></Source>			<subtree 
 				color="red"
 				depth="0"
 			>Eryn				<LeftTree 
@@ -1237,87 +1087,106 @@
 					</RightTree>
 				</RightTree>
 			</subtree>
+			<key>Eryn</key>
 			<subtree 
-				color="red"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Gary					<RightTree 
-						color="red"
-						depth="2"
-					>Gina</RightTree>
-				</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Lupe</subtree>
 			<subtree 
-				color="red"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="red"
-						depth="2"
-					>Beau</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Gary					<RightTree 
-						color="red"
-						depth="2"
-					>Gina</RightTree>
-				</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Lupe</subtree>
 		</RotateLeft>
-		<Done>			<key>Gina</key>
+		<Item 
+			done="true"
+		>			<key>Gina</key>
 			<subtree 
-				color="white"
-				depth="-1"
-			>Lupe</subtree>
+				color="red"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau</LeftTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Gary					<RightTree 
+						color="red"
+						depth="2"
+					>Gina</RightTree>
+				</RightTree>
+			</subtree>
 			<subtree 
-				color="white"
-				depth="-1"
-			>Lupe</subtree>
-		</Done>
+				color="red"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau</LeftTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Gary					<RightTree 
+						color="red"
+						depth="2"
+					>Gina</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
 	</Item>
 	<Item 
 		insrt="true"
 	><Number>3</Number>		<key>Adah</key>
 		<subtree 
 			color="black"
-			depth="2"
-		>Cira			<LeftTree 
+			depth="0"
+		>Lupe			<LeftTree 
 				color="red"
-				depth="3"
-			>Beau				<LeftTree 
+				depth="1"
+			>Eryn				<LeftTree 
 					color="black"
-					depth="4"
-				>Adah</LeftTree>
-			</LeftTree>
-		</subtree>
-		<RotateRight><Source line="235" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source>			<key>Cira</key>
-			<subtree 
-				color="red"
-				depth="2"
-			>Cira				<LeftTree 
-					color="black"
-					depth="3"
-				>Beau					<LeftTree 
+					depth="2"
+				>Cira					<LeftTree 
 						color="red"
-						depth="4"
-					>Adah</LeftTree>
+						depth="3"
+					>Beau						<LeftTree 
+							color="black"
+							depth="4"
+						>Adah</LeftTree>
+					</LeftTree>
 				</LeftTree>
-			</subtree>
-			<subtree 
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gary					<RightTree 
+						color="red"
+						depth="3"
+					>Gina</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
+		</subtree>
+		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Cira</key>
+<Source clrs="8" line="242" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() )							]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
@@ -1398,54 +1267,7 @@
 					>Sean</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Cira					<LeftTree 
-						color="black"
-						depth="3"
-					>Beau						<LeftTree 
-							color="red"
-							depth="4"
-						>Adah</LeftTree>
-					</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gary					<RightTree 
-						color="red"
-						depth="3"
-					>Gina</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gary					<RightTree 
-						color="red"
-						depth="3"
-					>Gina</RightTree>
-				</RightTree>
-			</subtree>
+			<key>Cira</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -1484,30 +1306,6 @@
 						color="black"
 						depth="2"
 					>Sean</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gary					<RightTree 
-						color="red"
-						depth="3"
-					>Gina</RightTree>
 				</RightTree>
 			</subtree>
 			<subtree 
@@ -1552,18 +1350,48 @@
 			</subtree>
 		</RotateRight>
 		<subtree 
-			color="red"
-			depth="2"
-		>Cira			<LeftTree 
-				color="black"
-				depth="3"
-			>Beau				<LeftTree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
 					color="red"
-					depth="4"
-				>Adah</LeftTree>
+					depth="2"
+				>Cira					<LeftTree 
+						color="black"
+						depth="3"
+					>Beau						<LeftTree 
+							color="red"
+							depth="4"
+						>Adah</LeftTree>
+					</LeftTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gary					<RightTree 
+						color="red"
+						depth="3"
+					>Gina</RightTree>
+				</RightTree>
 			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean</RightTree>
+			</RightTree>
 		</subtree>
-		<Done>			<key>Adah</key>
+		<Item 
+			done="true"
+		>			<key>Adah</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -1605,30 +1433,6 @@
 				</RightTree>
 			</subtree>
 			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gary					<RightTree 
-						color="red"
-						depth="3"
-					>Gina</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
@@ -1668,61 +1472,57 @@
 					>Sean</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gary					<RightTree 
-						color="red"
-						depth="3"
-					>Gina</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
+		</Item>
 	</Item>
 	<Item 
 		insrt="true"
 	><Number>3</Number>		<key>Kip</key>
 		<subtree 
 			color="black"
-			depth="2"
-		>Gary			<RightTree 
+			depth="0"
+		>Lupe			<LeftTree 
 				color="red"
-				depth="3"
-			>Gina				<RightTree 
+				depth="1"
+			>Eryn				<LeftTree 
 					color="black"
-					depth="4"
-				>Kip</RightTree>
+					depth="2"
+				>Beau					<LeftTree 
+						color="red"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Cira</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gary					<RightTree 
+						color="red"
+						depth="3"
+					>Gina						<RightTree 
+							color="black"
+							depth="4"
+						>Kip</RightTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean</RightTree>
 			</RightTree>
 		</subtree>
-		<RotateLeft><Source line="208" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source>			<key>Gary</key>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gary				<RightTree 
-					color="black"
-					depth="3"
-				>Gina					<RightTree 
-						color="red"
-						depth="4"
-					>Kip</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
+		<RotateLeft><Source clrs="2" line="202" file="./tree.h" ><![CDATA[		node->SetRight(other->Left());												]]></Source>			<key>Gary</key>
+<Source clrs="8" line="212" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() )								]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
@@ -1811,7 +1611,100 @@
 					>Sean</RightTree>
 				</RightTree>
 			</subtree>
+			<key>Gary</key>
 			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="red"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Cira</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="red"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Kip</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="red"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Cira</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="red"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Kip</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean</RightTree>
+				</RightTree>
+			</subtree>
+		</RotateLeft>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
 				color="red"
 				depth="1"
 			>Eryn				<LeftTree 
@@ -1838,165 +1731,23 @@
 						>Kip</RightTree>
 					</RightTree>
 				</RightTree>
-			</subtree>
-			<subtree 
+			</LeftTree>
+			<RightTree 
 				color="red"
 				depth="1"
-			>Eryn				<LeftTree 
+			>Maya				<LeftTree 
 					color="black"
 					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
+				>Marc</LeftTree>
 				<RightTree 
 					color="black"
 					depth="2"
-				>Gina					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Kip</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Beau						<LeftTree 
-							color="red"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Cira</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="red"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Kip</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Sean</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gina					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Kip</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Beau						<LeftTree 
-							color="red"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Cira</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="red"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Kip</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Sean</RightTree>
-				</RightTree>
-			</subtree>
-		</RotateLeft>
-		<subtree 
-			color="red"
-			depth="2"
-		>Gary			<RightTree 
-				color="black"
-				depth="3"
-			>Gina				<RightTree 
-					color="red"
-					depth="4"
-				>Kip</RightTree>
+				>Sean</RightTree>
 			</RightTree>
 		</subtree>
-		<Done>			<key>Kip</key>
+		<Item 
+			done="true"
+		>			<key>Kip</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -2042,34 +1793,6 @@
 				</RightTree>
 			</subtree>
 			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gina					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Kip</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
@@ -2113,1272 +1836,12 @@
 					>Sean</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="red"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Cira</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gina					<LeftTree 
-						color="red"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Kip</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
+		</Item>
 	</Item>
 	<Item 
 		insrt="true"
 	><Number>2</Number>		<key>Rob</key>
 		<subtree 
-			color="red"
-			depth="1"
-		>Maya			<LeftTree 
-				color="black"
-				depth="2"
-			>Marc</LeftTree>
-			<RightTree 
-				color="black"
-				depth="2"
-			>Sean				<LeftTree 
-					color="black"
-					depth="3"
-				>Rob</LeftTree>
-			</RightTree>
-		</subtree>
-		<Done>			<key>Rob</key>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Marc</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean					<LeftTree 
-						color="red"
-						depth="3"
-					>Rob</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Marc</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean					<LeftTree 
-						color="red"
-						depth="3"
-					>Rob</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Marc</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean					<LeftTree 
-						color="red"
-						depth="3"
-					>Rob</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Marc</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean					<LeftTree 
-						color="red"
-						depth="3"
-					>Rob</LeftTree>
-				</RightTree>
-			</subtree>
-		</Done>
-		<subtree 
-			color="red"
-			depth="1"
-		>Maya			<LeftTree 
-				color="black"
-				depth="2"
-			>Marc</LeftTree>
-			<RightTree 
-				color="black"
-				depth="2"
-			>Sean				<LeftTree 
-					color="red"
-					depth="3"
-				>Rob</LeftTree>
-			</RightTree>
-		</subtree>
-	</Item>
-	<Item 
-		insrt="true"
-	><Number>3</Number>		<key>Jada</key>
-		<subtree 
-			color="black"
-			depth="2"
-		>Gina			<LeftTree 
-				color="red"
-				depth="3"
-			>Gary</LeftTree>
-			<RightTree 
-				color="red"
-				depth="3"
-			>Kip				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-			</RightTree>
-		</subtree>
-		<Done>			<key>Jada</key>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Kip					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Kip					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Kip					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Kip					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada</LeftTree>
-				</RightTree>
-			</subtree>
-		</Done>
-		<subtree 
-			color="red"
-			depth="2"
-		>Gina			<LeftTree 
-				color="black"
-				depth="3"
-			>Gary</LeftTree>
-			<RightTree 
-				color="black"
-				depth="3"
-			>Kip				<LeftTree 
-					color="red"
-					depth="4"
-				>Jada</LeftTree>
-			</RightTree>
-		</subtree>
-	</Item>
-	<Item 
-		insrt="true"
-	><Number>3</Number>		<key>Drew</key>
-		<subtree 
-			color="black"
-			depth="2"
-		>Beau			<LeftTree 
-				color="red"
-				depth="3"
-			>Adah</LeftTree>
-			<RightTree 
-				color="red"
-				depth="3"
-			>Cira				<RightTree 
-					color="black"
-					depth="4"
-				>Drew</RightTree>
-			</RightTree>
-		</subtree>
-		<Done>			<key>Drew</key>
-			<subtree 
-				color="red"
-				depth="2"
-			>Beau				<LeftTree 
-					color="black"
-					depth="3"
-				>Adah</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Cira					<RightTree 
-						color="red"
-						depth="4"
-					>Drew</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Beau				<LeftTree 
-					color="black"
-					depth="3"
-				>Adah</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Cira					<RightTree 
-						color="red"
-						depth="4"
-					>Drew</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Beau				<LeftTree 
-					color="black"
-					depth="3"
-				>Adah</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Cira					<RightTree 
-						color="red"
-						depth="4"
-					>Drew</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Beau				<LeftTree 
-					color="black"
-					depth="3"
-				>Adah</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Cira					<RightTree 
-						color="red"
-						depth="4"
-					>Drew</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
-		<subtree 
-			color="red"
-			depth="2"
-		>Beau			<LeftTree 
-				color="black"
-				depth="3"
-			>Adah</LeftTree>
-			<RightTree 
-				color="black"
-				depth="3"
-			>Cira				<RightTree 
-					color="red"
-					depth="4"
-				>Drew</RightTree>
-			</RightTree>
-		</subtree>
-	</Item>
-	<Item 
-		insrt="true"
-	><Number>4</Number>		<key>Jade</key>
-		<subtree 
-			color="black"
-			depth="3"
-		>Kip			<LeftTree 
-				color="red"
-				depth="4"
-			>Jada				<RightTree 
-					color="black"
-					depth="5"
-				>Jade</RightTree>
-			</LeftTree>
-		</subtree>
-		<RotateLeft><Source line="208" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source>			<key>Jada</key>
-			<subtree 
-				color="black"
-				depth="3"
-			>Kip				<LeftTree 
-					color="red"
-					depth="4"
-				>Jada					<RightTree 
-						color="red"
-						depth="5"
-					>Jade</RightTree>
-				</LeftTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Kip					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada						<RightTree 
-							color="red"
-							depth="5"
-						>Jade</RightTree>
-					</LeftTree>
-				</RightTree>
-			</subtree>
-			<key>Jade</key>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Kip					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada						<RightTree 
-							color="red"
-							depth="5"
-						>Jade</RightTree>
-					</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="3"
-			>Kip				<LeftTree 
-					color="red"
-					depth="4"
-				>Jada					<RightTree 
-						color="red"
-						depth="5"
-					>Jade</RightTree>
-				</LeftTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="3"
-			>Kip				<LeftTree 
-					color="red"
-					depth="4"
-				>Jade					<LeftTree 
-						color="red"
-						depth="5"
-					>Jada</LeftTree>
-				</LeftTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Kip					<LeftTree 
-						color="red"
-						depth="4"
-					>Jade						<LeftTree 
-							color="red"
-							depth="5"
-						>Jada</LeftTree>
-					</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Kip				<LeftTree 
-					color="black"
-					depth="4"
-				>Jade					<LeftTree 
-						color="red"
-						depth="5"
-					>Jada</LeftTree>
-				</LeftTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="red"
-					depth="3"
-				>Kip					<LeftTree 
-						color="black"
-						depth="4"
-					>Jade						<LeftTree 
-							color="red"
-							depth="5"
-						>Jada</LeftTree>
-					</LeftTree>
-				</RightTree>
-			</subtree>
-		</RotateLeft>
-		<subtree 
-			color="black"
-			depth="3"
-		>Kip			<LeftTree 
-				color="red"
-				depth="4"
-			>Jada				<RightTree 
-					color="red"
-					depth="5"
-				>Jade</RightTree>
-			</LeftTree>
-		</subtree>
-		<RotateRight><Source line="235" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source>			<key>Kip</key>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="red"
-					depth="3"
-				>Kip					<LeftTree 
-						color="black"
-						depth="4"
-					>Jade						<LeftTree 
-							color="red"
-							depth="5"
-						>Jada</LeftTree>
-					</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Kip						<LeftTree 
-							color="black"
-							depth="4"
-						>Jade							<LeftTree 
-								color="red"
-								depth="5"
-							>Jada</LeftTree>
-						</LeftTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<key>Jade</key>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Kip						<LeftTree 
-							color="black"
-							depth="4"
-						>Jade							<LeftTree 
-								color="red"
-								depth="5"
-							>Jada</LeftTree>
-						</LeftTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="red"
-					depth="3"
-				>Kip					<LeftTree 
-						color="black"
-						depth="4"
-					>Jade						<LeftTree 
-							color="red"
-							depth="5"
-						>Jada</LeftTree>
-					</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Jade					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada</LeftTree>
-					<RightTree 
-						color="red"
-						depth="4"
-					>Kip</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Jade						<LeftTree 
-							color="red"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="red"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Jade					<LeftTree 
-						color="red"
-						depth="4"
-					>Jada</LeftTree>
-					<RightTree 
-						color="red"
-						depth="4"
-					>Kip</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Jade						<LeftTree 
-							color="red"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="red"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-		</RotateRight>
-		<Done>			<key>Jade</key>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Jade						<LeftTree 
-							color="red"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="red"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Jade						<LeftTree 
-							color="red"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="red"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Jade						<LeftTree 
-							color="red"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="red"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Jade						<LeftTree 
-							color="red"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="red"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
-	</Item>
-	<Item 
-		insrt="true"
-	><Number>4</Number>		<key>Jodi</key>
-		<subtree 
-			color="black"
-			depth="3"
-		>Jade			<LeftTree 
-				color="red"
-				depth="4"
-			>Jada</LeftTree>
-			<RightTree 
-				color="red"
-				depth="4"
-			>Kip				<LeftTree 
-					color="black"
-					depth="5"
-				>Jodi</LeftTree>
-			</RightTree>
-		</subtree>
-		<Done>			<key>Jodi</key>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-				</RightTree>
-			</subtree>
-		</Done>
-		<subtree 
-			color="red"
-			depth="3"
-		>Jade			<LeftTree 
-				color="black"
-				depth="4"
-			>Jada</LeftTree>
-			<RightTree 
-				color="black"
-				depth="4"
-			>Kip				<LeftTree 
-					color="red"
-					depth="5"
-				>Jodi</LeftTree>
-			</RightTree>
-		</subtree>
-	</Item>
-	<Item 
-		insrt="true"
-	><Number>4</Number>		<key>Linh</key>
-		<subtree 
-			color="red"
-			depth="3"
-		>Jade			<LeftTree 
-				color="black"
-				depth="4"
-			>Jada</LeftTree>
-			<RightTree 
-				color="black"
-				depth="4"
-			>Kip				<LeftTree 
-					color="red"
-					depth="5"
-				>Jodi</LeftTree>
-				<RightTree 
-					color="black"
-					depth="5"
-				>Linh</RightTree>
-			</RightTree>
-		</subtree>
-		<Done>			<key>Linh</key>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-					<RightTree 
-						color="red"
-						depth="5"
-					>Linh</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-					<RightTree 
-						color="red"
-						depth="5"
-					>Linh</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-					<RightTree 
-						color="red"
-						depth="5"
-					>Linh</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-					<RightTree 
-						color="red"
-						depth="5"
-					>Linh</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
-		<subtree 
-			color="red"
-			depth="3"
-		>Jade			<LeftTree 
-				color="black"
-				depth="4"
-			>Jada</LeftTree>
-			<RightTree 
-				color="black"
-				depth="4"
-			>Kip				<LeftTree 
-					color="red"
-					depth="5"
-				>Jodi</LeftTree>
-				<RightTree 
-					color="red"
-					depth="5"
-				>Linh</RightTree>
-			</RightTree>
-		</subtree>
-	</Item>
-	<Item 
-		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Linh</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
-			color="red"
-			depth="3"
-		>Jade			<LeftTree 
-				color="black"
-				depth="4"
-			>Jada</LeftTree>
-			<RightTree 
-				color="black"
-				depth="4"
-			>Kip				<LeftTree 
-					color="red"
-					depth="5"
-				>Jodi</LeftTree>
-				<RightTree 
-					color="red"
-					depth="5"
-				>Linh</RightTree>
-			</RightTree>
-		</subtree>
-<Source clrs="4" line="687" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="456" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Linh</key>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-					<RightTree 
-						color="red"
-						depth="5"
-					>Linh</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-					<RightTree 
-						color="red"
-						depth="5"
-					>Linh</RightTree>
-				</RightTree>
-			</subtree>
-			<key>NIL</key>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
-				<RightTree 
-					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
-					<RightTree 
-						color="red"
-						depth="5"
-					>Linh</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>NIL</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Linh</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Linh</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Linh</subtree>
-		</Transplant>
-		<subtree 
-			color="red"
-			depth="3"
-		>Jade			<LeftTree 
-				color="black"
-				depth="4"
-			>Jada</LeftTree>
-			<RightTree 
-				color="black"
-				depth="4"
-			>Kip				<LeftTree 
-					color="red"
-					depth="5"
-				>Jodi</LeftTree>
-				<RightTree 
-					color="red"
-					depth="5"
-				>Linh</RightTree>
-			</RightTree>
-		</subtree>
-		<Done><Source line="718" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source></Done>
-		<Done>			<key>Kip</key>
-			<subtree 
-				color="white"
-				depth="-1"
-			>NIL</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>NIL</subtree>
-		</Done>
-	</Item>
-	<Item 
-		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Sean</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Lupe			<LeftTree 
@@ -3388,6 +1851,594 @@
 					color="black"
 					depth="2"
 				>Beau					<LeftTree 
+						color="red"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Cira</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="red"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Kip</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="black"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+		<Item 
+			done="true"
+		>			<key>Rob</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="red"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Cira</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="red"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Kip</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="red"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Cira</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="red"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Kip</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="red"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Cira</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="red"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Kip</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+	</Item>
+	<Item 
+		insrt="true"
+	><Number>3</Number>		<key>Jada</key>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="red"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Cira</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="red"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Kip						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="red"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+		<Item 
+			done="true"
+		>			<key>Jada</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="red"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Cira</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="red"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Cira</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="black"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="red"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Cira</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Kip						<LeftTree 
+							color="red"
+							depth="4"
+						>Jada</LeftTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+	</Item>
+	<Item 
+		insrt="true"
+	><Number>3</Number>		<key>Drew</key>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="black"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="red"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Cira						<RightTree 
+							color="black"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Kip						<LeftTree 
+							color="red"
+							depth="4"
+						>Jada</LeftTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+		<Item 
+			done="true"
+		>			<key>Drew</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="black"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau					<LeftTree 
 						color="black"
 						depth="3"
 					>Adah</LeftTree>
@@ -3401,24 +2452,820 @@
 					</RightTree>
 				</LeftTree>
 				<RightTree 
-					color="black"
+					color="red"
 					depth="2"
 				>Gina					<LeftTree 
 						color="black"
 						depth="3"
 					>Gary</LeftTree>
 					<RightTree 
+						color="black"
+						depth="3"
+					>Kip						<LeftTree 
+							color="red"
+							depth="4"
+						>Jada</LeftTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
 						color="red"
 						depth="3"
-					>Jade						<LeftTree 
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+	</Item>
+	<Item 
+		insrt="true"
+	><Number>4</Number>		<key>Jade</key>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="black"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Kip						<LeftTree 
+							color="red"
+							depth="4"
+						>Jada							<RightTree 
+								color="black"
+								depth="5"
+							>Jade</RightTree>
+						</LeftTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+		<RotateLeft><Source clrs="2" line="202" file="./tree.h" ><![CDATA[		node->SetRight(other->Left());												]]></Source>			<key>Jada</key>
+<Source clrs="8" line="212" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() )								]]></Source>			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
 							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada								<RightTree 
+									color="red"
+									depth="5"
+								>Jade</RightTree>
+							</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<key>Jade</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada								<RightTree 
+									color="red"
+									depth="5"
+								>Jade</RightTree>
+							</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<key>Jada</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip							<LeftTree 
+								color="red"
+								depth="4"
+							>Jade								<LeftTree 
+									color="red"
+									depth="5"
+								>Jada</LeftTree>
+							</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Kip							<LeftTree 
+								color="black"
+								depth="4"
+							>Jade								<LeftTree 
+									color="red"
+									depth="5"
+								>Jada</LeftTree>
+							</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</RotateLeft>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="black"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Kip						<LeftTree 
+							color="red"
+							depth="4"
+						>Jada							<RightTree 
+								color="red"
+								depth="5"
+							>Jade</RightTree>
+						</LeftTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Kip</key>
+<Source clrs="8" line="242" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() )							]]></Source>			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Kip							<LeftTree 
+								color="black"
+								depth="4"
+							>Jade								<LeftTree 
+									color="red"
+									depth="5"
+								>Jada</LeftTree>
+							</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<key>Jade</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Kip							<LeftTree 
+								color="black"
+								depth="4"
+							>Jade								<LeftTree 
+									color="red"
+									depth="5"
+								>Jada</LeftTree>
+							</LeftTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<key>Kip</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Jade							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="red"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Jade							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="red"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</RotateRight>
+		<Item 
+			done="true"
+		>			<key>Jade</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Jade							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="red"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="red"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="red"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Jade							<LeftTree 
+								color="red"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="red"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+	</Item>
+	<Item 
+		insrt="true"
+	><Number>4</Number>		<key>Jodi</key>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="black"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="red"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Jade						<LeftTree 
+							color="red"
 							depth="4"
 						>Jada</LeftTree>
 						<RightTree 
-							color="black"
+							color="red"
 							depth="4"
 						>Kip							<LeftTree 
-								color="red"
+								color="black"
 								depth="5"
 							>Jodi</LeftTree>
 						</RightTree>
@@ -3442,7 +3289,9 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="7" line="693" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="456" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Sean</key>
+		<Item 
+			done="true"
+		>			<key>Jodi</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -3507,6 +3356,798 @@
 					</RightTree>
 				</RightTree>
 			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip								<LeftTree 
+									color="red"
+									depth="5"
+								>Jodi</LeftTree>
+							</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Jade						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="4"
+						>Kip							<LeftTree 
+								color="red"
+								depth="5"
+							>Jodi</LeftTree>
+						</RightTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+	</Item>
+	<Item 
+		insrt="true"
+	><Number>4</Number>		<key>Linh</key>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Jade						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="4"
+						>Kip							<LeftTree 
+								color="red"
+								depth="5"
+							>Jodi</LeftTree>
+							<RightTree 
+								color="black"
+								depth="5"
+							>Linh</RightTree>
+						</RightTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+		<Item 
+			done="true"
+		>			<key>Linh</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip								<LeftTree 
+									color="red"
+									depth="5"
+								>Jodi</LeftTree>
+								<RightTree 
+									color="red"
+									depth="5"
+								>Linh</RightTree>
+							</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip								<LeftTree 
+									color="red"
+									depth="5"
+								>Jodi</LeftTree>
+								<RightTree 
+									color="red"
+									depth="5"
+								>Linh</RightTree>
+							</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Jade						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="4"
+						>Kip							<LeftTree 
+								color="red"
+								depth="5"
+							>Jodi</LeftTree>
+							<RightTree 
+								color="red"
+								depth="5"
+							>Linh</RightTree>
+						</RightTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+	</Item>
+	<Item 
+		erse="true"
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Linh</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Jade						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="4"
+						>Kip							<LeftTree 
+								color="red"
+								depth="5"
+							>Jodi</LeftTree>
+							<RightTree 
+								color="red"
+								depth="5"
+							>Linh</RightTree>
+						</RightTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+<Source clrs="4" line="713" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Linh</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip								<LeftTree 
+									color="red"
+									depth="5"
+								>Jodi</LeftTree>
+								<RightTree 
+									color="red"
+									depth="5"
+								>Linh</RightTree>
+							</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<key>NIL</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Beau						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Cira							<RightTree 
+								color="red"
+								depth="4"
+							>Drew</RightTree>
+						</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip								<LeftTree 
+									color="red"
+									depth="5"
+								>Jodi</LeftTree>
+								<RightTree 
+									color="red"
+									depth="5"
+								>Linh</RightTree>
+							</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Sean						<LeftTree 
+							color="red"
+							depth="3"
+						>Rob</LeftTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Linh</subtree>
+		</Transplant>
+		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Jade						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="4"
+						>Kip							<LeftTree 
+								color="red"
+								depth="5"
+							>Jodi</LeftTree>
+							<RightTree 
+								color="red"
+								depth="5"
+							>Linh</RightTree>
+						</RightTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+		<Item 
+			done="true"
+		><Source line="744" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source>			<key>Linh</key>
+			<subtree 
+				color="white"
+				depth="-1"
+			>NIL</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>NIL</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>NIL</subtree>
+		</Item>
+		<Item 
+			done="true"
+		 />
+		<Item 
+			done="true"
+		>			<key>Kip</key>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Linh</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Linh</subtree>
+		</Item>
+	</Item>
+	<Item 
+		erse="true"
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Sean</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="2"
+				>Beau					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Cira						<RightTree 
+							color="red"
+							depth="4"
+						>Drew</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Jade						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="4"
+						>Kip							<LeftTree 
+								color="red"
+								depth="5"
+							>Jodi</LeftTree>
+						</RightTree>
+					</RightTree>
+				</RightTree>
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
+					color="black"
+					depth="2"
+				>Marc</LeftTree>
+				<RightTree 
+					color="black"
+					depth="2"
+				>Sean					<LeftTree 
+						color="red"
+						depth="3"
+					>Rob</LeftTree>
+				</RightTree>
+			</RightTree>
+		</subtree>
+<Source clrs="7" line="719" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Sean</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -3637,26 +4278,6 @@
 				</RightTree>
 			</subtree>
 			<subtree 
-				color="black"
-				depth="1"
-			>Maya				<LeftTree 
-					color="black"
-					depth="2"
-				>Marc</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Sean					<LeftTree 
-						color="red"
-						depth="3"
-					>Rob</LeftTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Sean</subtree>
-			<subtree 
 				color="white"
 				depth="-1"
 			>Sean</subtree>
@@ -3725,9 +4346,10 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-		<Done><Source clrs="1" line="527" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source><Source clrs="23" line="604" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source></Done>
-		<Done>			<key>Maya</key>
-			<subtree 
+		<Item 
+			done="true"
+		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Sean</key>
+<Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
@@ -3782,7 +4404,7 @@
 						depth="2"
 					>Marc</LeftTree>
 					<RightTree 
-						color="black"
+						color="red"
 						depth="2"
 					>Rob</RightTree>
 				</RightTree>
@@ -3847,132 +4469,24 @@
 					>Rob</RightTree>
 				</RightTree>
 			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>Maya</key>
 			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Beau						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Cira							<RightTree 
-								color="red"
-								depth="4"
-							>Drew</RightTree>
-						</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jade							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip								<LeftTree 
-									color="red"
-									depth="5"
-								>Jodi</LeftTree>
-							</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Rob</RightTree>
-				</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Sean</subtree>
 			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Beau						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Cira							<RightTree 
-								color="red"
-								depth="4"
-							>Drew</RightTree>
-						</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jade							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip								<LeftTree 
-									color="red"
-									depth="5"
-								>Jodi</LeftTree>
-							</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Rob</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
+				color="white"
+				depth="-1"
+			>Sean</subtree>
+		</Item>
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Beau</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Beau</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Lupe			<LeftTree 
@@ -4032,67 +4546,7 @@
 				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="9" line="697" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="453" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Beau</key>
-			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Beau						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Cira							<RightTree 
-								color="red"
-								depth="4"
-							>Drew</RightTree>
-						</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jade							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip								<LeftTree 
-									color="red"
-									depth="5"
-								>Jodi</LeftTree>
-							</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Rob</RightTree>
-				</RightTree>
-			</subtree>
+<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Beau</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -4215,59 +4669,11 @@
 				</RightTree>
 			</subtree>
 			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Beau					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Cira						<RightTree 
-							color="red"
-							depth="4"
-						>Drew</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Jade						<LeftTree 
-							color="black"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="black"
-							depth="4"
-						>Kip							<LeftTree 
-								color="red"
-								depth="5"
-							>Jodi</LeftTree>
-						</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Beau</subtree>
-			<subtree 
 				color="white"
 				depth="-1"
 			>Beau</subtree>
 		</Transplant>
-<Source clrs="13" line="703" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
+<Source clrs="13" line="729" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Lupe			<LeftTree 
@@ -4327,9 +4733,10 @@
 				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-		<Done><Source clrs="1" line="527" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source><Source clrs="23" line="604" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source></Done>
-		<Done>			<key>Eryn</key>
-			<subtree 
+		<Item 
+			done="true"
+		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Beau</key>
+<Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
@@ -4338,12 +4745,8 @@
 				>Eryn					<LeftTree 
 						color="black"
 						depth="2"
-					>Cira						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
+					>Cira						<RightTree 
+							color="red"
 							depth="3"
 						>Drew</RightTree>
 					</LeftTree>
@@ -4441,165 +4844,27 @@
 					>Rob</RightTree>
 				</RightTree>
 			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>Eryn</key>
 			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Cira						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Drew</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jade							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip								<LeftTree 
-									color="red"
-									depth="5"
-								>Jodi</LeftTree>
-							</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Rob</RightTree>
-				</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Beau</subtree>
 			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Cira						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Drew</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jade							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip								<LeftTree 
-									color="red"
-									depth="5"
-								>Jodi</LeftTree>
-							</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Rob</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
+				color="white"
+				depth="-1"
+			>Beau</subtree>
+		</Item>
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jade</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
-			color="red"
-			depth="1"
-		>Eryn			<LeftTree 
-				color="black"
-				depth="2"
-			>Cira				<LeftTree 
-					color="black"
-					depth="3"
-				>Adah</LeftTree>
-				<RightTree 
-					color="black"
-					depth="3"
-				>Drew</RightTree>
-			</LeftTree>
-			<RightTree 
-				color="black"
-				depth="2"
-			>Gina				<LeftTree 
-					color="black"
-					depth="3"
-				>Gary</LeftTree>
-				<RightTree 
-					color="red"
-					depth="3"
-				>Jade					<LeftTree 
-						color="black"
-						depth="4"
-					>Jada</LeftTree>
-					<RightTree 
-						color="black"
-						depth="4"
-					>Kip						<LeftTree 
-							color="red"
-							depth="5"
-						>Jodi</LeftTree>
-					</RightTree>
-				</RightTree>
-			</RightTree>
-		</subtree>
-<Source clrs="9" line="697" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="453" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jodi</key>
-			<subtree 
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jade</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
 				color="red"
 				depth="1"
 			>Eryn				<LeftTree 
@@ -4638,188 +4903,319 @@
 						</RightTree>
 					</RightTree>
 				</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
+			</LeftTree>
+			<RightTree 
+				color="black"
+				depth="1"
+			>Maya				<LeftTree 
 					color="black"
-					depth="4"
-				>Jada</LeftTree>
+					depth="2"
+				>Marc</LeftTree>
 				<RightTree 
 					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
+					depth="2"
+				>Rob</RightTree>
+			</RightTree>
+		</subtree>
+<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jodi</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip								<LeftTree 
+									color="red"
+									depth="5"
+								>Jodi</LeftTree>
+							</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Rob</RightTree>
 				</RightTree>
 			</subtree>
 			<key>NIL</key>
 			<subtree 
-				color="red"
-				depth="3"
-			>Jade				<LeftTree 
-					color="black"
-					depth="4"
-				>Jada</LeftTree>
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip								<LeftTree 
+									color="red"
+									depth="5"
+								>Jodi</LeftTree>
+							</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
 				<RightTree 
 					color="black"
-					depth="4"
-				>Kip					<LeftTree 
-						color="red"
-						depth="5"
-					>Jodi</LeftTree>
+					depth="1"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+					>Marc</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Rob</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>NIL</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Jodi</subtree>
 			<subtree 
 				color="white"
 				depth="-1"
 			>Jodi</subtree>
 		</Transplant>
 		<subtree 
-			color="red"
-			depth="1"
-		>Eryn			<LeftTree 
-				color="black"
-				depth="2"
-			>Cira				<LeftTree 
+			color="black"
+			depth="0"
+		>Lupe			<LeftTree 
+				color="red"
+				depth="1"
+			>Eryn				<LeftTree 
 					color="black"
-					depth="3"
-				>Adah</LeftTree>
+					depth="2"
+				>Cira					<LeftTree 
+						color="black"
+						depth="3"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="3"
+					>Drew</RightTree>
+				</LeftTree>
 				<RightTree 
 					color="black"
-					depth="3"
-				>Drew</RightTree>
+					depth="2"
+				>Gina					<LeftTree 
+						color="black"
+						depth="3"
+					>Gary</LeftTree>
+					<RightTree 
+						color="red"
+						depth="3"
+					>Jade						<LeftTree 
+							color="black"
+							depth="4"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="4"
+						>Kip							<LeftTree 
+								color="red"
+								depth="5"
+							>Jodi</LeftTree>
+						</RightTree>
+					</RightTree>
+				</RightTree>
 			</LeftTree>
 			<RightTree 
 				color="black"
-				depth="2"
-			>Gina				<LeftTree 
+				depth="1"
+			>Maya				<LeftTree 
 					color="black"
-					depth="3"
-				>Gary</LeftTree>
+					depth="2"
+				>Marc</LeftTree>
 				<RightTree 
-					color="red"
-					depth="3"
-				>Jade					<LeftTree 
-						color="black"
-						depth="4"
-					>Jada</LeftTree>
-					<RightTree 
-						color="black"
-						depth="4"
-					>Kip						<LeftTree 
-							color="red"
-							depth="5"
-						>Jodi</LeftTree>
-					</RightTree>
-				</RightTree>
+					color="black"
+					depth="2"
+				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-		<Transplant><Source line="456" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Jade</key>
+		<Item 
+			done="true"
+		>			<key>Jodi</key>
 			<subtree 
 				color="white"
 				depth="-1"
 			>NIL</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>NIL</subtree>
+		</Item>
+		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Jade</key>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Jodi</subtree>
 			<key>Jodi</key>
 			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Cira					<LeftTree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
 						color="black"
-						depth="3"
-					>Adah</LeftTree>
+						depth="2"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Drew</RightTree>
+					</LeftTree>
 					<RightTree 
 						color="black"
-						depth="3"
-					>Drew</RightTree>
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jade							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="-99999"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
 				</LeftTree>
 				<RightTree 
 					color="black"
-					depth="2"
-				>Gina					<LeftTree 
+					depth="1"
+				>Maya					<LeftTree 
 						color="black"
-						depth="3"
-					>Gary</LeftTree>
+						depth="2"
+					>Marc</LeftTree>
 					<RightTree 
-						color="red"
-						depth="3"
-					>Jade						<LeftTree 
-							color="black"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="black"
-							depth="-99999"
-						>Kip</RightTree>
-					</RightTree>
+						color="black"
+						depth="2"
+					>Rob</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Jodi</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Jade</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Jade</subtree>
 			<subtree 
 				color="white"
 				depth="-1"
 			>Jade</subtree>
 		</Transplant>
-		<Done><Source line="718" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source></Done>
-		<Done>			<key>Gina</key>
+		<Item 
+			done="true"
+		><Source line="744" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source>			<key>Jade</key>
 			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Cira					<LeftTree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Eryn					<LeftTree 
 						color="black"
-						depth="3"
-					>Adah</LeftTree>
+						depth="2"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Drew</RightTree>
+					</LeftTree>
 					<RightTree 
 						color="black"
-						depth="3"
-					>Drew</RightTree>
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jodi							<RightTree 
+								color="black"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
 				</LeftTree>
 				<RightTree 
 					color="black"
-					depth="2"
-				>Gina					<LeftTree 
+					depth="1"
+				>Maya					<LeftTree 
 						color="black"
-						depth="3"
-					>Gary</LeftTree>
+						depth="2"
+					>Marc</LeftTree>
 					<RightTree 
-						color="red"
-						depth="3"
-					>Jodi						<LeftTree 
-							color="black"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="black"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
+						color="black"
+						depth="2"
+					>Rob</RightTree>
 				</RightTree>
 			</subtree>
 			<subtree 
@@ -4875,42 +5271,6 @@
 				</RightTree>
 			</subtree>
 			<subtree 
-				color="red"
-				depth="1"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="2"
-				>Cira					<LeftTree 
-						color="black"
-						depth="3"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="3"
-					>Jodi						<LeftTree 
-							color="black"
-							depth="4"
-						>Jada</LeftTree>
-						<RightTree 
-							color="black"
-							depth="4"
-						>Kip</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
@@ -4962,12 +5322,27 @@
 					>Rob</RightTree>
 				</RightTree>
 			</subtree>
-		</Done>
+		</Item>
+		<Item 
+			done="true"
+		 />
+		<Item 
+			done="true"
+		>			<key>Gina</key>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Jade</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Jade</subtree>
+		</Item>
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Rob</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Rob</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Lupe			<LeftTree 
@@ -5019,59 +5394,7 @@
 				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="4" line="687" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="456" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Rob</key>
-			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Cira						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Drew</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jodi							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Maya					<LeftTree 
-						color="black"
-						depth="2"
-					>Marc</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Rob</RightTree>
-				</RightTree>
-			</subtree>
+<Source clrs="4" line="713" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Rob</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -5180,14 +5503,6 @@
 			<subtree 
 				color="white"
 				depth="-1"
-			>NIL</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Rob</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
 			>Rob</subtree>
 		</Transplant>
 		<subtree 
@@ -5242,8 +5557,9 @@
 				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-		<Done><Source clrs="1" line="527" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source></Done>
-		<Done>			<key>Maya</key>
+		<Item 
+			done="true"
+		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Rob</key>
 			<subtree 
 				color="white"
 				depth="-1"
@@ -5252,12 +5568,24 @@
 				color="white"
 				depth="-1"
 			>NIL</subtree>
-		</Done>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>Maya</key>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Rob</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Rob</subtree>
+		</Item>
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Maya</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Maya</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Lupe			<LeftTree 
@@ -5305,7 +5633,7 @@
 				>Marc</LeftTree>
 			</RightTree>
 		</subtree>
-<Source clrs="7" line="693" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="456" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Maya</key>
+<Source clrs="7" line="719" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Maya</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -5407,10 +5735,6 @@
 				color="white"
 				depth="-1"
 			>Maya</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Maya</subtree>
 		</Transplant>
 		<subtree 
 			color="black"
@@ -5460,253 +5784,225 @@
 				>Marc</LeftTree>
 			</RightTree>
 		</subtree>
-		<Done><Source clrs="1" line="527" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source><Source clrs="3" line="570" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Left());																				]]></Source><Source clrs="5" line="574" file="./tree.h" ><![CDATA[						black(other);																															]]></Source></Done>
-		<RotateRight><Source line="232" file="./tree.h" ><![CDATA[			root = other;]]></Source>			<key>Lupe</key>
-			<subtree 
-				color="red"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Cira						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Drew</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jodi							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-			<key>Eryn</key>
-			<subtree 
-				color="red"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="1"
-				>Eryn					<LeftTree 
-						color="black"
-						depth="2"
-					>Cira						<LeftTree 
-							color="black"
-							depth="3"
-						>Adah</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Drew</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="red"
-							depth="3"
-						>Jodi							<LeftTree 
-								color="black"
-								depth="4"
-							>Jada</LeftTree>
-							<RightTree 
-								color="black"
-								depth="4"
-							>Kip</RightTree>
-						</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="1"
-				>Gina					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Jodi						<LeftTree 
-							color="black"
-							depth="3"
-						>Jada</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Kip</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Gina					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Jodi						<LeftTree 
-							color="black"
-							depth="3"
-						>Jada</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Kip</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-		</RotateRight>
-		<Done><Source clrs="12" line="586" file="./tree.h" ><![CDATA[						if (color(other->Left()) == BLACK)																				]]></Source><Source clrs="13" line="589" file="./tree.h" ><![CDATA[							black(other->Right());																									]]></Source></Done>
-		<RotateLeft><Source line="208" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);]]></Source>			<key>Gina</key>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Eryn</subtree>
-			<key>Jodi</key>
-			<subtree 
-				color="red"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Gina					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Jodi						<LeftTree 
-							color="black"
-							depth="3"
-						>Jada</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Kip</RightTree>
-					</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="1"
-				>Jodi					<LeftTree 
-						color="red"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Jada</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Kip</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-			<subtree 
-				color="red"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="1"
-				>Jodi					<LeftTree 
-						color="red"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Jada</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Kip</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-			<subtree 
+		<Item 
+			done="true"
+		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Maya</key>
+<Source clrs="2" line="558" file="./tree.h" ><![CDATA[				if ( node == node->Parent()->Left() )																					]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Lupe				<LeftTree 
 					color="red"
 					depth="1"
-				>Jodi					<LeftTree 
+				>Eryn					<LeftTree 
 						color="black"
+						depth="2"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
+<Source clrs="3" line="596" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Left());																				]]></Source>			<subtree 
+				color="red"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
+<Source clrs="5" line="600" file="./tree.h" ><![CDATA[						black(other);																															]]></Source>		</Item>
+		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Lupe</key>
+<Source clrs="7" line="239" file="./tree.h" ><![CDATA[			root = other;																				]]></Source>			<subtree 
+				color="white"
+				depth="-1"
+			>Maya</subtree>
+<Source clrs="12" line="612" file="./tree.h" ><![CDATA[						if (color(other->Left()) == BLACK)																				]]></Source>			<key>Eryn</key>
+<Source clrs="13" line="615" file="./tree.h" ><![CDATA[							black(other->Right());																									]]></Source>			<subtree 
+				color="red"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
+			<key>Lupe</key>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Eryn</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Eryn</subtree>
+		</RotateRight>
+		<RotateLeft><Source clrs="2" line="202" file="./tree.h" ><![CDATA[		node->SetRight(other->Left());												]]></Source>			<key>Gina</key>
+<Source clrs="8" line="212" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Left() )								]]></Source>			<subtree 
+				color="red"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Gina					<LeftTree 
+						color="black"
+						depth="2"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Jodi						<LeftTree 
+							color="black"
+							depth="3"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
+<Source clrs="17" line="621" file="./tree.h" ><![CDATA[						CopyColor(node->Parent(),other);																					]]></Source>			<key>Jodi</key>
+			<subtree 
+				color="red"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Gina					<LeftTree 
+						color="black"
+						depth="2"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Jodi						<LeftTree 
+							color="black"
+							depth="3"
+						>Jada</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Kip</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
+			<key>Gina</key>
+			<subtree 
+				color="red"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Jodi					<LeftTree 
+						color="red"
 						depth="2"
 					>Gina						<LeftTree 
 							color="black"
@@ -5756,8 +6052,36 @@
 				>Marc</RightTree>
 			</subtree>
 		</RotateLeft>
-		<Done><Source clrs="17" line="595" file="./tree.h" ><![CDATA[						CopyColor(node->Parent(),other);																					]]></Source></Done>
-		<RotateRight><Source line="235" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);]]></Source>			<key>Lupe</key>
+		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Lupe</key>
+<Source clrs="8" line="242" file="./tree.h" ><![CDATA[			if ( node == node->Parent()->Right() )							]]></Source>			<subtree 
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+				>Jodi					<LeftTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Jada</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Kip</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
+<Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<key>Jodi</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -5786,76 +6110,49 @@
 					depth="1"
 				>Marc</RightTree>
 			</subtree>
-			<key>Jodi</key>
+			<key>Lupe</key>
 			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="red"
-					depth="1"
-				>Jodi					<LeftTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Jada</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Kip</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Jodi</subtree>
 			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="1"
-				>Kip</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Lupe				<LeftTree 
-					color="black"
-					depth="1"
-				>Kip</LeftTree>
-				<RightTree 
-					color="black"
-					depth="1"
-				>Marc</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Jodi</subtree>
 		</RotateRight>
-		<Done><Source clrs="23" line="604" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source></Done>
-		<Done>			<key>Lupe</key>
+		<Item 
+			done="true"
+		>			<key>Lupe</key>
 			<subtree 
-				color="white"
-				depth="-1"
-			>Jodi</subtree>
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Kip</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
 			<subtree 
-				color="white"
-				depth="-1"
-			>Jodi</subtree>
-		</Done>
+				color="black"
+				depth="0"
+			>Lupe				<LeftTree 
+					color="black"
+					depth="1"
+				>Kip</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Marc</RightTree>
+			</subtree>
+		</Item>
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jodi</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jodi</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Eryn			<LeftTree 
@@ -5899,7 +6196,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="9" line="697" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="453" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Kip</key>
+<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Kip</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -5946,41 +6243,49 @@
 			</subtree>
 			<key>NIL</key>
 			<subtree 
-				color="red"
-				depth="1"
-			>Jodi				<LeftTree 
+				color="black"
+				depth="0"
+			>Eryn				<LeftTree 
 					color="black"
-					depth="2"
-				>Gina					<LeftTree 
+					depth="1"
+				>Cira					<LeftTree 
 						color="black"
-						depth="3"
-					>Gary</LeftTree>
+						depth="2"
+					>Adah</LeftTree>
 					<RightTree 
 						color="black"
-						depth="3"
-					>Jada</RightTree>
+						depth="2"
+					>Drew</RightTree>
 				</LeftTree>
 				<RightTree 
-					color="black"
-					depth="2"
-				>Lupe					<LeftTree 
+					color="red"
+					depth="1"
+				>Jodi					<LeftTree 
 						color="black"
-						depth="3"
-					>Kip</LeftTree>
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Jada</RightTree>
+					</LeftTree>
 					<RightTree 
 						color="black"
-						depth="3"
-					>Marc</RightTree>
+						depth="2"
+					>Lupe						<LeftTree 
+							color="black"
+							depth="3"
+						>Kip</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Marc</RightTree>
+					</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>NIL</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Kip</subtree>
 			<subtree 
 				color="white"
 				depth="-1"
@@ -6030,11 +6335,23 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-		<Transplant><Source line="456" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Jodi</key>
+		<Item 
+			done="true"
+		>			<key>Kip</key>
 			<subtree 
 				color="white"
 				depth="-1"
 			>NIL</subtree>
+			<subtree 
+				color="white"
+				depth="-1"
+			>NIL</subtree>
+		</Item>
+		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Jodi</key>
+			<subtree 
+				color="white"
+				depth="-1"
+			>Kip</subtree>
 			<key>Kip</key>
 			<subtree 
 				color="black"
@@ -6080,99 +6397,96 @@
 				color="white"
 				depth="-1"
 			>Jodi</subtree>
+		</Transplant>
+		<Item 
+			done="true"
+		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Jodi</key>
+			<subtree 
+				color="black"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+				>Kip					<RightTree 
+						color="black"
+						depth="2"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+						>Jada</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>Eryn</key>
 			<subtree 
 				color="white"
 				depth="-1"
 			>Jodi</subtree>
-		</Transplant>
-		<Done><Source clrs="1" line="527" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source></Done>
-		<Done>			<key>Eryn</key>
 			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Jada</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Jada</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
+				color="white"
+				depth="-1"
+			>Jodi</subtree>
+		</Item>
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Gina</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Gina</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Eryn			<LeftTree 
@@ -6212,47 +6526,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="9" line="697" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="453" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Gina</key>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Gina						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-						<RightTree 
-							color="black"
-							depth="3"
-						>Jada</RightTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
+<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Gina</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -6335,39 +6609,11 @@
 				</RightTree>
 			</subtree>
 			<subtree 
-				color="red"
-				depth="1"
-			>Kip				<LeftTree 
-					color="black"
-					depth="2"
-				>Gina					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-					<RightTree 
-						color="black"
-						depth="3"
-					>Jada</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Lupe					<RightTree 
-						color="black"
-						depth="3"
-					>Marc</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Gina</subtree>
-			<subtree 
 				color="white"
 				depth="-1"
 			>Gina</subtree>
 		</Transplant>
-<Source clrs="13" line="703" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
+<Source clrs="13" line="729" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Eryn			<LeftTree 
@@ -6407,8 +6653,9 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-		<Done><Source clrs="1" line="527" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source></Done>
-		<Done>			<key>Kip</key>
+		<Item 
+			done="true"
+		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Gina</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -6430,11 +6677,7 @@
 				>Kip					<LeftTree 
 						color="black"
 						depth="2"
-					>Jada						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-					</LeftTree>
+					>Jada</LeftTree>
 					<RightTree 
 						color="black"
 						depth="2"
@@ -6481,84 +6724,24 @@
 					</RightTree>
 				</RightTree>
 			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>Kip</key>
 			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Jada						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Gina</subtree>
 			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Jada						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
+				color="white"
+				depth="-1"
+			>Gina</subtree>
+		</Item>
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="661" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jada</key>
-<Source line="680" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jada</key>
+<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 		>Eryn			<LeftTree 
@@ -6594,43 +6777,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="7" line="693" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="453" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jada</key>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="black"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Jada						<LeftTree 
-							color="black"
-							depth="3"
-						>Gary</LeftTree>
-					</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
+<Source clrs="7" line="719" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jada</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -6705,30 +6852,6 @@
 				</RightTree>
 			</subtree>
 			<subtree 
-				color="red"
-				depth="1"
-			>Kip				<LeftTree 
-					color="black"
-					depth="2"
-				>Jada					<LeftTree 
-						color="black"
-						depth="3"
-					>Gary</LeftTree>
-				</LeftTree>
-				<RightTree 
-					color="black"
-					depth="2"
-				>Lupe					<RightTree 
-						color="black"
-						depth="3"
-					>Marc</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="white"
-				depth="-1"
-			>Jada</subtree>
-			<subtree 
 				color="white"
 				depth="-1"
 			>Jada</subtree>
@@ -6769,9 +6892,42 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-		<Done><Source clrs="1" line="527" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source><Source line="530" file="./tree.h" ><![CDATA[				if (!node) return black(root);]]></Source><Source clrs="3" line="535" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Right());																			]]></Source><Source clrs="10" line="547" file="./tree.h" ><![CDATA[						red(other);																																]]></Source><Source clrs="3" line="570" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Left());																				]]></Source><Source clrs="10" line="582" file="./tree.h" ><![CDATA[						red(other);																																]]></Source><Source clrs="23" line="604" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source></Done>
-		<Done>			<key>Kip</key>
-			<subtree 
+		<Item 
+			done="true"
+		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Jada</key>
+<Source clrs="2" line="558" file="./tree.h" ><![CDATA[				if ( node == node->Parent()->Left() )																					]]></Source>			<subtree 
+				color="black"
+				depth="0"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+<Source clrs="3" line="561" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Right());																			]]></Source>			<subtree 
 				color="black"
 				depth="0"
 			>Eryn				<LeftTree 
@@ -6803,102 +6959,18 @@
 					</RightTree>
 				</RightTree>
 			</subtree>
+<Source clrs="10" line="573" file="./tree.h" ><![CDATA[						red(other);																																]]></Source><Source clrs="3" line="596" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Left());																				]]></Source><Source clrs="10" line="608" file="./tree.h" ><![CDATA[						red(other);																																]]></Source><Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>		</Item>
+		<Item 
+			done="true"
+		>			<key>Kip</key>
 			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
+				color="white"
+				depth="-1"
+			>Jada</subtree>
 			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-			<subtree 
-				color="black"
-				depth="0"
-			>Eryn				<LeftTree 
-					color="red"
-					depth="1"
-				>Cira					<LeftTree 
-						color="black"
-						depth="2"
-					>Adah</LeftTree>
-					<RightTree 
-						color="black"
-						depth="2"
-					>Drew</RightTree>
-				</LeftTree>
-				<RightTree 
-					color="red"
-					depth="1"
-				>Kip					<LeftTree 
-						color="black"
-						depth="2"
-					>Gary</LeftTree>
-					<RightTree 
-						color="red"
-						depth="2"
-					>Lupe						<RightTree 
-							color="black"
-							depth="3"
-						>Marc</RightTree>
-					</RightTree>
-				</RightTree>
-			</subtree>
-		</Done>
+				color="white"
+				depth="-1"
+			>Jada</subtree>
+		</Item>
 	</Item>
 </Tree>

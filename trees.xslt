@@ -20,17 +20,19 @@
 		</div>
 </xsl:template>
 
-<xsl:template match="subtree" >
-		<xsl:variable name="id"><xsl:value-of select="generate-id()" /></xsl:variable>
-		<div style="display:none"> 
+<xsl:template name="up"><xsl:value-of select="name()" />_<xsl:for-each select="*"><xsl:call-template name="up" /></xsl:for-each></xsl:template>
+
+<xsl:template name="subtree" >
+		<xsl:variable name="id"><xsl:call-template name="up" /><xsl:value-of select="generate-id()" /></xsl:variable>
+		<div style="display:none;font-size:0.7em;"> 
 			<xsl:attribute name="id">v_<xsl:value-of select="$id" /></xsl:attribute>
 			<xsl:attribute name="value"><xsl:value-of select="text()" /></xsl:attribute>
 			<xsl:attribute name="color"><xsl:value-of select="@color" /></xsl:attribute>
 			<xsl:attribute name="depth"><xsl:value-of select="@depth" /></xsl:attribute>
-				<br /><xsl:value-of select="text()" /><br />
+				<br />Sub Tree: <xsl:value-of select="text()" />- ID:<xsl:value-of select="$id" /><br />
 			<xsl:for-each select="*" ><xsl:call-template name="subnode" /></xsl:for-each>
 		</div>
-		<canvas width="800" height="200" style="border:1px solid #000000;">
+		<canvas width="800" height="80" style="border:1px solid #000000;">
 			<xsl:attribute name="id"><xsl:value-of select="$id" /></xsl:attribute>
 		</canvas>
 		<script>
@@ -52,14 +54,23 @@
 </xsl:template>
 
 <xsl:template name="insrt" >
-	<xsl:variable name="id"><xsl:value-of select="generate-id()" /></xsl:variable>
+	<xsl:variable name="id">insrt_<xsl:value-of select="generate-id()" /></xsl:variable>
 	<div class="nodeframe" >
 		<xsl:attribute name="id"><xsl:value-of select="$id" /></xsl:attribute>
-		<div class="MainAction" >Insert</div>
-		<xsl:apply-templates />
+		<div class="MainAction" >Insert <xsl:value-of select="key" /></div>
+		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
 		<script>
 			setTimeout("LoadNumber('<xsl:value-of select='$id' />')",300)
 		</script>
+	</div>
+</xsl:template>
+
+<xsl:template name="done" >
+	<xsl:variable name="id">done_<xsl:value-of select="generate-id()" /></xsl:variable>
+	<div class="nodeframe" >
+		<xsl:attribute name="id"><xsl:value-of select="$id" /></xsl:attribute>
+		<div class="MainAction" >Done</div>
+		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
 	</div>
 </xsl:template>
 
@@ -70,24 +81,24 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="Transplant" >
+<xsl:template name="Transplant" >
 	<div class="nodeframe" >
 		<div class="SubAction" >Transplant</div>
-		<xsl:apply-templates />
+		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
 	</div>
 </xsl:template>
 
-<xsl:template match="RotateLeft" >
+<xsl:template name="RotateLeft" >
 	<div class="nodeframe" >
 		<div class="SubAction" >RotateLeft</div>
-		<xsl:apply-templates />
+		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
 	</div>
 </xsl:template>
 
-<xsl:template match="RotateRight" >
+<xsl:template name="RotateRight" >
 	<div class="nodeframe" >
 		<div class="SubAction" >RotateRight</div>
-		<xsl:apply-templates />
+		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
 	</div>
 </xsl:template>
 
@@ -97,11 +108,16 @@
 			<xsl:if test='(position() mod 2) = 0'>#cacaca;</xsl:if>
 		</xsl:variable>
 	<div>
-		<xsl:attribute name="style">background:<xsl:value-of select="$bkg" /></xsl:attribute>
+		<xsl:attribute name="style">border:inset;margin-left:10px;background:<xsl:value-of select="$bkg" /></xsl:attribute>
 		<xsl:choose>
 			<xsl:when test="@insrt='true'"><xsl:call-template name="insrt" /></xsl:when>
+			<xsl:when test="@done='true'"><xsl:call-template name="done" /></xsl:when>
 			<xsl:when test="@erse='true'"><xsl:call-template name="erse" /></xsl:when>
 		</xsl:choose>
+		<xsl:for-each select="RotateLeft"><xsl:call-template name="RotateLeft" /></xsl:for-each>
+		<xsl:for-each select="RotateRight"><xsl:call-template name="RotateRight" /></xsl:for-each>
+		<xsl:for-each select="Transplant"><xsl:call-template name="Transplant" /></xsl:for-each>
+		<xsl:for-each select="Done"><xsl:call-template name="Item" /></xsl:for-each>
 	</div>
 </xsl:template>
 

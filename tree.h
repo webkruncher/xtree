@@ -27,6 +27,8 @@
 #ifndef DIGITAL_ARBORIST_H
 #define DIGITAL_ARBORIST_H
 
+#include <iostream>
+using namespace std;
 
 namespace TreeObjects
 {
@@ -194,56 +196,63 @@ namespace TreeObjects
 	inline Trunk* TreeBase::RotateLeft(Trunk* root, Trunk* node)
 	{
 		if (this->isnul(node)) return root;
-		Trunk* other(node->Right());
-		if (this->isnul(other)) return root;
+		Trunk* other(node->Right());														// 1
+		//if (this->isnul(other)) return root;
 		Msg<<rotlft<<(*node)<<(*other);
-		node->SetRight(other->Left());
-		if ( !isnul(other->Left()) ) other->Left()->SetParent(node);
-		other->SetParent(node->Parent());
-		if ( isnul(node->Parent()) ) 
+		Trace
+		node->SetRight(other->Left());													// 2
+		if ( !other->Left()->isnil() )													// 3
+					other->Left()->SetParent(node);										// 4
+		other->SetParent(node->Parent());												// 5
+		if ( node->Parent()->isnil() )													// 6
 		{
 			Trace
-			root = other;
-		} else {
+			root = other;																					// 7
+		} else {																								// 8
 			Trace
-			if ( node == node->Parent()->Left() ) node->Parent()->SetLeft(other);
-			else node->Parent()->SetRight(other);
+			if ( node == node->Parent()->Left() )									// 8
+				node->Parent()->SetLeft(other);											// 9
+			else node->Parent()->SetRight(other);									// 10
 		}
-		other->SetLeft(node);
-		node->SetParent(other);
+		other->SetLeft(node);																		// 11
+		node->SetParent(other);																	// 12
 		root->SetParent(GetNil());
 		Update(node,node->Parent());
 		Update(other,other->Parent());
-		Msg<<done;
+		if (node) Msg<<done(*node); else throw string("TBD: Remove this");
 		return root;
 	}
 
 	inline Trunk* TreeBase::RotateRight(Trunk* root, Trunk* node)
 	{
 		if (this->isnul(node)) return root;
-		Trunk* other(node->Left());
-		if (this->isnul(other)) return root;
+		Trunk* other(node->Left());															// 1
+		//if (this->isnul(other)) return root;
 		Msg<<rotrgt<<(*node)<<(*other);
-		node->SetLeft(other->Right());
-		if ( !isnul(other->Right()) ) other->Right()->SetParent(node);
-		other->SetParent(node->Parent());
-		if ( isnul(node->Parent()) ) 
+		Trace
+		node->SetLeft(other->Right());													// 2
+		if ( !other->Right()->isnil() )													// 3
+					other->Right()->SetParent(node);									// 4
+		other->SetParent(node->Parent());												// 5
+		if ( node->Parent()->isnil() )													// 6
 		{
 			Trace
-			root = other;
-		} else  {
+			root = other;																					// 7
+		} else {																								// 8
 			Trace
-			if ( node == node->Parent()->Right() ) node->Parent()->SetRight(other);
-			else node->Parent()->SetLeft(other);
+			if ( node == node->Parent()->Right() )								// 8
+				node->Parent()->SetRight(other);										// 9
+			else node->Parent()->SetLeft(other);									// 10
 		}
-		other->SetRight(node);
-		node->SetParent(other);
+		other->SetRight(node);																	// 11
+		node->SetParent(other);																	// 12
 		root->SetParent(GetNil());
 		Update(node,node->Parent());
 		Update(other,other->Parent());
-		Msg<<done;
+		if (node) Msg<<done(*node); else throw string("TBD: Remove this");
 		return root;
 	}
+
 
 	template <typename KT>
 		struct BstBase : public TreeBase
@@ -277,8 +286,12 @@ namespace TreeObjects
 		virtual BstBase<KT>* find(const KT& what)
 		{	
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
-			if (nd==what) return this;
-			if (nd<what)
+			const KT& ndv(nd);
+			if (ndv==what) 
+			{
+				return this;
+			}
+			if (ndv<what)
 			{
 				if (!isnul(Right()))
 				{
@@ -319,11 +332,11 @@ namespace TreeObjects
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
 			if ((*node)==(*this)) {delete node; return NULL;}
-			node->SetParent(this);
 			if (!d)
 			{
 				node->SetLeft(this->GetNil());
 				node->SetRight(this->GetNil());
+				node->SetParent(this);
 			}
 			Update(node,this);
 			if ((*node)<(*this))
@@ -333,6 +346,12 @@ namespace TreeObjects
 					return this->Left()->insert(root,node,d+1);
 				} else { 
 					this->SetLeft(node);
+					node->SetParent(this);
+					BstBase<KT>& n(static_cast<BstBase<KT>&>(*node));
+					const KT& nk(n);
+					BstBase<KT>& pn(static_cast<BstBase<KT>&>(*this));
+					const KT& pnk(pn);
+					//cout<<"Inserted "<<nk<<" on Left of "<<pnk<<" at "<<(int)d<<endl;
 					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 				}
 			} else {
@@ -341,6 +360,13 @@ namespace TreeObjects
 					return this->Right()->insert(root,node,d+1);
 				} else { 
 					this->SetRight(node);
+					node->SetParent(this);
+
+					BstBase<KT>& n(static_cast<BstBase<KT>&>(*node));
+					const KT nk(n);
+					BstBase<KT>& pn(static_cast<BstBase<KT>&>(*this));
+					const KT pnk(pn);
+					//cout<<"Inserted "<<nk<<" on Right of "<<pnk<<" at "<<(int)d<<endl;
 					{Msg<<insrt<<(*node); Msg.operator<<((int)d);}
 				}
 			}
@@ -460,7 +486,7 @@ namespace TreeObjects
 		if (v) v->SetParent(u->Parent());
 		Update(u,u->Parent());
 		if (v) Update(v,v->Parent());
-		Msg<<done;
+		Msg<<done<<(*u);
 		return ret;
 	}
 
@@ -527,9 +553,9 @@ namespace TreeObjects
 			Trace
 			while ( (node!=root) and (color(node) == BLACK) )																	// 1
 			{
-				Trace
 				if (!node) return black(root);
 				if (node->isnil()) {node=node->Parent(); continue;}
+				Trace
 				if ( node == node->Parent()->Left() )																						// 2
 				{
 					Trace
@@ -734,11 +760,28 @@ namespace TreeObjects
 			root=Bst<KT,VT>::insert(root,node,d);
 			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
 			if (d) return black(root);
-			RbMapBase<KT,VT>& nd(static_cast<RbMapBase<KT,VT>&>(*node));
-			nd.SetLeft(root->GetNil());
-			nd.SetRight(root->GetNil());
+			//RbMapBase<KT,VT>& nd(static_cast<RbMapBase<KT,VT>&>(*node));
+			//nd.SetLeft(root->GetNil());
+			//nd.SetRight(root->GetNil());
 			Trunk* ret(this->RedAndBlackInsert(root,node));
 			Msg<<done<<(*node)<<finish;
+			RbMapBase<KT,VT>& nd(static_cast<RbMapBase<KT,VT>&>(*node));
+			RbMapBase<KT,VT>& pnd(static_cast<RbMapBase<KT,VT>&>(*node->Parent()));
+			const KT& ndv(nd);
+			const KT& pndv(pnd);
+			//cout<<"Inserted:"<<ndv<<", Parent is "<<pndv<<endl;
+			if (!root->isnul(pnd.Left()))
+			{
+				RbMapBase<KT,VT>& pndl(static_cast<RbMapBase<KT,VT>&>(*pnd.Left()));
+				const KT& pndlv(pndl);
+				cout<<pndv<<"'s Left is:"<<pndlv<<endl;
+			}
+			if (!root->isnul(pnd.Right()))
+			{
+				RbMapBase<KT,VT>& pndr(static_cast<RbMapBase<KT,VT>&>(*pnd.Right()));
+				const KT& pndrv(pndr);
+				cout<<pndv<<"'s Right is:"<<pndrv<<endl;
+			}
 			return ret;
 		}
 		

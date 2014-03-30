@@ -153,10 +153,11 @@ namespace XmlTree
 
 	void Item::Done()
 	{
-		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"Done")));
+		Item* n(static_cast<Item*>(NewNode(GetDoc(),this,"Item")));
 		appendChild(n);
 		LastAction=n;
-		SubTreePrinter& stp(*this);
+		n->attributes["done"]=XmlFamily::TextElement(Document,n,"true");
+		SubTreePrinter& stp(*n);
 		stp.Done();
 	}
 	void Item::Finish()
@@ -307,7 +308,8 @@ namespace XmlTree
 
 	void AppendSubTree(XmlNode& node,const string disposition,const string keyname,TreeXml& xmltree,const int depth)
 	{
-		if (!depth) return;
+cout<<"disposition:"<<disposition<<":"<<keyname<<endl;
+//		if (!depth) return;
 		Item& I(static_cast<Item&>(node));
 		Item& subitems(I.SubItem(disposition));
 		subitems=keyname;
@@ -335,17 +337,23 @@ cout<<"Depth of "<<keyname<<" "<<keydepth<<endl;
 		if (recent.empty()) throw string("No recent nodes");
 		TreeXml& xmltree(payload);
 
-		for (int N=0;N<recent.size();N++)
-		{
-			if (N>1) return;
-			string me(recent[N]);
-			string parent,grandparent;
-			if (xmltree.SIsRoot(me)) {AppendSubTree(*current,"subtree",me,xmltree,5);return;}
-			parent=xmltree.SParentOf(me);
-			if (xmltree.SIsRoot(parent)) {AppendSubTree(*current,"subtree",parent,xmltree,6);return;}
-			grandparent=xmltree.SParentOf(parent);
-			AppendSubTree(*current,"subtree",grandparent,xmltree,7);
-		}
+			string node(recent[0]);
+cout<<"Printing "<<node<<endl;
+
+			//string parent,grandparent;
+			while (true)
+			{
+				if (xmltree.SIsRoot(node))
+				{
+					cout<<"Got a Root:"<<node<<endl;
+					AppendSubTree(*current,"subtree",node,xmltree,12);
+					return;
+				} else {
+					node=xmltree.SParentOf(node);
+					cout<<"Got a Parent:"<<node<<endl;
+				}
+
+			}
 	}
 
 } // XmlTree

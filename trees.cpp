@@ -71,6 +71,7 @@ namespace TreeDisplay
 	void Trap::stepper(string msg)
 	{
 		if (state==Running) return;
+		if (state==Continuing) return;
 		if ((state==Next) and (msg!="Begin") and (!msg.empty()) ) return;
 		if ((state==Next) and (stop)) 
 		{
@@ -86,6 +87,11 @@ namespace TreeDisplay
 		if ((cmd=="r") or (cmd=="run")) state=Running;
 		if ((cmd=="n") or (cmd=="next")) {state=Next; stop=true;}
 		if ((cmd=="s") or (cmd=="step")) state=Stepping;
+		if ((cmd=="c") or (cmd=="continue")) 
+		{
+			Clear();
+			state=Continuing;
+		}
 	}
 
 	const string& TreeSource::operator()(int line)
@@ -425,9 +431,16 @@ namespace TreeDisplay
 	{
 		if (!root) return true;
 		BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+		const KT nkey(nk);
+		cout<<"Looking in "<<nkey<<" for "<<what<<endl;
 		BstBase<KT>* found(nk.find(what));
+		if (!found) cout<<"Error: Could not find "<<what<<";"<<endl;
 		if (!found) return true;
-		return (root==found);
+		BstBase<KT>& fnk(static_cast<BstBase<KT>&>(*found));
+		const KT fkey(fnk);
+		const bool isr(nkey==fkey);
+		cout<<what<<" ?isroot:"<<boolalpha<<isr<<endl;
+		return isr;
 	}
 
 	template <typename KT>
@@ -463,7 +476,8 @@ namespace TreeDisplay
 			if (!found) throw string("Key not found");
 			BstBase<KT>* parent(static_cast<BstBase<KT>*>(found->Parent()));
 			if (root->isnul(parent)) throw string("Parent is null");
-			return (*parent);
+			const KT pkey(*parent);
+			return pkey;
 		}
 
 	template <typename KT>

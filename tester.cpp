@@ -56,8 +56,22 @@ struct Punk: public std::numpunct<char>
 };
 
 void Insert(std::set<long>& items,const long number) {  items.insert(number); }
+void Assert(std::set<long>& items,const long number) 
+{  
+	if (items.find(number)==items.end()) throw string("Cannot find a number in the std set");
+}
 void Erase(std::set<long>& items,const long number) {  items.erase(number);}
-void Insert(TreeObjects::Set<long>& items,const long number) {  items.insert(number);}
+void Insert(TreeObjects::Set<long>& items,const long number) 
+{  
+	items.insert(number);
+}
+void Assert(TreeObjects::Set<long>& items,const long number) 
+{  
+	TreeBase* found(items.find(number));
+	if (found) return;
+	stringstream ss; ss<<"Cannot find "<<number; string s(ss.str());
+	throw s;
+}
 void Erase(TreeObjects::Set<long>& items,const long number) {  items.erase(number);}
 
 template <typename T>
@@ -65,11 +79,16 @@ template <typename T>
 { 
 	cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Insert(items,numbers[j]);
-	cerr<<"Deletes:"<<endl; cerr.flush();
+	cerr<<"First check:"<<endl; cerr.flush();
+	for (long j=0;j<size;j++) Assert(items,numbers[j]);
+	cerr<<"First check ok:"<<endl; cerr.flush();
+	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
-	cerr<<"Inserts:"<<endl; cerr.flush();
+	for (long j=(size/2);j<(size-1);j++) Assert(items,numbers[j]);
+	cerr<<"Second check ok:"<<endl; cerr.flush();
+	//cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
-	cerr<<"Deletes:"<<endl; cerr.flush();
+	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
 	for (long j=0;j<size;j++) Insert(items,numbers[j]);
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
@@ -180,7 +199,7 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 	ret.STLOBJECTS=StlTime;
 
 	//cerr<<"IntegrityCheck: "<<N<<" numbers"<<endl;
-	if (!IntegrityCheck(numbers,N)) std::cout<<"Integrity check failed"<<std::endl;
+	//if (!IntegrityCheck(numbers,N)) std::cout<<"Integrity check failed"<<std::endl;
 
 	return ret;
 }
