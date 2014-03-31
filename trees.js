@@ -77,7 +77,6 @@
 
 		function LoadSubTree(id,x,y,w,h)
 		{
-//alert("Loading:"+id)
 			this.items=GetObject("v_"+id)
 			this.txt=this.items.getAttribute("value")
 			this.depth=this.items.getAttribute("depth")

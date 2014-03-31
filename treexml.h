@@ -57,6 +57,7 @@ namespace XmlTree
 		void Rotrgt();
 		void Number(const int a);
 		virtual const bool SIsRoot(const string what) const = 0; 
+		virtual const string SGetRoot() const = 0; 
 		virtual const bool SHasLeft(const string what) const = 0;
 		virtual const bool SHasRight(const string what) const = 0;
 		virtual const string SParentOf(const string what) const = 0; 
@@ -64,6 +65,7 @@ namespace XmlTree
 		virtual const string SColorOf(const string what) const = 0; 
 		virtual const string SLeftOf(const string what) const = 0; 
 		virtual const string SRightOf(const string what) const = 0; 
+		virtual void StopAndPrint() = 0;
 		private:
 		Payload& payload();
 		void* xml;

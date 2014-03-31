@@ -2,7 +2,6 @@
 
 .nodeframe
 {
-	border:double;
 	margin-left:10px;
 }
 
@@ -12,7 +11,7 @@
 	font-size:0.8em;
 	color:black;
 	margin-left:8px;
-	display:block;
+	display:inline;
 }
 
 .Number
@@ -41,4 +40,9 @@
 {
 	font-size:0.7em;
 	color:gray;
+}
+
+td
+{
+	text-align:center;
 }

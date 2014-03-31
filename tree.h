@@ -695,7 +695,7 @@ namespace TreeObjects
 			}
 			found->SetLeft(NULL); found->SetRight(NULL);
 			delete found;
-			Msg<<done<<(*p)<<finish;
+			Msg<<done<<(*this)<<finish;
 			return newroot;
 		}
 		COLOR clr;

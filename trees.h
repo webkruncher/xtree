@@ -102,6 +102,10 @@ namespace TreeDisplay
 			const KT kwhat(this->tokt(what));
 			return this->IsRoot(kwhat);
 		}
+		const string SGetRoot() const
+		{
+			return this->tostr(this->GetRoot());
+		}
 		const bool SHasLeft(const string what) const
 		{
 			const KT kwhat(this->tokt(what));
@@ -139,6 +143,7 @@ namespace TreeDisplay
 		}
 
 		virtual const bool IsRoot(const KT what) const = 0;
+		virtual const KT GetRoot() const = 0;
 		virtual const bool HasLeft(const KT what) const = 0;
 		virtual const bool HasRight(const KT what) const = 0;
 		virtual const KT ParentOf(const KT what) const = 0;
@@ -196,6 +201,11 @@ namespace TreeDisplay
 		bool stop,removing;
 		virtual bool CheckIntegrity(Trunk* root) 
 			{ if (!TreeIntegrity::BstIntegrity<KT>(tout,root,used)) return this->IntegrityReport(root); return true;}
+		virtual void StopAndPrint() 
+		{
+			stop=true;
+			if (root) IntegrityReport(root);
+		}
 		virtual bool IntegrityReport(Trunk* root) 
 		{
 			if (reported) return false;
@@ -204,9 +214,13 @@ namespace TreeDisplay
 			if (used.size()<20)
 			{
 				tout<<"Used:"; for (typename set<KT>::iterator it=used.begin();it!=used.end();it++) tout<<(*it)<<" ";	
-				tout<<endl<<" Bst:"; 
-				TreeIntegrity::PrintInOrder<KT,VT>(tout,root);
-				tout<<endl;
+				if (root->isnil()) throw string("Root is nil in IntegrityReport");
+					else 
+				{
+					tout<<endl<<" Bst:"; 
+					TreeIntegrity::PrintInOrder<KT>(tout,root);
+					tout<<endl;
+				}
 			}
 			tout<<Msg.str()<<endl; tout.flush(); msgbuffer.reset(NULL);
 			return false;
@@ -385,6 +399,7 @@ namespace TreeDisplay
 			return *this;
 		}
 		const bool IsRoot(const KT what) const;
+		const KT GetRoot() const;
 		const bool HasLeft(const KT what) const;
 		const bool HasRight(const KT what) const;
 		const KT ParentOf(const KT what) const;

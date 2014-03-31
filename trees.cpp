@@ -430,17 +430,33 @@ namespace TreeDisplay
 		const bool TreeCanvas<KT>::IsRoot(const KT what) const 
 	{
 		if (!root) return true;
-		BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+		if (root->isnil()) throw string("The root node is nil");
+		BstBase<KT>* rk(dynamic_cast<BstBase<KT>*>(root));
+		if (!rk) throw string("This root is not the right type");
+		BstBase<KT>& nk(*rk);
 		const KT nkey(nk);
 		cout<<"Looking in "<<nkey<<" for "<<what<<endl;
+		if (nkey==what) return nk.isnil();
 		BstBase<KT>* found(nk.find(what));
 		if (!found) cout<<"Error: Could not find "<<what<<";"<<endl;
 		if (!found) return true;
 		BstBase<KT>& fnk(static_cast<BstBase<KT>&>(*found));
 		const KT fkey(fnk);
 		const bool isr(nkey==fkey);
-		cout<<what<<" ?isroot:"<<boolalpha<<isr<<endl;
+		//cout<<what<<" ?isroot:"<<boolalpha<<isr<<endl;
 		return isr;
+	}
+
+	template <typename KT>
+		const KT TreeCanvas<KT>::GetRoot() const 
+	{
+		if (!root) throw string("No root");
+		if (root->isnil()) throw string("The root node is nil");
+		BstBase<KT>* rk(dynamic_cast<BstBase<KT>*>(root));
+		if (!rk) throw string("This root is not the right type");
+		BstBase<KT>& nk(*rk);
+		const KT nkey(nk);
+		return nkey;
 	}
 
 	template <typename KT>
@@ -475,7 +491,7 @@ namespace TreeDisplay
 			BstBase<KT>* found(nk.find(what));
 			if (!found) throw string("Key not found");
 			BstBase<KT>* parent(static_cast<BstBase<KT>*>(found->Parent()));
-			if (root->isnul(parent)) throw string("Parent is null");
+			if (root->isnul(parent)) return what; //throw string("Parent is null");
 			const KT pkey(*parent);
 			return pkey;
 		}
@@ -503,7 +519,10 @@ namespace TreeDisplay
 		const string TreeCanvas<KT>::ColorOf(const KT what) const
 		{
 			if (!root) throw string("No root");
-			BstBase<KT>& nk(static_cast<BstBase<KT>&>(*root));
+			// USING RTTI
+			BstBase<KT>* rk(dynamic_cast<BstBase<KT>*>(root));
+			if (!rk) throw string("This root is not the right type");
+			BstBase<KT>& nk(*rk);
 			BstBase<KT>* found(nk.find(what));
 			if (!found) return "white";
 			// USING RTTI

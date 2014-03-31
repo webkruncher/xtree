@@ -16,8 +16,29 @@
 			<xsl:attribute name="color"><xsl:value-of select="@color" /></xsl:attribute>
 			<xsl:attribute name="depth"><xsl:value-of select="@depth" /></xsl:attribute>
 				<xsl:value-of select="name()" />:<xsl:value-of select="text()" />
-			<xsl:for-each select="*" ><xsl:call-template name="subnode" /></xsl:for-each>
 		</div>
+</xsl:template>
+
+<xsl:template name="subnest" >
+		<table width="100%;border:1px;">
+				<tr>
+					<td colspan="2">
+						<xsl:attribute name="style">font-weight:bold;font-size:10px;vertical-align:top;align:center;width:140px;color:#aaaaaa;background:<xsl:value-of select="@color" /></xsl:attribute><xsl:value-of select="text()" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<xsl:attribute name="style">font-size:8px;vertical-align:top;align:center;width:140px;color:black;background:#777777;</xsl:attribute>
+						<xsl:if test="not (LeftTree)">NIL</xsl:if>
+						<xsl:for-each select="LeftTree" ><xsl:value-of select="text()" /><xsl:call-template name="subnest" /></xsl:for-each>
+					</td>
+					<td>
+						<xsl:attribute name="style">font-size:8px;vertical-align:top;align:center;width:140px;color:black;background:#777777;</xsl:attribute>
+						<xsl:if test="not (RightTree)">NIL</xsl:if>
+						<xsl:for-each select="RightTree" ><xsl:value-of select="text()" /><xsl:call-template name="subnest" /></xsl:for-each>
+					</td>
+				</tr>
+		</table>
 </xsl:template>
 
 <xsl:template name="up"><xsl:value-of select="name()" />_<xsl:for-each select="*"><xsl:call-template name="up" /></xsl:for-each></xsl:template>
@@ -29,15 +50,8 @@
 			<xsl:attribute name="value"><xsl:value-of select="text()" /></xsl:attribute>
 			<xsl:attribute name="color"><xsl:value-of select="@color" /></xsl:attribute>
 			<xsl:attribute name="depth"><xsl:value-of select="@depth" /></xsl:attribute>
-				<br />Sub Tree: <xsl:value-of select="text()" />- ID:<xsl:value-of select="$id" /><br />
 			<xsl:for-each select="*" ><xsl:call-template name="subnode" /></xsl:for-each>
 		</div>
-		<canvas width="800" height="80" style="border:1px solid #000000;">
-			<xsl:attribute name="id"><xsl:value-of select="$id" /></xsl:attribute>
-		</canvas>
-		<script>
-			setTimeout("LoadSubTree('<xsl:value-of select='$id' />',400,10,800,200)",300)
-		</script>
 </xsl:template>
 
 <xsl:template match="Number" >
@@ -58,7 +72,14 @@
 	<div class="nodeframe" >
 		<xsl:attribute name="id"><xsl:value-of select="$id" /></xsl:attribute>
 		<div class="MainAction" >Insert <xsl:value-of select="key" /></div>
+		<xsl:for-each select="subtree">
+			<div>
+				Step:<xsl:value-of select="position()" /><br />
+				<xsl:call-template name="subnest" />
+			</div>
+		</xsl:for-each>
 		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
+		<xsl:for-each select="Item"><xsl:call-template name="Item" /></xsl:for-each>
 		<script>
 			setTimeout("LoadNumber('<xsl:value-of select='$id' />')",300)
 		</script>
@@ -68,37 +89,67 @@
 <xsl:template name="done" >
 	<xsl:variable name="id">done_<xsl:value-of select="generate-id()" /></xsl:variable>
 	<div class="nodeframe" >
+		<div class="MainAction" >Done <xsl:value-of select="key" /></div>
+		<xsl:for-each select="subtree">
+			<div>
+				Step:<xsl:value-of select="position()" /><br />
+				<xsl:call-template name="subnest" />
+			</div>
+		</xsl:for-each>
 		<xsl:attribute name="id"><xsl:value-of select="$id" /></xsl:attribute>
-		<div class="MainAction" >Done</div>
-		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
+		<xsl:for-each select="Item"><xsl:call-template name="Item" /></xsl:for-each>
 	</div>
 </xsl:template>
 
 <xsl:template name="erse" >
 	<div class="nodeframe" >
-		<div class="MainAction" >Erase</div>
-		<xsl:apply-templates />
+		<div class="MainAction" >Erase <xsl:value-of select="key" /></div>
+		<xsl:for-each select="subtree">
+			<div>
+				Step:<xsl:value-of select="position()" /><br />
+				<xsl:call-template name="subnest" />
+			</div>
+		</xsl:for-each>
 	</div>
 </xsl:template>
 
 <xsl:template name="Transplant" >
 	<div class="nodeframe" >
 		<div class="SubAction" >Transplant</div>
-		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
+		<xsl:for-each select="subtree">
+			<div>
+				Step:<xsl:value-of select="position()" /><br />
+				<xsl:call-template name="subnest" />
+			</div>
+		</xsl:for-each>
+		<xsl:for-each select="Item"><xsl:call-template name="Item" /></xsl:for-each>
 	</div>
 </xsl:template>
 
 <xsl:template name="RotateLeft" >
 	<div class="nodeframe" >
 		<div class="SubAction" >RotateLeft</div>
-		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
+		<xsl:for-each select="subtree">
+			<div>
+				Step:<xsl:value-of select="position()" /><br />
+				<xsl:call-template name="subnest" />
+			</div>
+		</xsl:for-each>
+		<xsl:for-each select="Item"><xsl:call-template name="Item" /></xsl:for-each>
 	</div>
 </xsl:template>
 
 <xsl:template name="RotateRight" >
 	<div class="nodeframe" >
 		<div class="SubAction" >RotateRight</div>
+		<xsl:for-each select="subtree">
+			<div>
+				Step:<xsl:value-of select="position()" /><br />
+				<xsl:call-template name="subnest" />
+			</div>
+		</xsl:for-each>
 		<xsl:for-each select="subtree"><xsl:call-template name="subtree" /></xsl:for-each>
+		<xsl:for-each select="Item"><xsl:call-template name="Item" /></xsl:for-each>
 	</div>
 </xsl:template>
 
@@ -108,8 +159,8 @@
 			<xsl:if test='(position() mod 2) = 0'>#cacaca;</xsl:if>
 		</xsl:variable>
 	<div>
-		<xsl:attribute name="style">border:inset;margin-left:10px;background:<xsl:value-of select="$bkg" /></xsl:attribute>
 		<xsl:choose>
+			<xsl:when test="name()='subtree'"><xsl:call-template name="subtree" /></xsl:when>
 			<xsl:when test="@insrt='true'"><xsl:call-template name="insrt" /></xsl:when>
 			<xsl:when test="@done='true'"><xsl:call-template name="done" /></xsl:when>
 			<xsl:when test="@erse='true'"><xsl:call-template name="erse" /></xsl:when>
@@ -117,7 +168,7 @@
 		<xsl:for-each select="RotateLeft"><xsl:call-template name="RotateLeft" /></xsl:for-each>
 		<xsl:for-each select="RotateRight"><xsl:call-template name="RotateRight" /></xsl:for-each>
 		<xsl:for-each select="Transplant"><xsl:call-template name="Transplant" /></xsl:for-each>
-		<xsl:for-each select="Done"><xsl:call-template name="Item" /></xsl:for-each>
+		<xsl:for-each select="Item"><xsl:call-template name="Item" /></xsl:for-each>
 	</div>
 </xsl:template>
 

@@ -301,59 +301,77 @@ namespace XmlTree
 	void SubTreePrinter::Key(const string keyname,XmlNode* node)
 	{
 		current=node;
-		recent.push_back(keyname);
+		recent.push_front(keyname);
 		while (recent.size()>2) recent.pop_front();
 		Print();
 	}
 
-	void AppendSubTree(XmlNode& node,const string disposition,const string keyname,TreeXml& xmltree,const int depth)
+	bool AppendSubTree(XmlNode& node,const string disposition,const string keyname,TreeXml& xmltree,const int depth,const string parentname="")
 	{
-cout<<"disposition:"<<disposition<<":"<<keyname<<endl;
-//		if (!depth) return;
 		Item& I(static_cast<Item&>(node));
 		Item& subitems(I.SubItem(disposition));
 		subitems=keyname;
 		const string color(xmltree.SColorOf(keyname));
 		subitems.attributes["color"]=XmlFamily::TextElement(node.GetDoc(),&subitems,color);
+		subitems.attributes["parent"]=XmlFamily::TextElement(node.GetDoc(),&subitems,parentname);
 		const int keydepth(xmltree.SDepthOf(keyname));
 		stringstream sd; sd<<keydepth; string sdepth; sdepth=sd.str().c_str();
-cout<<"Depth of "<<keyname<<" "<<keydepth<<endl;
 		subitems.attributes["depth"]=XmlFamily::TextElement(node.GetDoc(),&subitems,sdepth);
+		bool ret(false);
 		if (xmltree.SHasLeft(keyname))
 		{
+			ret=true;
 			const string sub(xmltree.SLeftOf(keyname));
-			AppendSubTree(subitems,"LeftTree",sub,xmltree,depth-1);
+			subitems.attributes["left"]=XmlFamily::TextElement(node.GetDoc(),&subitems,sub);
+			AppendSubTree(subitems,"LeftTree",sub,xmltree,depth-1,keyname);
 		}
 		if (xmltree.SHasRight(keyname))
 		{
+			ret=true;
 			const string sub(xmltree.SRightOf(keyname));
-			AppendSubTree(subitems,"RightTree",sub,xmltree,depth-1);
+			subitems.attributes["right"]=XmlFamily::TextElement(node.GetDoc(),&subitems,sub);
+			AppendSubTree(subitems,"RightTree",sub,xmltree,depth-1,keyname);
 		}
+		return ret;
 	}
 
 	void SubTreePrinter::Print()
 	{
-		if (!current) throw string("No current node");
-		if (recent.empty()) throw string("No recent nodes");
 		TreeXml& xmltree(payload);
-
-			string node(recent[0]);
-cout<<"Printing "<<node<<endl;
-
-			//string parent,grandparent;
-			while (true)
+		try
+		{
+			if (!current) throw string("No current node");
+			if (true)
 			{
-				if (xmltree.SIsRoot(node))
-				{
-					cout<<"Got a Root:"<<node<<endl;
-					AppendSubTree(*current,"subtree",node,xmltree,12);
-					return;
-				} else {
-					node=xmltree.SParentOf(node);
-					cout<<"Got a Parent:"<<node<<endl;
-				}
-
+				const string node(xmltree.SGetRoot());
+				AppendSubTree(*current,"subtree",node,xmltree,12); 
+				return;
 			}
+
+			// may be useful for displaying small branches of larger trees
+
+			if (recent.empty()) throw string("No recent nodes");
+			int N(0);
+			while (N<recent.size())
+			{
+				string node(recent[N]);
+				while (true)
+				{
+					if (xmltree.SIsRoot(node))
+					{
+						if (AppendSubTree(*current,"subtree",node,xmltree,12)) return;
+						N++; break;
+					} else {
+						string pnode=xmltree.SParentOf(node);
+						if (pnode==node) { AppendSubTree(*current,"subtree",node,xmltree,12); return;}
+						else node=pnode;
+					}
+				}
+			}
+		} catch (string& e) {
+			cout<<"\t\tException:"<<e<<endl;
+			xmltree.StopAndPrint();
+		}
 	}
 
 } // XmlTree

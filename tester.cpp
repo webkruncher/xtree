@@ -84,7 +84,7 @@ template <typename T>
 	cerr<<"First check ok:"<<endl; cerr.flush();
 	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
-	for (long j=(size/2);j<(size-1);j++) Assert(items,numbers[j]);
+	for (long j=(size/2);j<(size);j++) Assert(items,numbers[j]);
 	cerr<<"Second check ok:"<<endl; cerr.flush();
 	//cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);

@@ -37,15 +37,55 @@ namespace TreeIntegrity
 		virtual void message(Trunk&,string,string) = 0;
 	};
 
-	template<typename KT,typename VT> 
-		inline void PrintInOrder(ostream& tout,Trunk* node)
+	template<typename KT>
+		inline bool AssertRelations(ostream& tout,Trunk* node)
 	{
-		if (!node) return;
-		if (node->isnil()) return;
-		if (!node->isnul(node->Left())) PrintInOrder<KT,VT>(tout,node->Left());
-		Bst<KT,VT>& rk(static_cast<Bst<KT,VT>&>(*node));
+		BstBase<KT>& M(static_cast<BstBase<KT>&>(*node));
+		const KT& key(M);
+		Trunk* p(node->Parent());
+		if (node->isnul(p)) return true;
+		Trunk* l(p->Left());
+		Trunk* r(p->Right());
+		BstBase<KT>& P(static_cast<BstBase<KT>&>(*p));
+		const KT& pk(P);
+		if (!l->isnil()) 
+		{
+			BstBase<KT>& L(static_cast<BstBase<KT>&>(*l));
+			const KT& lk(L);
+			if (lk==key)
+			{
+				tout<<key<<" is on the left side of it's parent, "<<pk<<endl;	
+				return true;
+			}
+		}
+		if (!r->isnil()) 
+		{
+			BstBase<KT>& R(static_cast<BstBase<KT>&>(*r));
+			const KT& rk(R);
+			if (rk==key)
+			{
+				tout<<key<<" is on the right side of it's parent, "<<pk<<endl;	
+				return true;
+			}
+		}
+		tout<<key<<" is on neither side of it's parent node, "<<pk<<endl;
+		return false;
+		
+	}
+
+	template<typename KT>
+		inline bool PrintInOrder(ostream& tout,Trunk* node)
+	{
+		if (!node) return false;
+		if (node->isnil()) return false;
+		if (!AssertRelations<KT>(tout,node)) return false;
+		if (!node->isnul(node->Left())) 
+				if (!PrintInOrder<KT>(tout,node->Left())) return false;
+		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 		const KT& v(rk); tout<<v<<" ";
-		if (!node->isnul(node->Right())) PrintInOrder<KT,VT>(tout,node->Right());
+		if (!node->isnul(node->Right())) 
+				if (!PrintInOrder<KT>(tout,node->Right())) return false;
+		return true;
 	}	
 
 	template<typename KT>
@@ -140,6 +180,10 @@ namespace TreeIntegrity
 			long ttl(root->countnodes());
 			if (ttl!=used.size()) ok=false;
 			if (ok) TestPredecessorsAndSuccessors<KT>(tout,root,root,used,ok);
+			stringstream sout;
+			if (!PrintInOrder<KT>(sout,root)) ok=false;
+			if (sout.str().empty()) ok=false;
+			else tout<<sout.str().c_str()<<endl;
 			if (!ok)
 			{
 				cerr<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
