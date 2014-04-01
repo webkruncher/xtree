@@ -3,13 +3,19 @@
 .nodeframe
 {
 	margin-left:10px;
+	display:inline;
 }
 
+.doneframe
+{
+	margin-left:10px;
+	display:inline;
+	border:inset;
+}
 .Key
 {
 	border:outset;
 	font-size:0.8em;
-	color:black;
 	margin-left:8px;
 	display:inline;
 }
@@ -26,23 +32,77 @@
 
 .MainAction
 {
-	font-size:1.0em;
-	color:green;
+	display:block;
+	font-size:9pt;
+	color:black;
 }
 
 .SubAction
 {
-	font-size:1.0em;
-	color:purple;
+	font-size:8pt;
+	color:navy;
+	display:inline;
 }
 
 .source
 {
-	font-size:0.7em;
-	color:gray;
+	font-size:0.8em;
+	color:black;
+	display:block;
 }
 
+.sourceline
+{
+	font-size:10pt;
+	color:black;
+	text-align:left;
+}
+
+table
+{
+	text-align:center;
+	font-size:8px;
+	vertical-align:top;
+	align:center;
+	border:0;
+	display:inline;
+}
 td
 {
 	text-align:center;
+	font-size:8px;
+	vertical-align:top;
+	align:center;
+	border:0;
 }
+tr
+{
+	text-align:center;
+	font-size:8px;
+	vertical-align:top;
+	align:center;
+	border:0;
+}
+
+.Step
+{
+	display:inline;
+	font-size:0.9em;
+	color:black;
+}
+
+.SubNest
+{
+	font-size:0.8em;
+	display:inline;
+	color:white;
+}
+
+.Intro
+{
+	border:outset;
+	font-size:12pt;
+	margin-left:20px;
+	display:block;
+}
+
