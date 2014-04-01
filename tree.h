@@ -554,6 +554,7 @@ namespace TreeObjects
 			while ( (node!=root) and (color(node) == BLACK) )																	// 1
 			{
 				if (!node) return black(root);
+				Msg<<done<<(*node)<<done;
 				if (node->isnil()) {node=node->Parent(); continue;}
 				Trace
 				if ( node == node->Parent()->Left() )																						// 2
@@ -573,6 +574,7 @@ namespace TreeObjects
 						Trace
 						red(other);																																	// 10
 						node=node->Parent();																												// 11
+						continue;
 					} else {
 						Trace
 						if (color(other->Right()) == BLACK)																					// 12
@@ -589,6 +591,7 @@ namespace TreeObjects
 						black(other->Right());																											// 19
 						root=this->RotateLeft(root,node->Parent());																	// 20
 						node=root;																																	// 21
+						continue;
 					}
 				} 
 				if ( node == node->Parent()->Right() )																					// 2
@@ -608,6 +611,7 @@ namespace TreeObjects
 						Trace
 						red(other);																																	// 10
 						node=node->Parent();																												// 11
+						continue;
 					} else {
 						Trace
 						if (color(other->Left()) == BLACK)																					// 12
@@ -624,6 +628,7 @@ namespace TreeObjects
 						black(other->Left());																												// 19
 						root=this->RotateRight(root,node->Parent());																// 20
 						node=root;																																	// 21
+						continue;
 					}
 				} 
 			}
@@ -740,7 +745,11 @@ namespace TreeObjects
 			}
 		}
 		if (Ycolor==BLACK)																	// 21
-			if ((root) and (X)) return RedAndBlackDelete(root,X);//22
+			if ((root) and (X)) 
+			{
+				Trace
+				return RedAndBlackDelete(root,X);								// 22
+			}
 		Trace
 		Msg<<done;
 		return root;

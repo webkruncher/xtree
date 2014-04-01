@@ -5516,8 +5516,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Linh</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Linh</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Eryn"
@@ -5618,7 +5618,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="4" line="713" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Linh</key>
+<Source clrs="4" line="718" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Linh</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -6021,7 +6021,7 @@
 		</subtree>
 		<Item 
 			done="true"
-		><Source line="744" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source>			<key>Linh</key>
+		><Source line="753" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source>			<key>Linh</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -6508,8 +6508,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Sean</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Sean</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Eryn"
@@ -6604,7 +6604,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="7" line="719" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Sean</key>
+<Source clrs="7" line="724" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Sean</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -6983,8 +6983,8 @@
 		</subtree>
 		<Item 
 			done="true"
-		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Sean</key>
-<Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<subtree 
+		><Source clrs="22" line="750" file="./tree.h" ><![CDATA[				return RedAndBlackDelete(root,X);							]]></Source>			<key>Sean</key>
+<Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Eryn"
@@ -7073,7 +7073,7 @@
 					>Rob</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
+<Source clrs="23" line="635" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Eryn"
@@ -7348,8 +7348,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Beau</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Beau</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Eryn"
@@ -7438,7 +7438,7 @@
 				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Beau</key>
+<Source clrs="9" line="728" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Beau</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -7696,7 +7696,7 @@
 				</RightTree>
 			</subtree>
 		</Transplant>
-<Source clrs="13" line="729" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
+<Source clrs="13" line="734" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Eryn"
@@ -7787,8 +7787,8 @@
 		</subtree>
 		<Item 
 			done="true"
-		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Beau</key>
-<Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<subtree 
+		><Source clrs="22" line="750" file="./tree.h" ><![CDATA[				return RedAndBlackDelete(root,X);							]]></Source>			<key>Beau</key>
+<Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Eryn"
@@ -7865,7 +7865,7 @@
 					>Rob</RightTree>
 				</RightTree>
 			</subtree>
-			<subtree 
+<Source clrs="23" line="635" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Eryn"
@@ -8122,8 +8122,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jade</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jade</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Eryn"
@@ -8206,7 +8206,7 @@
 				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jodi</key>
+<Source clrs="9" line="728" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jodi</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -8923,7 +8923,7 @@
 		</Transplant>
 		<Item 
 			done="true"
-		><Source line="744" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source>			<key>Jade</key>
+		><Source line="753" file="./tree.h" ><![CDATA[		Msg<<done;]]></Source>			<key>Jade</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -9314,8 +9314,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Rob</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Rob</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Eryn"
@@ -9392,7 +9392,7 @@
 				>Rob</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="4" line="713" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Rob</key>
+<Source clrs="4" line="718" file="./tree.h" ><![CDATA[			X=pfound->Right();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Rob</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -9699,7 +9699,224 @@
 		</subtree>
 		<Item 
 			done="true"
-		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Rob</key>
+		><Source clrs="22" line="750" file="./tree.h" ><![CDATA[				return RedAndBlackDelete(root,X);							]]></Source>			<key>Rob</key>
+<Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<subtree 
+				color="black"
+				depth="0"
+				left="Eryn"
+				parent=""
+				right="Maya"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+					left="Cira"
+					parent="Lupe"
+					right="Gina"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+						left="Adah"
+						parent="Eryn"
+						right="Drew"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Eryn"
+						right="Jodi"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+							left="Jada"
+							parent="Gina"
+							right="Kip"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+					left="Marc"
+					parent="Lupe"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Maya"
+					>Marc</LeftTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Eryn"
+				parent=""
+				right="Maya"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+					left="Cira"
+					parent="Lupe"
+					right="Gina"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+						left="Adah"
+						parent="Eryn"
+						right="Drew"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Eryn"
+						right="Jodi"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+							left="Jada"
+							parent="Gina"
+							right="Kip"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+					left="Marc"
+					parent="Lupe"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Maya"
+					>Marc</LeftTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>NIL</key>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Eryn"
+				parent=""
+				right="Maya"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+					left="Cira"
+					parent="Lupe"
+					right="Gina"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+						left="Adah"
+						parent="Eryn"
+						right="Drew"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Eryn"
+						right="Jodi"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+							left="Jada"
+							parent="Gina"
+							right="Kip"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+					left="Marc"
+					parent="Lupe"
+				>Maya					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Maya"
+					>Marc</LeftTree>
+				</RightTree>
+			</subtree>
 			<subtree 
 				color="black"
 				depth="0"
@@ -9843,6 +10060,9 @@
 				</RightTree>
 			</subtree>
 		</Item>
+		<Item 
+			done="true"
+		 />
 		<Item 
 			done="true"
 		>			<key>Lupe</key>
@@ -9992,8 +10212,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Maya</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Maya</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Eryn"
@@ -10064,7 +10284,7 @@
 				>Marc</LeftTree>
 			</RightTree>
 		</subtree>
-<Source clrs="7" line="719" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Maya</key>
+<Source clrs="7" line="724" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="482" file="./tree.h" ><![CDATA[				u->Parent()->SetRight(v);]]></Source>			<key>Maya</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -10347,8 +10567,8 @@
 		</subtree>
 		<Item 
 			done="true"
-		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Maya</key>
-<Source clrs="2" line="558" file="./tree.h" ><![CDATA[				if ( node == node->Parent()->Left() )																					]]></Source>			<subtree 
+		><Source clrs="22" line="750" file="./tree.h" ><![CDATA[				return RedAndBlackDelete(root,X);							]]></Source>			<key>Maya</key>
+<Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Eryn"
@@ -10413,7 +10633,206 @@
 					parent="Lupe"
 				>Marc</RightTree>
 			</subtree>
-<Source clrs="3" line="596" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Left());																				]]></Source>			<subtree 
+			<subtree 
+				color="black"
+				depth="0"
+				left="Eryn"
+				parent=""
+				right="Marc"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+					left="Cira"
+					parent="Lupe"
+					right="Gina"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+						left="Adah"
+						parent="Eryn"
+						right="Drew"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Eryn"
+						right="Jodi"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+							left="Jada"
+							parent="Gina"
+							right="Kip"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+					parent="Lupe"
+				>Marc</RightTree>
+			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>Marc</key>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Eryn"
+				parent=""
+				right="Marc"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+					left="Cira"
+					parent="Lupe"
+					right="Gina"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+						left="Adah"
+						parent="Eryn"
+						right="Drew"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Eryn"
+						right="Jodi"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+							left="Jada"
+							parent="Gina"
+							right="Kip"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+					parent="Lupe"
+				>Marc</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Eryn"
+				parent=""
+				right="Marc"
+			>Lupe				<LeftTree 
+					color="red"
+					depth="1"
+					left="Cira"
+					parent="Lupe"
+					right="Gina"
+				>Eryn					<LeftTree 
+						color="black"
+						depth="2"
+						left="Adah"
+						parent="Eryn"
+						right="Drew"
+					>Cira						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Adah</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Cira"
+						>Drew</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Eryn"
+						right="Jodi"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="red"
+							depth="3"
+							left="Jada"
+							parent="Gina"
+							right="Kip"
+						>Jodi							<LeftTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Jada</LeftTree>
+							<RightTree 
+								color="black"
+								depth="4"
+								parent="Jodi"
+							>Kip</RightTree>
+						</RightTree>
+					</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+					parent="Lupe"
+				>Marc</RightTree>
+			</subtree>
+			<subtree 
 				color="red"
 				depth="0"
 				left="Eryn"
@@ -10478,7 +10897,10 @@
 					parent="Lupe"
 				>Marc</RightTree>
 			</subtree>
-<Source clrs="5" line="600" file="./tree.h" ><![CDATA[						black(other);																															]]></Source>		</Item>
+		</Item>
+		<Item 
+			done="true"
+		><Source clrs="2" line="559" file="./tree.h" ><![CDATA[				if ( node == node->Parent()->Left() )																					]]></Source><Source clrs="3" line="599" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Left());																				]]></Source><Source clrs="5" line="603" file="./tree.h" ><![CDATA[						black(other);																															]]></Source></Item>
 		<RotateRight><Source clrs="2" line="232" file="./tree.h" ><![CDATA[		node->SetLeft(other->Right());												]]></Source>			<key>Lupe</key>
 <Source clrs="7" line="239" file="./tree.h" ><![CDATA[			root = other;																				]]></Source>			<subtree 
 				color="red"
@@ -10545,8 +10967,8 @@
 					parent="Lupe"
 				>Marc</RightTree>
 			</subtree>
-<Source clrs="12" line="612" file="./tree.h" ><![CDATA[						if (color(other->Left()) == BLACK)																				]]></Source>			<key>Eryn</key>
-<Source clrs="13" line="615" file="./tree.h" ><![CDATA[							black(other->Right());																									]]></Source>			<subtree 
+<Source clrs="12" line="616" file="./tree.h" ><![CDATA[						if (color(other->Left()) == BLACK)																				]]></Source>			<key>Eryn</key>
+<Source clrs="13" line="619" file="./tree.h" ><![CDATA[							black(other->Right());																									]]></Source>			<subtree 
 				color="red"
 				depth="0"
 				left="Eryn"
@@ -10737,7 +11159,7 @@
 					parent="Lupe"
 				>Marc</RightTree>
 			</subtree>
-<Source clrs="17" line="621" file="./tree.h" ><![CDATA[						CopyColor(node->Parent(),other);																					]]></Source>			<key>Jodi</key>
+<Source clrs="17" line="625" file="./tree.h" ><![CDATA[						CopyColor(node->Parent(),other);																					]]></Source>			<key>Jodi</key>
 			<subtree 
 				color="red"
 				depth="0"
@@ -10905,7 +11327,7 @@
 					parent="Lupe"
 				>Marc</RightTree>
 			</subtree>
-<Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<key>Jodi</key>
+<Source clrs="23" line="635" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>			<key>Jodi</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -11024,8 +11446,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jodi</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jodi</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Cira"
@@ -11090,7 +11512,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Kip</key>
+<Source clrs="9" line="728" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Kip</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -11633,8 +12055,8 @@
 		</Transplant>
 		<Item 
 			done="true"
-		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Jodi</key>
-			<subtree 
+		><Source clrs="22" line="750" file="./tree.h" ><![CDATA[				return RedAndBlackDelete(root,X);							]]></Source>			<key>Jodi</key>
+<Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Cira"
@@ -11735,6 +12157,190 @@
 				</RightTree>
 			</subtree>
 		</Item>
+		<Item 
+			done="true"
+		>			<key>NIL</key>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Gina"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Kip"
+						right="Jada"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Jada</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Gina"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Kip"
+						right="Jada"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Jada</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Gina"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Kip"
+						right="Jada"
+					>Gina						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Gary</LeftTree>
+						<RightTree 
+							color="black"
+							depth="3"
+							parent="Gina"
+						>Jada</RightTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		 />
 		<Item 
 			done="true"
 		>			<key>Eryn</key>
@@ -11860,8 +12466,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Gina</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Gina</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Cira"
@@ -11920,7 +12526,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="9" line="723" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Gina</key>
+<Source clrs="9" line="728" file="./tree.h" ><![CDATA[				Y=(pfound->Right()->LeftMost());							]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Gina</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -12088,7 +12694,7 @@
 				</RightTree>
 			</subtree>
 		</Transplant>
-<Source clrs="13" line="729" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
+<Source clrs="13" line="734" file="./tree.h" ><![CDATA[					X->SetParent(Y);														]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Cira"
@@ -12149,8 +12755,8 @@
 		</subtree>
 		<Item 
 			done="true"
-		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Gina</key>
-			<subtree 
+		><Source clrs="22" line="750" file="./tree.h" ><![CDATA[				return RedAndBlackDelete(root,X);							]]></Source>			<key>Gina</key>
+<Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Cira"
@@ -12251,6 +12857,172 @@
 				</RightTree>
 			</subtree>
 		</Item>
+		<Item 
+			done="true"
+		>			<key>NIL</key>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Jada"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Kip"
+					>Jada						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Jada"
+						>Gary</LeftTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Jada"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Kip"
+					>Jada						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Jada"
+						>Gary</LeftTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Jada"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						left="Gary"
+						parent="Kip"
+					>Jada						<LeftTree 
+							color="black"
+							depth="3"
+							parent="Jada"
+						>Gary</LeftTree>
+					</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		 />
 		<Item 
 			done="true"
 		>			<key>Eryn</key>
@@ -12364,8 +13136,8 @@
 	</Item>
 	<Item 
 		erse="true"
-	><Source line="687" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jada</key>
-<Source line="706" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
+	><Source line="692" file="./tree.h" ><![CDATA[			Trunk *p(found->Parent()),*l(found->Left()),*r(found->Right());]]></Source>		<key>Jada</key>
+<Source line="711" file="./tree.h" ><![CDATA[		Trunk& me(static_cast<Trunk&>(*this));]]></Source>		<subtree 
 			color="black"
 			depth="0"
 			left="Cira"
@@ -12418,7 +13190,7 @@
 				</RightTree>
 			</RightTree>
 		</subtree>
-<Source clrs="7" line="719" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jada</key>
+<Source clrs="7" line="724" file="./tree.h" ><![CDATA[				X=pfound->Left();															]]></Source>		<Transplant><Source line="479" file="./tree.h" ><![CDATA[				u->Parent()->SetLeft(v);]]></Source>			<key>Jada</key>
 			<subtree 
 				color="black"
 				depth="0"
@@ -12629,8 +13401,8 @@
 		</subtree>
 		<Item 
 			done="true"
-		><Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<key>Jada</key>
-<Source clrs="2" line="558" file="./tree.h" ><![CDATA[				if ( node == node->Parent()->Left() )																					]]></Source>			<subtree 
+		><Source clrs="22" line="750" file="./tree.h" ><![CDATA[				return RedAndBlackDelete(root,X);							]]></Source>			<key>Jada</key>
+<Source clrs="1" line="553" file="./tree.h" ><![CDATA[			while ( (node!=root) and (color(node) == BLACK) )																]]></Source>			<subtree 
 				color="black"
 				depth="0"
 				left="Cira"
@@ -12677,14 +13449,14 @@
 					</RightTree>
 				</RightTree>
 			</subtree>
-<Source clrs="3" line="561" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Right());																			]]></Source>			<subtree 
+			<subtree 
 				color="black"
 				depth="0"
 				left="Cira"
 				parent=""
 				right="Kip"
 			>Eryn				<LeftTree 
-					color="red"
+					color="black"
 					depth="1"
 					left="Adah"
 					parent="Eryn"
@@ -12712,6 +13484,151 @@
 						parent="Kip"
 					>Gary</LeftTree>
 					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+		</Item>
+		<Item 
+			done="true"
+		>			<key>Gary</key>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Gary"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="red"
+					depth="1"
+					left="Gary"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+					>Gary</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+						right="Marc"
+					>Lupe						<RightTree 
+							color="black"
+							depth="3"
+							parent="Lupe"
+						>Marc</RightTree>
+					</RightTree>
+				</RightTree>
+			</subtree>
+			<subtree 
+				color="black"
+				depth="0"
+				left="Cira"
+				parent=""
+				right="Kip"
+			>Eryn				<LeftTree 
+					color="black"
+					depth="1"
+					left="Adah"
+					parent="Eryn"
+					right="Drew"
+				>Cira					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Adah</LeftTree>
+					<RightTree 
+						color="black"
+						depth="2"
+						parent="Cira"
+					>Drew</RightTree>
+				</LeftTree>
+				<RightTree 
+					color="black"
+					depth="1"
+					left="Gary"
+					parent="Eryn"
+					right="Lupe"
+				>Kip					<LeftTree 
+						color="black"
+						depth="2"
+						parent="Kip"
+					>Gary</LeftTree>
+					<RightTree 
 						color="red"
 						depth="2"
 						parent="Kip"
@@ -12724,7 +13641,10 @@
 					</RightTree>
 				</RightTree>
 			</subtree>
-<Source clrs="10" line="573" file="./tree.h" ><![CDATA[						red(other);																																]]></Source><Source clrs="3" line="596" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Left());																				]]></Source><Source clrs="10" line="608" file="./tree.h" ><![CDATA[						red(other);																																]]></Source><Source clrs="23" line="630" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source>		</Item>
+		</Item>
+		<Item 
+			done="true"
+		><Source clrs="2" line="559" file="./tree.h" ><![CDATA[				if ( node == node->Parent()->Left() )																					]]></Source><Source clrs="3" line="562" file="./tree.h" ><![CDATA[					Trunk* other(node->Parent()->Right());																			]]></Source><Source clrs="10" line="574" file="./tree.h" ><![CDATA[						red(other);																																]]></Source><Source clrs="23" line="635" file="./tree.h" ><![CDATA[			black(node);																																		]]></Source></Item>
 		<Item 
 			done="true"
 		>			<key>Eryn</key>
@@ -12735,7 +13655,7 @@
 				parent=""
 				right="Kip"
 			>Eryn				<LeftTree 
-					color="red"
+					color="black"
 					depth="1"
 					left="Adah"
 					parent="Eryn"
@@ -12752,7 +13672,7 @@
 					>Drew</RightTree>
 				</LeftTree>
 				<RightTree 
-					color="red"
+					color="black"
 					depth="1"
 					left="Gary"
 					parent="Eryn"
@@ -12782,7 +13702,7 @@
 				parent=""
 				right="Kip"
 			>Eryn				<LeftTree 
-					color="red"
+					color="black"
 					depth="1"
 					left="Adah"
 					parent="Eryn"
@@ -12799,7 +13719,7 @@
 					>Drew</RightTree>
 				</LeftTree>
 				<RightTree 
-					color="red"
+					color="black"
 					depth="1"
 					left="Gary"
 					parent="Eryn"
