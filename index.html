@@ -57,8 +57,16 @@
 					It doesn't look like this tree is really balancing correctly.  The delete fixup is not working right.
 				</p>
 				<p>
-					Recent changes to the node display methods rendered the tree incorrectly.  This caused some confusion, but
-					the tree itself was actually in the right order.  The only problem now is the delete.
+					This <a target="_blank" href="trap.xml">page</a>is the output when journal.string is played back.  It looks like
+					everything works right until Jada is deleted.  Notice the double red nodes in the last panes.
+					<p>
+						The source code is displayed in the following format:
+						<li>The position index relative to the last tracepoint</li>
+						<li>The source file (always tree.h for now)</li>
+						<li>The line number in tree.h - this is the line number of the working copy at the time the xml file was generated</li>
+						<li>The CLRS index - this is the position of the corresponding pseudo code from the 'Introduction To Algorithms' (CLRS) book</li>
+
+					</p>
 				</p>
 
 
