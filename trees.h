@@ -243,7 +243,6 @@ namespace TreeDisplay
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
 		CurrentActions CurrentAction;
 		TreeSource treesource;
-		//XmlTree::TreeXml treexml;
 		const string xmloutname;
 		void traverse(Trunk& n)
 		{
@@ -276,7 +275,8 @@ namespace TreeDisplay
 			{
 				Msg<<"NIL ";
 				ssmsg<<"NIL ";
-				treexml.Key("NIL");
+				if (!xmloutname.empty()) 
+					treexml.Key("NIL");
 			} else {
 				Bst<KT,VT>& bst(static_cast<Bst<KT,VT>&>(n));
 				const KT& key(bst);
@@ -284,7 +284,8 @@ namespace TreeDisplay
 				ssmsg<<key<<" ";
 				trap(CurrentAction,key);
 				stringstream keyname; keyname<<key;
-				treexml.Key(keyname.str());
+				if (!xmloutname.empty()) 
+					treexml.Key(keyname.str());
 			}
 			this->stepper(ssmsg.str().c_str());
 			return *this;
@@ -302,7 +303,8 @@ namespace TreeDisplay
 			ajaxface<KT>& treexml(*this);;
 			Msg<<"["<<a<<"]";
 			this->stepper("Number");
-			treexml.Number(a);
+			if (!xmloutname.empty()) 
+				treexml.Number(a);
 			return *this;
 		}
 
@@ -312,7 +314,8 @@ namespace TreeDisplay
 			Msg<<"Insert:";
 			CurrentAction=Inserting;
 			this->stepper("Inserting");
-			treexml.Insrt();
+			if (!xmloutname.empty()) 
+				treexml.Insrt();
 			return *this;
 		}
 
@@ -322,7 +325,8 @@ namespace TreeDisplay
 			Msg<<"Erase:";
 			CurrentAction=Erasing;
 			this->stepper("Erasing");
-			treexml.Erse();
+			if (!xmloutname.empty()) 
+				treexml.Erse();
 			return *this;
 		}
 
@@ -331,7 +335,8 @@ namespace TreeDisplay
 			ajaxface<KT>& treexml(*this);;
 			Msg<<"<< ";
 			this->stepper("RotateLeft");
-			treexml.Rotlft();
+			if (!xmloutname.empty()) 
+				treexml.Rotlft();
 			return *this;
 		}
 
@@ -340,7 +345,8 @@ namespace TreeDisplay
 			ajaxface<KT>& treexml(*this);;
 			Msg<<">> ";
 			this->stepper("RotateRight");
-			treexml.Rotrgt();
+			if (!xmloutname.empty()) 
+				treexml.Rotrgt();
 			return *this;
 		}
 
@@ -349,7 +355,8 @@ namespace TreeDisplay
 			ajaxface<KT>& treexml(*this);;
 			Msg<<"<> ";
 			this->stepper("Transplant");
-			treexml.Trnsp();
+			if (!xmloutname.empty()) 
+				treexml.Trnsp();
 			return *this;
 		}
 
@@ -364,7 +371,8 @@ namespace TreeDisplay
 			if (file=="./tree.h") treetxt=treesource(line);
 			if (!treetxt.empty()) Msg<<endl<<line<<treetxt<<endl;
 			else Msg<<file<<line<<"; ";
-			treexml.SourceTrace(file,line,treesource.Ndx(),treesource.SourceCode());
+			if (!xmloutname.empty()) 
+				treexml.SourceTrace(file,line,treesource.Ndx(),treesource.SourceCode());
 			return *this;
 		}
 
@@ -373,7 +381,8 @@ namespace TreeDisplay
 			ajaxface<KT>& treexml(*this);;
 			this->stepper("Begin");
 			msgbuffer.reset(NULL);
-			treexml.Begin();
+			if (!xmloutname.empty()) 
+				treexml.Begin();
 			return *this;
 		}
 
@@ -382,7 +391,8 @@ namespace TreeDisplay
 			ajaxface<KT>& treexml(*this);;
 			Msg<<". ";
 			this->stepper("Done");
-			treexml.Done();
+			if (!xmloutname.empty()) 
+				treexml.Done();
 			return *this;
 		}
 
@@ -397,7 +407,8 @@ namespace TreeDisplay
 			}
 			this->stepper("Finish");
 			msgbuffer.reset(NULL);
-			treexml.Finish();
+			if (!xmloutname.empty()) 
+				treexml.Finish();
 			return *this;
 		}
 		const bool IsRoot(const KT what) const;

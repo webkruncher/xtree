@@ -1,0 +1,7 @@
+make
+#./trees -i journal.int 
+if [ -z $1 ]; then
+	./trees -i journal.string  -trap trap.string -xml trap.xml
+else
+	./trees -i journal.$1  -trap trap.string -xml trap.xml
+fi

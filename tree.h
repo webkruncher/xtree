@@ -551,6 +551,46 @@ cout<<"BST INSERT"<<endl<<endl;
 
 		void Rotator(Trunk* node) {Update(node,node->Parent());}
 
+		Trunk* insert(Trunk* root,Trunk* z,char d=0)
+		{
+			Msg<<begin<<insrt<<(*z);
+			if ((*z)==(*this)) {delete z; return NULL;}
+			Trunk* Y(root->GetNil());
+			Trunk* X(root);
+			while (!root->isnul(X))
+			{
+				Y=X;
+				if ((*z)==(*Y)) {delete z; return NULL;}
+				if ((*z)<(*X))
+				{
+					X=X->Left();
+				} else {
+					X=X->Right();
+				}
+			}
+			z->SetParent(Y);
+			if (Y->isnil())
+			{
+					Trace
+					root=z;
+			} else {
+				if ((*z)<(*Y))
+				{
+					Trace
+					Y->SetLeft(z);
+				} else {
+					Trace
+					Y->SetRight(z);
+				}
+			}
+			z->SetLeft(root->GetNil());
+			z->SetRight(root->GetNil());
+			red(z);
+			Update(z,z->Parent());
+			Update(Y,Y->Parent());
+			return this->RedAndBlackInsert(root,z);
+		}
+
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
 			Trace
@@ -761,41 +801,7 @@ cout<<"BST INSERT"<<endl<<endl;
 		RbMapBase(Trunk& _sentinel,const KT _key) : Bst<KT,VT>(_sentinel,_key) {}
 		RbMapBase(Trunk& _sentinel,const KT _key,const VT _data) : Bst<KT,VT>(_sentinel,_key,_data) {}
 		virtual void DisplayColor(const unsigned long ) {}
-		Trunk* insert(Trunk* root,Trunk* z,char d=0)
-		{
-			Msg<<begin<<insrt<<(*z);
-			if ((*z)==(*this)) {delete z; return NULL;}
-			Update(z,this);
-			Trunk* Y(root->GetNil());
-			Trunk* X(root);
-			while (!root->isnul(X))
-			{
-				Y=X;
-				if ((*z)<(*X))
-				{
-					X=X->Left();
-				} else {
-					X=X->Right();
-				}
-			}
-			z->SetParent(Y);
-			if (Y->isnil())
-					root=z;
-			else
-			{
-				if ((*z)<(*Y))
-					Y->SetLeft(z);
-				else
-					Y->SetRight(z);
-			}
-			z->SetLeft(root->GetNil());
-			z->SetRight(root->GetNil());
-			red(z);
-			Trunk* ret(this->RedAndBlackInsert(root,z));
-			return ret;
-		}
-
-		
+		Trunk* insert(Trunk* root,Trunk* z,char d=0) { return RbBase::insert(root,z,d); } 
 		virtual Trunk* red(Trunk* n) = 0;
 		virtual Trunk* black(Trunk* n) = 0;
 		virtual const COLOR color(Trunk* n) const = 0;
@@ -830,39 +836,7 @@ cout<<"BST INSERT"<<endl<<endl;
 		RbSetBase(Trunk& _sentinel,const KT _key) : BstBase<KT>(_sentinel,_key) {}
 		virtual void DisplayColor(const unsigned long ) {}
 
-		Trunk* insert(Trunk* root,Trunk* z,char d=0)
-		{
-			if ((*z)==(*this)) {delete z; return NULL;}
-			Update(z,this);
-			Trunk* Y(root->GetNil());
-			Trunk* X(root);
-			while (!root->isnul(X))
-			{
-				Y=X;
-				if ((*z)<(*X))
-				{
-					X=X->Left();
-				} else {
-					X=X->Right();
-				}
-			}
-			z->SetParent(Y);
-			if (Y->isnil())
-					root=z;
-			else
-			{
-				if ((*z)<(*Y))
-					Y->SetLeft(z);
-				else
-					Y->SetRight(z);
-			}
-			z->SetLeft(root->GetNil());
-			z->SetRight(root->GetNil());
-			red(z);
-			Trunk* ret(this->RedAndBlackInsert(root,z));
-			return ret;
-		}
-		
+		Trunk* insert(Trunk* root,Trunk* z,char d=0) { return RbBase::insert(root,z,d); }
 		virtual Trunk* red(Trunk* n) = 0;
 		virtual Trunk* black(Trunk* n) = 0;
 		virtual const COLOR color(Trunk* n) const = 0;

@@ -35,7 +35,7 @@ using namespace TreeDisplay;
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define MOST 300
+#define MOST 500
 
 namespace TreeDisplay
 {

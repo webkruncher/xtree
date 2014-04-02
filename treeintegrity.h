@@ -257,7 +257,7 @@ return true;
 					if (rightisred) ss<<"R";
 					if (!ss.str().empty()) 
 						advisor.message(node,"c",ss.str());
-					//if (leftisred or rightisred) ok=false;
+					if (leftisred or rightisred) ok=false;
 				}
 			}
 		}; 

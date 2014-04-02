@@ -194,7 +194,6 @@ namespace XmlTree
 
 	void Item::Key(const string keyname)
 	{
-return;
 		if (LastAction) { LastAction->Key(keyname); return; }
 		const TreeXml& treexml(*this);
 		Item& subitem(SubItem("key"));
@@ -338,7 +337,6 @@ return;
 
 	void SubTreePrinter::Print()
 	{
-return;
 		TreeXml& xmltree(payload);
 		try
 		{
