@@ -43,9 +43,12 @@ namespace TreeDisplay
 
 	struct Trap
 	{
+		enum States {Running,Stepping,Next,Continuing} state;
 		Trap(const string _fname,ostream& _tout,bool& _stop,bool& _movement) : fname(_fname),tout(_tout), state(Running),loaded(false),stop(_stop),movement(_movement) {}
 		void stepper(string msg);
 		void Load();
+		void SetState(States st){state=st;}
+		States GetState(){return state;}
 		private: 
 		virtual void Clear() = 0;
 		const string fname; bool loaded;
@@ -55,7 +58,6 @@ namespace TreeDisplay
 		string cmd;
 		virtual void Read(string) =0;
 		protected:
-		enum States {Running,Stepping,Next,Continuing} state;
 		virtual void Describe() = 0;
 	};
 

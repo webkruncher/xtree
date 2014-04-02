@@ -31,6 +31,7 @@ namespace TreeDisplay
 {
 	inline int DepthFinder(Trunk& tb,int d=0)
 	{ 
+		if (d>14) return 14;
 		if (tb.isnil()) return d;
 		if (!tb.Parent()) return d;
 		if (tb.Parent()->isnil()) return d;

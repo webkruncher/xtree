@@ -77,7 +77,7 @@ namespace XmlTree
 
 	Payload& TreeXml::payload()
 	{
-		if (!xml) throw string("No xml");
+		if (!xml) {xml=new Payload(*this); payload().Begin();}
 		Xml* xmltrunk(static_cast<Xml*>(xml));
 		Payload& payload(static_cast<Payload&>(*xmltrunk));
 		return payload;
@@ -340,7 +340,7 @@ namespace XmlTree
 		TreeXml& xmltree(payload);
 		try
 		{
-			if (!current) throw string("No current node");
+			if (!current) return;
 			if (true)
 			{
 				const string node(xmltree.SGetRoot());

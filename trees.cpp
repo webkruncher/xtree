@@ -297,14 +297,16 @@ namespace TreeDisplay
 
 				bool ReadingJournal(false);
 
-				if (journal==ios_base::in)  
+				if (this->GetState()!=Trap::Stepping)
+					if (journal==ios_base::in)  
 				{
 					ReadingJournal=entry;
 					if (!ReadingJournal) 
 					{
 						tout<<"Journal is finished"<<endl;
-						CheckIntegrity(root);
-						stop=true;
+						//CheckIntegrity(root);
+						//stop=true;
+						this->SetState(Trap::Stepping);
 							if (!xmloutname.empty())
 							{
 								ofstream xmlout((char*)xmloutname.c_str());
@@ -387,7 +389,9 @@ namespace TreeDisplay
 			if (!ignorestop) 
 			{
 				if (stop) return;
-						if (!removal) if (!CheckIntegrity(root)) 
+						if (!removal) 
+							if (journal!=ios_base::in)  
+								if (!CheckIntegrity(root)) 
 						{
 							stop=true; 
 							if (journal==ios_base::out) {journal<<entry; journal.close();}

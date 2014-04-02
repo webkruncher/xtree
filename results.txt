@@ -1,2 +1,58 @@
-Starting tests at Tue Apr  1 11:51:11 EDT 2014
+Starting tests at Tue Apr  1 21:22:43 EDT 2014
+
+main()
+Reading 10000 numbers
+Testing with 10,000 random generated numbers, average times after 20 iterations:
+          STL:     0.497 seconds
+  TreeObjects:     0.817 seconds
+The std::set was 39.138% faster
+
+main()
+Reading 20000 numbers
+Testing with 20,000 random generated numbers, average times after 20 iterations:
+          STL:     0.975 seconds
+  TreeObjects:     1.157 seconds
+The std::set was 15.726% faster
+
+main()
+Reading 30000 numbers
+Testing with 30,000 random generated numbers, average times after 20 iterations:
+          STL:     1.229 seconds
+  TreeObjects:     1.809 seconds
+The std::set was 32.036% faster
+
+main()
+Reading 40000 numbers
+Testing with 40,000 random generated numbers, average times after 20 iterations:
+          STL:     1.823 seconds
+  TreeObjects:     2.047 seconds
+The std::set was 10.957% faster
+
+main()
+Reading 50000 numbers
+Testing with 50,000 random generated numbers, average times after 20 iterations:
+          STL:     1.965 seconds
+  TreeObjects:     2.623 seconds
+The std::set was 25.083% faster
+
+main()
+Reading 60000 numbers
+Testing with 60,000 random generated numbers, average times after 20 iterations:
+          STL:     3.001 seconds
+  TreeObjects:     3.413 seconds
+The std::set was 12.076% faster
+
+main()
+Reading 70000 numbers
+Testing with 70,000 random generated numbers, average times after 20 iterations:
+          STL:     3.052 seconds
+  TreeObjects:     3.504 seconds
+The std::set was 12.899% faster
+
+main()
+Reading 80000 numbers
+Testing with 80,000 random generated numbers, average times after 20 iterations:
+          STL:     4.359 seconds
+  TreeObjects:     5.006 seconds
+The std::set was 12.908% faster
 

@@ -8,7 +8,8 @@ echo "" >> results.txt
 for (( c=1; c <= ${many}; c++ )); do
 	most=`echo "${c}*${factor}" | bc`
 	echo "Testing $most numbers"
-	cat random.${most}.txt | nice -20 ./tester  2>results.err | tee -a results.txt
+	cat random.${most}.txt | ./tester  2>results.err | tee -a results.txt
+	#cat random.${most}.txt | ./tester  
 	[[ $? != 0 ]] && echo "Test failed" | tee -a results.txt
 done
 

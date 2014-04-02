@@ -71,28 +71,29 @@ void Assert(TreeObjects::Set<long>& items,const long number)
 	if (found) return;
 	stringstream ss; ss<<"Cannot find "<<number; string s(ss.str());
 	throw s;
+	//cout<<"?"<<number<<" ";
 }
 void Erase(TreeObjects::Set<long>& items,const long number) {  items.erase(number);}
 
 template <typename T>
 	void Test(T& items,const long* numbers,const long size) 
 { 
-	cerr<<"Inserts:"<<endl; cerr.flush();
+	//cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Insert(items,numbers[j]);
-	cerr<<"First check:"<<endl; cerr.flush();
+	//cerr<<"First check:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Assert(items,numbers[j]);
-	cerr<<"First check ok:"<<endl; cerr.flush();
+	//cerr<<"First check ok:"<<endl; cerr.flush();
 	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size/2;j++) Erase(items,numbers[j]);
-	for (long j=(size/2);j<(size);j++) Assert(items,numbers[j]);
-	cerr<<"Second check ok:"<<endl; cerr.flush();
+	//for (long j=(size/2)+1;j<(size);j++) Assert(items,numbers[j]);
+	//cerr<<"Second check ok:"<<endl; cerr.flush();
 	//cerr<<"Inserts:"<<endl; cerr.flush();
 	for (long j=size/2;j>=0;j--) Insert(items,numbers[j]);
 	//cerr<<"Deletes:"<<endl; cerr.flush();
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
 	for (long j=0;j<size;j++) Insert(items,numbers[j]);
 	for (long j=0;j<size;j++) Erase(items,numbers[j]);
-	cerr<<"Done"<<endl;
+	//cerr<<"Done"<<endl;
 }
 
 void TestTreeSet(const long* numbers,const long size)
@@ -126,7 +127,7 @@ struct Advisor : TreeIntegrity::IntegrityAdvisor
 	{
 		RbSetBase<long>& rb(static_cast<RbSetBase<long>&>(node));
 		const long& key(rb);
-		cerr<<key<<" "<<name<<":"<<value<<endl;
+		//cerr<<key<<" "<<name<<":"<<value<<endl;
 	} 
 } Violations;
 
@@ -134,9 +135,9 @@ template <typename T>
 	bool Check(T& items,const long* numbers,const long size) 
 { 
 	using namespace std;
-	cout<<"Checking "<<dec<<size<<" numbers"<<endl;
+	//cout<<"Checking "<<dec<<size<<" numbers"<<endl;
 	set<long> checkitems;
-	cout<<"Inserting "<<dec<<size<<" numbers"<<endl;
+	//cout<<"Inserting "<<dec<<size<<" numbers"<<endl;
 	for (long j=0;j<size;j++) 
 	{
 			Insert(items,numbers[j]);
@@ -144,7 +145,7 @@ template <typename T>
 	}
 	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) {cout<<"Red black violations after first inserts"<<endl; return false;}
 	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) {cout<<"Bst violations after first inserts"<<endl; return false;}
-	cout<<"Erasing "<<dec<<(size/2)<<" numbers"<<endl;
+	//cout<<"Erasing "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=0;j<size/2;j++) 
 	{
 		Erase(items,numbers[j]);
@@ -152,7 +153,7 @@ template <typename T>
 	}
 	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) {cout<<"Red black violations after first deletes"<<endl; return false;}
 	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) {cout<<"Bst violations after first deletes"<<endl; return false;}
-	cout<<"Inserting "<<dec<<(size/2)<<" numbers"<<endl;
+	//cout<<"Inserting "<<dec<<(size/2)<<" numbers"<<endl;
 	for (long j=size/2;j>=0;j--) 
 	{
 		Insert(items,numbers[j]);
@@ -160,7 +161,7 @@ template <typename T>
 	}
 	if (!TreeIntegrity::RedBlackIntegrity<long>(cout,items,Violations)) {cout<<"Red black violations after second inserts"<<endl; return false;}
 	if (!TreeIntegrity::BstIntegrity<long>(cout,items,checkitems)) {cout<<"Bst violations after second inserts"<<endl; return false;}
-	cout<<"Erasing "<<dec<<(size)<<" numbers"<<endl;
+	//cout<<"Erasing "<<dec<<(size)<<" numbers"<<endl;
 	for (long j=0;j<size;j++) 
 	{
 		Erase(items,numbers[j]);
@@ -182,14 +183,14 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 {
 	timespec t1,t2;
 	double StlTime,TreeObjectsTime;
-	//cerr<<"Testing TreeObjects with "<<N<<" numbers"<<endl;
+	//cerr<<"Testing TreeObjects with "<<N<<" numbers"<<endl; cerr.flush();
 
 	clock_gettime(CLOCK_MONOTONIC,&t1);
 	TestTreeSet(numbers,N);
 	clock_gettime(CLOCK_MONOTONIC,&t2);
 	TreeObjectsTime=timedifference(t2,t1);
 
-	//cerr<<"Testing STL with "<<N<<" numbers"<<endl;
+	cerr<<"Testing STL with "<<N<<" numbers"<<endl;
 	clock_gettime(CLOCK_MONOTONIC,&t1);
 	TestStlSet(numbers,N);
 	clock_gettime(CLOCK_MONOTONIC,&t2);
@@ -198,8 +199,8 @@ std::pair<double,double> TestBoth(const long* numbers,const long N)
 	ret.TREEOBJECTS=TreeObjectsTime;
 	ret.STLOBJECTS=StlTime;
 
-	//cerr<<"IntegrityCheck: "<<N<<" numbers"<<endl;
-	//if (!IntegrityCheck(numbers,N)) std::cout<<"Integrity check failed"<<std::endl;
+	cerr<<"IntegrityCheck: "<<N<<" numbers"<<endl;
+	if (!IntegrityCheck(numbers,N)) std::cout<<"Integrity check failed"<<std::endl;
 
 	return ret;
 }
@@ -227,11 +228,12 @@ int main(int,char**)
 	stringstream except;
 	try
 	{
-		
+		cout<<"main()"<<endl; cout.flush();
 		char hash(0);
 		long N(0),T(20);
 		fscanf(stdin,"%c%ld",&hash,&N);
 		if (hash!='#') {printf("First line of input must be length preceeded by #\n"); return -1;}
+		cout<<"Reading "<<N<<" numbers"<<endl; cout.flush();
 		long* numbers=(long*)malloc((sizeof(long)*N)); if (!numbers) {printf("Cannot allocate numbers array\n"); return -1;}
 		{for (long j=0;j<N;j++) fscanf(stdin,"%ld",&numbers[j]);}
 

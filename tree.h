@@ -197,7 +197,7 @@ namespace TreeObjects
 	{
 		if (this->isnul(node)) return root;
 		Trunk* other(node->Right());														// 1
-		//if (this->isnul(other)) return root;
+if (this->isnul(other)) throw string("Rotation problems");
 		Msg<<rotlft<<(*node)<<(*other);
 		Trace
 		node->SetRight(other->Left());													// 2
@@ -227,6 +227,7 @@ namespace TreeObjects
 	{
 		if (this->isnul(node)) return root;
 		Trunk* other(node->Left());															// 1
+if (this->isnul(other)) throw string("Rotation problems");
 		//if (this->isnul(other)) return root;
 		Msg<<rotrgt<<(*node)<<(*other);
 		Trace
@@ -331,6 +332,7 @@ namespace TreeObjects
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
+cout<<"BST INSERT"<<endl<<endl;
 			if ((*node)==(*this)) {delete node; return NULL;}
 			if (!d)
 			{
@@ -545,13 +547,14 @@ namespace TreeObjects
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) = 0;
 		virtual operator Trunk& () = 0;
 		virtual Trunk* remove(Trunk* root,Trunk* pfound) ;
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v) = 0;
 
 		void Rotator(Trunk* node) {Update(node,node->Parent());}
 
 		Trunk* RedAndBlackDelete(Trunk* root, Trunk* node)
 		{
 			Trace
-			while ( (node!=root) and (color(node) == BLACK) )																	// 1
+			while ( (node) and (!node->isnil()) and (node!=root) and (color(node) == BLACK) )																	// 1
 			{
 				if (!node) return black(root);
 				Msg<<done<<(*node)<<done;
@@ -574,7 +577,6 @@ namespace TreeObjects
 						Trace
 						red(other);																																	// 10
 						node=node->Parent();																												// 11
-						continue;
 					} else {
 						Trace
 						if (color(other->Right()) == BLACK)																					// 12
@@ -591,7 +593,6 @@ namespace TreeObjects
 						black(other->Right());																											// 19
 						root=this->RotateLeft(root,node->Parent());																	// 20
 						node=root;																																	// 21
-						continue;
 					}
 				} 
 				if ( node == node->Parent()->Right() )																					// 2
@@ -611,7 +612,6 @@ namespace TreeObjects
 						Trace
 						red(other);																																	// 10
 						node=node->Parent();																												// 11
-						continue;
 					} else {
 						Trace
 						if (color(other->Left()) == BLACK)																					// 12
@@ -628,7 +628,6 @@ namespace TreeObjects
 						black(other->Left());																												// 19
 						root=this->RotateRight(root,node->Parent());																// 20
 						node=root;																																	// 21
-						continue;
 					}
 				} 
 			}
@@ -762,37 +761,40 @@ namespace TreeObjects
 		RbMapBase(Trunk& _sentinel,const KT _key) : Bst<KT,VT>(_sentinel,_key) {}
 		RbMapBase(Trunk& _sentinel,const KT _key,const VT _data) : Bst<KT,VT>(_sentinel,_key,_data) {}
 		virtual void DisplayColor(const unsigned long ) {}
-
-		Trunk* insert(Trunk* root,Trunk* node,char d=0)
+		Trunk* insert(Trunk* root,Trunk* z,char d=0)
 		{
-			Msg<<begin;
-			root=Bst<KT,VT>::insert(root,node,d);
-			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
-			if (d) return black(root);
-			//RbMapBase<KT,VT>& nd(static_cast<RbMapBase<KT,VT>&>(*node));
-			//nd.SetLeft(root->GetNil());
-			//nd.SetRight(root->GetNil());
-			Trunk* ret(this->RedAndBlackInsert(root,node));
-			Msg<<done<<(*node)<<finish;
-			RbMapBase<KT,VT>& nd(static_cast<RbMapBase<KT,VT>&>(*node));
-			RbMapBase<KT,VT>& pnd(static_cast<RbMapBase<KT,VT>&>(*node->Parent()));
-			const KT& ndv(nd);
-			const KT& pndv(pnd);
-			//cout<<"Inserted:"<<ndv<<", Parent is "<<pndv<<endl;
-			if (!root->isnul(pnd.Left()))
+			Msg<<begin<<insrt<<(*z);
+			if ((*z)==(*this)) {delete z; return NULL;}
+			Update(z,this);
+			Trunk* Y(root->GetNil());
+			Trunk* X(root);
+			while (!root->isnul(X))
 			{
-				RbMapBase<KT,VT>& pndl(static_cast<RbMapBase<KT,VT>&>(*pnd.Left()));
-				const KT& pndlv(pndl);
-				cout<<pndv<<"'s Left is:"<<pndlv<<endl;
+				Y=X;
+				if ((*z)<(*X))
+				{
+					X=X->Left();
+				} else {
+					X=X->Right();
+				}
 			}
-			if (!root->isnul(pnd.Right()))
+			z->SetParent(Y);
+			if (Y->isnil())
+					root=z;
+			else
 			{
-				RbMapBase<KT,VT>& pndr(static_cast<RbMapBase<KT,VT>&>(*pnd.Right()));
-				const KT& pndrv(pndr);
-				cout<<pndv<<"'s Right is:"<<pndrv<<endl;
+				if ((*z)<(*Y))
+					Y->SetLeft(z);
+				else
+					Y->SetRight(z);
 			}
+			z->SetLeft(root->GetNil());
+			z->SetRight(root->GetNil());
+			red(z);
+			Trunk* ret(this->RedAndBlackInsert(root,z));
 			return ret;
 		}
+
 		
 		virtual Trunk* red(Trunk* n) = 0;
 		virtual Trunk* black(Trunk* n) = 0;
@@ -804,6 +806,13 @@ namespace TreeObjects
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node) 
 			{ root=BstBase<KT>::RotateRight(root,node); RbBase::Rotator(node); return root;}
 		virtual void Update(Trunk* node,Trunk* pnode,bool erasing=false) { Bst<KT,VT>::Update(node,pnode,erasing); }
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v)
+		{
+			CopyColor(u,v);
+			Trace
+			root=BstBase<KT>::transplant(root,u,v); 
+			return root;
+		}
 		virtual Trunk* remove(Trunk* root,Trunk* pfound)  
 		{
 			Bst<KT,VT>& b(static_cast<Bst<KT,VT>&>(*pfound));
@@ -821,12 +830,37 @@ namespace TreeObjects
 		RbSetBase(Trunk& _sentinel,const KT _key) : BstBase<KT>(_sentinel,_key) {}
 		virtual void DisplayColor(const unsigned long ) {}
 
-		Trunk* insert(Trunk* root,Trunk* node,char d=0)
+		Trunk* insert(Trunk* root,Trunk* z,char d=0)
 		{
-			root=BstBase<KT>::insert(root,node,d);
-			if (!root) return NULL; // attempted to add a duplicate, new node was deleted
-			if (d) return black(root);
-			return this->RedAndBlackInsert(root,node);
+			if ((*z)==(*this)) {delete z; return NULL;}
+			Update(z,this);
+			Trunk* Y(root->GetNil());
+			Trunk* X(root);
+			while (!root->isnul(X))
+			{
+				Y=X;
+				if ((*z)<(*X))
+				{
+					X=X->Left();
+				} else {
+					X=X->Right();
+				}
+			}
+			z->SetParent(Y);
+			if (Y->isnil())
+					root=z;
+			else
+			{
+				if ((*z)<(*Y))
+					Y->SetLeft(z);
+				else
+					Y->SetRight(z);
+			}
+			z->SetLeft(root->GetNil());
+			z->SetRight(root->GetNil());
+			red(z);
+			Trunk* ret(this->RedAndBlackInsert(root,z));
+			return ret;
 		}
 		
 		virtual Trunk* red(Trunk* n) = 0;
@@ -834,6 +868,12 @@ namespace TreeObjects
 		virtual const COLOR color(Trunk* n) const = 0;
 
 		virtual const bool isleaf(Trunk* node) const {return BstBase<KT>::isleaf(node);}
+		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v)
+		{
+			CopyColor(u,v);
+			root=BstBase<KT>::transplant(root,u,v); 
+			return root;
+		}
 		virtual Trunk* RotateLeft(Trunk* root, Trunk* node) 
 			{ root=BstBase<KT>::RotateLeft(root,node); RbBase::Rotator(node); return root;}
 		virtual Trunk* RotateRight(Trunk* root, Trunk* node) 
