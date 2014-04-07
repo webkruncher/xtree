@@ -243,7 +243,7 @@ namespace TreeDisplay
 		pair<bool,KT> Next(int Max) { return make_pair<bool,KT>(true,rand()%Max); }
 		CurrentActions CurrentAction;
 		TreeSource treesource;
-		const string xmloutname;
+		string xmloutname;
 		void traverse(Trunk& n)
 		{
 			if (n.isnil()) return;
@@ -420,6 +420,11 @@ namespace TreeDisplay
 		const string ColorOf(const KT what) const;
 		const KT LeftOf(const KT what)  const;
 		const KT RightOf(const KT what)  const;
+		virtual void Stop(char* msg,Trunk* a=NULL,Trunk* b=NULL)
+		{
+			stop=true;
+			if (msg) cout<<msg<<endl;
+		}
 	};
 
 

@@ -151,7 +151,7 @@ namespace TreeIntegrity
 				if (d>deep) deep=d;
 				BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
 				const KT& k(rk);
-				tout<<k<<" is "<<d<<" deep "<<endl;
+				//tout<<k<<" is "<<d<<" deep "<<endl;
 			}
 			if (!node->isnul(node->Left())) me(tout,node->Left());
 			if (!node->isnul(node->Right())) me(tout,node->Right());
@@ -361,7 +361,7 @@ namespace TreeIntegrity
 					if (rightisred) ss<<"R";
 					if (!ss.str().empty()) 
 						advisor.message(node,"c",ss.str());
-					if (leftisred or rightisred) ok=false;
+					//if (leftisred or rightisred) ok=false;
 				}
 			}
 		}; 
@@ -390,7 +390,7 @@ namespace TreeIntegrity
 				{
 					tout<<"Imbalanced:"<<hilow<<endl;
 					return false;
-				} else tout<<"In balance:"<<hilow<<endl;
+				} //else tout<<"In balance:"<<hilow<<endl;
 		}
 		return true;
 		//return visitor;

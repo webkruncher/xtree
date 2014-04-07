@@ -79,6 +79,7 @@ namespace TreeObjects
 		virtual Trunk& Rotrgt(){return *this;}
 		virtual Trunk& Trnsp(){return *this;}
 		virtual Trunk& operator()(char*,int){return *this;}
+		virtual void Stop(char* msg,Trunk* a=NULL,Trunk* b=NULL){}
 	};
 
 	inline Trunk& operator<<(Trunk& t,Trunk& a)					{return t.operator<<(a);}
@@ -549,6 +550,16 @@ namespace TreeObjects
 		virtual operator Trunk& () = 0;
 		virtual Trunk* remove(Trunk* root,Trunk* pfound) ;
 		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v) = 0;
+		void IntegrityCheck(Trunk* X) // TBD: Remove this function
+		{
+			Trunk& Nil(*GetNil());
+			if (color(X)==RED) 
+			{
+				if (!Nil.isnul(X->Parent()))	if (color(X->Parent())==RED) Nil.Stop("Red node with red parent",X,X->Parent());
+				if (!Nil.isnul(X->Left()))		if (color(X->Parent())==RED) Nil.Stop("Red node with red left",X,X->Left());
+				if (!Nil.isnul(X->Right()))		if (color(X->Parent())==RED) Nil.Stop("Red node with red right",X,X->Right());
+			}
+		}
 
 		void Rotator(Trunk* node) {Update(node,node->Parent());}
 
@@ -790,6 +801,7 @@ namespace TreeObjects
 				return RedAndBlackDelete(root,X);								// 22
 			}
 		Trace
+		IntegrityCheck(X);
 		Msg<<done;
 		return root;
 	}

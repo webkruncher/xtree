@@ -370,7 +370,7 @@ namespace XmlTree
 			}
 		} catch (string& e) {
 			cout<<"\t\tException:"<<e<<endl;
-			//xmltree.StopAndPrint();
+			xmltree.StopAndPrint();
 		}
 	}
 

@@ -304,14 +304,20 @@ namespace TreeDisplay
 					if (!ReadingJournal) 
 					{
 						tout<<"Journal is finished"<<endl;
-						//CheckIntegrity(root);
-						//stop=true;
+						CheckIntegrity(root);
+						if (this->GetState()==Trap::Continuing) 
+						{
+							stop=false; 
+							journal.close(); 
+							xmloutname.clear(); 
+							return;
+						}
 						this->SetState(Trap::Stepping);
-							if (!xmloutname.empty())
-							{
-								ofstream xmlout((char*)xmloutname.c_str());
-								xmlout<<treexml;
-							}
+						if (!xmloutname.empty())
+						{
+							ofstream xmlout((char*)xmloutname.c_str());
+							xmlout<<treexml;
+						}
 						return; // Journal is finished
 					}
 				}

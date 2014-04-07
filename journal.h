@@ -128,6 +128,7 @@ namespace TreeJournal
 			return j;
 		}
 		friend Journal& operator>>(Journal&,Entry&);
+
 		Journal& operator>>(Journal& j)
 		{
 			Entry<KT>& me(*this);
