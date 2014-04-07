@@ -37,6 +37,7 @@ namespace TreeIntegrity
 		virtual void message(Trunk&,string,string) = 0;
 	};
 
+
 	template<typename KT>
 		inline bool AssertRelations(ostream& tout,Trunk* node)
 	{
@@ -78,7 +79,6 @@ namespace TreeIntegrity
 	{
 		if (!node) return false;
 		if (node->isnil()) return false;
-		if (!AssertRelations<KT>(tout,node)) return false;
 		if (!node->isnul(node->Left())) 
 				if (!PrintInOrder<KT>(tout,node->Left())) return false;
 		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
@@ -87,6 +87,99 @@ namespace TreeIntegrity
 				if (!PrintInOrder<KT>(tout,node->Right())) return false;
 		return true;
 	}	
+
+	template<typename KT>
+		inline bool InOrderAssertions(ostream& tout,Trunk* node)
+	{
+		if (!node) return false;
+		if (node->isnil()) return false;
+		if (!AssertRelations<KT>(tout,node)) return false;
+		if (!node->isnul(node->Left())) 
+				if (!InOrderAssertions<KT>(tout,node->Left())) return false;
+		BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
+		//const KT& v(rk); tout<<v<<" ";
+		if (!node->isnul(node->Right())) 
+				if (!InOrderAssertions<KT>(tout,node->Right())) return false;
+		return true;
+	}	
+
+	
+
+	struct HiLowBase
+	{
+		virtual ostream& operator<<(ostream& o) = 0;
+	};
+	inline ostream& operator<<(ostream& o,HiLowBase& h){return h.operator<<(o);}
+
+	template<typename KT>
+		struct HiLow : HiLowBase
+	{
+		HiLow() : trigger(false), deep(0),shallow(0X7FFF) {}
+		operator const bool () const
+		{
+			if (!trigger) return true;
+			if (deep>(shallow*2)) return false;
+			return true;
+		}
+		virtual bool qualify(Trunk* rbnode)
+		{
+			if (rbnode->isleaf(rbnode)) return true;
+			else return false;
+		}
+
+		virtual int DepthFinder(Trunk& tb,int d=0)
+		{ 
+			if (d>100) throw string("HiLow::DepthFinder error");
+			if (tb.isnil()) return d;
+			if (!tb.Parent()) return d;
+			if (tb.Parent()->isnil()) return d;
+			d=DepthFinder(*tb.Parent(),d+1); 
+			return d; 
+		}
+
+		void operator()(ostream& tout,Trunk* node)
+		{
+			HiLow<KT>& me(*this);
+			if (!node) return ;
+			if (node->isnil()) return ;
+			if (this->qualify(node))
+			{
+				trigger=true;
+				int d(DepthFinder(*node));
+				d++;
+				if (d<shallow) shallow=d;
+				if (d>deep) deep=d;
+				BstBase<KT>& rk(static_cast<BstBase<KT>&>(*node));
+				const KT& k(rk);
+				tout<<k<<" is "<<d<<" deep "<<endl;
+			}
+			if (!node->isnul(node->Left())) me(tout,node->Left());
+			if (!node->isnul(node->Right())) me(tout,node->Right());
+		}	
+		virtual ostream& operator<<(ostream& o)
+			{ o<<"Shortest: "<<shallow<<", Deepest:"<<deep<<endl; return o; } 
+		private:
+		bool trigger;
+		int shallow,deep;
+	};
+
+	template<typename KT>
+		struct RbHiLow : HiLow<KT>
+	{
+		int DepthFinder(Trunk& tb,int d=0)
+		{ 
+			if (d>100) throw string("RbHiLow::DepthFinder error");
+			if (tb.isnil()) return d;
+			if (!tb.Parent()) return d;
+			if (tb.Parent()->isnil()) return d;
+			RbBase* prbc(dynamic_cast<RbBase*>(&tb));
+			if (!prbc) {cout<<"This is not an RbBase node"<<endl; return false;}
+			RbBase& rbc(*prbc);
+			if (rbc.color(&tb)==RbBase::BLACK) d=DepthFinder(*tb.Parent(),d+1); 
+			else d=DepthFinder(*tb.Parent(),d); 
+			return d; 
+		}
+	};
 
 	template<typename KT>
 		inline void TestSuccessor(ostream& tout,Trunk* root,Trunk* node,set<KT>& used,bool& ok)
@@ -161,7 +254,6 @@ namespace TreeIntegrity
 	template<typename KT>
 		inline bool BstIntegrity(ostream& tout,Trunk* root,set<KT>& used)
 	{
-return true;
 			bool ok(true);
 			if (!root) return true;
 			if (root->isnil()) return true;
@@ -179,22 +271,34 @@ return true;
 			if (maxvalue!=(*used.rbegin())) {tout<<("Max check failed")<<endl; ok= false;}
 			if (!isbst) {tout<<("isBST failed")<<endl; ok= false;}
 			long ttl(root->countnodes());
-			if (ttl!=used.size()) ok=false;
-			if (ok) TestPredecessorsAndSuccessors<KT>(tout,root,root,used,ok);
+			if (ttl!=used.size()) {tout<<"Tree is not the same size as the used set"<<endl; ok=false;}
+			if (ok) 
+			{
+				TestPredecessorsAndSuccessors<KT>(tout,root,root,used,ok);	
+				if (!ok) tout<<"Predecessor and successor check failed"<<endl;
+			}
+			
 			stringstream sout;
-			if (!PrintInOrder<KT>(sout,root)) ok=false;
-			if (sout.str().empty()) ok=false;
-			else tout<<sout.str().c_str()<<endl;
+			if (!InOrderAssertions<KT>(sout,root)) 
+			{
+				tout<<"In order assertions failed"<<endl;
+				ok=false;
+			}
+
+			//if (sout.str().empty()) ok=false;
+			//else tout<<sout.str().c_str()<<endl;
+
+
 			if (!ok)
 			{
-				cerr<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
-				cerr<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
-				cerr<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
-				cerr<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
-				cerr<<"isBST:"<<boolalpha<<isbst;
-				cerr<<"; Used: Min:"<<*used.begin();
-				cerr<<", Max:"<<*used.rbegin()<<endl;
-				cerr.flush();
+				tout<<"Ok:"<<boolalpha<<ok<<", Total:"<<ttl<<" ?= "<<used.size()<<", ";
+				tout<<"Root:"<<setprecision(2)<<fixed<<rootvalue<<" ";
+				tout<<"Min:"<<setprecision(2)<<fixed<<minvalue<<" ";
+				tout<<"Max:"<<setprecision(2)<<fixed<<maxvalue<<" ";
+				tout<<"isBST:"<<boolalpha<<isbst;
+				tout<<"; Used: Min:"<<*used.begin();
+				tout<<", Max:"<<*used.rbegin()<<endl;
+				tout.flush();
 			}
 			return ok;
 	}
@@ -274,6 +378,20 @@ return true;
 		RedBlackCheck::Visitor<KT> visitor(tout,rk,advisor);
 		//if (!visitor) {tout<<"Red Black check failed"<<endl; return false;}
 		if (!visitor) {return false;}
+		long ttl(root->countnodes());
+		if (ttl>3)
+		{
+				RbBase* prbc(dynamic_cast<RbBase*>(root));
+				if (!prbc) {tout<<"This is not an RbBase node"<<endl; return false;}
+				RbBase& rbc(*prbc);
+				RbHiLow<KT> hilow;
+				hilow(cerr,root); 
+				if (!hilow)
+				{
+					tout<<"Imbalanced:"<<hilow<<endl;
+					return false;
+				} else tout<<"In balance:"<<hilow<<endl;
+		}
 		return true;
 		//return visitor;
 	}

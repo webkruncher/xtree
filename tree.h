@@ -197,7 +197,7 @@ namespace TreeObjects
 	{
 		if (this->isnul(node)) return root;
 		Trunk* other(node->Right());														// 1
-if (this->isnul(other)) throw string("Rotation problems");
+		if (this->isnul(other)) throw string("Rotation problems"); // TBD: Remove this
 		Msg<<rotlft<<(*node)<<(*other);
 		Trace
 		node->SetRight(other->Left());													// 2
@@ -227,7 +227,7 @@ if (this->isnul(other)) throw string("Rotation problems");
 	{
 		if (this->isnul(node)) return root;
 		Trunk* other(node->Left());															// 1
-if (this->isnul(other)) throw string("Rotation problems");
+		if (this->isnul(other)) throw string("Rotation problems"); // TBD: Remove this
 		//if (this->isnul(other)) return root;
 		Msg<<rotrgt<<(*node)<<(*other);
 		Trace
@@ -332,7 +332,7 @@ if (this->isnul(other)) throw string("Rotation problems");
 
 		Trunk* insert(Trunk* root,Trunk* node,char d=0)
 		{
-cout<<"BST INSERT"<<endl<<endl;
+			cout<<"BST INSERT"<<endl<<endl;
 			if ((*node)==(*this)) {delete node; return NULL;}
 			if (!d)
 			{
@@ -471,6 +471,7 @@ cout<<"BST INSERT"<<endl<<endl;
 	{
 		if (u and v) Msg<<trnsp<<(*u)<<(*v);
 		Trunk* ret(root);
+		if (root->isnul(u)) throw string("transplant->u is null"); // TBD: Remove this
 		if (u->Parent()->isnil())
 		{
 			Trace
@@ -678,7 +679,6 @@ cout<<"BST INSERT"<<endl<<endl;
 
 		Trunk* RedAndBlackInsert(Trunk* root, Trunk* node)
 		{
-			black(root); 
 			red(node);
 			while ( color(node->Parent()) == RED ) 
 			{

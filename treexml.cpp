@@ -352,7 +352,7 @@ namespace XmlTree
 
 			if (recent.empty()) throw string("No recent nodes");
 			int N(0);
-			while (N<recent.size())
+			//while (N<recent.size())
 			{
 				string node(recent[N]);
 				while (true)
