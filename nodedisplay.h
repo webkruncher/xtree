@@ -76,9 +76,9 @@ namespace TreeDisplay
 
 	struct NodeBase : map<string,string>
 	{
-		NodeBase() : SW(0),SH(0),X(0),Y(0),PX(0),PY(0),parented(false),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
-		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),PX(0),PY(0),parented(false),moved(true), motion(X,Y), color(0XEEEEFF),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
-		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),PX(a.PX),PY(a.PY),X(a.X),Y(a.Y),parented(false),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
+		NodeBase() : SW(0),SH(0),X(0),Y(0),PX(0),PY(0),parented(false),parent(NULL), moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
+		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),PX(0),PY(0),parented(false),parent(NULL), moved(true), motion(X,Y), color(0XEEEEFF),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
+		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),PX(a.PX),PY(a.PY),X(a.X),Y(a.Y),parented(false),parent(NULL), moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
 		const bool Moved() const {return moved;}
 		bool undisplay()
 		{
@@ -88,6 +88,7 @@ namespace TreeDisplay
 			return Removed;
 		}
 		const unsigned long GetColor() const {return color;}
+		virtual void Bump() {}
 		protected: 
 		bool moved;
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap);
@@ -97,6 +98,7 @@ namespace TreeDisplay
 		double X,Y,PX,PY;
 		LastLines linecovers;
 		bool parented;
+		Trunk* parent;
 		unsigned long color;
 		int CW,CH;
 		int DCW,DCH;
@@ -140,6 +142,7 @@ namespace TreeDisplay
 				Text(k,k);
 				//if (node.isnul(parent)) NodeBase::operator[]("n")="P";
 				parented=false;
+				parent=NULL;
 			} else {
 				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent));
 				TreeNode<KT>& pn(parentnode.Data());
@@ -148,6 +151,7 @@ namespace TreeDisplay
 				double px(pn.X);
 				double py(pn.Y);
 				parented=true;
+				parent=&parentnode;
 				PX=pn.X;
 				PY=pn.Y;
 				const double sw(SW); double sh(SH);
@@ -180,20 +184,23 @@ namespace TreeDisplay
 					motion(x,y);
 					Text(k,pk);
 				}
-#if 0
-					Trunk* P( parent );
-					while ( P )
-					{
-						Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*P));
-						TreeNode<KT>& gpn(grandparentnode.Data());
-						P=P->Parent();
-						pn.moved=true;
-					}
-#endif
+				//Bump();
 			}
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 			{ NodeBase::operator()(invalid,window,display,gc,bitmap); }
+		virtual void Bump()
+		{
+			moved=true;
+			Trunk* P( parent );
+			while ( P )
+			{
+				Bst<KT,TreeNode<KT> >& parentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*P));
+				P=P->Parent();
+				TreeNode<KT>& pn(parentnode.Data());
+				pn.moved=true;
+			}
+		}
 		private:
 		KT k;
 		void Text(KT k,KT pk,string txt="") {stringstream ss; ss<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}

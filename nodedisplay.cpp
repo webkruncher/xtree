@@ -48,10 +48,11 @@ namespace TreeDisplay
 			}
 			SetFont(display,gc);
 			//invalid.SetTrace(true);
-			moved=false;
+			//moved=false;
 			pair<double,double> D(motion.next(X,Y));
 			if ((D.first) or (D.second)) moved=true;
-			//if ( ! moved ) return;
+			if ( ! moved ) return;
+			Bump();
 			{
 				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
 				pair<double,double> lr(ul.first+DCW+2,ul.second+DCH+2);
@@ -67,7 +68,7 @@ namespace TreeDisplay
 					if (Removing<=0X77) 
 					{
 						Removed=true;
-						moved=false;
+						moved=true;
 						XSetForeground(display,gc,0XFF);
 					} else {
 						unsigned long color((Removing<<0) | (Removing<<8) | (Removing));
@@ -127,8 +128,9 @@ namespace TreeDisplay
 					XDrawLine(display,bitmap,gc,X,Y,PX,PY);
 					linecovers(X,Y,PX,PY);
 				}
+				
 			}
-			//moved=false;
+			moved=false;
 		}
 } // namespace TreeDisplay
 
