@@ -260,6 +260,7 @@ namespace TreeDisplay
 			{
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
 				const KT& key(nk);
+				cout << "Removing: "<< key << endl; cout.flush();
 				VT& valuenode(nk.Data());
 				if (!valuenode.undisplay()) return;
 				if (journal==ios_base::out) entry-=key;
@@ -372,8 +373,12 @@ namespace TreeDisplay
 					} else {
 						if ((root) and (!root->isnil()))
 						{
+							cout << "Finding node to remove: "<<endl ; cout.flush();
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
 							removal=nk.find(next.second);
+							if ( removal ) cout << "Found node to remove: " << endl; 
+							else cout << "Did not find node to remove: " << endl; 
+							cout.flush();
 						}
 					}
 				}
