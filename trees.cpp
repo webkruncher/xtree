@@ -179,7 +179,12 @@ namespace TreeObjects
 
 namespace TreeDisplay
 {
-	int GenerateNumber(int Max) { return ((rand()%Max)+(Max/2)); }
+	int last(0);
+	int GenerateNumber(int Max)
+	{
+		//return (last++);
+		return ((rand()%Max)+(Max/2)); 
+	}
 	double GenerateNumber(double Max) { double k=(rand()%((int)Max)); k/=(((double)(rand()%((int)Max))+1)); return k; }
 
 	struct Strings : vector<string>
@@ -343,6 +348,10 @@ namespace TreeDisplay
 						Trunk* n(generate(next.second,tn));
 						if ((!root) or (root->isnil()) ) waitfor=updateloop+10;
 						else waitfor=updateloop+20;
+
+
+						waitfor=updateloop+1;
+
 						if ((!root)or (root->isnil()) )  
 						{
 							root=n;  
@@ -376,7 +385,12 @@ namespace TreeDisplay
 	{
 			ajaxface<KT>& treexml(*this);;
 			this->stepper("");
-			if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
+			if ( false ) 
+			{
+				if (!(updateloop%20))if ((root) and (!root->isnil())) traverse(*root);
+			} else {
+				if ((root) and (!root->isnil())) traverse(*root);
+			}
 			updateloop++;
 			if ( (entrylimit) and (journal==ios_base::out) )
 			{
@@ -421,11 +435,13 @@ namespace TreeDisplay
 
 			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
+#if 0
 			if (!(updateloop%flipcounter))
 			{
 				flipcounter=((rand()%1000)+100);
 				if ( (root) or (!root->isnil()) ) removing=!removing;
 			}
+#endif
 	}
 
 	template<> const string ajaxface<string>::tokt(const string what) const { return what; }

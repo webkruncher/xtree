@@ -77,7 +77,7 @@ namespace TreeDisplay
 	struct NodeBase : map<string,string>
 	{
 		NodeBase() : SW(0),SH(0),X(0),Y(0),PX(0),PY(0),parented(false),moved(true),motion(100,100),Remove(false),Removing(100),Removed(false),font_info(NULL) {}
-		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),PX(0),PY(0),parented(false),moved(true), motion(X,Y), color(0X003333),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
+		NodeBase(const int _SW,const int _SH) : SW(_SW),SH(_SH),X(_SW/4),Y(10),PX(0),PY(0),parented(false),moved(true), motion(X,Y), color(0XEEEEFF),Remove(false),Removing(100), Removed(false),font_info(NULL) { }
 		NodeBase(const NodeBase& a) : text(a.text),SW(a.SW),SH(a.SH),CW(a.CW),CH(a.CH),PX(a.PX),PY(a.PY),X(a.X),Y(a.Y),parented(false),moved(a.moved), motion(a.X,a.Y),color(a.color),Remove(a.Remove),Removing(a.Removing), Removed(a.Removed),font_info(NULL)  {}
 		const bool Moved() const {return moved;}
 		bool undisplay()
@@ -109,7 +109,8 @@ namespace TreeDisplay
 		{
 			if (font_info) return;
 			//const char* font_name = "*-courier-*-8-*";
-			const char* font_name = "*-helvetica-*-10-*";
+			//const char* font_name = "*-helvetica-*-10-*";
+			const char* font_name = "*-helvetica-*-18-*";
 			font_info = XLoadQueryFont(display, font_name);
 			if (!font_info) 
 			{
@@ -134,7 +135,7 @@ namespace TreeDisplay
 			//if (niltxt!=end()) erase(niltxt);
 			if ((!parent) or (parent->isnil()) ) 
 			{
-				double x=(SW/2)-(CW/2); double y=(CH*3);
+				double x=(SW/2)-(CW/2); double y=(CH);
 				motion(x,y);
 				Text(k,k);
 				//if (node.isnul(parent)) NodeBase::operator[]("n")="P";
@@ -151,14 +152,17 @@ namespace TreeDisplay
 				PY=pn.Y;
 				const double sw(SW); double sh(SH);
 				double y;
-				if (k<pk) y=py+(CH*3);
-				else y=py+(CH*3)-CH;
+
+                                if (k<pk) y=py+(CH*3);
+                                else y=py+(CH*3)-CH;
+
 				double x;
 				if (parent->Parent() and !node.isnul(parent->Parent()))
 				{
 					Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*parent->Parent()));
 					TreeNode<KT>& gpn(grandparentnode.Data());
 					if (gpn.moved) return;
+		
 					double gpx(gpn.X);
 					double dx(gpn.X-pn.X);
 					dx/=2; //dx*=1; // 1/2 of the difference between parent and grand-parent
@@ -176,6 +180,16 @@ namespace TreeDisplay
 					motion(x,y);
 					Text(k,pk);
 				}
+#if 0
+					Trunk* P( parent );
+					while ( P )
+					{
+						Bst<KT,TreeNode<KT> >& grandparentnode(static_cast<Bst<KT,TreeNode<KT> >&>(*P));
+						TreeNode<KT>& gpn(grandparentnode.Data());
+						P=P->Parent();
+						pn.moved=true;
+					}
+#endif
 			}
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
@@ -183,7 +197,7 @@ namespace TreeDisplay
 		private:
 		KT k;
 		void Text(KT k,KT pk,string txt="") {stringstream ss; ss<<k<<","<<pk<<" "<<txt; text=ss.str().c_str();}
-		void BoxSize() {CW=50; CH=14;}
+		void BoxSize() {CW=50*2; CH=14*2;}
 	};
 
 	template <> inline void TreeNode<int>::Text(int k,int pk,string txt)
@@ -193,7 +207,7 @@ namespace TreeDisplay
 		text=ss.str();
 	}
 
-	template <> inline void TreeNode<int>::BoxSize() { CW=20; CH=12; }
+	template <> inline void TreeNode<int>::BoxSize() { CW=20*2; CH=12*2; }
 
 	template <> inline void TreeNode<double>::Text(double k,double pk,string txt)
 	{

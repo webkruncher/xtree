@@ -39,7 +39,7 @@ namespace TreeDisplay
 
 		pair<double,double> next(double tx,double ty)
 		{
-			if  ((ldist<4) and (!empty()) )
+			if  ((ldist<128) and (!empty()) )
 				{ x=back().first; y=back().second; pop_back(); } 
 
 			double distx(x-tx);
@@ -47,9 +47,9 @@ namespace TreeDisplay
 			double direction(atan2(disty, distx));
 			double distance(sqrt( (distx * distx) + (disty * disty) ) );
 
-			if (distance<1) return make_pair<double,double>(0,0);
+			if (distance<32) return make_pair<double,double>(0,0);
 
-			double force(distance/4);
+			double force(distance/2);
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
 			return make_pair<double,double>(dx,dy);

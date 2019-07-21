@@ -264,8 +264,8 @@ int main(int argc,char** argv)
 		KeyMap keys;
 		XSizeHints displayarea;
 		int screen(DefaultScreen(display));
-		const unsigned long background(0X777777);
-		const unsigned long foreground(0X777777);
+		const unsigned long background(0XEEEEFF);
+		const unsigned long foreground(0XEEEEFF);
 
 		displayarea.x = 000;
 		displayarea.y = 000;
@@ -351,4 +351,5 @@ int main(int argc,char** argv)
 	XCloseDisplay(display);
 	return 0;
 }
+
 

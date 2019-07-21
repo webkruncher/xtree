@@ -182,7 +182,7 @@ namespace TreeDisplay
 		}
 		virtual void operator()(Pixmap& bitmap) 
 		{   
-			XSetForeground(display,gc,0X777777);
+			XSetForeground(display,gc,0XEEEEFF);
 			XFillRectangle(display,bitmap,gc,0,0,ScreenWidth,ScreenHeight);
 			movement=false;
 			if ((root) and (!root->isnil())) draw(invalid,*root,bitmap); 

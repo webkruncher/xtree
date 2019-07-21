@@ -40,7 +40,7 @@ namespace TreeDisplay
 		//#define GHOSTS
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
-			XSetForeground(display,gc,0X777777);
+			XSetForeground(display,gc,0);
 			while(!linecovers.empty())
 			{
 				pointpairs p(linecovers);
@@ -51,6 +51,7 @@ namespace TreeDisplay
 			moved=false;
 			pair<double,double> D(motion.next(X,Y));
 			if ((D.first) or (D.second)) moved=true;
+			//if ( ! moved ) return;
 			{
 				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
 				pair<double,double> lr(ul.first+DCW+2,ul.second+DCH+2);
@@ -67,17 +68,17 @@ namespace TreeDisplay
 					{
 						Removed=true;
 						moved=false;
-						XSetForeground(display,gc,0X777777);
+						XSetForeground(display,gc,0XFF);
 					} else {
 						unsigned long color((Removing<<0) | (Removing<<8) | (Removing));
 						moved=true;
-						XSetForeground(display,gc,color);
+						XSetForeground(display,gc, color );
 					}
 					XPoint& points(iv);
 					XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
 					if (!Removed)
 					{
-						XSetForeground(display,gc,0XFFFFFF);
+						XSetForeground(display,gc,0);
 						int yoff(CH);
 						XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,text.c_str(),text.size());
 					}
@@ -103,21 +104,31 @@ namespace TreeDisplay
 				//for (int j=0;j<4;j++,pt++) lastpoints.push_back(*pt);
 				XSetForeground(display,gc,color);
 				XFillPolygon(display,bitmap,  gc,&points, 4, Complex, CoordModeOrigin);
-				XSetForeground(display,gc,0XFFFFFF);
+				XSetForeground(display,gc,0XFFFF00);
+				XSetBackground(display,gc,0XFFFF00);
 				int yoff(CH);
 				XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,text.c_str(),text.size());
+#if 0
 				for (iterator it=begin();it!=end();it++)
 				{
 					yoff+=CH;
 					stringstream ss; ss<<it->first<<" : "<<it->second;
 					XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,ss.str().c_str(),ss.str().size());
 				}
+#endif
 				{
-					XSetForeground(display,gc,(Remove or (!parented) ) ? 0X777777 : 0XAAAACC);
+					XSetForeground(display,gc,(Remove or (!parented) ) ? 0XFFFF00 : 0X00FFFF);
+					XSetBackground(display,gc,(Remove or (!parented) ) ? 0XFFFF00 : 0X00FFFF);
+
+					const int line_width( 4 );
+					XSetLineAttributes(display, gc, line_width, LineDoubleDash, CapRound, JoinBevel);
+
+
 					XDrawLine(display,bitmap,gc,X,Y,PX,PY);
 					linecovers(X,Y,PX,PY);
 				}
 			}
+			//moved=false;
 		}
 } // namespace TreeDisplay
 
