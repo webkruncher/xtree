@@ -435,7 +435,7 @@ namespace TreeDisplay
 
 			if ( (!root) or (root->isnil()) ){movement=false; removing=false; stop=false;}
 			if (!flipcounter) flipcounter=((rand()%1000)+100);
-#if 0
+#if 1
 			if (!(updateloop%flipcounter))
 			{
 				flipcounter=((rand()%1000)+100);

@@ -440,7 +440,7 @@ namespace TreeDisplay
 		}
 		virtual bool CheckIntegrity(Trunk* root)
 		{
-			if (!TreeCanvas<KT>::CheckIntegrity(root)) return this->IntegrityReport(root);;
+			//if (!TreeCanvas<KT>::CheckIntegrity(root)) return this->IntegrityReport(root);;
 			if (!TreeIntegrity::RedBlackIntegrity<KT>(tout,root,*this)) return this->IntegrityReport(root);
 			return true;
 		}
