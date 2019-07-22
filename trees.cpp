@@ -247,7 +247,7 @@ namespace TreeDisplay
 			{
 				k=GenerateNumber((T)Max);
 				cout << "E" << k << " "; cout.flush();  
-				if (used.size() < ( MOST / 2 ) ) return make_pair<bool,T>(false,0);
+				//if (used.size() < ( MOST / 2 ) ) return make_pair<bool,T>(false,0);
 			} while (used.find(k)==used.end());
 			cout << "!" << k << endl; cout.flush();
 			used.erase(k);
@@ -358,6 +358,7 @@ namespace TreeDisplay
 				{
 					if (!removing)
 					{
+cout << "+" << next.second << endl;
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						if (journal==ios_base::out) entry+=next.second;
 						Trunk* n(generate(next.second,tn));
