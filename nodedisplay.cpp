@@ -50,8 +50,9 @@ namespace TreeDisplay
 			//invalid.SetTrace(true);
 			moved=false;
 			pair<double,double> D(motion.next(X,Y));
+//cout << "(" << D.first << "/" << D.second << ") "; cout.flush();
 			if ((D.first) or (D.second)) moved=true;
-			//if ( ! moved ) return;
+			if ( ! moved ) return;
 			//Bump();
 			{
 				pair<double,double> ul(X-(DCW/2)-1,Y-(DCH/2)-1);
@@ -68,11 +69,11 @@ namespace TreeDisplay
 					if (Removing<=0X77) 
 					{
 						Removed=true;
-						moved=false;
+						//moved=true;
 						XSetForeground(display,gc,0XFF);
 					} else {
 						unsigned long color((Removing<<0) | (Removing<<8) | (Removing));
-						moved=true;
+						//moved=true;
 						XSetForeground(display,gc, color );
 					}
 					XPoint& points(iv);
@@ -84,13 +85,16 @@ namespace TreeDisplay
 						XDrawString(display,bitmap,gc,ul.first,ul.second+yoff-2,text.c_str(),text.size());
 					}
 					Removing-=10;
-					return;
+					//return;
 				}
 			}
+
 			DCH=CH+(size()*CH);
 			DCW=CW;
 			if (size()) DCW=CW*2;
 			X+=D.first; Y+=D.second;
+			pair<double,double> isnow( X, Y );
+			motion=isnow;
 			{
 				pair<double,double> ul(X-(DCW/2),Y-(DCH/2));
 				pair<double,double> lr(ul.first+DCW,ul.second+DCH);

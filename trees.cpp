@@ -35,7 +35,7 @@ using namespace TreeDisplay;
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define MOST 500
+#define MOST 50
 
 namespace TreeDisplay
 {
@@ -235,11 +235,24 @@ namespace TreeDisplay
 		if (removing)
 		{
 			if (used.empty()) return make_pair<bool,T>(false,0);
-			int w(rand()%used.size());
+#if 0
 			typename set<T>::iterator it=used.begin();
-			for (int j=0;j<w;j++) it++;
+			pair<bool,T> R(true,*it);
 			used.erase(it);
-			return make_pair<bool,T>(true,*it);
+			return R;
+			//return make_pair<bool,T>(true,*it);
+#else
+			srand(time(0));
+			T k; do 
+			{
+				k=GenerateNumber((T)Max);
+				cout << "E" << k << " "; cout.flush();  
+				if (used.size() < ( MOST / 2 ) ) return make_pair<bool,T>(false,0);
+			} while (used.find(k)==used.end());
+			cout << "!" << k << endl; cout.flush();
+			used.erase(k);
+			return make_pair<bool,T>(true,k);
+#endif
 		}
 
 		if (used.size()==(Max-1)) return make_pair<bool,T>(false,0);
@@ -262,12 +275,13 @@ namespace TreeDisplay
 				const KT& key(nk);
 				cout << "Removing: "<< key << endl; cout.flush();
 				VT& valuenode(nk.Data());
-				if (!valuenode.undisplay()) return;
+				//if (!valuenode.undisplay()) return;
 				if (journal==ios_base::out) entry-=key;
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
 				Trunk* newroot(rr.erase(root,removal));
 				removal=NULL;
-				if (journal==ios_base::in)  removing=false;
+
+				//if (journal==ios_base::in)  removing=false;
 				if (newroot!=root) 
 				{
 					if (newroot and !newroot->isnil())
@@ -373,12 +387,23 @@ namespace TreeDisplay
 					} else {
 						if ((root) and (!root->isnil()))
 						{
+#if 0
 							cout << "Finding node to remove: "<<endl ; cout.flush();
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
 							removal=nk.find(next.second);
 							if ( removal ) cout << "Found node to remove: " << endl; 
 							else cout << "Did not find node to remove: " << endl; 
 							cout.flush();
+#else
+							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
+							//for ( int j=0;j<100;j++)
+							{
+								pair<bool,KT> rnext(Next(MOST));
+								removal=nk.find( rnext.second );
+								if ( ! removal ) removing = false;
+								else cout << endl << "Found node to remove: " << rnext.second << endl; 
+							}
+#endif
 						}
 					}
 				}

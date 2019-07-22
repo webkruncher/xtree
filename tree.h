@@ -287,26 +287,33 @@ namespace TreeObjects
 
 		virtual BstBase<KT>* find(const KT& what)
 		{	
+cout << "?" << what << " "; cout.flush();
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
 			const KT& ndv(nd);
 			if (ndv==what) 
 			{
+cout << "==me" << what << " "; cout.flush();
 				return this;
 			}
 			if (ndv<what)
 			{
+cout << ">?" << what << " "; cout.flush();
 				if (!isnul(Right()))
 				{
+if ( ! Right() ) return NULL;
 					BstBase<KT>& ld(static_cast<BstBase<KT>&>(*Right()));
 					return ld.find(what);
 				}
 			} else {
+cout << "<?" << what << " "; cout.flush();
 				if (!isnul(Left()))
 				{
+if ( ! Left() ) return NULL;
 					BstBase<KT>& rd(static_cast<BstBase<KT>&>(*Left()));
 					return rd.find(what);
 				}
 			}
+cout << "(-)" << what << " "; cout.flush();
 			return NULL;
 		}
 

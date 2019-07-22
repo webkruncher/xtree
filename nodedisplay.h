@@ -88,7 +88,7 @@ namespace TreeDisplay
 			return Removed;
 		}
 		const unsigned long GetColor() const {return color;}
-		virtual void Bump() {}
+		virtual void Bump() { cout << "Base bumpped" << endl; cout.flush();}
 		protected: 
 		bool moved;
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap);
@@ -184,14 +184,15 @@ namespace TreeDisplay
 					motion(x,y);
 					Text(k,pk);
 				}
-				//Bump();
+				Bump();
 			}
 		}
 		void operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 			{ NodeBase::operator()(invalid,window,display,gc,bitmap); }
 		virtual void Bump()
 		{
-			moved=true;
+			//moved=true;
+			motion();
 			Trunk* P( parent );
 			while ( P )
 			{
@@ -199,6 +200,7 @@ namespace TreeDisplay
 				P=P->Parent();
 				TreeNode<KT>& pn(parentnode.Data());
 				pn.moved=true;
+				pn.motion();
 			}
 		}
 		private:

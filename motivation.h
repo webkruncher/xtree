@@ -31,15 +31,27 @@ namespace TreeDisplay
 	struct Motion : private deque<pair<double,double> >
 	{
 		Motion(const double _x,const double _y) : x(_x),y(_y),ldist(0) {}
-		void operator()(double x,double y)
+		void operator = ( pair<double,double>& to )
 		{
+			x=to.first; y=to.second;
+		}
+		void operator()()
+		{
+			//cout << "^"; cout.flush();
+			pair<double,double> now(x,y);;
+			push_front(now);
+		}
+		void operator()(double X,double Y)
+		{
+			x=X; y=Y;
 			pair<double,double> now(x,y);;
 			if (now!=front()) push_front(now);
 		}
 
 		pair<double,double> next(double tx,double ty)
 		{
-			if  ((ldist<128) and (!empty()) )
+			//if  ((ldist<128) and (!empty()) )
+			if  (!empty()) 
 				{ x=back().first; y=back().second; pop_back(); } 
 
 			double distx(x-tx);
@@ -52,6 +64,7 @@ namespace TreeDisplay
 			double force(distance/2);
 			const double dx(force*cos(direction));
 			const double dy(force*sin(direction));
+			//x+=dx; y+=dy;
 			return make_pair<double,double>(dx,dy);
 		}
 		private: double x,y,ldist; 
