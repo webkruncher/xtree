@@ -756,8 +756,8 @@ cout << "(-)" << what << " "; cout.flush();
 				if (!root->isnul(l)) Update(l,p); if (!root->isnul(r)) Update(r,p);
 			}
 			found->SetLeft(NULL); found->SetRight(NULL);
-			delete found;
 			Msg<<done<<(*this)<<finish;
+			delete found;
 			return newroot;
 		}
 		COLOR clr;
