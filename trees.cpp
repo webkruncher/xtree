@@ -35,7 +35,7 @@ using namespace TreeDisplay;
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define MOST 50
+#define MOST 40
 
 namespace TreeDisplay
 {
@@ -235,24 +235,16 @@ namespace TreeDisplay
 		if (removing)
 		{
 			if (used.empty()) return make_pair<bool,T>(false,0);
-#if 0
-			typename set<T>::iterator it=used.begin();
-			pair<bool,T> R(true,*it);
-			used.erase(it);
-			return R;
-			//return make_pair<bool,T>(true,*it);
-#else
 			srand(time(0));
 			T k; do 
 			{
 				k=GenerateNumber((T)Max);
-				cout << "E" << k << " "; cout.flush();  
+				cout << " !E" << k << " "; cout.flush();  
 				//if (used.size() < ( MOST / 2 ) ) return make_pair<bool,T>(false,0);
 			} while (used.find(k)==used.end());
 			cout << "!" << k << endl; cout.flush();
 			used.erase(k);
 			return make_pair<bool,T>(true,k);
-#endif
 		}
 
 		if (used.size()==(Max-1)) return make_pair<bool,T>(false,0);
@@ -273,11 +265,13 @@ namespace TreeDisplay
 			{
 				Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*removal));
 				const KT& key(nk);
-				cout << "Removing: "<< key << endl; cout.flush();
+cout << "( -" << key << ") "; cout.flush();
 				VT& valuenode(nk.Data());
-				//if (!valuenode.undisplay()) return;
+				if (!valuenode.undisplay()) return;
+				//valuenode.undisplay();
 				if (journal==ios_base::out) entry-=key;
 				Bst<KT,VT>& rr(static_cast<Bst<KT,VT>&>(*root));
+cout << "( !-" << key << ") "; cout.flush();
 				Trunk* newroot(rr.erase(root,removal));
 				removal=NULL;
 
@@ -358,7 +352,7 @@ namespace TreeDisplay
 				{
 					if (!removing)
 					{
-cout << "+" << next.second << endl;
+cout << "( +" << next.second << ") "; cout.flush();
 						TreeNode<KT> tn(ScreenWidth,ScreenHeight);
 						if (journal==ios_base::out) entry+=next.second;
 						Trunk* n(generate(next.second,tn));
@@ -388,23 +382,11 @@ cout << "+" << next.second << endl;
 					} else {
 						if ((root) and (!root->isnil()))
 						{
-#if 0
-							cout << "Finding node to remove: "<<endl ; cout.flush();
 							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
-							removal=nk.find(next.second);
-							if ( removal ) cout << "Found node to remove: " << endl; 
-							else cout << "Did not find node to remove: " << endl; 
-							cout.flush();
-#else
-							Bst<KT,VT>& nk(static_cast<Bst<KT,VT>&>(*root));
-							//for ( int j=0;j<100;j++)
-							{
-								pair<bool,KT> rnext(Next(MOST));
-								removal=nk.find( rnext.second );
-								if ( ! removal ) removing = false;
-								else cout << endl << "Found node to remove: " << rnext.second << endl; 
-							}
-#endif
+							pair<bool,KT> rnext(Next(MOST));
+							removal=nk.find( rnext.second );
+							if ( ! removal ) removing = false;
+							//else cout << endl << "Found node to remove: " << rnext.second << endl; 
 						}
 					}
 				}
@@ -492,10 +474,10 @@ cout << "+" << next.second << endl;
 		if (!rk) throw string("This root is not the right type");
 		BstBase<KT>& nk(*rk);
 		const KT nkey(nk);
-		cout<<"Looking in "<<nkey<<" for "<<what<<endl;
+		//cout<<"Looking in "<<nkey<<" for "<<what<<endl;
 		if (nkey==what) return nk.isnil();
 		BstBase<KT>* found(nk.find(what));
-		if (!found) cout<<"Error: Could not find "<<what<<";"<<endl;
+		//if (!found) cout<<"Error: Could not find "<<what<<";"<<endl;
 		if (!found) return true;
 		BstBase<KT>& fnk(static_cast<BstBase<KT>&>(*found));
 		const KT fkey(fnk);

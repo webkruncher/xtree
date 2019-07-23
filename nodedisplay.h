@@ -82,9 +82,9 @@ namespace TreeDisplay
 		const bool Moved() const {return moved;}
 		bool undisplay()
 		{
-			if (!Remove) Removing=0XFF;
+			if (!Remove) { Removing=0XFF; Bump(); }
+			cout<<"("<<dec<<Removing<<boolalpha<<Removed<<")";
 			Remove=true;
-			//cout<<"("<<dec<<Removing<<boolalpha<<Removed<<")";
 			return Removed;
 		}
 		const unsigned long GetColor() const {return color;}
@@ -102,9 +102,10 @@ namespace TreeDisplay
 		unsigned long color;
 		int CW,CH;
 		int DCW,DCH;
+		bool Remove;
 		private:
 		//XPoints lastpoints;
-		bool Remove,Removed;
+		bool Removed;
 		int Removing;
 		XFontStruct* font_info;
 		void SetFont(Display* display,GC& gc)
@@ -130,8 +131,9 @@ namespace TreeDisplay
 		TreeNode(const int _SW,const int _SH) : NodeBase(_SW,_SH) { BoxSize(); }
 		TreeNode(const TreeNode& a) : NodeBase(a)  {}
 		void operator()(unsigned long long _color) { color=_color; }
-		void operator()(KT _k,Trunk& node,Trunk* parent,bool erasing=false)
+		void operator()(KT _k,Trunk& node,Trunk* parent,bool _erasing=false)
 		{
+			//Remove=_erasing;
 			k=_k;
 			//iterator niltxt(find("n"));
 			//if (niltxt!=end()) erase(niltxt);

@@ -82,17 +82,17 @@ namespace TreeObjects
 		virtual void Stop(char* msg,Trunk* a=NULL,Trunk* b=NULL){}
 	};
 
-	inline Trunk& operator<<(Trunk& t,Trunk& a)					{return t.operator<<(a);}
-	inline Trunk& operator<<(Trunk& t,const char* a)		{return t.operator<<(a);}
-	inline Trunk& operator<<(Trunk& t,int a)						{return t.operator<<(a);}
-	inline Trunk& begin(Trunk& t)												{return t.Begin();}
-	inline Trunk& done(Trunk& t)												{return t.Done();}
-	inline Trunk& finish(Trunk& t)											{return t.Finish();}
-	inline Trunk& insrt(Trunk& t)												{return t.Insrt();}
-	inline Trunk& erse(Trunk& t)												{return t.Erse();}
-	inline Trunk& rotlft(Trunk& t)											{return t.Rotlft();}
-	inline Trunk& rotrgt(Trunk& t)											{return t.Rotrgt();}
-	inline Trunk& trnsp(Trunk& t)												{return t.Trnsp();}
+	inline Trunk& operator<<(Trunk& t,Trunk& a){return t.operator<<(a);}
+	inline Trunk& operator<<(Trunk& t,const char* a){return t.operator<<(a);}
+	inline Trunk& operator<<(Trunk& t,int a){return t.operator<<(a);}
+	inline Trunk& begin(Trunk& t)	{return t.Begin();}
+	inline Trunk& done(Trunk& t)	{return t.Done();}
+	inline Trunk& finish(Trunk& t)	{return t.Finish();}
+	inline Trunk& insrt(Trunk& t)	{return t.Insrt();}
+	inline Trunk& erse(Trunk& t)	{return t.Erse();}
+	inline Trunk& rotlft(Trunk& t)	{return t.Rotlft();}
+	inline Trunk& rotrgt(Trunk& t)	{return t.Rotrgt();}
+	inline Trunk& trnsp(Trunk& t)	{return t.Trnsp();}
 	inline Trunk& operator<<(Trunk& t,Trunk& (*pf)(Trunk&) ){return (*pf)(t);}
 	#define Msg (*this->GetNil())
 	#define Trace Msg((char*)__FILE__,__LINE__);
@@ -287,33 +287,26 @@ namespace TreeObjects
 
 		virtual BstBase<KT>* find(const KT& what)
 		{	
-cout << "?" << what << " "; cout.flush();
 			BstBase<KT>& nd(static_cast<BstBase<KT>&>(*this));
 			const KT& ndv(nd);
 			if (ndv==what) 
 			{
-cout << "==me" << what << " "; cout.flush();
 				return this;
 			}
 			if (ndv<what)
 			{
-cout << ">?" << what << " "; cout.flush();
 				if (!isnul(Right()))
 				{
-if ( ! Right() ) return NULL;
 					BstBase<KT>& ld(static_cast<BstBase<KT>&>(*Right()));
 					return ld.find(what);
 				}
 			} else {
-cout << "<?" << what << " "; cout.flush();
 				if (!isnul(Left()))
 				{
-if ( ! Left() ) return NULL;
 					BstBase<KT>& rd(static_cast<BstBase<KT>&>(*Left()));
 					return rd.find(what);
 				}
 			}
-cout << "(-)" << what << " "; cout.flush();
 			return NULL;
 		}
 
@@ -321,6 +314,7 @@ cout << "(-)" << what << " "; cout.flush();
 
 		virtual Trunk* erase(Trunk* root,Trunk* found)
 		{	
+cout << "!trunk::erase!"; cout.flush();
 			Msg<<begin;
 			if (root->isnul(found)) return root;
 			if (found->isnil()) return root;
@@ -329,12 +323,13 @@ cout << "(-)" << what << " "; cout.flush();
 			found->SetLeft(NULL); found->SetRight(NULL);
 			if (newroot)
 			{
+cout << "!trunk::newroot!"; cout.flush();
 				if (!newroot->isnul(p)) Update(found,p); 
 				if (!newroot->isnul(l)) Update(l,found); 
 				if (!newroot->isnul(r)) Update(r,found); 
 			}
 			delete found;
-			Msg<<done<<(*p)<<finish;
+			//Msg<<done<<(*p)<<finish;
 			return newroot;
 		}
 
@@ -559,6 +554,7 @@ cout << "(-)" << what << " "; cout.flush();
 		virtual Trunk* transplant(Trunk* root,Trunk* u,Trunk* v) = 0;
 		void IntegrityCheck(Trunk* X) // TBD: Remove this function
 		{
+return;
 			Trunk& Nil(*GetNil());
 			if (color(X)==RED) 
 			{
@@ -808,7 +804,7 @@ cout << "(-)" << what << " "; cout.flush();
 				return RedAndBlackDelete(root,X);								// 22
 			}
 		Trace
-		IntegrityCheck(X);
+		//IntegrityCheck(X);
 		Msg<<done;
 		return root;
 	}

@@ -40,6 +40,7 @@ namespace TreeDisplay
 		//#define GHOSTS
 		void NodeBase::operator()(Invalid& invalid,Window& window,Display* display,GC& gc,Pixmap& bitmap)
 		{
+if ( Remove ) cout << "X"; else cout <<"."; cout.flush();
 			XSetForeground(display,gc,0);
 			while(!linecovers.empty())
 			{

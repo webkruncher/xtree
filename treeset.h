@@ -61,6 +61,7 @@ namespace TreeObjects
 		}
 		void erase(const KT key)
 		{
+cout << "!treeset::erase!"; cout.flush();
 			if (!root) return;
 			if (root->isnil()) return;
 			TreeBase* found(root->find(key));
